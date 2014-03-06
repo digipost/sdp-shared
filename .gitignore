@@ -4,5 +4,6 @@
 .metadata
 .classpath
 target
+src/main/resources/git.properties
 .idea/
 *.iml

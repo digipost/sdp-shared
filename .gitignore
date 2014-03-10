@@ -1,6 +1,7 @@
 .project
 .settings
 .idea
+.vagrant
 */.settings
 */.project
 */.DS_Store

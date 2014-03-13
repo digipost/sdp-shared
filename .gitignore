@@ -2,6 +2,7 @@
 .settings
 .idea
 .vagrant
+*.iml
 */.settings
 */.project
 */.DS_Store

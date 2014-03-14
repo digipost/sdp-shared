@@ -15,3 +15,4 @@
 .classpath
 bin/
 *.iml
+mf-webapp/public/

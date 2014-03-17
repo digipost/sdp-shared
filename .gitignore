@@ -16,3 +16,4 @@
 bin/
 *.iml
 mf-webapp/public/
+scripts/node_modules

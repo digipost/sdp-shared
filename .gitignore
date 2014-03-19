@@ -7,7 +7,6 @@ target
 .vagrant
 .metadata
 .DS_Store
-*/src/main/resources/*git.properties
 bin/
 mf-webapp/public/
 scripts/node_modules

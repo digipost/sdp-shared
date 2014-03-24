@@ -10,3 +10,4 @@ target
 bin/
 mf-webapp/public/
 scripts/node_modules
+.sonatype

@@ -132,16 +132,6 @@
 
 	<build>
 		<plugins>
-            <!-- This module needs to compile to Java 1.6, as it's used by the Sikker Digital Post client -->
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-
             <!--<plugin>
 				<groupId>pl.project13.maven</groupId>
 				<artifactId>git-commit-id-plugin</artifactId>

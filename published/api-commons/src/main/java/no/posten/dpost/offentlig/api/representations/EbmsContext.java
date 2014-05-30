@@ -1,0 +1,61 @@
+package no.posten.dpost.offentlig.api.representations;
+
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.SignalMessage;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.UserMessage;
+import org.springframework.ws.context.MessageContext;
+import org.springframework.ws.soap.SoapHeaderElement;
+import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import org.w3.xmldsig.Reference;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class EbmsContext {
+	private static final String PROPERTY_NAME = "no.posten.dpost.ebms.context";
+	public final List<EbmsProcessingStep> responseProcessingSteps = new ArrayList<EbmsProcessingStep>();
+	public final List<EbmsProcessingStep> requestProcessingSteps = new ArrayList<EbmsProcessingStep>();
+
+	public UserMessage userMessage = null;
+	public List<SignalMessage> receipts = new ArrayList<SignalMessage>();
+	public SignalMessage pullSignal = null;
+	public List<Reference> incomingReferences = new ArrayList<Reference>();
+
+	public SimpleStandardBusinessDocument sbd = null;
+	public Map<String, String> mpcMap = new HashMap<String, String>();
+	public Messaging incomingMessaging;
+	public Organisasjonsnummer remoteParty;
+	public Exception referencesValidationException;
+
+	public static EbmsContext from(final MessageContext messageContext) {
+		EbmsContext context = (EbmsContext)messageContext.getProperty(PROPERTY_NAME);
+		if (context == null) {
+			context = new EbmsContext();
+			messageContext.setProperty(PROPERTY_NAME, context);
+		}
+		return context;
+	}
+
+	public void addResponseStep(final EbmsProcessingStep strategy) {
+		responseProcessingSteps.add(strategy);
+	}
+
+	public void addRequestStep(final EbmsProcessingStep strategy) {
+		requestProcessingSteps.add(strategy);
+	}
+
+	public void processResponse(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SaajSoapMessage soapMessage) {
+		for (EbmsProcessingStep r : responseProcessingSteps) {
+			r.apply(ebmsContext, ebmsMessaging, soapMessage);
+		}
+
+    }
+	public void processRequest(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SaajSoapMessage soapMessage) {
+		for (EbmsProcessingStep r : requestProcessingSteps) {
+			r.apply(ebmsContext, ebmsMessaging, soapMessage);
+		}
+	}
+
+}

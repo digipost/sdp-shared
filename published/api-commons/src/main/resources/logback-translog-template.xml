@@ -1,0 +1,20 @@
+<included>
+
+    <appender name="TRANSLOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${user.home}/logs/translog-${CONTEXT_NAME}.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>731</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="mf.logger.translog" level="INFO" additivity="false">
+        <appender-ref ref="TRANSLOG_FILE" />
+    </logger>
+
+</included>

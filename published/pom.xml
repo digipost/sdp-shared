@@ -10,12 +10,12 @@
     <description>Parent POM for published dependencies needed by SDP client</description>
     <modelVersion>4.0.0</modelVersion>
 
-    <!--<modules>-->
-        <!--<module>api-client</module>-->
+    <modules>
+        <module>api-client</module>
         <!--<module>api-commons</module>-->
         <!--<module>commons</module>-->
         <!--<module>xsd</module>-->
-    <!--</modules>-->
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

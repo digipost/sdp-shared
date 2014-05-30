@@ -10,6 +10,12 @@
     <description>Parent POM for published dependencies needed by SDP client</description>
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>no.digipost</groupId>
+        <artifactId>digipost-open-super-pom</artifactId>
+        <version>0.3</version>
+    </parent>
+
     <modules>
         <module>api-client</module>
         <module>api-commons</module>

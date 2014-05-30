@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bindings version="2.1"
+          xmlns="http://java.sun.com/xml/ns/jaxb"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema"
+          xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+          xmlns:wildcard="http://jaxb2-commons.dev.java.net/basic/wildcard"
+          xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
+          extensionBindingPrefixes="xjc">
+
+	<globalBindings>
+		<xjc:simple/>
+		<xjc:javaType adapter="no.posten.dpost.offentlig.jaxb.XSDateTimeAdapter" name="org.joda.time.DateTime"
+		              xmlType="xs:dateTime"/>
+		<xjc:javaType adapter="no.posten.dpost.offentlig.jaxb.XSDateAdapter" name="org.joda.time.LocalDate"
+		              xmlType="xs:date"/>
+	</globalBindings>
+
+	<bindings schemaLocation="../difi-begrepskatalog/xsd/sdp.xsd" node="/xs:schema">
+		<schemaBindings>
+			<nameXmlTransform>
+				<typeName prefix="SDP" />
+				<anonymousTypeName prefix="SDP" />
+				<elementName prefix="SDP" />
+			</nameXmlTransform>
+		</schemaBindings>
+	</bindings>
+
+	<bindings schemaLocation="../difi-begrepskatalog/xsd/oppslag/oppslagstjeneste-metadata-14-05.xsd" node="/xs:schema">
+		<schemaBindings>
+			<nameXmlTransform>
+				<typeName prefix="Difi" />
+				<anonymousTypeName prefix="Difi" />
+				<elementName prefix="Difi" />
+			</nameXmlTransform>
+		</schemaBindings>
+	</bindings>
+
+	<bindings schemaLocation="../difi-begrepskatalog/xsd/sdp-melding.xsd">
+		<bindings node="//xs:complexType[@name='EpostVarselTekst']">
+			<inheritance:implements>no.posten.dpost.offentlig.types.TekstMedSpraak</inheritance:implements>
+		</bindings>
+		<bindings node="//xs:complexType[@name='SmsVarselTekst']">
+			<inheritance:implements>no.posten.dpost.offentlig.types.TekstMedSpraak</inheritance:implements>
+		</bindings>
+		<bindings node="//xs:complexType[@name='EpostVarsel']">
+			<inheritance:implements>no.posten.dpost.offentlig.types.Varsel</inheritance:implements>
+		</bindings>
+		<bindings node="//xs:complexType[@name='SmsVarsel']">
+			<inheritance:implements>no.posten.dpost.offentlig.types.Varsel</inheritance:implements>
+		</bindings>
+		<bindings node="//xs:simpleType[@name='Sikkerhetsnivaa']/xs:restriction" multiple="true">
+			<bindings node="xs:enumeration[@value='3']">
+				<typesafeEnumMember name="NIVAA_3"/>
+			</bindings>
+			<bindings node="xs:enumeration[@value='4']">
+				<typesafeEnumMember name="NIVAA_4"/>
+			</bindings>
+		</bindings>
+	</bindings>
+
+	<bindings schemaLocation="../difi-begrepskatalog/xsd/sdp-felles.xsd">
+		<bindings node="//xs:complexType[@name='Person']">
+			<inheritance:implements>no.posten.dpost.offentlig.types.HarSikkerDigitalPostAdresse</inheritance:implements>
+		</bindings>
+		<bindings node="//xs:complexType[@name='Virksomhet']">
+			<inheritance:implements>no.posten.dpost.offentlig.types.HarSikkerDigitalPostAdresse</inheritance:implements>
+		</bindings>
+		<bindings node="//xs:complexType[@name='Tittel']">
+			<inheritance:implements>no.posten.dpost.offentlig.types.TekstMedSpraak</inheritance:implements>
+		</bindings>
+	</bindings>
+
+	<bindings schemaLocation="../difi-begrepskatalog/xsd/SBDH20040506-02/StandardBusinessDocumentHeader.xsd" node="/xs:schema">
+		<wildcard:lax/>
+	</bindings>
+
+	<bindings schemaLocation="../difi-begrepskatalog/xsd/ebxml/ebms-header-3_0-200704.xsd" node="//xs:attribute[@ref='S12:mustUnderstand']">
+		<property name="mustUnderstand12" />
+	</bindings>
+
+	<bindings schemaLocation="../difi-begrepskatalog/xsd/w3/xmldsig-core-schema.xsd">
+		<schemaBindings>
+			<package name="org.w3.xmldsig"/>
+		</schemaBindings>
+	</bindings>
+
+	<bindings schemaLocation="../difi-begrepskatalog/xsd/w3/xlink.xsd">
+		<schemaBindings>
+			<package name="org.w3.xlink"/>
+		</schemaBindings>
+	</bindings>
+
+	<bindings schemaLocation="../difi-begrepskatalog/xsd/w3/xenc-schema.xsd">
+		<schemaBindings>
+			<package name="org.w3.xenc"/>
+		</schemaBindings>
+	</bindings>
+
+	<bindings schemaLocation="../difi-begrepskatalog/xsd/w3/soap-envelope.xsd">
+		<schemaBindings>
+			<package name="org.w3.soap"/>
+		</schemaBindings>
+	</bindings>
+
+</bindings>

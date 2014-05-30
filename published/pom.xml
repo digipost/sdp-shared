@@ -14,7 +14,7 @@
         <module>api-client</module>
         <module>api-commons</module>
         <module>commons</module>
-        <!--<module>xsd</module>-->
+        <module>xsd</module>
     </modules>
 
     <properties>

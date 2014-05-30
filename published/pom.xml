@@ -10,11 +10,11 @@
     <description>Parent POM for published dependencies needed by SDP client</description>
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
+    <!--<parent>
         <groupId>no.digipost</groupId>
         <artifactId>digipost-open-super-pom</artifactId>
         <version>0.3</version>
-    </parent>
+    </parent>-->
 
     <modules>
         <module>api-client</module>
@@ -303,6 +303,20 @@
                             <id>attach-sources</id>
                             <goals>
                                 <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.jasig.maven</groupId>
+                    <artifactId>maven-notice-plugin</artifactId>
+                    <version>1.0.6.1</version>
+                    <executions>
+                        <execution>
+                            <id>check-NOTICE-file</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>check</goal>
                             </goals>
                         </execution>
                     </executions>

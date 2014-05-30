@@ -13,11 +13,7 @@
 	</parent>
 
 	<dependencies>
-		<dependency>
-			<groupId>no.posten.dpost.offentlig</groupId>
-			<artifactId>offentlig-commons</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+
 		<dependency>
 			<groupId>no.posten.dpost.offentlig</groupId>
 			<artifactId>offentlig-xsd</artifactId>

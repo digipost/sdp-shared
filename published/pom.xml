@@ -288,7 +288,7 @@
                     </executions>
                     <configuration>
                         <verbose>false</verbose>
-                        <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                        <!--<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>-->
                         <generateGitPropertiesFile>true</generateGitPropertiesFile>
                         <generateGitPropertiesFilename>target/classes/${project.artifactId}-git.properties
                         </generateGitPropertiesFilename>

@@ -157,7 +157,6 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
         handler.setOption(ConfigurationConstants.OPTIONAL_SIGNATURE_PARTS, securementSignatureParts);
     }
 
-
     public void setSecurementSignatureUser(final String securementSignatureUser) {
         handler.setOption(WSHandlerConstants.SIGNATURE_USER, securementSignatureUser);
     }
@@ -188,16 +187,9 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
         }
     }
 
-
-
     public void setValidationSignatureCrypto(final Crypto signatureCrypto) {
         validationSignatureCrypto = signatureCrypto;
     }
-
-
-
-
-
 
     public void setEnableRevocation(final boolean enabled) {
         enableRevocation = enabled;
@@ -206,7 +198,6 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
     public void setBspCompliant(final boolean compliant) {
 	    handler.setOption(WSHandlerConstants.IS_BSP_COMPLIANT, compliant);
     }
-
 
     public void afterPropertiesSet() throws Exception {
         Assert.isTrue(validationActions != null || securementActions != null,
@@ -220,9 +211,7 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
                 Assert.notNull(validationSignatureCrypto, "validationSignatureCrypto is required");
             }
         }
-
     }
-
 
 	@Override
 	protected boolean handleFaultException(final WsSecurityFaultException ex, final MessageContext messageContext) {
@@ -237,7 +226,6 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 		}
 		return false;
 	}
-
 
     @Override
     protected void secureMessage(final SoapMessage soapMessage, final MessageContext messageContext)
@@ -294,8 +282,6 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
         requestData.setWssConfig(wssConfig);
         return requestData;
     }
-
-
 
     @Override
     protected void validateMessage(final SoapMessage soapMessage, final MessageContext messageContext)
@@ -358,11 +344,6 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 
         soapMessage.getEnvelope().getHeader().removeHeaderElement(WS_SECURITY_NAME);
     }
-
-
-
-
-
 
 	private void updateMessageContextWithCertificate(final MessageContext messageContext, final List<WSSecurityEngineResult> results) {
 		WSSecurityEngineResult signResult = WSSecurityUtil.fetchActionResult(results, WSConstants.SIGN);
@@ -463,8 +444,6 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
         }
     }
 
-
-
     @Override
     protected void cleanUp() {
         if (validationCallbackHandler != null) {
@@ -480,9 +459,5 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
             }
         }
     }
-
-
-
-
 
 }

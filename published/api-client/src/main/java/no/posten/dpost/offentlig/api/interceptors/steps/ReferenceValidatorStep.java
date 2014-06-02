@@ -31,9 +31,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ReferenceValidatorStep implements EbmsProcessingStep {
+
 	private final List<Reference> references;
 	private final Jaxb2Marshaller jaxb2Marshaller;
-	public ReferenceValidatorStep(final Jaxb2Marshaller jaxb2Marshaller, final List<Reference> references) {
+
+    public ReferenceValidatorStep(final Jaxb2Marshaller jaxb2Marshaller, final List<Reference> references) {
 		this.jaxb2Marshaller = jaxb2Marshaller;
 		this.references = references;
 	}
@@ -89,6 +91,5 @@ public class ReferenceValidatorStep implements EbmsProcessingStep {
 			}
 		}
 	}
-
 
 }

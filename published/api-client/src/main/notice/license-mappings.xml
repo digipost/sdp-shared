@@ -26,11 +26,6 @@
     </artifact>
     <artifact>
         <groupId>no.posten.dpost.offentlig</groupId>
-        <artifactId>offentlig-commons</artifactId>
-        <license>The Apache Software License, Version 2.0</license>
-    </artifact>
-    <artifact>
-        <groupId>no.posten.dpost.offentlig</groupId>
         <artifactId>offentlig-xsd</artifactId>
         <license>The Apache Software License, Version 2.0</license>
     </artifact>

@@ -26,20 +26,18 @@ import java.util.List;
 public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 	public final StandardBusinessDocument sbd;
 	public final List<Reference> references = new ArrayList<Reference>();
-	public EbmsMottaker avsender = null;
+	public EbmsAktoer avsender = null;
 
-	private EbmsApplikasjonsKvittering(final EbmsMottaker avsender, final EbmsMottaker mottaker, final EbmsOutgoingMessage.Prioritet prioritet, final String messageId, final String refToMessageId, final StandardBusinessDocument sbd) {
+	private EbmsApplikasjonsKvittering(final EbmsAktoer avsender, final EbmsAktoer mottaker, final EbmsOutgoingMessage.Prioritet prioritet, final String messageId, final String refToMessageId, final StandardBusinessDocument sbd) {
 		super(mottaker, messageId, refToMessageId, prioritet);
 		this.sbd = sbd;
 		this.avsender = avsender;
 	}
 
-	public static Builder create(final EbmsMottaker avsender, final EbmsMottaker mottaker, final StandardBusinessDocument sbd) {
+	public static Builder create(final EbmsAktoer avsender, final EbmsAktoer mottaker, final StandardBusinessDocument sbd) {
 		return new Builder(avsender, mottaker, sbd);
 	}
-	public static Builder create(final Organisasjonsnummer avsender, final Organisasjonsnummer mottaker, final StandardBusinessDocument sbd) {
-		return new Builder(new EbmsMottaker(avsender), new EbmsMottaker(mottaker), sbd);
-	}
+
 
 	public SimpleStandardBusinessDocument getStandardBusinessDocument() {
 		return new SimpleStandardBusinessDocument(sbd);
@@ -51,15 +49,15 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 
 	public static class Builder {
 
-		private final EbmsMottaker avsender;
-		private final EbmsMottaker mottaker;
+		private final EbmsAktoer avsender;
+		private final EbmsAktoer mottaker;
 		private Prioritet prioritet = Prioritet.NORMAL;
 		private final StandardBusinessDocument sbd;
 		private String messageId = null;
 		private String refToMessageId = null;
 		private List<Reference> references = new ArrayList<Reference>();
 
-		public Builder(final EbmsMottaker avsender, final EbmsMottaker mottaker, final StandardBusinessDocument sbd) {
+		public Builder(final EbmsAktoer avsender, final EbmsAktoer mottaker, final StandardBusinessDocument sbd) {
 			this.mottaker = mottaker;
 			this.avsender = avsender;
 			this.sbd = sbd;

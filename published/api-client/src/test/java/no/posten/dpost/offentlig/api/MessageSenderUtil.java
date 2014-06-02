@@ -25,6 +25,7 @@ import no.difi.begrep.sdp.schema_v10.SDPSikkerhetsnivaa;
 import no.difi.begrep.sdp.schema_v10.SDPTittel;
 import no.posten.dpost.offentlig.api.interceptors.KeyStoreInfo;
 import no.posten.dpost.offentlig.api.representations.Dokumentpakke;
+import no.posten.dpost.offentlig.api.representations.EbmsAktoer;
 import no.posten.dpost.offentlig.api.representations.EbmsForsendelse;
 import no.posten.dpost.offentlig.api.representations.Organisasjonsnummer;
 import org.springframework.core.io.ClassPathResource;
@@ -50,10 +51,10 @@ import static java.lang.String.format;
 
 public class MessageSenderUtil {
 
-	public static final Organisasjonsnummer AVSENDER = new Organisasjonsnummer("984661185");
-	public static final Organisasjonsnummer MELDINGSFORMIDLER = new Organisasjonsnummer("984661185");
-	public static final Organisasjonsnummer DIGIPOST = new Organisasjonsnummer("984661185");
-	public static final Organisasjonsnummer LOOPBACK = new Organisasjonsnummer("123456789");
+	public static final EbmsAktoer AVSENDER = new EbmsAktoer(new Organisasjonsnummer("984661185"), EbmsAktoer.Rolle.AVSENDER);
+	public static final EbmsAktoer MELDINGSFORMIDLER = new EbmsAktoer(new Organisasjonsnummer("984661185"), EbmsAktoer.Rolle.MELDINGSFORMIDLER);
+	public static final EbmsAktoer DIGIPOST = new EbmsAktoer(new Organisasjonsnummer("984661185"), EbmsAktoer.Rolle.POSTKASSE);
+	public static final EbmsAktoer LOOPBACK = new EbmsAktoer(new Organisasjonsnummer("123456789"), EbmsAktoer.Rolle.POSTKASSE);
 	private static AtomicInteger counter = new AtomicInteger();
 
 	public static void main(final String[] args) throws Exception {
@@ -94,7 +95,7 @@ public class MessageSenderUtil {
 				@Override
 				public void run() {
 					for (int j = 0; j < finalNbIterations; j++) {
-						EbmsForsendelse forsendelse = lagForsendelse(AVSENDER, LOOPBACK);
+						EbmsForsendelse forsendelse = lagForsendelse(AVSENDER, LOOPBACK.orgnr);
 						long start = System.currentTimeMillis();
 						try {
 							sender.send(forsendelse);
@@ -123,10 +124,10 @@ public class MessageSenderUtil {
 		System.err.println(counter.get() + " " + timeTook + "ms " + (double) counter.get() / timeTook * 1000 + "m/s");
 	}
 
-	public static EbmsForsendelse lagForsendelse(final Organisasjonsnummer avsender, final Organisasjonsnummer postkasse) {
+	public static EbmsForsendelse lagForsendelse(final EbmsAktoer avsender, final Organisasjonsnummer postkasse) {
 		byte[] dataz = new byte[100000];
 		SDPDigitalPost sdp = new SDPDigitalPost()
-				.withAvsender(new SDPAvsender().withOrganisasjon(new SDPOrganisasjon().withValue(avsender.asIso6523())))
+				.withAvsender(new SDPAvsender().withOrganisasjon(new SDPOrganisasjon().withValue(avsender.orgnr.asIso6523())))
 				.withMottaker(new SDPMottaker().withPerson(new SDPPerson()
 								.withPersonidentifikator("01013300001")
 								.withMobiltelefonnummer("12345678")
@@ -137,7 +138,7 @@ public class MessageSenderUtil {
 								.withSikkerhetsnivaa(SDPSikkerhetsnivaa.NIVAA_3)
 								.withTittel(new SDPTittel("Digital post fra Postmann P@t", "no"))
 				);
-		return EbmsForsendelse.create(avsender, postkasse, sdp, new Dokumentpakke(new ByteArrayInputStream(dataz))).build();
+		return EbmsForsendelse.create(avsender, MELDINGSFORMIDLER, postkasse, sdp, new Dokumentpakke(new ByteArrayInputStream(dataz))).build();
 	}
 
 

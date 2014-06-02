@@ -15,8 +15,8 @@
  */
 package no.posten.dpost.offentlig.api.handlers;
 
+import no.posten.dpost.offentlig.api.representations.EbmsAktoer;
 import no.posten.dpost.offentlig.api.representations.EbmsContext;
-import no.posten.dpost.offentlig.api.representations.Organisasjonsnummer;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.WebServiceMessageExtractor;
 import org.springframework.ws.client.core.WebServiceTemplate;
@@ -29,9 +29,9 @@ import java.io.IOException;
 public class EbmsContextAwareWebServiceTemplate extends WebServiceTemplate {
 
 
-	private final Organisasjonsnummer remoteParty;
+	private final EbmsAktoer remoteParty;
 
-	public EbmsContextAwareWebServiceTemplate(final SaajSoapMessageFactory factory, final Organisasjonsnummer remoteParty) {
+	public EbmsContextAwareWebServiceTemplate(final SaajSoapMessageFactory factory, final EbmsAktoer remoteParty) {
 		super(factory);
 		this.remoteParty = remoteParty;
 	}
@@ -40,7 +40,7 @@ public class EbmsContextAwareWebServiceTemplate extends WebServiceTemplate {
 	protected <T> T doSendAndReceive(final MessageContext messageContext, final WebServiceConnection connection,
 			final WebServiceMessageCallback requestCallback, final WebServiceMessageExtractor<T> responseExtractor) throws IOException {
 		EbmsContext context = EbmsContext.from(messageContext);
-		context.remoteParty = remoteParty;
+		context.remoteParty = remoteParty.orgnr;
 		if (requestCallback instanceof EbmsContextAware) {
 			((EbmsContextAware) requestCallback).setContext(context);
 		}

@@ -36,14 +36,17 @@ import javax.xml.transform.TransformerException;
 import java.io.IOException;
 
 public class PullRequestSender extends EbmsContextAware implements WebServiceMessageCallback {
+
 	private final EbmsPullRequest pullRequest;
 	private final Jaxb2Marshaller marshaller;
 	private final EbmsApplikasjonsKvittering tidligereKvitteringSomSkalBekreftes;
-	public PullRequestSender(final EbmsPullRequest pullRequest, final Jaxb2Marshaller marshaller, final EbmsApplikasjonsKvittering tidligereKvitteringSomSkalBekreftes) {
+
+    public PullRequestSender(final EbmsPullRequest pullRequest, final Jaxb2Marshaller marshaller, final EbmsApplikasjonsKvittering tidligereKvitteringSomSkalBekreftes) {
 		this.pullRequest = pullRequest;
 		this.marshaller = marshaller;
 		this.tidligereKvitteringSomSkalBekreftes = tidligereKvitteringSomSkalBekreftes;
 	}
+
 	@Override
 	public void doWithMessage(final WebServiceMessage message) throws IOException, TransformerException {
 		if (tidligereKvitteringSomSkalBekreftes != null) {
@@ -65,4 +68,5 @@ public class PullRequestSender extends EbmsContextAware implements WebServiceMes
 
 		});
 	}
+
 }

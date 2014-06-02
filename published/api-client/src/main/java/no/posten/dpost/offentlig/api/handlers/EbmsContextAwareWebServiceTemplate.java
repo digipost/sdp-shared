@@ -28,7 +28,6 @@ import java.io.IOException;
 
 public class EbmsContextAwareWebServiceTemplate extends WebServiceTemplate {
 
-
 	private final EbmsAktoer remoteParty;
 
 	public EbmsContextAwareWebServiceTemplate(final SaajSoapMessageFactory factory, final EbmsAktoer remoteParty) {
@@ -49,7 +48,5 @@ public class EbmsContextAwareWebServiceTemplate extends WebServiceTemplate {
 		}
 		return super.doSendAndReceive(messageContext, connection, requestCallback, responseExtractor);
 	}
-
-
 
 }

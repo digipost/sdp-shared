@@ -25,6 +25,7 @@ import javax.xml.transform.TransformerException;
 import java.io.IOException;
 
 public class TransportKvitteringReceiver extends EbmsContextAware implements WebServiceMessageExtractor<TransportKvittering> {
+
 	@Override
 	public TransportKvittering extractData(final WebServiceMessage message) throws IOException, TransformerException {
 		MessageInfo messageInfo = ebmsContext.receipts.get(0).getMessageInfo();

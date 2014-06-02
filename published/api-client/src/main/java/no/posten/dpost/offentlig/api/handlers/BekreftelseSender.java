@@ -41,5 +41,4 @@ public class BekreftelseSender extends EbmsContextAware implements WebServiceMes
 		ebmsContext.addRequestStep(new AddReferencesStep(jaxb2Marshaller, appKvittering.messageId, appKvittering.references));
 	}
 
-
 }

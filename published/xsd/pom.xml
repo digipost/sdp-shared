@@ -111,13 +111,14 @@
             <plugin>
                 <groupId>org.jasig.maven</groupId>
                 <artifactId>maven-notice-plugin</artifactId>
-                <configuration>
-                    <noticeTemplate>/src/main/notice/NOTICE.template</noticeTemplate>
-                    <licenseMapping>
-                        <param>/src/main/notice/license-mappings.xml</param>
-                    </licenseMapping>
-                </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <configuration>
+                    <basedir>${project.basedir}/src/main/java</basedir>
+                </configuration>
+           </plugin>
 		</plugins>
 	</build>
 

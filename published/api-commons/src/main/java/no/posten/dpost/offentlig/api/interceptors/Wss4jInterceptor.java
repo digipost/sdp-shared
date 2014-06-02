@@ -115,13 +115,7 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
     	setSecurementSignatureKeyIdentifier("DirectReference");
     	setSecurementActions("Timestamp Signature");
     	setValidationActions("Timestamp Signature");
-
     }
-
-
-
-
-
 
     public void setSecurementActions(final String actions) {
         securementActions = actions;
@@ -380,12 +374,6 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 		}
 	}
 
-
-
-
-
-
-	//Dette burde ikke være her....
 	private void validateEbmsMessagingIsSigned(final String envelopePrefix, final List<WSSecurityEngineResult> results) {
     	for (WSSecurityEngineResult r : results) {
     		if (r.containsKey("data-ref-uris")) {

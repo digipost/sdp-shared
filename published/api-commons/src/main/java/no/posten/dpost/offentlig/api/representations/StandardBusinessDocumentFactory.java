@@ -36,7 +36,8 @@ public class StandardBusinessDocumentFactory {
 		Tilbaketrekking("tilbaketrekking", SDPTilbaketrekking.class),
 		Kvittering("kvittering", SDPKvittering.class),
 		Feil("feil", SDPFeil.class);
-		private final String name;
+
+        private final String name;
 		private final Class<? extends SDPMelding> clazz;
 
 		private Type(final String name, final Class<? extends SDPMelding> clazz) {

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
+
 	public final StandardBusinessDocument sbd;
 	public final List<Reference> references = new ArrayList<Reference>();
 	public EbmsAktoer avsender = null;
@@ -45,7 +46,6 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 	public SimpleKvittering getKvittering() {
 		return new SimpleStandardBusinessDocument(sbd).getKvittering();
 	}
-
 
 	public static class Builder {
 
@@ -86,7 +86,6 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 			kvittering.references.addAll(references);
 			return kvittering;
 		}
-
 
 	}
 }

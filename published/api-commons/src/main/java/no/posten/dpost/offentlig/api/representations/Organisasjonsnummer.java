@@ -19,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Organisasjonsnummer {
+
 	private final String orgNummer;
 	public static final String ISO6523_ACTORID = "iso6523-actorid-upis";
 
@@ -45,7 +46,8 @@ public class Organisasjonsnummer {
 		}
 		return new Organisasjonsnummer(matcher.group(2));
 	}
-	@Override
+
+    @Override
 	public boolean equals(final Object obj) {
 		if (obj == null) {
 			return false;
@@ -55,7 +57,8 @@ public class Organisasjonsnummer {
 		}
 		return false;
 	}
-	@Override
+
+    @Override
 	public int hashCode() {
 		return orgNummer.hashCode();
 	}

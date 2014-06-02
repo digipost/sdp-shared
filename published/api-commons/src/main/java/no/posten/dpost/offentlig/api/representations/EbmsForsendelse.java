@@ -56,7 +56,6 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 		return sbdhMottaker;
 	}
 
-
 	public static Builder create(final EbmsAktoer avsender, final EbmsAktoer mottaker, final Organisasjonsnummer sbdhMottaker, final SDPDigitalPost digitalPost, final Dokumentpakke dokumentpakke) {
 		Builder builder = new Builder();
 		builder.avsender = avsender;
@@ -79,13 +78,11 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 		builder.doc = sbd;
 		builder.digitalPost = (SDPDigitalPost)sbd.getAny();
 		return builder;
-
 	}
 
 	public static EbmsForsendelse from(final EbmsAktoer avsender, final EbmsAktoer mottaker, final Organisasjonsnummer sbdhMottaker, final StandardBusinessDocument sbd, final Dokumentpakke dokumentpakke) {
 		return create(avsender, mottaker, sbdhMottaker, sbd, dokumentpakke).build();
 	}
-
 
 	public static class Builder {
 		private Dokumentpakke dokumentpakke;
@@ -124,11 +121,6 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 			}
 			return new EbmsForsendelse(messageId, mottaker, avsender, sbdhMottaker, prioritet, conversationId, instanceIdentifier, doc, dokumentpakke);
 		}
-
-
 	}
-
-
-
 
 }

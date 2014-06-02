@@ -20,6 +20,7 @@ import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.From;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.To;
 
 public class EbmsAktoer {
+
 	public enum Rolle {
 		AVSENDER(PMode.ROLE_AVSENDER),
 		MELDINGSFORMIDLER(PMode.ROLE_MELDINGSFORMIDLER),
@@ -40,7 +41,6 @@ public class EbmsAktoer {
 			throw new IllegalArgumentException("Invalid role:" + urn);
 		}
 	}
-
 
 	public final Organisasjonsnummer orgnr;
 	public final Rolle rolle;
@@ -76,7 +76,6 @@ public class EbmsAktoer {
 		return create(id, from.getRole());
 	}
 
-
 	public static EbmsAktoer from(final To to) {
 		String id = to.getPartyIds().get(0).getValue();
 		return create(id, to.getRole());
@@ -87,7 +86,5 @@ public class EbmsAktoer {
 		Organisasjonsnummer nummer = Organisasjonsnummer.fromIso6523(id);
 		return new EbmsAktoer(nummer, rolle);
 	}
-
-
 
 }

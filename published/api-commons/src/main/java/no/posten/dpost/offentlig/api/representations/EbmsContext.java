@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 public class EbmsContext {
+
 	private static final String PROPERTY_NAME = "no.posten.dpost.ebms.context";
 	public final List<EbmsProcessingStep> responseProcessingSteps = new ArrayList<EbmsProcessingStep>();
 	public final List<EbmsProcessingStep> requestProcessingSteps = new ArrayList<EbmsProcessingStep>();

@@ -19,6 +19,7 @@ import org.joda.time.DateTime;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.MessageInfo;
 
 public class EbmsOutgoingMessage extends EbmsMessage {
+
 	public enum Prioritet {
 		NORMAL("normal"),
 		PRIORITERT("prioritert");
@@ -41,18 +42,20 @@ public class EbmsOutgoingMessage extends EbmsMessage {
 			throw new IllegalArgumentException("Invalid Prioritet: " + val);
 		}
 	}
-	public final Prioritet prioritet;
-	protected EbmsAktoer ebmsMottaker;
 
+    public final Prioritet prioritet;
+	protected EbmsAktoer ebmsMottaker;
 
 	public EbmsOutgoingMessage(final EbmsAktoer ebmsMottaker, final String messageId, final String refToMessageId, final Prioritet prioritet) {
 		super(messageId, refToMessageId);
 		this.ebmsMottaker = ebmsMottaker;
 		this.prioritet = prioritet != null ? prioritet : Prioritet.NORMAL;
 	}
+
 	public EbmsAktoer getEbmsMottaker() {
 		return ebmsMottaker;
 	}
+
 	public MessageInfo createMessageInfo() {
 		MessageInfo messageInfo = new MessageInfo()
 			.withMessageId(messageId)
@@ -60,6 +63,5 @@ public class EbmsOutgoingMessage extends EbmsMessage {
 			.withTimestamp(DateTime.now());
 		return messageInfo;
 	}
-
 
 }

@@ -25,8 +25,10 @@ import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusine
 import java.util.List;
 
 public class SimpleStandardBusinessDocument {
+
 	private final StandardBusinessDocument doc;
-	public SimpleStandardBusinessDocument(final StandardBusinessDocument doc) {
+
+    public SimpleStandardBusinessDocument(final StandardBusinessDocument doc) {
 		this.doc = doc;
 	}
 
@@ -61,11 +63,9 @@ public class SimpleStandardBusinessDocument {
 		return null;
 	}
 
-
 	private static boolean isEmpty(final List<?> list) {
 		return list == null || list.size() == 0;
 	}
-
 
 	public boolean erKvittering() {
 		return doc.getAny() instanceof SDPKvittering;
@@ -90,9 +90,6 @@ public class SimpleStandardBusinessDocument {
 		return doc;
 	}
 
-
-
-
 	public SDPFeil getFeil() {
 		return (SDPFeil) doc.getAny();
 	}
@@ -107,8 +104,8 @@ public class SimpleStandardBusinessDocument {
 		return (SDPMelding)doc.getAny();
 	}
 
-
 	public class SimpleKvittering {
+
 		public final SDPKvittering kvittering;
 
 		public SimpleKvittering(final SDPKvittering kvittering) {
@@ -123,7 +120,9 @@ public class SimpleStandardBusinessDocument {
 			return kvittering.getAapning() != null;
 		}
 	}
+
 	public class SimpleDigitalPost {
+
 		public final SDPDigitalPost digitalPost;
 
 		public SimpleDigitalPost(final SDPDigitalPost digitalPost) {
@@ -134,6 +133,5 @@ public class SimpleStandardBusinessDocument {
 			return digitalPost.getDigitalPostInfo().getAapningskvittering() != null && digitalPost.getDigitalPostInfo().getAapningskvittering();
 		}
 	}
-
 
 }

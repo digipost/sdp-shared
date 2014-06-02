@@ -42,7 +42,6 @@ public class EbmsReferenceExtractor {
 
 	public EbmsReferenceExtractor(final Jaxb2Marshaller jaxb2Marshaller) {
 		this.jaxb2Marshaller = jaxb2Marshaller;
-
 	}
 
 	public List<Reference> getReferences(final SaajSoapMessage request) {
@@ -97,6 +96,5 @@ public class EbmsReferenceExtractor {
 		}
 		return hrefs;
 	}
-
 
 }

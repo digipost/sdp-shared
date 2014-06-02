@@ -18,8 +18,8 @@ package no.posten.dpost.offentlig.api.representations;
 import no.posten.dpost.offentlig.api.representations.EbmsOutgoingMessage.Prioritet;
 import org.springframework.util.StringUtils;
 
-
 public class Mpc {
+
 	public final EbmsForsendelse.Prioritet prioritet;
 	public final String avsenderId;
 
@@ -27,8 +27,6 @@ public class Mpc {
 		this.prioritet = prioritet;
 		this.avsenderId = avsenderId;
 	}
-
-
 
 	@Override
 	public String toString() {
@@ -38,11 +36,13 @@ public class Mpc {
 		}
 		return result;
 	}
+
 	@Override
 	public int hashCode() {
 		return toString().hashCode();
 	}
-	@Override
+
+    @Override
 	public boolean equals(final Object obj) {
 		if (obj == null) {
 			return false;

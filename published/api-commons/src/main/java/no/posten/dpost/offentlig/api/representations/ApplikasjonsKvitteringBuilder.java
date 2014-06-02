@@ -48,12 +48,14 @@ public class ApplikasjonsKvitteringBuilder {
 		builder.instanceIdentifier = instanceIdentifier;
 		return builder;
 	}
-	public ApplikasjonsKvitteringBuilder medFeil(final String feilinformasjon) {
+
+    public ApplikasjonsKvitteringBuilder medFeil(final String feilinformasjon) {
 		kvittering = new SDPFeil()
 			.withFeiltype(SDPFeiltype.KLIENT)
 			.withDetaljer(feilinformasjon);
 		return this;
 	}
+
 	public ApplikasjonsKvitteringBuilder medAapning() {
 		kvittering = new SDPKvittering()
 			.withAapning(new SDPAapning())

@@ -211,17 +211,17 @@
                                         <include>org.opensaml:xmltooling:1.4.1</include>
                                         <include>org.slf4j:slf4j-api:1.7.6</include>
                                         <include>org.springframework:spring-aop:3.2.4.RELEASE</include>
-                                        <include>org.springframework:spring-beans:4.0.5.RELEASE</include>
-                                        <include>org.springframework:spring-core:4.0.5.RELEASE</include>
+                                        <include>org.springframework:spring-beans:${spring.version}</include>
+                                        <include>org.springframework:spring-core:${spring.version}</include>
                                         <include>org.springframework:spring-expression:3.0.7.RELEASE</include>
-                                        <include>org.springframework:spring-oxm:4.0.5.RELEASE</include>
+                                        <include>org.springframework:spring-oxm:${spring.version}</include>
                                         <include>org.springframework:spring-tx:3.2.4.RELEASE</include>
                                         <include>org.springframework:spring-web:3.2.4.RELEASE</include>
                                         <include>org.springframework:spring-webmvc:3.2.4.RELEASE</include>
-                                        <include>org.springframework.security:spring-security-core:3.1.6.RELEASE</include>
-                                        <include>org.springframework.ws:spring-ws-core:2.1.4.RELEASE</include>
-                                        <include>org.springframework.ws:spring-ws-security:2.1.4.RELEASE</include>
-                                        <include>org.springframework.ws:spring-xml:2.1.4.RELEASE</include>
+                                        <include>org.springframework.security:spring-security-core:${spring.security.version}</include>
+                                        <include>org.springframework.ws:spring-ws-core:${spring.ws.version}</include>
+                                        <include>org.springframework.ws:spring-ws-security:${spring.ws.version}</include>
+                                        <include>org.springframework.ws:spring-xml:${spring.ws.version}</include>
                                         <include>wsdl4j:wsdl4j:1.6.1</include>
                                     </includes>
                                     <searchTransitive>true</searchTransitive>

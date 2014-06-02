@@ -196,8 +196,8 @@
                                         <include>org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1</include>
                                         <include>org.apache.httpcomponents:httpcore:4.3.2</include>
                                         <include>org.apache.santuario:xmlsec:2.0.0</include>
-                                        <include>org.apache.wss4j:wss4j-ws-security-common:2.0.0</include>
-                                        <include>org.apache.wss4j:wss4j-ws-security-dom:2.0.0</include>
+                                        <include>org.apache.wss4j:wss4j-ws-security-common:${wss4j.version}</include>
+                                        <include>org.apache.wss4j:wss4j-ws-security-dom:${wss4j.version}</include>
                                         <include>org.bouncycastle:bcprov-jdk15on:1.50</include>
                                         <include>org.codehaus.woodstox:stax2-api:3.1.4</include>
                                         <include>org.codehaus.woodstox:woodstox-core-asl:4.3.0</include>

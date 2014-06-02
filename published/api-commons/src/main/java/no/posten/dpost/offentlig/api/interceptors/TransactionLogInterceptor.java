@@ -53,10 +53,12 @@ import static no.posten.dpost.offentlig.api.config.TransaksjonsLogg.Type.USERMES
 import static no.posten.dpost.offentlig.api.exceptions.ebms.standard.processing.EmptyMessagePartitionChannelException.EMPTY_MPC_EBMS_CODE;
 
 public class TransactionLogInterceptor implements SoapEndpointInterceptor, ClientInterceptor {
-	public enum Phase {
+
+    public enum Phase {
 		OUTSIDE_WSSEC,
 		INSIDE_WSSEC
 	}
+
 	private final Jaxb2Marshaller jaxb2Marshaller;
 	private TransaksjonsLogg logg = new TransaksjonsLogg();
 	private final Phase phase;
@@ -105,8 +107,6 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 		setOrgNummer(messageContext);
 		handleIncoming(EbmsContext.from(messageContext), (SaajSoapMessage) messageContext.getRequest(), endpoint);
 	}
-
-
 
 	@Override
 	public boolean handleResponse(final MessageContext messageContext, final Object endpoint) throws Exception {
@@ -158,7 +158,6 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 		return true;
 	}
 
-
 	private void handleIncoming(final EbmsContext context, final SaajSoapMessage soapMessage, final String endpoint) {
 		decorate(context, soapMessage);
 
@@ -174,8 +173,6 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 			logg.innkommende(endpoint, getOrgNr(context), getType(signalMessage), getMpcFromSignal(context, signalMessage), getConversationId(context), getInstanceIdentifier(context), messageInfo.getMessageId(), messageInfo.getRefToMessageId());
 		}
 	}
-
-
 
 	private void handleOutgoing(final EbmsContext context, final SaajSoapMessage soapMessage, final String endpoint) {
 		decorate(context, soapMessage);
@@ -193,10 +190,6 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 		}
 	}
 
-
-
-
-
 	private void handleFault(final Retning retning, final EbmsContext context, final SaajSoapMessage soapMessage, final String endpoint) {
 		SoapBody soapBody = soapMessage.getSoapBody();
 		SoapFault soapFault = soapBody.getFault();
@@ -211,6 +204,7 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 			}
 		}
 	}
+
 	private String getMpcFromSignal(final EbmsContext context, final SignalMessage signalMessage) {
 		String mpc = null;
 		if (signalMessage.getPullRequest() != null) {

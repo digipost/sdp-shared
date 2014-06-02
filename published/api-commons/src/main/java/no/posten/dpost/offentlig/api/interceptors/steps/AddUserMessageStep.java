@@ -62,7 +62,6 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 	private final String refToMessageId;
 	private final String action;
 
-
 	public AddUserMessageStep(final Mpc mpc, final String messageId, final String refToMessageId, final StandardBusinessDocument doc, final EbmsAktoer tekniskAvsender, final EbmsAktoer mottaker, final Jaxb2Marshaller marshaller) {
 		this.mpc = mpc;
 		this.messageId = messageId;
@@ -103,7 +102,6 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 	}
 
 	private void addPartInfo(final SaajSoapMessage requestMessage, final UserMessage userMessage) {
-
 		List<PartInfo> parts = new ArrayList<PartInfo>();
 		parts.add(new PartInfo());
 		Iterator<Attachment> attachments = requestMessage.getAttachments();

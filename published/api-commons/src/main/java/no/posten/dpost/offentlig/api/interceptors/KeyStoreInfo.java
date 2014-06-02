@@ -31,7 +31,6 @@ public class KeyStoreInfo {
 		this.keystore = keystore;
 		this.alias = alias;
 		this.password = password;
-
 	}
 
 	public PrivateKey getPrivateKey() throws UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException {

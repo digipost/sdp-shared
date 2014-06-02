@@ -60,7 +60,6 @@ public class AttachmentCallbackHandler implements CallbackHandler {
 		}
 	}
 
-
 	protected static Attachment convert(final org.springframework.ws.mime.Attachment n) throws IOException {
 		Attachment e = new Attachment();
 		e.setId(n.getContentId().replaceFirst("<", "").replace(">", ""));

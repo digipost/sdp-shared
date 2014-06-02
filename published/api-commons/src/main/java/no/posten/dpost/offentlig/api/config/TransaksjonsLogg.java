@@ -65,8 +65,6 @@ public class TransaksjonsLogg {
 		log(endpoint, orgnr, retning, EBMSFEIL, mpc, conversationId, instanceIdentifier, messageInfo.getMessageId(), messageInfo.getRefToMessageId(), errorMsg);
 	}
 
-
-
 	public enum Retning {
 		INNKOMMENDE, UTGÅENDE
 	}

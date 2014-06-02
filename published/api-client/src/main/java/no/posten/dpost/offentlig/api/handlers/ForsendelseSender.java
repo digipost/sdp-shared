@@ -3,9 +3,9 @@ package no.posten.dpost.offentlig.api.handlers;
 import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
 import no.posten.dpost.offentlig.api.SdpMeldingSigner;
 import no.posten.dpost.offentlig.api.interceptors.steps.AddUserMessageStep;
+import no.posten.dpost.offentlig.api.representations.EbmsAktoer;
 import no.posten.dpost.offentlig.api.representations.EbmsForsendelse;
 import no.posten.dpost.offentlig.api.representations.Mpc;
-import no.posten.dpost.offentlig.api.representations.Organisasjonsnummer;
 import no.posten.dpost.offentlig.xml.Marshalling;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -41,20 +41,20 @@ public class ForsendelseSender extends EbmsContextAware implements WebServiceMes
 	private final StandardBusinessDocument doc;
 	private final EbmsForsendelse forsendelse;
 	private final Jaxb2Marshaller marshaller;
-	private final Organisasjonsnummer tekniskAvsender;
-	private final Organisasjonsnummer tekniskMottaker;
+	private final EbmsAktoer tekniskAvsender;
+	private final EbmsAktoer tekniskMottaker;
 	private final SDPDigitalPost digitalPost;
 	private File tempFile;
 	private final SdpMeldingSigner signer;
 
-	public ForsendelseSender(final SdpMeldingSigner signer, final Organisasjonsnummer tekniskAvsender, final Organisasjonsnummer tekniskMottaker, final StandardBusinessDocument doc, final EbmsForsendelse forsendelse, final Jaxb2Marshaller marshaller) {
+	public ForsendelseSender(final SdpMeldingSigner signer, final EbmsAktoer tekniskAvsender, final EbmsAktoer tekniskMottaker, final StandardBusinessDocument doc, final EbmsForsendelse forsendelse, final Jaxb2Marshaller marshaller) {
 		this.signer = signer;
 		this.tekniskAvsender = tekniskAvsender;
 		this.tekniskMottaker = tekniskMottaker;
 		this.doc = doc;
 		this.forsendelse = forsendelse;
 		this.marshaller = marshaller;
-		this.digitalPost = ((SDPDigitalPost) doc.getAny());
+		digitalPost = ((SDPDigitalPost) doc.getAny());
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package no.posten.dpost.offentlig.api.interceptors;
 
 import no.posten.dpost.offentlig.api.EbmsClientException;
+import no.posten.dpost.offentlig.api.representations.EbmsAktoer;
 import no.posten.dpost.offentlig.api.representations.EbmsContext;
 import no.posten.dpost.offentlig.api.representations.Organisasjonsnummer;
 import no.posten.dpost.offentlig.api.security.OrgnummerExtractor;
@@ -27,10 +28,10 @@ import static no.posten.dpost.offentlig.xml.Constants.MESSAGING_QNAME;
 public class EbmsClientInterceptor implements ClientInterceptor {
 
 	private final Jaxb2Marshaller jaxb2Marshaller;
-	private final Organisasjonsnummer tekniskMottaker;
+	private final EbmsAktoer tekniskMottaker;
 	private final OrgnummerExtractor extractor = new OrgnummerExtractor();
 
-	public EbmsClientInterceptor(final Jaxb2Marshaller jaxb2Marshaller, final Organisasjonsnummer tekniskMottaker) {
+	public EbmsClientInterceptor(final Jaxb2Marshaller jaxb2Marshaller, final EbmsAktoer tekniskMottaker) {
 		this.jaxb2Marshaller = jaxb2Marshaller;
 		this.tekniskMottaker = tekniskMottaker;
 	}

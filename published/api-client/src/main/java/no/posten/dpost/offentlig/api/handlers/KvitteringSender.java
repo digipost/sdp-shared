@@ -2,9 +2,9 @@ package no.posten.dpost.offentlig.api.handlers;
 
 import no.posten.dpost.offentlig.api.SdpMeldingSigner;
 import no.posten.dpost.offentlig.api.interceptors.steps.AddUserMessageStep;
+import no.posten.dpost.offentlig.api.representations.EbmsAktoer;
 import no.posten.dpost.offentlig.api.representations.EbmsApplikasjonsKvittering;
 import no.posten.dpost.offentlig.api.representations.Mpc;
-import no.posten.dpost.offentlig.api.representations.Organisasjonsnummer;
 import no.posten.dpost.offentlig.api.representations.SimpleStandardBusinessDocument;
 import no.posten.dpost.offentlig.xml.Marshalling;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -21,11 +21,11 @@ public class KvitteringSender extends EbmsContextAware implements WebServiceMess
 
 	private final EbmsApplikasjonsKvittering appKvittering;
 	private final Jaxb2Marshaller marshaller;
-	private final Organisasjonsnummer tekniskAvsender;
-	private final Organisasjonsnummer tekniskMottaker;
+	private final EbmsAktoer tekniskAvsender;
+	private final EbmsAktoer tekniskMottaker;
 	private final SdpMeldingSigner signer;
 
-	public KvitteringSender(final SdpMeldingSigner signer, final Organisasjonsnummer tekniskAvsender, final Organisasjonsnummer tekniskMottaker, final EbmsApplikasjonsKvittering appKvittering, final Jaxb2Marshaller marshaller) {
+	public KvitteringSender(final SdpMeldingSigner signer, final EbmsAktoer tekniskAvsender, final EbmsAktoer tekniskMottaker, final EbmsApplikasjonsKvittering appKvittering, final Jaxb2Marshaller marshaller) {
 		this.signer = signer;
 		this.tekniskAvsender = tekniskAvsender;
 		this.tekniskMottaker = tekniskMottaker;

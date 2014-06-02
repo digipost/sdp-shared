@@ -27,15 +27,15 @@ public class EbmsOutgoingMessage extends EbmsMessage {
 		}
 	}
 	public final Prioritet prioritet;
-	protected EbmsMottaker ebmsMottaker;
+	protected EbmsAktoer ebmsMottaker;
 
 
-	public EbmsOutgoingMessage(final EbmsMottaker ebmsMottaker, final String messageId, final String refToMessageId, final Prioritet prioritet) {
+	public EbmsOutgoingMessage(final EbmsAktoer ebmsMottaker, final String messageId, final String refToMessageId, final Prioritet prioritet) {
 		super(messageId, refToMessageId);
 		this.ebmsMottaker = ebmsMottaker;
 		this.prioritet = prioritet != null ? prioritet : Prioritet.NORMAL;
 	}
-	public EbmsMottaker getEbmsMottaker() {
+	public EbmsAktoer getEbmsMottaker() {
 		return ebmsMottaker;
 	}
 	public MessageInfo createMessageInfo() {

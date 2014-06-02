@@ -12,22 +12,24 @@ import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusine
 
 public class ApplikasjonsKvitteringBuilder {
 
-	private Organisasjonsnummer avsender;
-	private Organisasjonsnummer mottaker;
+	private EbmsAktoer avsender;
 	private String instanceIdentifier;
 	private String messageId;
 	private String conversationId;
+	private static EbmsAktoer ebmsMottaker;
+	private static Organisasjonsnummer sbdhMottaker;
 
 	private SDPMelding kvittering = new SDPKvittering()
 		.withLevering(new SDPLevering())
 		.withTidspunkt(DateTime.now());
 
-	public static ApplikasjonsKvitteringBuilder create(final Organisasjonsnummer avsender, final Organisasjonsnummer mottaker, final String messageId,
+	public static ApplikasjonsKvitteringBuilder create(final EbmsAktoer avsender, final EbmsAktoer ebmsMottaker, final Organisasjonsnummer sbdhMottaker, final String messageId,
 	                                                    final String conversationId, final String instanceIdentifier) {
+		ApplikasjonsKvitteringBuilder.ebmsMottaker = ebmsMottaker;
+		ApplikasjonsKvitteringBuilder.sbdhMottaker = sbdhMottaker;
 		ApplikasjonsKvitteringBuilder builder = new ApplikasjonsKvitteringBuilder();
 		builder.messageId = messageId;
 		builder.avsender = avsender;
-		builder.mottaker = mottaker;
 		builder.conversationId = conversationId;
 		builder.instanceIdentifier = instanceIdentifier;
 		return builder;
@@ -47,7 +49,7 @@ public class ApplikasjonsKvitteringBuilder {
 
 	public EbmsApplikasjonsKvittering build() {
 		final StandardBusinessDocument doc = StandardBusinessDocumentFactory
-				.create(avsender, mottaker, instanceIdentifier, conversationId, kvittering);
-		return EbmsApplikasjonsKvittering.create(avsender, mottaker, doc).withMessageId(messageId).build();
+				.create(avsender.orgnr, sbdhMottaker, instanceIdentifier, conversationId, kvittering);
+		return EbmsApplikasjonsKvittering.create(avsender, ebmsMottaker, doc).withMessageId(messageId).build();
 	}
 }

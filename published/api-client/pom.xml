@@ -132,10 +132,6 @@
 
     <build>
         <plugins>
-            <!--<plugin>
-				<groupId>pl.project13.maven</groupId>
-				<artifactId>git-commit-id-plugin</artifactId>
-			</plugin>-->
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>

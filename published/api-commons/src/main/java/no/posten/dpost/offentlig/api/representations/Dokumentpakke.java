@@ -15,24 +15,71 @@
  */
 package no.posten.dpost.offentlig.api.representations;
 
+
+import org.apache.commons.io.IOUtils;
+import org.bouncycastle.jcajce.provider.digest.SHA3.Digest256;
+
+import javax.activation.DataSource;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.security.DigestOutputStream;
+import java.security.MessageDigest;
 
-public class Dokumentpakke {
+public class Dokumentpakke implements DataSource {
 
-    private final InputStream asicStream;
+    private InputStream asicStream;
     private final byte[] asicBytes;
+	public static final String CONTENT_TYPE_KRYPTERT_DOKUMENTPAKKE = "application/cms";
 
-    public Dokumentpakke(InputStream asicStream) {
-        this.asicBytes = null;
+    public Dokumentpakke(final InputStream asicStream) {
         this.asicStream = asicStream;
+        asicBytes = null;
     }
 
-    public Dokumentpakke(byte[] asicBytes) {
+    public Dokumentpakke(final byte[] asicBytes) {
         this.asicBytes = asicBytes;
-        this.asicStream = null;
+        asicStream = new ByteArrayInputStream(asicBytes);
     }
 
-    public InputStream getAsicStream() {
-        return asicStream;
+    public byte[] getSHA256() throws IOException {
+		MessageDigest digest = new Digest256();
+		if (asicBytes != null) {
+			return digest.digest(asicBytes);
+		}
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DigestOutputStream digestStream = null;
+		try{
+            digestStream = new DigestOutputStream(baos, digest);
+            IOUtils.copy(asicStream, digestStream);
+		} finally {
+			IOUtils.closeQuietly(digestStream);
+        }
+		asicStream = new ByteArrayInputStream(baos.toByteArray());
+		return digest.digest();
     }
+
+
+	@Override
+	public String getContentType() {
+		return Dokumentpakke.CONTENT_TYPE_KRYPTERT_DOKUMENTPAKKE;
+	}
+
+	@Override
+	public InputStream getInputStream() throws IOException {
+		return asicStream;
+	}
+
+	@Override
+	public String getName() {
+		return "asic.cms";
+	}
+
+	@Override
+	public OutputStream getOutputStream() throws IOException {
+		throw new UnsupportedOperationException("Not supported by handler");
+	}
 }

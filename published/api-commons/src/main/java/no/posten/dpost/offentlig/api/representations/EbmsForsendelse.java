@@ -19,8 +19,6 @@ import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
 public class EbmsForsendelse extends EbmsOutgoingMessage {
-	public static final String CONTENT_TYPE_KRYPTERT_DOKUMENTPAKKE = "application/cms";
-
 	private final Dokumentpakke dokumentpakke;
 	private final EbmsAktoer ebmsMottaker;
 	private final EbmsAktoer ebmsAvsender;

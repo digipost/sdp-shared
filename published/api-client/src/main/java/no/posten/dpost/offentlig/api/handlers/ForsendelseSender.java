@@ -22,11 +22,6 @@ import no.posten.dpost.offentlig.api.representations.EbmsAktoer;
 import no.posten.dpost.offentlig.api.representations.EbmsForsendelse;
 import no.posten.dpost.offentlig.api.representations.Mpc;
 import no.posten.dpost.offentlig.xml.Marshalling;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.bouncycastle.jcajce.provider.digest.SHA3.Digest256;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
@@ -37,21 +32,12 @@ import org.w3.xmldsig.Reference;
 import org.w3c.dom.Document;
 
 import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
-import javax.activation.FileTypeMap;
 import javax.xml.transform.TransformerException;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.security.DigestOutputStream;
-import java.security.MessageDigest;
 import java.util.UUID;
 
 public class ForsendelseSender extends EbmsContextAware implements WebServiceMessageCallback {
-
-	private static final Logger LOG = LoggerFactory.getLogger(ForsendelseSender.class);
 
 	private final StandardBusinessDocument doc;
 	private final EbmsForsendelse forsendelse;
@@ -59,7 +45,6 @@ public class ForsendelseSender extends EbmsContextAware implements WebServiceMes
 	private final EbmsAktoer tekniskAvsender;
 	private final EbmsAktoer tekniskMottaker;
 	private final SDPDigitalPost digitalPost;
-	private File tempFile;
 	private final SdpMeldingSigner signer;
 
 	public ForsendelseSender(final SdpMeldingSigner signer, final EbmsAktoer tekniskAvsender, final EbmsAktoer tekniskMottaker, final StandardBusinessDocument doc, final EbmsForsendelse forsendelse, final Jaxb2Marshaller marshaller) {
@@ -87,51 +72,16 @@ public class ForsendelseSender extends EbmsContextAware implements WebServiceMes
 	}
 
 	private void attachFile(final SaajSoapMessage soapMessage) throws IOException {
-		tempFile = File.createTempFile("ebms", "outgoing");
-		LOG.debug("Kopierer vedlegg til tempfil: {}", tempFile.getAbsolutePath());
-		MessageDigest digest = new Digest256();
-        InputStream asicStream = forsendelse.getDokumentpakke().getAsicStream();
-        FileOutputStream out = new FileOutputStream(tempFile);
-		try{
-            DigestOutputStream digestStream = new DigestOutputStream(out, digest);
-            IOUtils.copy(asicStream, digestStream);
-		}
-        finally {
-            IOUtils.closeQuietly(asicStream);
-            IOUtils.closeQuietly(out);
-        }
-
 		if (digitalPost.getDokumentpakkefingeravtrykk() == null) {
-			byte[] hash = digest.digest();
+			byte[] hash = forsendelse.getDokumentpakke().getSHA256();
 			digitalPost.withDokumentpakkefingeravtrykk(new Reference()
 				.withDigestMethod(new DigestMethod().withAlgorithm(javax.xml.crypto.dsig.DigestMethod.SHA256))
 				.withDigestValue(org.bouncycastle.util.encoders.Base64.encode(hash))
 			);
 		}
-
-		FileDataSource fileDataSource = new FileDataSource(tempFile);
-		fileDataSource.setFileTypeMap(fileTypeMap);
-		DataHandler handler = new DataHandler(fileDataSource);
+		DataHandler handler = new DataHandler(forsendelse.getDokumentpakke());
 		soapMessage.addAttachment(generateContentId(), handler);
 	}
-
-	public void cleanTemp() {
-		if (tempFile != null) {
-			LOG.debug("Sletter tempfil: {}", tempFile.getAbsolutePath());
-			FileUtils.deleteQuietly(tempFile);
-		}
-	}
-
-	private static final FileTypeMap fileTypeMap = new FileTypeMap() {
-		@Override
-		public String getContentType(final File file) {
-			return EbmsForsendelse.CONTENT_TYPE_KRYPTERT_DOKUMENTPAKKE;
-		}
-		@Override
-		public String getContentType(final String path) {
-			return EbmsForsendelse.CONTENT_TYPE_KRYPTERT_DOKUMENTPAKKE;
-		}
-	};
 
 	private String generateContentId() {
 		return "<" + UUID.randomUUID().toString() + "@meldingsformidler.sdp.difi.no>";

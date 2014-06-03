@@ -81,11 +81,7 @@ public class MessageSender {
 	public TransportKvittering send(final EbmsForsendelse forsendelse) {
 		ForsendelseSender sender = new ForsendelseSender(signer, tekniskAvsender, tekniskMottaker, forsendelse.doc, forsendelse, marshaller);
 		LOG.info("Sender forsendelse til : {} ", uri);
-		try {
-			return meldingTemplate.sendAndReceive(uri, sender, new TransportKvitteringReceiver());
-		} finally {
-			sender.cleanTemp();
-		}
+		return meldingTemplate.sendAndReceive(uri, sender, new TransportKvitteringReceiver());
 	}
 
 	public EbmsApplikasjonsKvittering hentKvittering(final EbmsPullRequest pullRequest) {

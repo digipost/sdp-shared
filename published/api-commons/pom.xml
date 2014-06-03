@@ -74,7 +74,11 @@
             <artifactId>bcprov-jdk15on</artifactId>
         </dependency>
 
-
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>mailapi</artifactId>
@@ -180,6 +184,7 @@
                                         <include>aopalliance:aopalliance:1.0</include>
                                         <include>com.sun.xml.wsit:wsit-rt:1.1</include>
                                         <include>commons-codec:commons-codec:1.9</include>
+                                        <include>commons-io:commons-io:2.4</include>                                    
                                         <include>javax.xml.stream:stax-api:1.0-2</include>
                                         <include>jaxen:jaxen:1.1.6</include>
                                         <include>joda-time:joda-time:2.3</include>

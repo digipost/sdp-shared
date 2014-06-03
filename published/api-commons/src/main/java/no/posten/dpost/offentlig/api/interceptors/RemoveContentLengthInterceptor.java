@@ -24,8 +24,9 @@ import org.apache.http.protocol.HttpContext;
 
 import java.io.IOException;
 
-/* Denne klassen er en hyllest til Frode Nerbråten */
-
+/**
+ * See https://jira.springsource.org/browse/SWS-563?focusedCommentId=67885&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-67885
+ */
 public class RemoveContentLengthInterceptor implements HttpRequestInterceptor {
 
 	@Override

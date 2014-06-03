@@ -30,5 +30,4 @@ public class UnmarshallingTest {
 		Marshalling.createUnManaged().unmarshal(new StreamSource(xml));
 	}
 
-
 }

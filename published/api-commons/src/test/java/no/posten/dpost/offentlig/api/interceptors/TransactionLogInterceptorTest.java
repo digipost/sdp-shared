@@ -64,24 +64,26 @@ public class TransactionLogInterceptorTest {
 
 	// Ref Ebms spec 4.3
 	public static final String DEFAULT_CONVERSATION_ID = "1";
+
 	@Mock
 	private TransaksjonsLogg loggMock;
 
-	private final TransactionLogInterceptor interceptorInner = TransactionLogInterceptor.createServerInterceptor(Marshalling.createUnManaged(), TransactionLogInterceptor.Phase.INSIDE_WSSEC);
-	private final TransactionLogInterceptor interceptorOuter = TransactionLogInterceptor.createServerInterceptor(Marshalling.createUnManaged(), TransactionLogInterceptor.Phase.OUTSIDE_WSSEC);
+    @Mock
+    SimpleStandardBusinessDocument doc;
+
+    private final TransactionLogInterceptor interceptorInner = TransactionLogInterceptor.createServerInterceptor(Marshalling.createUnManaged(), TransactionLogInterceptor.Phase.INSIDE_WSSEC);
+    private final TransactionLogInterceptor interceptorOuter = TransactionLogInterceptor.createServerInterceptor(Marshalling.createUnManaged(), TransactionLogInterceptor.Phase.OUTSIDE_WSSEC);
+
 	private final TransactionLogInterceptor interceptorClient = TransactionLogInterceptor.createClientInterceptor(Marshalling.createUnManaged());
 
 	private MessageContext messageContext;
 
 	private EbmsContext ebmsContext;
 
-	private final String instanceIdentifier = "IID-" + UUID.randomUUID().toString();
+    private final String instanceIdentifier = "IID-" + UUID.randomUUID().toString();
 	private final String conversationId = "KID-" + UUID.randomUUID().toString();
-	@Mock
-	SimpleStandardBusinessDocument doc;
 
 	private SoapHeaderElement requestMessagingHeader;
-
 	private SoapHeaderElement responseMessagingHeader;
 
 	private Jaxb2Marshaller marshaller;
@@ -90,9 +92,10 @@ public class TransactionLogInterceptorTest {
 	private final String messageIdUt = "UT-" + UUID.randomUUID().toString();
 
 	private final Mpc mpc = new Mpc(Prioritet.NORMAL, null);
-	private final String endpoint = "mf-api";
 
+	private final String endpoint = "mf-api";
 	MethodEndpoint mpEndpoint = new MethodEndpoint(endpoint, endpoint.getClass().getMethods()[0]);
+
 	private final Organisasjonsnummer sender = new Organisasjonsnummer("123456789");
 	private final Organisasjonsnummer receiver = new Organisasjonsnummer("123454321");
 	private final Organisasjonsnummer ebmsSender = new Organisasjonsnummer("987654321");

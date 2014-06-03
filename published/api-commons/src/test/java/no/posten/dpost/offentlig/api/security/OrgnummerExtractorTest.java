@@ -56,7 +56,7 @@ public class OrgnummerExtractorTest {
 			+ "-----END CERTIFICATE-----";
 
 	@Test
-	public void rallRallRall() throws Exception {
+	public void skal_hente_ut_riktig_org_nummer_fra_X509sertifikat() throws Exception {
 		Security.addProvider(new BouncyCastleProvider());
 		CertificateFactory cf = CertificateFactory.getInstance("X.509", BouncyCastleProvider.PROVIDER_NAME);
 		X509Certificate certificate = (X509Certificate)cf.generateCertificate(new ByteArrayInputStream(PROD_VIRKSOMHETSSERTIFIKAT.getBytes()));

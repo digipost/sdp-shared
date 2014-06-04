@@ -1,3 +1,18 @@
+/**
+ * Copyright (C) Posten Norge AS
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package no.posten.dpost.offentlig.api;
 
 import no.posten.dpost.offentlig.api.handlers.ApplikasjonsKvitteringReceiver;
@@ -14,10 +29,10 @@ import no.posten.dpost.offentlig.api.interceptors.KeyStoreInfo;
 import no.posten.dpost.offentlig.api.interceptors.RemoveContentLengthInterceptor;
 import no.posten.dpost.offentlig.api.interceptors.TransactionLogInterceptor;
 import no.posten.dpost.offentlig.api.interceptors.WsSecurityInterceptor;
+import no.posten.dpost.offentlig.api.representations.EbmsAktoer;
 import no.posten.dpost.offentlig.api.representations.EbmsApplikasjonsKvittering;
 import no.posten.dpost.offentlig.api.representations.EbmsForsendelse;
 import no.posten.dpost.offentlig.api.representations.EbmsPullRequest;
-import no.posten.dpost.offentlig.api.representations.Organisasjonsnummer;
 import no.posten.dpost.offentlig.api.representations.TransportKvittering;
 import no.posten.dpost.offentlig.xml.Marshalling;
 import org.apache.http.HttpHost;
@@ -37,6 +52,7 @@ import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,9 +65,9 @@ public class MessageSender {
 
 	protected WebServiceTemplate meldingTemplate;
 	private final Jaxb2Marshaller marshaller;
-	private Organisasjonsnummer tekniskAvsender;
+	private EbmsAktoer tekniskAvsender;
 	private final String uri;
-	private Organisasjonsnummer tekniskMottaker;
+	private EbmsAktoer tekniskMottaker;
 	private SdpMeldingSigner signer;
 
 	protected MessageSender(final String uri, final Jaxb2Marshaller marshaller) {
@@ -65,11 +81,7 @@ public class MessageSender {
 	public TransportKvittering send(final EbmsForsendelse forsendelse) {
 		ForsendelseSender sender = new ForsendelseSender(signer, tekniskAvsender, tekniskMottaker, forsendelse.doc, forsendelse, marshaller);
 		LOG.info("Sender forsendelse til : {} ", uri);
-		try {
-			return meldingTemplate.sendAndReceive(uri, sender, new TransportKvitteringReceiver());
-		} finally {
-			sender.cleanTemp();
-		}
+		return meldingTemplate.sendAndReceive(uri, sender, new TransportKvitteringReceiver());
 	}
 
 	public EbmsApplikasjonsKvittering hentKvittering(final EbmsPullRequest pullRequest) {
@@ -95,13 +107,13 @@ public class MessageSender {
 		meldingTemplate.sendAndReceive(uri, new KvitteringSender(signer, tekniskAvsender, tekniskMottaker, appKvittering, marshaller), new EmptyReceiver());
 	}
 
-	public static Builder create(final String uri, final KeyStoreInfo keystoreInfo, final Organisasjonsnummer tekniskAvsenderId, final Organisasjonsnummer tekniskMottaker) {
+	public static Builder create(final String uri, final KeyStoreInfo keystoreInfo, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker) {
 		WsSecurityInterceptor wssecMelding = new WsSecurityInterceptor(keystoreInfo, null);
 		wssecMelding.afterPropertiesSet();
 		return create(uri, keystoreInfo, wssecMelding, tekniskAvsenderId, tekniskMottaker);
 	}
 
-	public static Builder create(final String uri, final KeyStoreInfo keystoreInfo, final WsSecurityInterceptor wsSecInterceptor, final Organisasjonsnummer tekniskAvsenderId, final Organisasjonsnummer tekniskMottaker) {
+	public static Builder create(final String uri, final KeyStoreInfo keystoreInfo, final WsSecurityInterceptor wsSecInterceptor, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker) {
 		return new Builder(uri, tekniskAvsenderId, tekniskMottaker, wsSecInterceptor, keystoreInfo);
 	}
 
@@ -111,7 +123,7 @@ public class MessageSender {
 		return messageProperties;
 	}
 
-	private static WebServiceTemplate createTemplate(final SaajSoapMessageFactory factory, final Jaxb2Marshaller marshaller, final Organisasjonsnummer remoteParty) {
+	private static WebServiceTemplate createTemplate(final SaajSoapMessageFactory factory, final Jaxb2Marshaller marshaller, final EbmsAktoer remoteParty) {
 		EbmsContextAwareWebServiceTemplate template = new EbmsContextAwareWebServiceTemplate(factory, remoteParty);
 		template.setMarshaller(marshaller);
 		template.setUnmarshaller(marshaller);
@@ -125,8 +137,8 @@ public class MessageSender {
 		public static final int DEFAULT_MAX_PER_ROUTE = 10;
 
 		private final String endpointUri;
-		private final Organisasjonsnummer tekniskAvsenderId;
-		private final Organisasjonsnummer tekniskMottaker;
+		private final EbmsAktoer tekniskAvsenderId;
+		private final EbmsAktoer tekniskMottaker;
 		private final WsSecurityInterceptor wssecMelding;
 		private final KeyStoreInfo keystoreInfo;
 		private Jaxb2Marshaller marshaller;
@@ -140,7 +152,7 @@ public class MessageSender {
 		private int connectTimeout = 10000;
 		private int connectionRequestTimeout = 10000;
 
-		private Builder(final String endpointUri, final Organisasjonsnummer tekniskAvsenderId, final Organisasjonsnummer tekniskMottaker,
+		private Builder(final String endpointUri, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker,
 		                final WsSecurityInterceptor wssecMelding, final KeyStoreInfo keystoreInfo) {
 			this.endpointUri = endpointUri;
 			this.tekniskAvsenderId = tekniskAvsenderId;

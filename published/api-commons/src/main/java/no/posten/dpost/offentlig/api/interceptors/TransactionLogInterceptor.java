@@ -1,3 +1,18 @@
+/**
+ * Copyright (C) Posten Norge AS
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package no.posten.dpost.offentlig.api.interceptors;
 
 import no.posten.dpost.offentlig.api.config.TransaksjonsLogg;
@@ -38,10 +53,12 @@ import static no.posten.dpost.offentlig.api.config.TransaksjonsLogg.Type.USERMES
 import static no.posten.dpost.offentlig.api.exceptions.ebms.standard.processing.EmptyMessagePartitionChannelException.EMPTY_MPC_EBMS_CODE;
 
 public class TransactionLogInterceptor implements SoapEndpointInterceptor, ClientInterceptor {
-	public enum Phase {
+
+    public enum Phase {
 		OUTSIDE_WSSEC,
 		INSIDE_WSSEC
 	}
+
 	private final Jaxb2Marshaller jaxb2Marshaller;
 	private TransaksjonsLogg logg = new TransaksjonsLogg();
 	private final Phase phase;
@@ -63,7 +80,6 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 	public static TransactionLogInterceptor createServerInterceptor(final Jaxb2Marshaller jaxb2Marshaller, final Phase phase) {
 		return new TransactionLogInterceptor(jaxb2Marshaller, phase);
 	}
-
 
 	/*
 	 * SoapEndpointInterceptor
@@ -91,8 +107,6 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 		setOrgNummer(messageContext);
 		handleIncoming(EbmsContext.from(messageContext), (SaajSoapMessage) messageContext.getRequest(), endpoint);
 	}
-
-
 
 	@Override
 	public boolean handleResponse(final MessageContext messageContext, final Object endpoint) throws Exception {
@@ -144,7 +158,6 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 		return true;
 	}
 
-
 	private void handleIncoming(final EbmsContext context, final SaajSoapMessage soapMessage, final String endpoint) {
 		decorate(context, soapMessage);
 
@@ -160,8 +173,6 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 			logg.innkommende(endpoint, getOrgNr(context), getType(signalMessage), getMpcFromSignal(context, signalMessage), getConversationId(context), getInstanceIdentifier(context), messageInfo.getMessageId(), messageInfo.getRefToMessageId());
 		}
 	}
-
-
 
 	private void handleOutgoing(final EbmsContext context, final SaajSoapMessage soapMessage, final String endpoint) {
 		decorate(context, soapMessage);
@@ -179,10 +190,6 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 		}
 	}
 
-
-
-
-
 	private void handleFault(final Retning retning, final EbmsContext context, final SaajSoapMessage soapMessage, final String endpoint) {
 		SoapBody soapBody = soapMessage.getSoapBody();
 		SoapFault soapFault = soapBody.getFault();
@@ -197,6 +204,7 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 			}
 		}
 	}
+
 	private String getMpcFromSignal(final EbmsContext context, final SignalMessage signalMessage) {
 		String mpc = null;
 		if (signalMessage.getPullRequest() != null) {

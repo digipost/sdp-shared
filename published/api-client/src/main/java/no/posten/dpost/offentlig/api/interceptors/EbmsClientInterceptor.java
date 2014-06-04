@@ -1,6 +1,22 @@
+/**
+ * Copyright (C) Posten Norge AS
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package no.posten.dpost.offentlig.api.interceptors;
 
 import no.posten.dpost.offentlig.api.EbmsClientException;
+import no.posten.dpost.offentlig.api.representations.EbmsAktoer;
 import no.posten.dpost.offentlig.api.representations.EbmsContext;
 import no.posten.dpost.offentlig.api.representations.Organisasjonsnummer;
 import no.posten.dpost.offentlig.api.security.OrgnummerExtractor;
@@ -27,10 +43,10 @@ import static no.posten.dpost.offentlig.xml.Constants.MESSAGING_QNAME;
 public class EbmsClientInterceptor implements ClientInterceptor {
 
 	private final Jaxb2Marshaller jaxb2Marshaller;
-	private final Organisasjonsnummer tekniskMottaker;
+	private final EbmsAktoer tekniskMottaker;
 	private final OrgnummerExtractor extractor = new OrgnummerExtractor();
 
-	public EbmsClientInterceptor(final Jaxb2Marshaller jaxb2Marshaller, final Organisasjonsnummer tekniskMottaker) {
+	public EbmsClientInterceptor(final Jaxb2Marshaller jaxb2Marshaller, final EbmsAktoer tekniskMottaker) {
 		this.jaxb2Marshaller = jaxb2Marshaller;
 		this.tekniskMottaker = tekniskMottaker;
 	}
@@ -73,8 +89,8 @@ public class EbmsClientInterceptor implements ClientInterceptor {
 		if (messageContext.containsProperty(Wss4jInterceptor.INCOMING_CERTIFICATE)) {
 			X509Certificate cert = (X509Certificate) messageContext.getProperty(Wss4jInterceptor.INCOMING_CERTIFICATE);
 			Organisasjonsnummer responder = extractor.from(cert);
-			if (!responder.equals(responder)) {
-				throw new RuntimeException("Unexpected signer in incoming message:" + responder + " - "+ cert.getSubjectDN().getName());
+			if (!tekniskMottaker.orgnr.equals(responder)) {
+				throw new RuntimeException(String.format("Unexpected signer in incoming message. Expected: [%s] Extracted: [%s] from %s", tekniskMottaker.orgnr, responder, cert.getSubjectDN().getName()));
 			}
 		}
 		return true;

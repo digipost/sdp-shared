@@ -1,0 +1,14 @@
+Digipost XSD
+
+Copyright 2014 Posten Norge AS. All Rights Reserved.
+
+This product includes software developed by Posten Norge AS. - https://www.posten.no/
+Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0.html
+
+
+This software includes third party software subject to the following licenses:
+
+  JAXB2 Basics - Runtime under BSD-Style License
+  Joda-Time under Apache 2
+  offentlig-xsd under The Apache Software License, Version 2.0
+

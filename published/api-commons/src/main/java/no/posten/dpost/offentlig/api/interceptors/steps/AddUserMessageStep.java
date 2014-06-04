@@ -1,10 +1,25 @@
+/**
+ * Copyright (C) Posten Norge AS
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package no.posten.dpost.offentlig.api.interceptors.steps;
 
 import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
+import no.posten.dpost.offentlig.api.representations.EbmsAktoer;
 import no.posten.dpost.offentlig.api.representations.EbmsContext;
 import no.posten.dpost.offentlig.api.representations.EbmsProcessingStep;
 import no.posten.dpost.offentlig.api.representations.Mpc;
-import no.posten.dpost.offentlig.api.representations.Organisasjonsnummer;
 import no.posten.dpost.offentlig.xml.Marshalling;
 import org.joda.time.DateTime;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.AgreementRef;
@@ -34,22 +49,20 @@ import static no.posten.dpost.offentlig.api.PMode.ACTION_FORMIDLE;
 import static no.posten.dpost.offentlig.api.PMode.ACTION_KVITTERING;
 import static no.posten.dpost.offentlig.api.PMode.AGREEMENT_REF;
 import static no.posten.dpost.offentlig.api.PMode.PARTY_ID_TYPE;
-import static no.posten.dpost.offentlig.api.PMode.ROLE_AVSENDER;
-import static no.posten.dpost.offentlig.api.PMode.ROLE_MELDINGSFORMIDLER;
 import static no.posten.dpost.offentlig.api.PMode.SERVICE;
 import static no.posten.dpost.offentlig.xml.Constants.USER_MESSAGE_QNAME;
 
 public class AddUserMessageStep implements EbmsProcessingStep {
 
-	private final Organisasjonsnummer tekniskAvsender;
-	private final Organisasjonsnummer mottaker;
+	private final EbmsAktoer tekniskAvsender;
+	private final EbmsAktoer mottaker;
 	private final Jaxb2Marshaller marshaller;
 	private final Mpc mpc;
 	private final String messageId;
 	private final String refToMessageId;
 	private final String action;
 
-	public AddUserMessageStep(final Mpc mpc, final String messageId, final String refToMessageId, final StandardBusinessDocument doc, final Organisasjonsnummer tekniskAvsender, final Organisasjonsnummer mottaker, final Jaxb2Marshaller marshaller) {
+	public AddUserMessageStep(final Mpc mpc, final String messageId, final String refToMessageId, final StandardBusinessDocument doc, final EbmsAktoer tekniskAvsender, final EbmsAktoer mottaker, final Jaxb2Marshaller marshaller) {
 		this.mpc = mpc;
 		this.messageId = messageId;
 		this.refToMessageId = refToMessageId;
@@ -66,10 +79,10 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 	@Override
 	public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SaajSoapMessage soapMessage) {
 		PartyInfo partyInfo = new PartyInfo(
-				new From().withRole(ROLE_AVSENDER)
-						.withPartyIds(new PartyId(tekniskAvsender.asIso6523(), PARTY_ID_TYPE)),
-				new To().withRole(ROLE_MELDINGSFORMIDLER)
-						.withPartyIds(new PartyId(mottaker.asIso6523(), PARTY_ID_TYPE))
+				new From().withRole(tekniskAvsender.rolle.urn)
+						.withPartyIds(new PartyId(tekniskAvsender.orgnr.asIso6523(), PARTY_ID_TYPE)),
+				new To().withRole(mottaker.rolle.urn)
+						.withPartyIds(new PartyId(mottaker.orgnr.asIso6523(), PARTY_ID_TYPE))
 		);
 		UserMessage userMessage = new UserMessage()
 				.withMpc(mpc.toString())
@@ -89,7 +102,6 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 	}
 
 	private void addPartInfo(final SaajSoapMessage requestMessage, final UserMessage userMessage) {
-
 		List<PartInfo> parts = new ArrayList<PartInfo>();
 		parts.add(new PartInfo());
 		Iterator<Attachment> attachments = requestMessage.getAttachments();

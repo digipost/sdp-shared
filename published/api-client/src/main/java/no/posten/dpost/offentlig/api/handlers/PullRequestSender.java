@@ -1,3 +1,18 @@
+/**
+ * Copyright (C) Posten Norge AS
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package no.posten.dpost.offentlig.api.handlers;
 
 import no.posten.dpost.offentlig.api.interceptors.steps.AddReferencesStep;
@@ -21,14 +36,17 @@ import javax.xml.transform.TransformerException;
 import java.io.IOException;
 
 public class PullRequestSender extends EbmsContextAware implements WebServiceMessageCallback {
+
 	private final EbmsPullRequest pullRequest;
 	private final Jaxb2Marshaller marshaller;
 	private final EbmsApplikasjonsKvittering tidligereKvitteringSomSkalBekreftes;
-	public PullRequestSender(final EbmsPullRequest pullRequest, final Jaxb2Marshaller marshaller, final EbmsApplikasjonsKvittering tidligereKvitteringSomSkalBekreftes) {
+
+    public PullRequestSender(final EbmsPullRequest pullRequest, final Jaxb2Marshaller marshaller, final EbmsApplikasjonsKvittering tidligereKvitteringSomSkalBekreftes) {
 		this.pullRequest = pullRequest;
 		this.marshaller = marshaller;
 		this.tidligereKvitteringSomSkalBekreftes = tidligereKvitteringSomSkalBekreftes;
 	}
+
 	@Override
 	public void doWithMessage(final WebServiceMessage message) throws IOException, TransformerException {
 		if (tidligereKvitteringSomSkalBekreftes != null) {
@@ -50,4 +68,5 @@ public class PullRequestSender extends EbmsContextAware implements WebServiceMes
 
 		});
 	}
+
 }

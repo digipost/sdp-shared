@@ -1,3 +1,18 @@
+/**
+ * Copyright (C) Posten Norge AS
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package no.posten.dpost.offentlig.api.security;
 
 import no.posten.dpost.offentlig.api.representations.Organisasjonsnummer;
@@ -41,7 +56,7 @@ public class OrgnummerExtractorTest {
 			+ "-----END CERTIFICATE-----";
 
 	@Test
-	public void rallRallRall() throws Exception {
+	public void skal_hente_ut_riktig_org_nummer_fra_X509sertifikat() throws Exception {
 		Security.addProvider(new BouncyCastleProvider());
 		CertificateFactory cf = CertificateFactory.getInstance("X.509", BouncyCastleProvider.PROVIDER_NAME);
 		X509Certificate certificate = (X509Certificate)cf.generateCertificate(new ByteArrayInputStream(PROD_VIRKSOMHETSSERTIFIKAT.getBytes()));

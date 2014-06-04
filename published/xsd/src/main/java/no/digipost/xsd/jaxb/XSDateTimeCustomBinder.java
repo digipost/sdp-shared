@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.posten.dpost.offentlig.types;
+package no.digipost.xsd.jaxb;
 
-import no.difi.begrep.sdp.schema_v10.SDPRepetisjoner;
+import org.joda.time.DateTime;
 
-public interface Varsel {
+import javax.xml.bind.DatatypeConverter;
 
-	TekstMedSpraak getVarslingsTekst();
+public class XSDateTimeCustomBinder {
 
-    SDPRepetisjoner getRepetisjoner();
+	public static DateTime parseDateTime(final String s) {
+		return new DateTime(DatatypeConverter.parseDate(s).getTime());
+	}
+
+	public static String printDateTime(final DateTime dt) {
+		return dt == null ? null : dt.toString();
+	}
 
 }

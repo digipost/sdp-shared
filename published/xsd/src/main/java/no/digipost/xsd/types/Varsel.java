@@ -13,22 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.posten.dpost.offentlig.jaxb;
+package no.digipost.xsd.types;
 
-import org.joda.time.LocalDate;
+import no.difi.begrep.sdp.schema_v10.SDPRepetisjoner;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+public interface Varsel {
 
-public class XSDateAdapter extends XmlAdapter<String, LocalDate> {
+	TekstMedSpraak getVarslingsTekst();
 
-	@Override
-	public LocalDate unmarshal(final String value) {
-		return (XSDateCustomBinder.parseDate(value));
-	}
-
-	@Override
-	public String marshal(final LocalDate value) {
-		return (XSDateCustomBinder.printDate(value));
-	}
+    SDPRepetisjoner getRepetisjoner();
 
 }

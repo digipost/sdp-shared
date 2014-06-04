@@ -13,20 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.posten.dpost.offentlig.jaxb;
+package no.digipost.xsd.jaxb;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
-import javax.xml.bind.DatatypeConverter;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-public class XSDateTimeCustomBinder {
+public class XSDateAdapter extends XmlAdapter<String, LocalDate> {
 
-	public static DateTime parseDateTime(final String s) {
-		return new DateTime(DatatypeConverter.parseDate(s).getTime());
+	@Override
+	public LocalDate unmarshal(final String value) {
+		return (XSDateCustomBinder.parseDate(value));
 	}
 
-	public static String printDateTime(final DateTime dt) {
-		return dt == null ? null : dt.toString();
+	@Override
+	public String marshal(final LocalDate value) {
+		return (XSDateCustomBinder.printDate(value));
 	}
 
 }

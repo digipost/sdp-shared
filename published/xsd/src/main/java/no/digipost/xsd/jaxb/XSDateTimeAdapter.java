@@ -13,12 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.posten.dpost.offentlig.types;
+package no.digipost.xsd.jaxb;
 
-public interface TekstMedSpraak {
+import org.joda.time.DateTime;
 
-	String getValue();
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-	String getLang();
+public class XSDateTimeAdapter extends XmlAdapter<String, DateTime> {
+
+	@Override
+	public DateTime unmarshal(final String value) {
+		return (XSDateTimeCustomBinder.parseDateTime(value));
+	}
+
+	@Override
+	public String marshal(final DateTime value) {
+		return (XSDateTimeCustomBinder.printDateTime(value));
+	}
 
 }

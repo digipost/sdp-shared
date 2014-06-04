@@ -9,9 +9,9 @@
 
 	<globalBindings>
 		<xjc:simple/>
-		<xjc:javaType adapter="no.posten.dpost.offentlig.jaxb.XSDateTimeAdapter" name="org.joda.time.DateTime"
+		<xjc:javaType adapter="no.digipost.xsd.jaxb.XSDateTimeAdapter" name="org.joda.time.DateTime"
 		              xmlType="xs:dateTime"/>
-		<xjc:javaType adapter="no.posten.dpost.offentlig.jaxb.XSDateAdapter" name="org.joda.time.LocalDate"
+		<xjc:javaType adapter="no.digipost.xsd.jaxb.XSDateAdapter" name="org.joda.time.LocalDate"
 		              xmlType="xs:date"/>
 	</globalBindings>
 
@@ -37,16 +37,16 @@
 
 	<bindings schemaLocation="../difi-begrepskatalog/xsd/sdp-melding.xsd">
 		<bindings node="//xs:complexType[@name='EpostVarselTekst']">
-			<inheritance:implements>no.posten.dpost.offentlig.types.TekstMedSpraak</inheritance:implements>
+			<inheritance:implements>no.digipost.xsd.types.TekstMedSpraak</inheritance:implements>
 		</bindings>
 		<bindings node="//xs:complexType[@name='SmsVarselTekst']">
-			<inheritance:implements>no.posten.dpost.offentlig.types.TekstMedSpraak</inheritance:implements>
+			<inheritance:implements>no.digipost.xsd.types.TekstMedSpraak</inheritance:implements>
 		</bindings>
 		<bindings node="//xs:complexType[@name='EpostVarsel']">
-			<inheritance:implements>no.posten.dpost.offentlig.types.Varsel</inheritance:implements>
+			<inheritance:implements>no.digipost.xsd.types.Varsel</inheritance:implements>
 		</bindings>
 		<bindings node="//xs:complexType[@name='SmsVarsel']">
-			<inheritance:implements>no.posten.dpost.offentlig.types.Varsel</inheritance:implements>
+			<inheritance:implements>no.digipost.xsd.types.Varsel</inheritance:implements>
 		</bindings>
 		<bindings node="//xs:simpleType[@name='Sikkerhetsnivaa']/xs:restriction" multiple="true">
 			<bindings node="xs:enumeration[@value='3']">
@@ -60,13 +60,13 @@
 
 	<bindings schemaLocation="../difi-begrepskatalog/xsd/sdp-felles.xsd">
 		<bindings node="//xs:complexType[@name='Person']">
-			<inheritance:implements>no.posten.dpost.offentlig.types.HarSikkerDigitalPostAdresse</inheritance:implements>
+			<inheritance:implements>no.digipost.xsd.types.HarSikkerDigitalPostAdresse</inheritance:implements>
 		</bindings>
 		<bindings node="//xs:complexType[@name='Virksomhet']">
-			<inheritance:implements>no.posten.dpost.offentlig.types.HarSikkerDigitalPostAdresse</inheritance:implements>
+			<inheritance:implements>no.digipost.xsd.types.HarSikkerDigitalPostAdresse</inheritance:implements>
 		</bindings>
 		<bindings node="//xs:complexType[@name='Tittel']">
-			<inheritance:implements>no.posten.dpost.offentlig.types.TekstMedSpraak</inheritance:implements>
+			<inheritance:implements>no.digipost.xsd.types.TekstMedSpraak</inheritance:implements>
 		</bindings>
 	</bindings>
 

@@ -8,7 +8,7 @@
     <description>${project.artifactId}</description>
 
     <parent>
-        <groupId>no.posten.dpost.offentlig</groupId>
+        <groupId>no.digipost</groupId>
         <artifactId>offentlig-published</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
@@ -16,7 +16,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>no.posten.dpost.offentlig</groupId>
+            <groupId>no.digipost</groupId>
             <artifactId>offentlig-xsd</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -188,7 +188,7 @@
                                         <include>javax.xml.stream:stax-api:1.0-2</include>
                                         <include>jaxen:jaxen:1.1.6</include>
                                         <include>joda-time:joda-time:2.3</include>
-                                        <include>no.posten.dpost.offentlig:offentlig-xsd:0.1-SNAPSHOT</include>
+                                        <include>no.digipost:offentlig-xsd:0.1-SNAPSHOT</include>
                                         <include>org.apache.commons:commons-lang3:3.3.1</include>
                                         <include>org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1</include>
                                         <include>org.apache.httpcomponents:httpcore:4.3.2</include>

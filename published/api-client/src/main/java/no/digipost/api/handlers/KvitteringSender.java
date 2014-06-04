@@ -16,11 +16,11 @@
 package no.digipost.api.handlers;
 
 import no.digipost.api.SdpMeldingSigner;
-import no.digipost.api.api.interceptors.steps.AddUserMessageStep;
-import no.digipost.api.api.representations.EbmsAktoer;
-import no.digipost.api.api.representations.EbmsApplikasjonsKvittering;
-import no.digipost.api.api.representations.Mpc;
-import no.digipost.api.api.representations.SimpleStandardBusinessDocument;
+import no.digipost.api.interceptors.steps.AddUserMessageStep;
+import no.digipost.api.representations.EbmsAktoer;
+import no.digipost.api.representations.EbmsApplikasjonsKvittering;
+import no.digipost.api.representations.Mpc;
+import no.digipost.api.representations.SimpleStandardBusinessDocument;
 import no.digipost.api.xml.Marshalling;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;

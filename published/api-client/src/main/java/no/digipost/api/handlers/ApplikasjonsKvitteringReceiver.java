@@ -15,8 +15,8 @@
  */
 package no.digipost.api.handlers;
 
-import no.digipost.api.api.representations.EbmsAktoer;
-import no.digipost.api.api.representations.EbmsApplikasjonsKvittering;
+import no.digipost.api.representations.EbmsAktoer;
+import no.digipost.api.representations.EbmsApplikasjonsKvittering;
 import no.digipost.api.xml.Marshalling;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PartyInfo;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;

@@ -15,9 +15,9 @@
  */
 package no.digipost.api.handlers;
 
-import no.digipost.api.api.interceptors.steps.AddReferencesStep;
+import no.digipost.api.interceptors.steps.AddReferencesStep;
 
-import no.digipost.api.api.representations.EbmsApplikasjonsKvittering;
+import no.digipost.api.representations.EbmsApplikasjonsKvittering;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;

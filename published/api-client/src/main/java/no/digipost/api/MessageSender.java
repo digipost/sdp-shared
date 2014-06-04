@@ -25,15 +25,15 @@ import no.digipost.api.handlers.PullRequestSender;
 import no.digipost.api.handlers.TransportKvitteringReceiver;
 import no.digipost.api.interceptors.EbmsClientInterceptor;
 import no.digipost.api.interceptors.EbmsReferenceValidatorInterceptor;
-import no.digipost.api.api.interceptors.KeyStoreInfo;
-import no.digipost.api.api.interceptors.RemoveContentLengthInterceptor;
-import no.digipost.api.api.interceptors.TransactionLogInterceptor;
-import no.digipost.api.api.interceptors.WsSecurityInterceptor;
-import no.digipost.api.api.representations.EbmsAktoer;
-import no.digipost.api.api.representations.EbmsApplikasjonsKvittering;
-import no.digipost.api.api.representations.EbmsForsendelse;
-import no.digipost.api.api.representations.EbmsPullRequest;
-import no.digipost.api.api.representations.TransportKvittering;
+import no.digipost.api.interceptors.KeyStoreInfo;
+import no.digipost.api.interceptors.RemoveContentLengthInterceptor;
+import no.digipost.api.interceptors.TransactionLogInterceptor;
+import no.digipost.api.interceptors.WsSecurityInterceptor;
+import no.digipost.api.representations.EbmsAktoer;
+import no.digipost.api.representations.EbmsApplikasjonsKvittering;
+import no.digipost.api.representations.EbmsForsendelse;
+import no.digipost.api.representations.EbmsPullRequest;
+import no.digipost.api.representations.TransportKvittering;
 import no.digipost.api.xml.Marshalling;
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
@@ -57,7 +57,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static no.digipost.api.api.exceptions.ebms.standard.processing.EmptyMessagePartitionChannelException.EMPTY_MPC_EBMS_CODE;
+import static no.digipost.api.ebms.standard.processing.EmptyMessagePartitionChannelException.EMPTY_MPC_EBMS_CODE;
 
 public class MessageSender {
 

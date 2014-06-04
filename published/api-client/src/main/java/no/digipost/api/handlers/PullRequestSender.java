@@ -15,12 +15,12 @@
  */
 package no.digipost.api.handlers;
 
-import no.digipost.api.api.interceptors.steps.AddReferencesStep;
-import no.digipost.api.api.representations.EbmsApplikasjonsKvittering;
-import no.digipost.api.api.representations.EbmsContext;
-import no.digipost.api.api.representations.EbmsProcessingStep;
-import no.digipost.api.api.representations.EbmsPullRequest;
-import no.digipost.api.api.representations.Mpc;
+import no.digipost.api.interceptors.steps.AddReferencesStep;
+import no.digipost.api.representations.EbmsApplikasjonsKvittering;
+import no.digipost.api.representations.EbmsContext;
+import no.digipost.api.representations.EbmsProcessingStep;
+import no.digipost.api.representations.EbmsPullRequest;
+import no.digipost.api.representations.Mpc;
 import no.digipost.api.xml.Constants;
 import no.digipost.api.xml.Marshalling;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PullRequest;

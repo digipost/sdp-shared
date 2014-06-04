@@ -15,7 +15,7 @@
  */
 package no.digipost.api;
 
-import no.digipost.api.api.interceptors.KeyStoreInfo;
+import no.digipost.api.interceptors.KeyStoreInfo;
 import no.digipost.api.xml.Constants;
 import no.digipost.api.xml.Marshalling;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;

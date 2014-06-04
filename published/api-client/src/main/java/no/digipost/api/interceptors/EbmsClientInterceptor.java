@@ -16,11 +16,10 @@
 package no.digipost.api.interceptors;
 
 import no.digipost.api.EbmsClientException;
-import no.digipost.api.api.interceptors.Wss4jInterceptor;
-import no.digipost.api.api.representations.EbmsAktoer;
-import no.digipost.api.api.representations.EbmsContext;
-import no.digipost.api.api.representations.Organisasjonsnummer;
-import no.digipost.api.api.security.OrgnummerExtractor;
+import no.digipost.api.representations.EbmsAktoer;
+import no.digipost.api.representations.EbmsContext;
+import no.digipost.api.representations.Organisasjonsnummer;
+import no.digipost.api.security.OrgnummerExtractor;
 import no.digipost.api.xml.Marshalling;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;

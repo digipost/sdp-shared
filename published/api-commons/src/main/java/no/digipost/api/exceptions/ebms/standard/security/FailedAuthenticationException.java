@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.digipost.api.ebms.standard.security;
+package no.digipost.api.exceptions.ebms.standard.security;
 
-import no.digipost.api.ebms.AbstractEbmsException;
-import no.digipost.api.ebms.Category;
-
-import static no.digipost.api.ebms.Origin.security;
-import static no.digipost.api.ebms.Severity.failure;
+import no.digipost.api.exceptions.ebms.AbstractEbmsException;
+import no.digipost.api.exceptions.ebms.Category;
+import no.digipost.api.exceptions.ebms.Origin;
+import no.digipost.api.exceptions.ebms.Severity;
 
 public class FailedAuthenticationException extends AbstractEbmsException {
 
@@ -39,7 +38,7 @@ public class FailedAuthenticationException extends AbstractEbmsException {
 	}
 
 	public FailedAuthenticationException(final String refToMessageInError, final Throwable cause, final String description) {
-		super(security, "0101", failure, Category.Processing, description, refToMessageInError, cause);
+		super(Origin.security, "0101", Severity.failure, Category.Processing, description, refToMessageInError, cause);
 	}
 
 	@Override

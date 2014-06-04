@@ -57,7 +57,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static no.digipost.api.ebms.standard.processing.EmptyMessagePartitionChannelException.EMPTY_MPC_EBMS_CODE;
+import static no.digipost.api.exceptions.ebms.standard.processing.EmptyMessagePartitionChannelException.EMPTY_MPC_EBMS_CODE;
 
 public class MessageSender {
 

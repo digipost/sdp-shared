@@ -31,7 +31,7 @@ import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapHeaderElement;
-import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import org.springframework.ws.soap.SoapMessage;
 
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class EbmsClientInterceptor implements ClientInterceptor {
 
 	@Override
 	public boolean handleRequest(final MessageContext messageContext) throws WebServiceClientException {
-		SaajSoapMessage requestMessage = (SaajSoapMessage) messageContext.getRequest();
+		SoapMessage requestMessage = (SoapMessage) messageContext.getRequest();
 		SoapHeader soapHeader = requestMessage.getSoapHeader();
 		EbmsContext context = EbmsContext.from(messageContext);
 		SoapHeaderElement ebmsHeader = soapHeader.addHeaderElement(MESSAGING_QNAME);
@@ -64,7 +64,7 @@ public class EbmsClientInterceptor implements ClientInterceptor {
 
 	@Override
 	public boolean handleResponse(final MessageContext messageContext) throws WebServiceClientException {
-		SaajSoapMessage saajSoapMessage = (SaajSoapMessage)messageContext.getResponse();
+		SoapMessage saajSoapMessage = (SoapMessage) messageContext.getResponse();
 		Iterator<SoapHeaderElement> soapHeaderElementIterator = saajSoapMessage.getSoapHeader().examineHeaderElements(MESSAGING_QNAME);
 		if (!soapHeaderElementIterator.hasNext()) {
 			throw new RuntimeException("Missing required EBMS SOAP header");
@@ -73,7 +73,7 @@ public class EbmsClientInterceptor implements ClientInterceptor {
 		Messaging messaging = Marshalling.unmarshal(jaxb2Marshaller, ebmsMessaging, Messaging.class);
 		EbmsContext context = EbmsContext.from(messageContext);
 		List<Error> errors = new ArrayList<Error>();
-		for (SignalMessage message: messaging.getSignalMessages()) {
+		for (SignalMessage message : messaging.getSignalMessages()) {
 			errors.addAll(message.getErrors());
 			if (message.getReceipt() != null) {
 				context.receipts.add(message);

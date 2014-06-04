@@ -22,7 +22,7 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.WebServiceClientException;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.context.MessageContext;
-import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import org.springframework.ws.soap.SoapMessage;
 import org.w3.xmldsig.Reference;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class EbmsReferenceValidatorInterceptor implements ClientInterceptor {
 	@Override
 	public boolean handleRequest(final MessageContext messageContext) throws WebServiceClientException {
 		EbmsContext context = EbmsContext.from(messageContext);
-		List<Reference> references = extractor.getReferences((SaajSoapMessage)messageContext.getRequest());
+		List<Reference> references = extractor.getReferences((SoapMessage) messageContext.getRequest());
 		if (references.size() > 0) {
 			context.addResponseStep(new ReferenceValidatorStep(jaxb2Marshaller, references));
 			context.incomingReferences = references;

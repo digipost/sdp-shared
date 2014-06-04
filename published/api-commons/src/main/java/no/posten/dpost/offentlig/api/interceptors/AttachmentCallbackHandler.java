@@ -18,34 +18,33 @@ package no.posten.dpost.offentlig.api.interceptors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wss4j.common.ext.Attachment;
 import org.apache.wss4j.common.ext.AttachmentRequestCallback;
-import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import org.springframework.ws.soap.SoapMessage;
 
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class AttachmentCallbackHandler implements CallbackHandler {
-	private final SaajSoapMessage message;
+	private final SoapMessage message;
 
-	public AttachmentCallbackHandler(final SaajSoapMessage message) {
+	public AttachmentCallbackHandler(final SoapMessage message) {
 		this.message = message;
 
 	}
 
 	@Override
 	public void handle(final Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-		for(Callback c : callbacks) {
+		for (Callback c : callbacks) {
 			if (c instanceof AttachmentRequestCallback) {
-				AttachmentRequestCallback arg = (AttachmentRequestCallback)c;
+				AttachmentRequestCallback arg = (AttachmentRequestCallback) c;
 				List<Attachment> attList = new ArrayList<Attachment>();
 				if (StringUtils.isBlank(arg.getAttachmentId()) || arg.getAttachmentId().equals("Attachments")) {
 					Iterator<org.springframework.ws.mime.Attachment> attz = message.getAttachments();
-					while(attz.hasNext()) {
+					while (attz.hasNext()) {
 						attList.add(convert(attz.next()));
 					}
 				} else {

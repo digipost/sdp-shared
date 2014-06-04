@@ -25,7 +25,7 @@ import no.posten.dpost.offentlig.xml.Marshalling;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
-import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import org.springframework.ws.soap.SoapMessage;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3.xmldsig.DigestMethod;
 import org.w3.xmldsig.Reference;
@@ -33,7 +33,6 @@ import org.w3c.dom.Document;
 
 import javax.activation.DataHandler;
 import javax.xml.transform.TransformerException;
-
 import java.io.IOException;
 import java.util.UUID;
 
@@ -59,7 +58,7 @@ public class ForsendelseSender extends EbmsContextAware implements WebServiceMes
 
 	@Override
 	public void doWithMessage(final WebServiceMessage message) throws IOException, TransformerException {
-		SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+		SoapMessage soapMessage = (SoapMessage) message;
 		attachFile(soapMessage);
 		Mpc mpc = new Mpc(forsendelse.prioritet, null);
 		if (digitalPost.getSignature() == null) {
@@ -71,12 +70,12 @@ public class ForsendelseSender extends EbmsContextAware implements WebServiceMes
 		ebmsContext.addRequestStep(new AddUserMessageStep(mpc, forsendelse.messageId, null, doc, tekniskAvsender, tekniskMottaker, marshaller));
 	}
 
-	private void attachFile(final SaajSoapMessage soapMessage) throws IOException {
+	private void attachFile(final SoapMessage soapMessage) throws IOException {
 		if (digitalPost.getDokumentpakkefingeravtrykk() == null) {
 			byte[] hash = forsendelse.getDokumentpakke().getSHA256();
 			digitalPost.withDokumentpakkefingeravtrykk(new Reference()
-				.withDigestMethod(new DigestMethod().withAlgorithm(javax.xml.crypto.dsig.DigestMethod.SHA256))
-				.withDigestValue(org.bouncycastle.util.encoders.Base64.encode(hash))
+							.withDigestMethod(new DigestMethod().withAlgorithm(javax.xml.crypto.dsig.DigestMethod.SHA256))
+							.withDigestValue(org.bouncycastle.util.encoders.Base64.encode(hash))
 			);
 		}
 		DataHandler handler = new DataHandler(forsendelse.getDokumentpakke());

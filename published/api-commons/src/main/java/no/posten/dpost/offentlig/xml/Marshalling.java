@@ -22,7 +22,7 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.soap.SoapBody;
 import org.springframework.ws.soap.SoapHeaderElement;
-import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import org.springframework.ws.soap.SoapMessage;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -35,7 +35,6 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.Result;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
-
 import java.io.InputStream;
 import java.util.Iterator;
 
@@ -105,13 +104,14 @@ public class Marshalling {
 			throw new RuntimeException(e);
 		}
 	}
+
 	public static void marshal(final Document doc, final Result payloadResult) {
 		DOMSource source = new DOMSource(doc);
 		TransformerUtil.transform(source, payloadResult);
 	}
 
 	public static Messaging getMessaging(final Jaxb2Marshaller jaxb2Marshaller, final WebServiceMessage message) {
-		Iterator<SoapHeaderElement> soapHeaderElementIterator = ((SaajSoapMessage) message).getSoapHeader().examineHeaderElements(MESSAGING_QNAME);
+		Iterator<SoapHeaderElement> soapHeaderElementIterator = ((SoapMessage) message).getSoapHeader().examineHeaderElements(MESSAGING_QNAME);
 		if (!soapHeaderElementIterator.hasNext()) {
 			throw new RuntimeException("Missing required EBMS SOAP header");
 		}

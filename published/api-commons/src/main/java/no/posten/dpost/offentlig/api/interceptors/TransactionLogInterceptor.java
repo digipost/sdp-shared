@@ -38,7 +38,7 @@ import org.springframework.ws.server.endpoint.MethodEndpoint;
 import org.springframework.ws.soap.SoapBody;
 import org.springframework.ws.soap.SoapFault;
 import org.springframework.ws.soap.SoapHeaderElement;
-import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import org.springframework.ws.soap.SoapMessage;
 import org.springframework.ws.soap.server.SoapEndpointInterceptor;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
@@ -54,7 +54,7 @@ import static no.posten.dpost.offentlig.api.exceptions.ebms.standard.processing.
 
 public class TransactionLogInterceptor implements SoapEndpointInterceptor, ClientInterceptor {
 
-    public enum Phase {
+	public enum Phase {
 		OUTSIDE_WSSEC,
 		INSIDE_WSSEC
 	}
@@ -77,6 +77,7 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 	public static TransactionLogInterceptor createClientInterceptor(final Jaxb2Marshaller jaxb2Marshaller) {
 		return new TransactionLogInterceptor(jaxb2Marshaller, null);
 	}
+
 	public static TransactionLogInterceptor createServerInterceptor(final Jaxb2Marshaller jaxb2Marshaller, final Phase phase) {
 		return new TransactionLogInterceptor(jaxb2Marshaller, phase);
 	}
@@ -100,12 +101,12 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 	}
 
 	private String getName(final Object endpoint) {
-		return ((MethodEndpoint)endpoint).getBean().toString();
+		return ((MethodEndpoint) endpoint).getBean().toString();
 	}
 
 	private void loggIncomingEndpointRequest(final MessageContext messageContext, final String endpoint) {
 		setOrgNummer(messageContext);
-		handleIncoming(EbmsContext.from(messageContext), (SaajSoapMessage) messageContext.getRequest(), endpoint);
+		handleIncoming(EbmsContext.from(messageContext), (SoapMessage) messageContext.getRequest(), endpoint);
 	}
 
 	@Override
@@ -114,7 +115,7 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 			if (messageContext.getProperty(KEY) == null) {
 				loggIncomingEndpointRequest(messageContext, getName(endpoint));
 			}
-			handleOutgoing(EbmsContext.from(messageContext), (SaajSoapMessage) messageContext.getResponse(), getName(endpoint));
+			handleOutgoing(EbmsContext.from(messageContext), (SoapMessage) messageContext.getResponse(), getName(endpoint));
 		}
 		return true;
 	}
@@ -126,7 +127,7 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 				loggIncomingEndpointRequest(messageContext, getName(endpoint));
 			}
 			handleFault(TransaksjonsLogg.Retning.UTGÅENDE, EbmsContext.from(messageContext),
-					(SaajSoapMessage) messageContext.getResponse(),
+					(SoapMessage) messageContext.getResponse(),
 					getName(endpoint));
 		}
 		return true;
@@ -142,23 +143,23 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 
 	@Override
 	public boolean handleRequest(final MessageContext messageContext) throws WebServiceClientException {
-		handleOutgoing(EbmsContext.from(messageContext), (SaajSoapMessage) messageContext.getRequest(), "sender");
+		handleOutgoing(EbmsContext.from(messageContext), (SoapMessage) messageContext.getRequest(), "sender");
 		return true;
 	}
 
 	@Override
 	public boolean handleResponse(final MessageContext messageContext) throws WebServiceClientException {
-		handleIncoming(EbmsContext.from(messageContext), (SaajSoapMessage) messageContext.getResponse(), "sender");
+		handleIncoming(EbmsContext.from(messageContext), (SoapMessage) messageContext.getResponse(), "sender");
 		return true;
 	}
 
 	@Override
 	public boolean handleFault(final MessageContext messageContext) throws WebServiceClientException {
-		handleFault(TransaksjonsLogg.Retning.INNKOMMENDE, EbmsContext.from(messageContext), (SaajSoapMessage) messageContext.getResponse(), "sender");
+		handleFault(TransaksjonsLogg.Retning.INNKOMMENDE, EbmsContext.from(messageContext), (SoapMessage) messageContext.getResponse(), "sender");
 		return true;
 	}
 
-	private void handleIncoming(final EbmsContext context, final SaajSoapMessage soapMessage, final String endpoint) {
+	private void handleIncoming(final EbmsContext context, final SoapMessage soapMessage, final String endpoint) {
 		decorate(context, soapMessage);
 
 		Messaging msg = Marshalling.getMessaging(jaxb2Marshaller, soapMessage);
@@ -174,7 +175,7 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 		}
 	}
 
-	private void handleOutgoing(final EbmsContext context, final SaajSoapMessage soapMessage, final String endpoint) {
+	private void handleOutgoing(final EbmsContext context, final SoapMessage soapMessage, final String endpoint) {
 		decorate(context, soapMessage);
 
 		Messaging msg = Marshalling.getMessaging(jaxb2Marshaller, soapMessage);
@@ -190,7 +191,7 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 		}
 	}
 
-	private void handleFault(final Retning retning, final EbmsContext context, final SaajSoapMessage soapMessage, final String endpoint) {
+	private void handleFault(final Retning retning, final EbmsContext context, final SoapMessage soapMessage, final String endpoint) {
 		SoapBody soapBody = soapMessage.getSoapBody();
 		SoapFault soapFault = soapBody.getFault();
 		logg.soapfault(endpoint, getOrgNr(context), retning, soapFault);
@@ -268,7 +269,7 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 		}
 	}
 
-	private void decorate(final EbmsContext context, final SaajSoapMessage soapMessage) {
+	private void decorate(final EbmsContext context, final SoapMessage soapMessage) {
 		if (context.sbd == null && soapMessage.getSoapBody().getPayloadSource() != null) {
 			StandardBusinessDocument sbd = Marshalling.unmarshal(jaxb2Marshaller, soapMessage.getSoapBody(), StandardBusinessDocument.class);
 			context.sbd = new SimpleStandardBusinessDocument(sbd);

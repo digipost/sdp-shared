@@ -26,7 +26,7 @@ import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Receipt;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.SignalMessage;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.soap.SoapHeaderElement;
-import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import org.springframework.ws.soap.SoapMessage;
 import org.w3.xmldsig.Reference;
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class AddReferencesStep implements EbmsProcessingStep {
 	}
 
 	@Override
-	public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SaajSoapMessage soapMessage) {
+	public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SoapMessage soapMessage) {
 		List<MessagePartNRInformation> nrInfos = new ArrayList<MessagePartNRInformation>();
 		for (Reference ref : references) {
 			nrInfos.add(new MessagePartNRInformation().withReference(ref));

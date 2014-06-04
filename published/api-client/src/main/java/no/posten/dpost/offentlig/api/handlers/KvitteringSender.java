@@ -25,11 +25,10 @@ import no.posten.dpost.offentlig.xml.Marshalling;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
-import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import org.springframework.ws.soap.SoapMessage;
 import org.w3c.dom.Document;
 
 import javax.xml.transform.TransformerException;
-
 import java.io.IOException;
 
 public class KvitteringSender extends EbmsContextAware implements WebServiceMessageCallback {
@@ -50,7 +49,7 @@ public class KvitteringSender extends EbmsContextAware implements WebServiceMess
 
 	@Override
 	public void doWithMessage(final WebServiceMessage message) throws IOException, TransformerException {
-		SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+		SoapMessage soapMessage = (SoapMessage) message;
 		SimpleStandardBusinessDocument simple = new SimpleStandardBusinessDocument(appKvittering.sbd);
 		if (simple.getMelding().getSignature() == null) {
 			Document signedDoc = signer.sign(appKvittering.sbd);

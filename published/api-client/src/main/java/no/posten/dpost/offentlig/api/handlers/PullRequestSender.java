@@ -29,10 +29,9 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.soap.SoapHeaderElement;
-import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import org.springframework.ws.soap.SoapMessage;
 
 import javax.xml.transform.TransformerException;
-
 import java.io.IOException;
 
 public class PullRequestSender extends EbmsContextAware implements WebServiceMessageCallback {
@@ -41,7 +40,7 @@ public class PullRequestSender extends EbmsContextAware implements WebServiceMes
 	private final Jaxb2Marshaller marshaller;
 	private final EbmsApplikasjonsKvittering tidligereKvitteringSomSkalBekreftes;
 
-    public PullRequestSender(final EbmsPullRequest pullRequest, final Jaxb2Marshaller marshaller, final EbmsApplikasjonsKvittering tidligereKvitteringSomSkalBekreftes) {
+	public PullRequestSender(final EbmsPullRequest pullRequest, final Jaxb2Marshaller marshaller, final EbmsApplikasjonsKvittering tidligereKvitteringSomSkalBekreftes) {
 		this.pullRequest = pullRequest;
 		this.marshaller = marshaller;
 		this.tidligereKvitteringSomSkalBekreftes = tidligereKvitteringSomSkalBekreftes;
@@ -56,13 +55,13 @@ public class PullRequestSender extends EbmsContextAware implements WebServiceMes
 		ebmsContext.addRequestStep(new EbmsProcessingStep() {
 
 			@Override
-			public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SaajSoapMessage soapMessage) {
+			public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SoapMessage soapMessage) {
 				Mpc mpc = new Mpc(pullRequest.prioritet, null);
 				SignalMessage signalMessage = new SignalMessage()
-					.withMessageInfo(pullRequest.createMessageInfo())
-					.withPullRequest(new PullRequest()
-						.withMpc(mpc.toString())
-					);
+						.withMessageInfo(pullRequest.createMessageInfo())
+						.withPullRequest(new PullRequest()
+										.withMpc(mpc.toString())
+						);
 				Marshalling.marshal(marshaller, ebmsMessaging, Constants.SIGNAL_MESSAGE_QNAME, signalMessage);
 			}
 

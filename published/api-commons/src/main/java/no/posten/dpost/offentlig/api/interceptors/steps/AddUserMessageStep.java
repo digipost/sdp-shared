@@ -38,7 +38,7 @@ import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.UserMessage;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.mime.Attachment;
 import org.springframework.ws.soap.SoapHeaderElement;
-import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import org.springframework.ws.soap.SoapMessage;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
 import java.util.ArrayList;
@@ -77,7 +77,7 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 	}
 
 	@Override
-	public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SaajSoapMessage soapMessage) {
+	public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SoapMessage soapMessage) {
 		PartyInfo partyInfo = new PartyInfo(
 				new From().withRole(tekniskAvsender.rolle.urn)
 						.withPartyIds(new PartyId(tekniskAvsender.orgnr.asIso6523(), PARTY_ID_TYPE)),
@@ -101,7 +101,7 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 				.withService(new Service().withValue(SERVICE));
 	}
 
-	private void addPartInfo(final SaajSoapMessage requestMessage, final UserMessage userMessage) {
+	private void addPartInfo(final SoapMessage requestMessage, final UserMessage userMessage) {
 		List<PartInfo> parts = new ArrayList<PartInfo>();
 		parts.add(new PartInfo());
 		Iterator<Attachment> attachments = requestMessage.getAttachments();
@@ -115,10 +115,10 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 
 	private PartInfo createPartInfo(final String href, final String mimeType, final String content) {
 		return new PartInfo()
-			.withHref(href)
-			.withPartProperties(new PartProperties()
-				.withProperties(new Property(mimeType, "MimeType"), new Property(content, "Content"))
-			);
+				.withHref(href)
+				.withPartProperties(new PartProperties()
+								.withProperties(new Property(mimeType, "MimeType"), new Property(content, "Content"))
+				);
 
 	}
 

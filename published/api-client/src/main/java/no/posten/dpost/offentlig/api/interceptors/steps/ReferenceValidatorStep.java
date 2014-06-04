@@ -23,7 +23,7 @@ import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.ws.soap.SoapHeaderElement;
-import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import org.springframework.ws.soap.SoapMessage;
 import org.w3.xmldsig.Reference;
 import org.w3.xmldsig.Transform;
 
@@ -35,16 +35,16 @@ public class ReferenceValidatorStep implements EbmsProcessingStep {
 	private final List<Reference> references;
 	private final Jaxb2Marshaller jaxb2Marshaller;
 
-    public ReferenceValidatorStep(final Jaxb2Marshaller jaxb2Marshaller, final List<Reference> references) {
+	public ReferenceValidatorStep(final Jaxb2Marshaller jaxb2Marshaller, final List<Reference> references) {
 		this.jaxb2Marshaller = jaxb2Marshaller;
 		this.references = references;
 	}
 
 	@Override
-	public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SaajSoapMessage soapMessage) {
+	public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SoapMessage soapMessage) {
 		Messaging messaging = (Messaging) jaxb2Marshaller.unmarshal(ebmsMessaging.getSource());
 		NonRepudiationInformation nonrep = (NonRepudiationInformation) messaging.getSignalMessages().get(0).getReceipt().getAnies().get(0);
-		for(Reference reference : references) {
+		for (Reference reference : references) {
 			boolean found = false;
 			for (MessagePartNRInformation npr : nonrep.getMessagePartNRInformations()) {
 				Reference ref = npr.getReference();
@@ -74,7 +74,7 @@ public class ReferenceValidatorStep implements EbmsProcessingStep {
 		boolean expHasTransforms = expected.getTransforms() != null;
 		boolean actHasTransforms = actual.getTransforms() != null;
 		if (expHasTransforms != actHasTransforms) {
-			throw new RuntimeException("Expected to " + (expHasTransforms ? "" : "not " ) + "have transforms");
+			throw new RuntimeException("Expected to " + (expHasTransforms ? "" : "not ") + "have transforms");
 		}
 		if (!expHasTransforms) {
 			return;

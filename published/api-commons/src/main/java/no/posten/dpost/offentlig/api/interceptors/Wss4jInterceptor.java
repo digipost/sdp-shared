@@ -40,7 +40,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.server.EndpointExceptionResolver;
 import org.springframework.ws.soap.SoapMessage;
-import org.springframework.ws.soap.saaj.SaajSoapMessage;
 import org.springframework.ws.soap.security.AbstractWsSecurityInterceptor;
 import org.springframework.ws.soap.security.WsSecurityFaultException;
 import org.springframework.ws.soap.security.WsSecuritySecurementException;
@@ -238,7 +237,7 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
             logger.debug("Securing message [" + soapMessage + "] with actions [" + securementActions + "]");
         }
         RequestData requestData = initializeRequestData(messageContext);
-        requestData.setAttachmentCallbackHandler(new AttachmentCallbackHandler((SaajSoapMessage)soapMessage));
+        requestData.setAttachmentCallbackHandler(new AttachmentCallbackHandler(soapMessage));
 
         Document envelopeAsDocument = soapMessage.getDocument();
         try {
@@ -300,7 +299,7 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 
         try {
             RequestData requestData = new RequestData();
-            requestData.setAttachmentCallbackHandler(new AttachmentCallbackHandler((SaajSoapMessage)soapMessage));
+            requestData.setAttachmentCallbackHandler(new AttachmentCallbackHandler(soapMessage));
             requestData.setWssConfig(wssConfig);
             requestData.setSigVerCrypto(validationSignatureCrypto);
             requestData.setCallbackHandler(validationCallbackHandler);

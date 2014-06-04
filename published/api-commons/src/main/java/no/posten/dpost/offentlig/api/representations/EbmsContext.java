@@ -20,7 +20,7 @@ import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.SignalMessage;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.UserMessage;
 import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.soap.SoapHeaderElement;
-import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import org.springframework.ws.soap.SoapMessage;
 import org.w3.xmldsig.Reference;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class EbmsContext {
 	public Exception referencesValidationException;
 
 	public static EbmsContext from(final MessageContext messageContext) {
-		EbmsContext context = (EbmsContext)messageContext.getProperty(PROPERTY_NAME);
+		EbmsContext context = (EbmsContext) messageContext.getProperty(PROPERTY_NAME);
 		if (context == null) {
 			context = new EbmsContext();
 			messageContext.setProperty(PROPERTY_NAME, context);
@@ -62,13 +62,14 @@ public class EbmsContext {
 		requestProcessingSteps.add(strategy);
 	}
 
-	public void processResponse(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SaajSoapMessage soapMessage) {
+	public void processResponse(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SoapMessage soapMessage) {
 		for (EbmsProcessingStep r : responseProcessingSteps) {
 			r.apply(ebmsContext, ebmsMessaging, soapMessage);
 		}
 
-    }
-	public void processRequest(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SaajSoapMessage soapMessage) {
+	}
+
+	public void processRequest(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SoapMessage soapMessage) {
 		for (EbmsProcessingStep r : requestProcessingSteps) {
 			r.apply(ebmsContext, ebmsMessaging, soapMessage);
 		}

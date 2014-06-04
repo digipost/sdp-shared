@@ -15,7 +15,7 @@
  */
 package no.digipost.api.handlers;
 
-import no.posten.dpost.offentlig.api.representations.EbmsContext;
+import no.digipost.api.api.representations.EbmsContext;
 
 public abstract class EbmsContextAware {
 	protected EbmsContext ebmsContext;

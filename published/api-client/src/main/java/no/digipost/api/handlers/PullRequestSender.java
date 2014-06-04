@@ -15,14 +15,14 @@
  */
 package no.digipost.api.handlers;
 
-import no.posten.dpost.offentlig.api.interceptors.steps.AddReferencesStep;
-import no.posten.dpost.offentlig.api.representations.EbmsApplikasjonsKvittering;
-import no.posten.dpost.offentlig.api.representations.EbmsContext;
-import no.posten.dpost.offentlig.api.representations.EbmsProcessingStep;
-import no.posten.dpost.offentlig.api.representations.EbmsPullRequest;
-import no.posten.dpost.offentlig.api.representations.Mpc;
-import no.posten.dpost.offentlig.xml.Constants;
-import no.posten.dpost.offentlig.xml.Marshalling;
+import no.digipost.api.api.interceptors.steps.AddReferencesStep;
+import no.digipost.api.api.representations.EbmsApplikasjonsKvittering;
+import no.digipost.api.api.representations.EbmsContext;
+import no.digipost.api.api.representations.EbmsProcessingStep;
+import no.digipost.api.api.representations.EbmsPullRequest;
+import no.digipost.api.api.representations.Mpc;
+import no.digipost.api.xml.Constants;
+import no.digipost.api.xml.Marshalling;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PullRequest;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.SignalMessage;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;

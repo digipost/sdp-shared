@@ -17,11 +17,11 @@ package no.digipost.api.handlers;
 
 import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
 import no.digipost.api.SdpMeldingSigner;
-import no.posten.dpost.offentlig.api.interceptors.steps.AddUserMessageStep;
-import no.posten.dpost.offentlig.api.representations.EbmsAktoer;
-import no.posten.dpost.offentlig.api.representations.EbmsForsendelse;
-import no.posten.dpost.offentlig.api.representations.Mpc;
-import no.posten.dpost.offentlig.xml.Marshalling;
+import no.digipost.api.api.interceptors.steps.AddUserMessageStep;
+import no.digipost.api.api.representations.EbmsAktoer;
+import no.digipost.api.api.representations.EbmsForsendelse;
+import no.digipost.api.api.representations.Mpc;
+import no.digipost.api.xml.Marshalling;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;

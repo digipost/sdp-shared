@@ -16,12 +16,12 @@
 package no.digipost.api.interceptors;
 
 import no.digipost.api.EbmsClientException;
-import no.posten.dpost.offentlig.api.interceptors.Wss4jInterceptor;
-import no.posten.dpost.offentlig.api.representations.EbmsAktoer;
-import no.posten.dpost.offentlig.api.representations.EbmsContext;
-import no.posten.dpost.offentlig.api.representations.Organisasjonsnummer;
-import no.posten.dpost.offentlig.api.security.OrgnummerExtractor;
-import no.posten.dpost.offentlig.xml.Marshalling;
+import no.digipost.api.api.interceptors.Wss4jInterceptor;
+import no.digipost.api.api.representations.EbmsAktoer;
+import no.digipost.api.api.representations.EbmsContext;
+import no.digipost.api.api.representations.Organisasjonsnummer;
+import no.digipost.api.api.security.OrgnummerExtractor;
+import no.digipost.api.xml.Marshalling;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.SignalMessage;
@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static no.posten.dpost.offentlig.xml.Constants.MESSAGING_QNAME;
+import static no.digipost.api.xml.Constants.MESSAGING_QNAME;
 
 public class EbmsClientInterceptor implements ClientInterceptor {
 

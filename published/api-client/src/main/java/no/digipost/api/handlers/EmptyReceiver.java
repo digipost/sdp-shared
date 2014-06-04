@@ -15,7 +15,7 @@
  */
 package no.digipost.api.handlers;
 
-import no.posten.dpost.offentlig.api.representations.TransportKvittering;
+import no.digipost.api.api.representations.TransportKvittering;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageExtractor;
 

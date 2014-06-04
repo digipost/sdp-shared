@@ -15,9 +15,9 @@
  */
 package no.digipost.api;
 
-import no.posten.dpost.offentlig.api.interceptors.KeyStoreInfo;
-import no.posten.dpost.offentlig.xml.Constants;
-import no.posten.dpost.offentlig.xml.Marshalling;
+import no.digipost.api.api.interceptors.KeyStoreInfo;
+import no.digipost.api.xml.Constants;
+import no.digipost.api.xml.Marshalling;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3c.dom.Document;

@@ -15,9 +15,9 @@
  */
 package no.digipost.api.interceptors;
 
-import no.posten.dpost.offentlig.api.EbmsReferenceExtractor;
+import no.digipost.api.api.EbmsReferenceExtractor;
 import no.digipost.api.interceptors.steps.ReferenceValidatorStep;
-import no.posten.dpost.offentlig.api.representations.EbmsContext;
+import no.digipost.api.api.representations.EbmsContext;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.WebServiceClientException;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;

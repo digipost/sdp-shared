@@ -15,8 +15,8 @@
  */
 package no.digipost.api.handlers;
 
-import no.posten.dpost.offentlig.api.representations.EbmsAktoer;
-import no.posten.dpost.offentlig.api.representations.EbmsContext;
+import no.digipost.api.api.representations.EbmsAktoer;
+import no.digipost.api.api.representations.EbmsContext;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.WebServiceMessageExtractor;
 import org.springframework.ws.client.core.WebServiceTemplate;

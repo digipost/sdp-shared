@@ -8,7 +8,7 @@
     <description>${project.artifactId}</description>
 
     <parent>
-        <groupId>no.posten.dpost.offentlig</groupId>
+        <groupId>no.digipost</groupId>
         <artifactId>offentlig-published</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>

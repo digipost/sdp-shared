@@ -23,7 +23,6 @@ import no.digipost.api.representations.EbmsOutgoingMessage.Prioritet;
 import no.digipost.api.representations.Mpc;
 import no.digipost.api.representations.Organisasjonsnummer;
 import no.digipost.api.representations.SimpleStandardBusinessDocument;
-import no.digipost.api.interceptors.TransactionLogInterceptor;
 import no.digipost.api.xml.Constants;
 import no.digipost.api.xml.Marshalling;
 import org.joda.time.DateTime;
@@ -54,8 +53,8 @@ import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPConstants;
 import java.util.UUID;
 
-import static no.digipost.api.ebms.Severity.failure;
-import static no.digipost.api.ebms.standard.processing.EmptyMessagePartitionChannelException.EMPTY_MPC_EBMS_CODE;
+import static no.digipost.api.exceptions.ebms.Severity.failure;
+import static no.digipost.api.exceptions.ebms.standard.processing.EmptyMessagePartitionChannelException.EMPTY_MPC_EBMS_CODE;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.digipost.api.ebms.custom;
+package no.digipost.api.exceptions.ebms.custom;
 
-import no.digipost.api.ebms.Origin;
+import no.digipost.api.exceptions.ebms.Origin;
 
 public class Constants {
 

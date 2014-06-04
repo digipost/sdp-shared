@@ -15,7 +15,7 @@
  */
 package no.digipost.api.interceptors;
 
-import no.digipost.api.ebms.standard.processing.OtherException;
+import no.digipost.api.exceptions.ebms.standard.processing.OtherException;
 import no.digipost.api.xml.Constants;
 import org.apache.wss4j.common.ConfigurationConstants;
 import org.apache.wss4j.common.crypto.AlgorithmSuite;

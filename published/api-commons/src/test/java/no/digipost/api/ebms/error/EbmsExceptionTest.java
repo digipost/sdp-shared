@@ -15,11 +15,11 @@
  */
 package no.digipost.api.ebms.error;
 
-import no.digipost.api.ebms.standard.processing.EmptyMessagePartitionChannelException;
+import no.digipost.api.exceptions.ebms.standard.processing.EmptyMessagePartitionChannelException;
 import org.junit.Test;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
 
-import static no.digipost.api.ebms.standard.processing.EmptyMessagePartitionChannelException.EMPTY_MPC_EBMS_CODE;
+import static no.digipost.api.exceptions.ebms.standard.processing.EmptyMessagePartitionChannelException.EMPTY_MPC_EBMS_CODE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.posten.dpost.offentlig.api;
+package no.digipost.api;
 
 import no.posten.dpost.offentlig.api.interceptors.KeyStoreInfo;
 import no.posten.dpost.offentlig.xml.Constants;

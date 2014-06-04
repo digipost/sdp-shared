@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.posten.dpost.offentlig.api.handlers;
+package no.digipost.api.handlers;
 
 import no.posten.dpost.offentlig.api.interceptors.steps.AddReferencesStep;
 

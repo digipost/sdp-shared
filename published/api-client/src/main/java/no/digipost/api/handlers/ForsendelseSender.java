@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.posten.dpost.offentlig.api.handlers;
+package no.digipost.api.handlers;
 
 import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
-import no.posten.dpost.offentlig.api.SdpMeldingSigner;
+import no.digipost.api.SdpMeldingSigner;
 import no.posten.dpost.offentlig.api.interceptors.steps.AddUserMessageStep;
 import no.posten.dpost.offentlig.api.representations.EbmsAktoer;
 import no.posten.dpost.offentlig.api.representations.EbmsForsendelse;

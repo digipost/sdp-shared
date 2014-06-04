@@ -13,23 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.posten.dpost.offentlig.api;
+package no.digipost.api.handlers;
 
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
+import no.posten.dpost.offentlig.api.representations.EbmsContext;
 
-import java.util.List;
+public abstract class EbmsContextAware {
+	protected EbmsContext ebmsContext;
 
-public class EbmsClientException extends RuntimeException {
+	public void setContext(final EbmsContext ebmsContext) {
+		this.ebmsContext = ebmsContext;
 
-	List<Error> errors;
-
-	public EbmsClientException(final String message, final List<Error> errors) {
-		super(message);
-		this.errors = errors;
-	}
-
-	public List<Error> getErrors() {
-		return errors;
 	}
 
 }

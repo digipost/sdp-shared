@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.posten.dpost.offentlig.api.interceptors;
+package no.digipost.api.interceptors;
 
 import no.posten.dpost.offentlig.api.EbmsReferenceExtractor;
-import no.posten.dpost.offentlig.api.interceptors.steps.ReferenceValidatorStep;
+import no.digipost.api.interceptors.steps.ReferenceValidatorStep;
 import no.posten.dpost.offentlig.api.representations.EbmsContext;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.WebServiceClientException;

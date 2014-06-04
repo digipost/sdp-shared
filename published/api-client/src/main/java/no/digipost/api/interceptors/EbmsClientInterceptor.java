@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.posten.dpost.offentlig.api.interceptors;
+package no.digipost.api.interceptors;
 
-import no.posten.dpost.offentlig.api.EbmsClientException;
+import no.digipost.api.EbmsClientException;
+import no.posten.dpost.offentlig.api.interceptors.Wss4jInterceptor;
 import no.posten.dpost.offentlig.api.representations.EbmsAktoer;
 import no.posten.dpost.offentlig.api.representations.EbmsContext;
 import no.posten.dpost.offentlig.api.representations.Organisasjonsnummer;

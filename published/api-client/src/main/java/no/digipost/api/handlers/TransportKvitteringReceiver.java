@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.posten.dpost.offentlig.api.handlers;
+package no.digipost.api.handlers;
 
 import no.posten.dpost.offentlig.api.representations.TransportKvittering;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.MessageInfo;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageExtractor;
 
@@ -23,12 +24,12 @@ import javax.xml.transform.TransformerException;
 
 import java.io.IOException;
 
-public class EmptyReceiver extends EbmsContextAware implements WebServiceMessageExtractor<TransportKvittering> {
+public class TransportKvitteringReceiver extends EbmsContextAware implements WebServiceMessageExtractor<TransportKvittering> {
 
 	@Override
 	public TransportKvittering extractData(final WebServiceMessage message) throws IOException, TransformerException {
-		//I know nothing
-		return null;
+		MessageInfo messageInfo = ebmsContext.receipts.get(0).getMessageInfo();
+		return new TransportKvittering(messageInfo.getMessageId(), messageInfo.getRefToMessageId());
 	}
 
 }

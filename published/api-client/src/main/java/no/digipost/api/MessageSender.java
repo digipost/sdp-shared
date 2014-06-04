@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.posten.dpost.offentlig.api;
+package no.digipost.api;
 
-import no.posten.dpost.offentlig.api.handlers.ApplikasjonsKvitteringReceiver;
-import no.posten.dpost.offentlig.api.handlers.BekreftelseSender;
-import no.posten.dpost.offentlig.api.handlers.EbmsContextAwareWebServiceTemplate;
-import no.posten.dpost.offentlig.api.handlers.EmptyReceiver;
-import no.posten.dpost.offentlig.api.handlers.ForsendelseSender;
-import no.posten.dpost.offentlig.api.handlers.KvitteringSender;
-import no.posten.dpost.offentlig.api.handlers.PullRequestSender;
-import no.posten.dpost.offentlig.api.handlers.TransportKvitteringReceiver;
-import no.posten.dpost.offentlig.api.interceptors.EbmsClientInterceptor;
-import no.posten.dpost.offentlig.api.interceptors.EbmsReferenceValidatorInterceptor;
+import no.digipost.api.handlers.ApplikasjonsKvitteringReceiver;
+import no.digipost.api.handlers.BekreftelseSender;
+import no.digipost.api.handlers.EbmsContextAwareWebServiceTemplate;
+import no.digipost.api.handlers.EmptyReceiver;
+import no.digipost.api.handlers.ForsendelseSender;
+import no.digipost.api.handlers.KvitteringSender;
+import no.digipost.api.handlers.PullRequestSender;
+import no.digipost.api.handlers.TransportKvitteringReceiver;
+import no.digipost.api.interceptors.EbmsClientInterceptor;
+import no.digipost.api.interceptors.EbmsReferenceValidatorInterceptor;
 import no.posten.dpost.offentlig.api.interceptors.KeyStoreInfo;
 import no.posten.dpost.offentlig.api.interceptors.RemoveContentLengthInterceptor;
 import no.posten.dpost.offentlig.api.interceptors.TransactionLogInterceptor;
@@ -63,7 +63,7 @@ public class MessageSender {
 
 	private static final Logger LOG = LoggerFactory.getLogger(MessageSender.class);
 
-	protected WebServiceTemplate meldingTemplate;
+	private WebServiceTemplate meldingTemplate;
 	private final Jaxb2Marshaller marshaller;
 	private EbmsAktoer tekniskAvsender;
 	private final String uri;
@@ -302,7 +302,7 @@ public class MessageSender {
 		return marshaller;
 	}
 
-
-
-
+    public WebServiceTemplate getMeldingTemplate() {
+        return meldingTemplate;
+    }
 }

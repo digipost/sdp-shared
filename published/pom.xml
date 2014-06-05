@@ -334,7 +334,6 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.5</version>
                     <configuration>
-                        <releaseProfiles>release-update-submodules</releaseProfiles>
                         <autoVersionSubmodules>true</autoVersionSubmodules>
                     </configuration>
                 </plugin>
@@ -385,6 +384,12 @@
     <profiles>
         <profile>
             <id>release-update-submodules</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <!-- This is a workaround to get submodules working with the maven release plugin -->
@@ -394,6 +399,7 @@
                         <version>1.1</version>
                         <executions>
                             <execution>
+                                <inherited>false</inherited>
                                 <phase>initialize</phase>
                                 <id>invoke build</id>
                                 <goals>

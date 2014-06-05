@@ -57,6 +57,7 @@
 					</execution>
 				</executions>
 				<configuration>
+					<specVersion>2.1</specVersion>
 					<schemaDirectory>${basedir}/src/main/difi-begrepskatalog/xsd</schemaDirectory>
 					<enableIntrospection>true</enableIntrospection>
 					<bindingDirectory>src/main/jaxb</bindingDirectory>

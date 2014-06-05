@@ -334,6 +334,7 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.5</version>
                     <configuration>
+                        <releaseProfiles>release-update-submodules</releaseProfiles>
                         <autoVersionSubmodules>true</autoVersionSubmodules>
                     </configuration>
                 </plugin>
@@ -377,6 +378,36 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release-update-submodules</id>
+            <build>
+                <plugins>
+                    <!-- This is a workaround to get submodules working with the maven release plugin -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.1</version>
+                        <executions>
+                            <execution>
+                                <phase>initialize</phase>
+                                <id>invoke build</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <executable>updateSubmodules.sh</executable>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>

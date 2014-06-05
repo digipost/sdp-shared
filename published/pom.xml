@@ -35,6 +35,11 @@
         <wss4j.version>2.0.0</wss4j.version>
     </properties>
 
+    <scm>
+        <connection>scm:git:ssh://bekk@bonnyrigg.os.ergo.no:/home/bekk/digipost-offentlig.git</connection>
+        <developerConnection>scm:git:ssh://bekk@bonnyrigg.os.ergo.no:/home/bekk/digipost-offentlig.git</developerConnection>
+    </scm>
+
     <dependencyManagement>
         <dependencies>
             <dependency>

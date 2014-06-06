@@ -1,0 +1,10 @@
+target
+.project
+.settings
+.classpath
+.idea
+*.iml
+.vagrant
+.metadata
+.DS_Store
+.sonatype

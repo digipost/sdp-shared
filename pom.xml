@@ -41,8 +41,8 @@
     </properties>
 
     <scm>
-        <connection>scm:git:ssh://bekk@bonnyrigg.os.ergo.no:/home/bekk/digipost-offentlig.git</connection>
-        <developerConnection>scm:git:ssh://bekk@bonnyrigg.os.ergo.no:/home/bekk/digipost-offentlig.git</developerConnection>
+        <connection>https://github.com/digipost/sdp-shared.git</connection>
+        <developerConnection>https://github.com/digipost/sdp-shared.git</developerConnection>
     </scm>
 
     <dependencyManagement>

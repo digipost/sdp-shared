@@ -194,8 +194,8 @@
                                         <include>javax.xml.stream:stax-api:1.0-2</include>
                                         <include>jaxen:jaxen:1.1.6</include>
                                         <include>joda-time:joda-time:2.3</include>
-                                        <include>no.digipost:api-commons:0.1-SNAPSHOT</include>
-                                        <include>no.digipost:offentlig-xsd:0.1-SNAPSHOT</include>
+                                        <include>no.digipost:api-commons:*</include>
+                                        <include>no.digipost:offentlig-xsd:*</include>
                                         <include>org.apache.commons:commons-lang3:3.3.1</include>
                                         <include>org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1</include>
                                         <include>org.apache.httpcomponents:httpclient:4.3.2</include>

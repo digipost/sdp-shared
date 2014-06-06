@@ -119,7 +119,8 @@ public class MessageSender {
 
 	private static HashMap<String, Object> getMessageProperties() {
 		HashMap<String, Object> messageProperties = new HashMap<String, Object>();
-		messageProperties.put("saaj.lazy.soap.body", "true");
+		// Removed this in order to avoid issues occurring when not using internal saaj-impl
+		//messageProperties.put("saaj.lazy.soap.body", "true");
 		return messageProperties;
 	}
 

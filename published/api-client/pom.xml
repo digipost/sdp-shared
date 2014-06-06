@@ -58,11 +58,21 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- SAAJ API-->
         <dependency>
             <groupId>javax.xml.soap</groupId>
             <artifactId>javax.xml.soap-api</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <!-- SAAJ RI -->
+        <!-- Including this in order to prevent concurrency issue on JDK 7 -->
+        <dependency>
+            <groupId>com.sun.xml.messaging.saaj</groupId>
+            <artifactId>saaj-impl</artifactId>
+            <version>1.3.23</version>
+            <scope>runtime</scope>
+       </dependency>
 
         <dependency>
             <groupId>com.sun.mail</groupId>

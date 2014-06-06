@@ -1,6 +1,3 @@
 [submodule "published/xsd/src/main/difi-begrepskatalog"]
 	path = published/xsd/src/main/difi-begrepskatalog
 	url = https://github.com/digipost/begrep-SikkerDigitalPost.git
-[submodule "idporten"]
-	path = idporten
-	url = bekk@bonnyrigg.os.ergo.no:/data/gitrepos/digipost-idporten.git

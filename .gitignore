@@ -7,7 +7,4 @@ target
 .vagrant
 .metadata
 .DS_Store
-bin/
-mf-webapp/public/
-scripts/node_modules
 .sonatype

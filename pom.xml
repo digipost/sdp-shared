@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>sdp-shared</artifactId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>Shared dependencies for Sikker Digital Post</description>
@@ -41,7 +41,7 @@
     <scm>
         <connection>scm:git:git@github.com:digipost/sdp-shared.git</connection>
         <developerConnection>scm:git:git@github.com:digipost/sdp-shared.git</developerConnection>
-      <tag>sdp-shared-0.1</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <dependencyManagement>

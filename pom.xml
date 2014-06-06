@@ -41,8 +41,8 @@
     </properties>
 
     <scm>
-        <connection>scm:git:git@github.com/digipost/sdp-shared.git</connection>
-        <developerConnection>scm:git:git@github.com/digipost/sdp-shared.git</developerConnection>
+        <connection>scm:git:git@github.com:digipost/sdp-shared.git</connection>
+        <developerConnection>scm:git:git@github.com:digipost/sdp-shared.git</developerConnection>
     </scm>
 
     <dependencyManagement>

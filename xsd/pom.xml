@@ -7,7 +7,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>offentlig-xsd</artifactId>
+	<artifactId>sdp-xsd</artifactId>
 
 	<dependencies>
 		<dependency>

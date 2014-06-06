@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>api-client</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>sdp-api-client</artifactId>
     <name>${project.artifactId}</name>
     <description>${project.artifactId}</description>
 
@@ -15,12 +14,12 @@
     <dependencies>
         <dependency>
             <groupId>no.digipost</groupId>
-            <artifactId>offentlig-xsd</artifactId>
+            <artifactId>sdp-xsd</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>no.digipost</groupId>
-            <artifactId>api-commons</artifactId>
+            <artifactId>sdp-api-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -194,8 +193,8 @@
                                         <include>javax.xml.stream:stax-api:1.0-2</include>
                                         <include>jaxen:jaxen:1.1.6</include>
                                         <include>joda-time:joda-time:2.3</include>
-                                        <include>no.digipost:api-commons:*</include>
-                                        <include>no.digipost:offentlig-xsd:*</include>
+                                        <include>no.digipost:sdp-api-commons:*</include>
+                                        <include>no.digipost:sdp-xsd:*</include>
                                         <include>org.apache.commons:commons-lang3:3.3.1</include>
                                         <include>org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1</include>
                                         <include>org.apache.httpcomponents:httpclient:4.3.2</include>

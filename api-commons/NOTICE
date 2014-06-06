@@ -15,7 +15,6 @@ This software includes third party software subject to the following licenses:
   Apache WSS4J DOM WS-Security under The Apache Software License, Version 2.0
   Apache WSS4J WS-Security Common under The Apache Software License, Version 2.0
   Apache XML Security for Java under The Apache Software License, Version 2.0
-  api-commons under The Apache Software License, Version 2.0
   Bouncy Castle Provider under Bouncy Castle Licence
   Commons IO under The Apache Software License, Version 2.0
   ehcache under The Apache Software License, Version 2.0
@@ -32,9 +31,10 @@ This software includes third party software subject to the following licenses:
   Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   Mockito under The MIT License
   Objenesis under MIT License
-  offentlig-xsd under The Apache Software License, Version 2.0
   OpenSAML-J under Apache 2
   OpenWS under Apache 2
+  sdp-api-commons under The Apache Software License, Version 2.0
+  sdp-xsd under The Apache Software License, Version 2.0
   SLF4J API Module under MIT License
   Spring AOP under The Apache Software License, Version 2.0
   Spring Beans under The Apache Software License, Version 2.0

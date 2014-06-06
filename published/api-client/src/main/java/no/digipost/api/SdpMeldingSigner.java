@@ -88,6 +88,7 @@ public class SdpMeldingSigner {
 			Node avsenderNode = digitalPostNode.getFirstChild();
 
 			DOMSignContext dsc = new DOMSignContext(privateKey, doc.getDocumentElement().getLastChild(), avsenderNode);
+
 			signature.sign(dsc);
 			return doc;
 		} catch (NoSuchAlgorithmException e) {

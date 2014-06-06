@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>sdp-shared</artifactId>
-    <version>0.1</version>
+    <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>Shared dependencies for Sikker Digital Post</description>
@@ -41,8 +43,7 @@
     <scm>
         <connection>scm:git:git@github.com/digipost/sdp-shared.git</connection>
         <developerConnection>scm:git:git@github.com/digipost/sdp-shared.git</developerConnection>
-      <tag>sdp-shared-0.1</tag>
-  </scm>
+    </scm>
 
     <dependencyManagement>
         <dependencies>

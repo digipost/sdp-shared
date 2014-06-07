@@ -121,4 +121,9 @@ public class WsSecurityInterceptor implements ClientInterceptor, SoapEndpointInt
 		ic.afterPropertiesSet();
 		return ic;
 	}
+	@Override
+	public void afterCompletion(MessageContext messageContext, Exception ex) throws WebServiceClientException {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -52,8 +52,6 @@ This software includes third party software subject to the following licenses:
   Stax2 API under The BSD License
   Streaming API for XML under GNU General Public Library or COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0
   Woodstox under The Apache Software License, Version 2.0
-  WSDL4J under CPL
-  wsit-rt under CDDL v1.1
   Xalan Java Serializer under The Apache Software License, Version 2.0
   XMLTooling-J under Apache 2
 

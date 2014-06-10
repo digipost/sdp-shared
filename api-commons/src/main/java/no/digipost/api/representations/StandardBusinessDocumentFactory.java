@@ -19,7 +19,6 @@ import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
 import no.difi.begrep.sdp.schema_v10.SDPFeil;
 import no.difi.begrep.sdp.schema_v10.SDPKvittering;
 import no.difi.begrep.sdp.schema_v10.SDPMelding;
-import no.difi.begrep.sdp.schema_v10.SDPTilbaketrekking;
 import org.joda.time.DateTime;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.BusinessScope;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.DocumentIdentification;
@@ -33,11 +32,10 @@ public class StandardBusinessDocumentFactory {
 
 	public enum Type {
 		DigitalPost("digitalPost", SDPDigitalPost.class),
-		Tilbaketrekking("tilbaketrekking", SDPTilbaketrekking.class),
 		Kvittering("kvittering", SDPKvittering.class),
 		Feil("feil", SDPFeil.class);
 
-        private final String name;
+		private final String name;
 		private final Class<? extends SDPMelding> clazz;
 
 		private Type(final String name, final Class<? extends SDPMelding> clazz) {
@@ -45,13 +43,13 @@ public class StandardBusinessDocumentFactory {
 			this.clazz = clazz;
 		}
 
-        @Override
+		@Override
 		public String toString() {
 			return name;
 		}
 
-        public static boolean isValid(final String type) {
-			for(Type t : Type.values()) {
+		public static boolean isValid(final String type) {
+			for (Type t : Type.values()) {
 				if (t.name.equals(type)) {
 					return true;
 				}
@@ -60,7 +58,7 @@ public class StandardBusinessDocumentFactory {
 		}
 
 		public static Type from(final SDPMelding melding) {
-			for(Type t : Type.values()) {
+			for (Type t : Type.values()) {
 				if (t.clazz.isInstance(melding)) {
 					return t;
 				}
@@ -76,27 +74,27 @@ public class StandardBusinessDocumentFactory {
 
 	public static StandardBusinessDocument create(final Organisasjonsnummer avsender, final Organisasjonsnummer mottaker, final String instanceIdentifier, final String conversationId, final SDPMelding body) {
 		return new StandardBusinessDocument()
-			.withStandardBusinessDocumentHeader(
-                    new StandardBusinessDocumentHeader()
-                            .withHeaderVersion(HEADER_VERSION)
-                            .withSenders(new Partner().withIdentifier(new PartnerIdentification(avsender.asIso6523(), Organisasjonsnummer.ISO6523_ACTORID)))
-                            .withReceivers(new Partner().withIdentifier(new PartnerIdentification(mottaker.asIso6523(), Organisasjonsnummer.ISO6523_ACTORID)))
-                            .withDocumentIdentification(new DocumentIdentification()
-                                    .withStandard(STANDARD)
-                                    .withTypeVersion(TYPE_VERSION)
-                                    .withInstanceIdentifier(instanceIdentifier)
-                                    .withType(Type.from(body).toString())
-                                    .withCreationDateAndTime(DateTime.now())
-                            )
-                            .withBusinessScope(new BusinessScope()
-                                    .withScopes(new Scope()
-                                            .withIdentifier(STANDARD)
-                                            .withType(CONVERSATIONID)
-                                            .withInstanceIdentifier(conversationId)
-                                    )
-                            )
-            )
-			.withAny(body);
+				.withStandardBusinessDocumentHeader(
+						new StandardBusinessDocumentHeader()
+								.withHeaderVersion(HEADER_VERSION)
+								.withSenders(new Partner().withIdentifier(new PartnerIdentification(avsender.asIso6523(), Organisasjonsnummer.ISO6523_ACTORID)))
+								.withReceivers(new Partner().withIdentifier(new PartnerIdentification(mottaker.asIso6523(), Organisasjonsnummer.ISO6523_ACTORID)))
+								.withDocumentIdentification(new DocumentIdentification()
+												.withStandard(STANDARD)
+												.withTypeVersion(TYPE_VERSION)
+												.withInstanceIdentifier(instanceIdentifier)
+												.withType(Type.from(body).toString())
+												.withCreationDateAndTime(DateTime.now())
+								)
+								.withBusinessScope(new BusinessScope()
+												.withScopes(new Scope()
+																.withIdentifier(STANDARD)
+																.withType(CONVERSATIONID)
+																.withInstanceIdentifier(conversationId)
+												)
+								)
+				)
+				.withAny(body);
 	}
 
 }

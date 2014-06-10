@@ -137,6 +137,10 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 	public void afterCompletion(final MessageContext messageContext, final Object endpoint, final Exception ex) throws Exception {
 	}
 
+	@Override
+	public void afterCompletion(MessageContext messageContext, Exception ex) throws WebServiceClientException {
+	}
+	
 	/*
 	 * ClientInterceptor
 	 */
@@ -292,10 +296,5 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 		}
 	}
 
-	@Override
-	public void afterCompletion(MessageContext messageContext, Exception ex) throws WebServiceClientException {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

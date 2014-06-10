@@ -30,8 +30,8 @@ public class ApplikasjonsKvitteringBuilder {
 	private String instanceIdentifier;
 	private String messageId;
 	private String conversationId;
-	private static EbmsAktoer ebmsMottaker;
-	private static Organisasjonsnummer sbdhMottaker;
+	private EbmsAktoer ebmsMottaker;
+	private Organisasjonsnummer sbdhMottaker;
 
 	private SDPMelding kvittering = new SDPKvittering()
 		.withLevering(new SDPLevering())
@@ -39,9 +39,9 @@ public class ApplikasjonsKvitteringBuilder {
 
 	public static ApplikasjonsKvitteringBuilder create(final EbmsAktoer avsender, final EbmsAktoer ebmsMottaker, final Organisasjonsnummer sbdhMottaker, final String messageId,
 	                                                    final String conversationId, final String instanceIdentifier) {
-		ApplikasjonsKvitteringBuilder.ebmsMottaker = ebmsMottaker;
-		ApplikasjonsKvitteringBuilder.sbdhMottaker = sbdhMottaker;
 		ApplikasjonsKvitteringBuilder builder = new ApplikasjonsKvitteringBuilder();
+		builder.ebmsMottaker = ebmsMottaker;
+		builder.sbdhMottaker = sbdhMottaker;
 		builder.messageId = messageId;
 		builder.avsender = avsender;
 		builder.conversationId = conversationId;

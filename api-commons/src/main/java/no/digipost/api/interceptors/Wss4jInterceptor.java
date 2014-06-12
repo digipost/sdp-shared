@@ -38,7 +38,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.ws.context.MessageContext;
-import org.springframework.ws.server.EndpointExceptionResolver;
 import org.springframework.ws.soap.SoapMessage;
 import org.springframework.ws.soap.security.AbstractWsSecurityInterceptor;
 import org.springframework.ws.soap.security.WsSecurityFaultException;
@@ -54,7 +53,6 @@ import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.DigestMethod;
-
 import java.io.IOException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -101,8 +99,6 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 
 
     private final Wss4jHandler handler = new Wss4jHandler();
-
-	private EndpointExceptionResolver exceptionResolver;
 
 	private String digestAlgorithm;
 
@@ -198,32 +194,27 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 	    handler.setOption(WSHandlerConstants.IS_BSP_COMPLIANT, compliant);
     }
 
-    public void afterPropertiesSet() throws Exception {
-        Assert.isTrue(validationActions != null || securementActions != null,
-                "validationActions or securementActions are required");
-        if (validationActions != null) {
-        	if (validationActionsVector.contains(WSConstants.UT)) {
-                Assert.notNull(validationCallbackHandler, "validationCallbackHandler is required");
-            }
+	public void afterPropertiesSet() throws Exception {
+		Assert.isTrue(validationActions != null || securementActions != null,
+				"validationActions or securementActions are required");
+		if (validationActions != null) {
+			if (validationActionsVector.contains(WSConstants.UT)) {
+				Assert.notNull(validationCallbackHandler, "validationCallbackHandler is required");
+			}
 
-            if (validationActionsVector.contains(WSConstants.SIGN)) {
-                Assert.notNull(validationSignatureCrypto, "validationSignatureCrypto is required");
-            }
-        }
-    }
+			if (validationActionsVector.contains(WSConstants.SIGN)) {
+				Assert.notNull(validationSignatureCrypto, "validationSignatureCrypto is required");
+			}
+		}
+	}
 
 	@Override
 	protected boolean handleFaultException(final WsSecurityFaultException ex, final MessageContext messageContext) {
 		if (logger.isWarnEnabled()) {
 			logger.warn("Could not handle request: " + ex.getMessage());
 		}
-		if (exceptionResolver != null) {
-			exceptionResolver.resolveException(messageContext, null, ex);
-		} else {
-			logger.error("Exception resolver ikke satt");
-			throw new OtherException();
-		}
-		return false;
+
+        throw new OtherException();
 	}
 
     @Override

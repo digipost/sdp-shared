@@ -37,8 +37,9 @@ public class WsSecurityInterceptor implements ClientInterceptor, SoapEndpointInt
 	public WsSecurityInterceptor(final KeyStoreInfo keystoreInfo, final EndpointExceptionResolver exceptionResolver) {
 		this.keystoreInfo = keystoreInfo;
 		this.exceptionResolver = exceptionResolver;
-		interceptor = new Wss4jInterceptor();
+		this.interceptor = new Wss4jInterceptor();
 	}
+
 	private WsSecurityInterceptor(final KeyStoreInfo keystoreInfo, final EndpointExceptionResolver exceptionResolver, final Wss4jInterceptor interceptor) {
 		this.keystoreInfo = keystoreInfo;
 		this.exceptionResolver = exceptionResolver;
@@ -121,9 +122,10 @@ public class WsSecurityInterceptor implements ClientInterceptor, SoapEndpointInt
 		ic.afterPropertiesSet();
 		return ic;
 	}
+
 	@Override
 	public void afterCompletion(MessageContext messageContext, Exception ex) throws WebServiceClientException {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

@@ -36,6 +36,7 @@ import no.digipost.api.representations.EbmsPullRequest;
 import no.digipost.api.representations.TransportKvittering;
 import no.digipost.api.xml.Marshalling;
 import org.apache.http.HttpHost;
+import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -52,7 +53,6 @@ import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -140,7 +140,7 @@ public class MessageSender {
 		private final String endpointUri;
 		private final EbmsAktoer tekniskAvsenderId;
 		private final EbmsAktoer tekniskMottaker;
-		private final WsSecurityInterceptor wssecMelding;
+		private WsSecurityInterceptor wsSecurityInterceptor;
 		private final KeyStoreInfo keystoreInfo;
 		private Jaxb2Marshaller marshaller;
 		private final List<InsertInterceptor> interceptorBefore = new ArrayList<InsertInterceptor>();
@@ -154,11 +154,11 @@ public class MessageSender {
 		private int connectionRequestTimeout = 10000;
 
 		private Builder(final String endpointUri, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker,
-		                final WsSecurityInterceptor wssecMelding, final KeyStoreInfo keystoreInfo) {
+		                final WsSecurityInterceptor wsSecurityInterceptor, final KeyStoreInfo keystoreInfo) {
 			this.endpointUri = endpointUri;
 			this.tekniskAvsenderId = tekniskAvsenderId;
 			this.tekniskMottaker = tekniskMottaker;
-			this.wssecMelding = wssecMelding;
+			this.wsSecurityInterceptor = wsSecurityInterceptor;
 			this.keystoreInfo = keystoreInfo;
 		}
 
@@ -231,7 +231,7 @@ public class MessageSender {
 
 			List<ClientInterceptor> meldingInterceptors = new ArrayList<ClientInterceptor>();
 			meldingInterceptors.add(new EbmsClientInterceptor(marshaller, tekniskMottaker));
-			meldingInterceptors.add(wssecMelding);
+			meldingInterceptors.add(wsSecurityInterceptor);
 			meldingInterceptors.add(new EbmsReferenceValidatorInterceptor(marshaller));
 			meldingInterceptors.add(TransactionLogInterceptor.createClientInterceptor(marshaller));
 
@@ -253,7 +253,8 @@ public class MessageSender {
 					.copy(RequestConfig.DEFAULT)
 					.setSocketTimeout(socketTimeout)
 					.setConnectTimeout(connectTimeout)
-					.setConnectionRequestTimeout(connectionRequestTimeout);
+					.setConnectionRequestTimeout(connectionRequestTimeout)
+					.setCookieSpec(CookieSpecs.IGNORE_COOKIES);
 
 			if (httpHost != null) {
 				requestConfigBuilder.setProxy(httpHost);

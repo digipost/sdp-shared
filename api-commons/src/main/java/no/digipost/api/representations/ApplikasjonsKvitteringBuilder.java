@@ -55,9 +55,9 @@ public class ApplikasjonsKvitteringBuilder {
 		return this;
 	}
 
-    public ApplikasjonsKvitteringBuilder medFeil(final String feilinformasjon) {
+    public ApplikasjonsKvitteringBuilder medFeil(SDPFeiltype feiltype, final String feilinformasjon) {
 		kvittering = new SDPFeil()
-			.withFeiltype(SDPFeiltype.KLIENT)
+			.withFeiltype(feiltype)
 			.withDetaljer(feilinformasjon);
 		return this;
 	}

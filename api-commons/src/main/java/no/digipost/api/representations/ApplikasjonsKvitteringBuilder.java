@@ -32,6 +32,7 @@ public class ApplikasjonsKvitteringBuilder {
 	private String conversationId;
 	private EbmsAktoer ebmsMottaker;
 	private Organisasjonsnummer sbdhMottaker;
+	private EbmsOutgoingMessage.Prioritet prioritet = EbmsOutgoingMessage.Prioritet.NORMAL;
 
 	private SDPMelding kvittering = new SDPKvittering()
 		.withLevering(new SDPLevering())
@@ -47,6 +48,11 @@ public class ApplikasjonsKvitteringBuilder {
 		builder.conversationId = conversationId;
 		builder.instanceIdentifier = instanceIdentifier;
 		return builder;
+	}
+
+	public ApplikasjonsKvitteringBuilder medPrioritet(EbmsOutgoingMessage.Prioritet prioritet) {
+		this.prioritet = prioritet;
+		return this;
 	}
 
     public ApplikasjonsKvitteringBuilder medFeil(final String feilinformasjon) {
@@ -66,6 +72,6 @@ public class ApplikasjonsKvitteringBuilder {
 	public EbmsApplikasjonsKvittering build() {
 		final StandardBusinessDocument doc = StandardBusinessDocumentFactory
 				.create(avsender.orgnr, sbdhMottaker, instanceIdentifier, conversationId, kvittering);
-		return EbmsApplikasjonsKvittering.create(avsender, ebmsMottaker, doc).withMessageId(messageId).build();
+		return EbmsApplikasjonsKvittering.create(avsender, ebmsMottaker, doc).withMessageId(messageId).withPrioritet(prioritet).build();
 	}
 }

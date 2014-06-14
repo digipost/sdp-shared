@@ -16,20 +16,23 @@
 package no.digipost.api;
 
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
-
-import java.util.List;
+import org.springframework.ws.soap.SoapMessage;
 
 public class EbmsClientException extends RuntimeException {
 
-	List<Error> errors;
+	private final SoapMessage soapError;
+	private final Error error;
 
-	public EbmsClientException(final String message, final List<Error> errors) {
-		super(message);
-		this.errors = errors;
+	public EbmsClientException(final SoapMessage soapError, final Error error) {
+		this.soapError = soapError;
+		this.error = error;
 	}
 
-	public List<Error> getErrors() {
-		return errors;
+	public Error getError() {
+		return error;
 	}
 
+	public SoapMessage getSoapError() {
+		return soapError;
+	}
 }

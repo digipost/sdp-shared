@@ -92,7 +92,7 @@ public class MessageSender {
 		try {
 			return meldingTemplate.sendAndReceive(uri, new PullRequestSender(pullRequest, marshaller, tidligereKvitteringSomSkalBekreftes), new ApplikasjonsKvitteringReceiver(marshaller));
 		} catch (EbmsClientException ex) {
-			if (ex.getErrors().size() == 1 && ex.getErrors().get(0).getErrorCode().equals(EMPTY_MPC_EBMS_CODE)) {
+			if (ex.getError().getErrorCode().equals(EMPTY_MPC_EBMS_CODE)) {
 				return null;
 			}
 			throw ex;

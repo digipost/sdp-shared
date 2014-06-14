@@ -25,6 +25,8 @@ import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.SignalMessage;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.UserMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.WebServiceClientException;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
@@ -45,6 +47,8 @@ public class EbmsClientInterceptor implements ClientInterceptor {
 	private final Jaxb2Marshaller jaxb2Marshaller;
 	private final EbmsAktoer tekniskMottaker;
 	private final OrgnummerExtractor extractor = new OrgnummerExtractor();
+
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	public EbmsClientInterceptor(final Jaxb2Marshaller jaxb2Marshaller, final EbmsAktoer tekniskMottaker) {
 		this.jaxb2Marshaller = jaxb2Marshaller;
@@ -72,15 +76,18 @@ public class EbmsClientInterceptor implements ClientInterceptor {
 		SoapHeaderElement ebmsMessaging = soapHeaderElementIterator.next();
 		Messaging messaging = Marshalling.unmarshal(jaxb2Marshaller, ebmsMessaging, Messaging.class);
 		EbmsContext context = EbmsContext.from(messageContext);
-		List<Error> errors = new ArrayList<Error>();
+		List<String> warnings = new ArrayList<String>();
 		for (SignalMessage message : messaging.getSignalMessages()) {
-			errors.addAll(message.getErrors());
+			for (Error error : message.getErrors()) {
+				// Error i ebms-header uten SOAP-fault er warning. Severity failure gir SOAP-fault.
+				warnings.add(error.getDescription().getValue());
+			}
 			if (message.getReceipt() != null) {
 				context.receipts.add(message);
 			}
 		}
-		if (errors.size() > 0) {
-			throw new EbmsClientException("Unexpected response from server", errors);
+		if (warnings.size() > 0) {
+			log.warn("Got warnings in eBMS header: " + warnings);
 		}
 		for (UserMessage userMessage : messaging.getUserMessages()) {
 			context.userMessage = userMessage;
@@ -98,7 +105,31 @@ public class EbmsClientInterceptor implements ClientInterceptor {
 
 	@Override
 	public boolean handleFault(final MessageContext messageContext) throws WebServiceClientException {
-		return true;
+		SoapMessage saajSoapMessage = (SoapMessage) messageContext.getResponse();
+		Iterator<SoapHeaderElement> soapHeaderElementIterator = saajSoapMessage.getSoapHeader().examineHeaderElements(MESSAGING_QNAME);
+		if (!soapHeaderElementIterator.hasNext()) {
+			// SOAP fault without ebMS header. That's just a regular SOAP fault, and we won't handle it here.
+			return true;
+		}
+
+		Messaging messaging = Marshalling.unmarshal(jaxb2Marshaller, soapHeaderElementIterator.next(), Messaging.class);
+		List<Error> errors = new ArrayList<Error>();
+		for (SignalMessage message : messaging.getSignalMessages()) {
+			errors.addAll(message.getErrors());
+		}
+
+		if (errors.size() == 0) {
+			// No error in ebMS header. Treat as regular SOAP fault (forward to next handler).
+			return true;
+		}
+
+		if (errors.size() > 1) {
+			// If this happens in practice, we should log what the errors are.
+			log.warn("Got more than one ebMS error in response. Throwing exception with the first one and disregarding the rest.");
+		}
+
+		throw new EbmsClientException(saajSoapMessage, errors.get(0));
+
 	}
 
 	@Override

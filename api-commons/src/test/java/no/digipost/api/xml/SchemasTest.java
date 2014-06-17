@@ -15,7 +15,6 @@
  */
 package no.digipost.api.xml;
 
-import no.digipost.api.xml.Schemas;
 import org.junit.Test;
 import org.springframework.core.io.Resource;
 

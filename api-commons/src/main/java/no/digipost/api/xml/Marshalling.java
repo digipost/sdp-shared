@@ -16,6 +16,9 @@
 package no.digipost.api.xml;
 
 import no.difi.begrep.sdp.schema_v10.SDPKvittering;
+import no.difi.begrep.sdp.schema_v10.SDPManifest;
+import org.etsi.uri._01903.v1_3.QualifyingProperties;
+import org.etsi.uri._2918.v1_2.XAdESSignatures;
 import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.NonRepudiationInformation;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -24,6 +27,7 @@ import org.springframework.ws.soap.SoapBody;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
+import org.w3.xmldsig.X509Data;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xmlsoap.schemas.soap.envelope.Envelope;
@@ -38,11 +42,7 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import static no.digipost.api.xml.Constants.MESSAGING_QNAME;
-import static no.digipost.api.xml.Schemas.EBMS_SCHEMA;
-import static no.digipost.api.xml.Schemas.SBDH_SCHEMA;
-import static no.digipost.api.xml.Schemas.SDP_SCHEMA;
-import static no.digipost.api.xml.Schemas.XMLDSIG_SCHEMA;
+import static no.digipost.api.xml.Schemas.*;
 
 public class Marshalling {
 
@@ -66,10 +66,14 @@ public class Marshalling {
 						packageName(org.w3.xmldsig.Reference.class),
 						packageName(Messaging.class),
 						packageName(NonRepudiationInformation.class),
-						packageName(SDPKvittering.class)
+						packageName(SDPKvittering.class),
+						packageName(SDPManifest.class),
+						packageName(XAdESSignatures.class),
+						packageName(X509Data.class),
+						packageName(QualifyingProperties.class)
 				}
 		);
-		marshaller.setSchemas(Schemas.SDP_SCHEMA, Schemas.SBDH_SCHEMA, Schemas.EBMS_SCHEMA, Schemas.XMLDSIG_SCHEMA);
+		marshaller.setSchemas(SDP_SCHEMA, SBDH_SCHEMA, EBMS_SCHEMA, XMLDSIG_SCHEMA, XADES_SCHEMA, ASICE_SCHEMA);
 		if (runAfterPropertiesSet) {
 			try {
 				marshaller.afterPropertiesSet();

@@ -23,5 +23,7 @@ public class Schemas {
 	public static final ClassPathResource SDP_SCHEMA = new ClassPathResource("sdp.xsd");
 	public static final ClassPathResource EBMS_SCHEMA = new ClassPathResource("ebxml/ebms-header-3_0-200704.xsd");
 	public static final ClassPathResource XMLDSIG_SCHEMA = new ClassPathResource("w3/xmldsig-core-schema.xsd");
+	public static final ClassPathResource XADES_SCHEMA = new ClassPathResource("etsi/XAdES.xsd");
+	public static final ClassPathResource ASICE_SCHEMA = new ClassPathResource("asic-e/ts_102918v010201.xsd");
 
 }

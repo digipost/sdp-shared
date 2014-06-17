@@ -26,6 +26,7 @@ public class ValueInconsistentException extends AbstractEbmsException {
 			"Although the message document is well formed and schema valid, " +
 					"some element/attribute value is inconsistent either with the content of other element/attribute, " +
 					"or with the processing mode of the MSH, or with the normative requirements of the ebMS specification.";
+	public static final String ERROR_CODE = "0003";
 
 	public ValueInconsistentException() {
 		this(null, null, DEFAULT_DESCRIPTION);
@@ -39,7 +40,7 @@ public class ValueInconsistentException extends AbstractEbmsException {
 		this(refToMessageInError, null, description);
 	}
 	public ValueInconsistentException(final String refToMessageInError, final Throwable cause, final String description) {
-		super(Origin.ebMS, "0003", Severity.failure, Category.Content, description, refToMessageInError, cause);
+		super(Origin.ebMS, ERROR_CODE, Severity.failure, Category.Content, description, refToMessageInError, cause);
 	}
 
 	@Override

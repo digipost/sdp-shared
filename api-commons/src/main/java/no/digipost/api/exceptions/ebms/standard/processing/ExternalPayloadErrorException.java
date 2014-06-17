@@ -24,6 +24,7 @@ public class ExternalPayloadErrorException extends AbstractEbmsException {
 
 	public static final String DEFAULT_DESCRIPTION = "The MSH is unable to resolve an external payload reference " +
 			"(i.e. a Part that is not contained within the ebMS Message, as identified by a PartInfo/href URI).";
+	public static final String ERROR_CODE = "0011";
 
 	public ExternalPayloadErrorException() {
 		this(null, null, DEFAULT_DESCRIPTION);
@@ -38,7 +39,7 @@ public class ExternalPayloadErrorException extends AbstractEbmsException {
 	}
 
 	public ExternalPayloadErrorException(final String refToMessageInError, final Throwable cause, final String description) {
-		super(Origin.ebMS, "0011", Severity.failure, Category.Content, description, refToMessageInError, cause);
+		super(Origin.ebMS, ERROR_CODE, Severity.failure, Category.Content, description, refToMessageInError, cause);
 	}
 
 	@Override

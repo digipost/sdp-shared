@@ -25,6 +25,7 @@ public class FeatureNotSupported0008Exception extends AbstractEbmsException {
 	public static final String DEFAULT_DESCRIPTION = "Although the message document is well formed and schema valid, " +
 			"the presence or absence of some element/ attribute is not consistent with the capability of the MSH, " +
 			"with respect to supported features.";
+	public static final String ERROR_CODE = "0008";
 
 	public FeatureNotSupported0008Exception() {
 		this(null, null, DEFAULT_DESCRIPTION);
@@ -39,7 +40,7 @@ public class FeatureNotSupported0008Exception extends AbstractEbmsException {
 	}
 
 	public FeatureNotSupported0008Exception(final String refToMessageInError, final Throwable cause, final String description) {
-		super(Origin.ebMS, "0008", Severity.failure, Category.UnPackaging, description, refToMessageInError, cause);
+		super(Origin.ebMS, ERROR_CODE, Severity.failure, Category.UnPackaging, description, refToMessageInError, cause);
 	}
 
 	@Override

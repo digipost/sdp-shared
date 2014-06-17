@@ -24,6 +24,7 @@ public class EbmsClientException extends RuntimeException {
 	private final Error error;
 
 	public EbmsClientException(final SoapMessage soapError, final Error error) {
+		super((error != null && error.getDescription() != null) ? error.getDescription().getValue() : null);
 		this.soapError = soapError;
 		this.error = error;
 	}

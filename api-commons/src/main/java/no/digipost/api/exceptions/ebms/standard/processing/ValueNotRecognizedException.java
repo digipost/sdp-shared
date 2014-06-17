@@ -24,6 +24,7 @@ public class ValueNotRecognizedException extends AbstractEbmsException {
 
 	public static final String DEFAULT_DESCRIPTION = "Although the message document is well formed and schema valid, " +
 			"some element/attribute contains a value that could not be recognized and therefore could not be used by the MSH.";
+	public static final String ERROR_CODE = "0001";
 
 	public ValueNotRecognizedException() {
 		this(null, null, DEFAULT_DESCRIPTION);
@@ -37,7 +38,7 @@ public class ValueNotRecognizedException extends AbstractEbmsException {
 		this(refToMessageInError, null, description);
 	}
 	public ValueNotRecognizedException(final String refToMessageInError, final Throwable cause, final String description) {
-		super(Origin.ebMS, "0001", Severity.failure, Category.Content, description, refToMessageInError, cause);
+		super(Origin.ebMS, ERROR_CODE, Severity.failure, Category.Content, description, refToMessageInError, cause);
 	}
 
 	@Override

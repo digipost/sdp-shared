@@ -76,19 +76,26 @@ public class EbmsClientInterceptor implements ClientInterceptor {
 		SoapHeaderElement ebmsMessaging = soapHeaderElementIterator.next();
 		Messaging messaging = Marshalling.unmarshal(jaxb2Marshaller, ebmsMessaging, Messaging.class);
 		EbmsContext context = EbmsContext.from(messageContext);
-		List<String> warnings = new ArrayList<String>();
+		List<Error> warnings = new ArrayList<Error>();
 		for (SignalMessage message : messaging.getSignalMessages()) {
 			for (Error error : message.getErrors()) {
 				// Error i ebms-header uten SOAP-fault er warning. Severity failure gir SOAP-fault.
-				warnings.add(error.getDescription().getValue());
+				warnings.add(error);
 			}
 			if (message.getReceipt() != null) {
 				context.receipts.add(message);
 			}
 		}
 		if (warnings.size() > 0) {
-			log.warn("Got warnings in eBMS header: " + warnings);
+			if (warnings.size() > 1) {
+				// If this happens in practice, we should log what the warnings are.
+				log.warn("Got more than one ebMS warning in response. Using the first, discarding the rest.");
+			}
+
+			context.warning = warnings.get(0);
 		}
+
+
 		for (UserMessage userMessage : messaging.getUserMessages()) {
 			context.userMessage = userMessage;
 		}

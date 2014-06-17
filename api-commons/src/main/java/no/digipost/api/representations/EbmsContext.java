@@ -18,6 +18,7 @@ package no.digipost.api.representations;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.SignalMessage;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.UserMessage;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
 import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
@@ -44,6 +45,7 @@ public class EbmsContext {
 	public Messaging incomingMessaging;
 	public Organisasjonsnummer remoteParty;
 	public Exception referencesValidationException;
+	public Error warning;
 
 	public static EbmsContext from(final MessageContext messageContext) {
 		EbmsContext context = (EbmsContext) messageContext.getProperty(PROPERTY_NAME);

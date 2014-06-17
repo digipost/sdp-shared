@@ -31,6 +31,8 @@ import java.io.IOException;
 
 public class ApplikasjonsKvitteringReceiver extends EbmsContextAware implements WebServiceMessageExtractor<EbmsApplikasjonsKvittering> {
 
+	private static final String NO_MESSAGE_AVAILABLE_FROM_MPC_ERROR_CODE = "EBMS:0006";
+
 	private final Jaxb2Marshaller jaxb2Marshaller;
 
 	public ApplikasjonsKvitteringReceiver(final Jaxb2Marshaller jaxb2Marshaller) {
@@ -40,6 +42,11 @@ public class ApplikasjonsKvitteringReceiver extends EbmsContextAware implements 
 	@Override
 	public EbmsApplikasjonsKvittering extractData(final WebServiceMessage message) throws IOException, TransformerException {
 		SoapBody soapBody = ((SoapMessage) message).getSoapBody();
+
+		if (this.ebmsContext.warning != null && NO_MESSAGE_AVAILABLE_FROM_MPC_ERROR_CODE.equals(this.ebmsContext.warning.getErrorCode())) {
+			return null;
+		}
+
 		StandardBusinessDocument sbd = Marshalling.unmarshal(jaxb2Marshaller, soapBody, StandardBusinessDocument.class);
 		PartyInfo partyInfo = ebmsContext.userMessage.getPartyInfo();
 		EbmsAktoer avsender = EbmsAktoer.from(partyInfo.getFrom());

@@ -71,10 +71,10 @@ public class TransactionLogInterceptorTest {
     @Mock
     SimpleStandardBusinessDocument doc;
 
-    private final TransactionLogInterceptor interceptorInner = TransactionLogInterceptor.createServerInterceptor(Marshalling.createUnManaged(), TransactionLogInterceptor.Phase.INSIDE_WSSEC);
-    private final TransactionLogInterceptor interceptorOuter = TransactionLogInterceptor.createServerInterceptor(Marshalling.createUnManaged(), TransactionLogInterceptor.Phase.OUTSIDE_WSSEC);
+    private final TransactionLogSoapEndpointInterceptor interceptorInner = TransactionLogSoapEndpointInterceptor.createInsideServerInterceptor(Marshalling.createUnManaged());
+    private final TransactionLogSoapEndpointInterceptor interceptorOuter = TransactionLogSoapEndpointInterceptor.createOutsideServerInterceptor(Marshalling.createUnManaged());
 
-	private final TransactionLogInterceptor interceptorClient = TransactionLogInterceptor.createClientInterceptor(Marshalling.createUnManaged());
+	private final TransactionLogClientInterceptor interceptorClient = new TransactionLogClientInterceptor(Marshalling.createUnManaged());
 
 	private MessageContext messageContext;
 

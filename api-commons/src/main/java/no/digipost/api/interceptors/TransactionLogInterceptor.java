@@ -16,34 +16,25 @@
 package no.digipost.api.interceptors;
 
 import no.digipost.api.PMode;
-import no.digipost.api.representations.EbmsContext;
-import no.digipost.api.representations.Organisasjonsnummer;
-import no.digipost.api.representations.SimpleStandardBusinessDocument;
-import no.digipost.api.security.OrgnummerExtractor;
-import no.digipost.api.xml.Constants;
-import no.digipost.api.xml.Marshalling;
 import no.digipost.api.config.TransaksjonsLogg;
 import no.digipost.api.config.TransaksjonsLogg.Retning;
 import no.digipost.api.config.TransaksjonsLogg.Type;
+import no.digipost.api.representations.EbmsContext;
+import no.digipost.api.representations.Organisasjonsnummer;
+import no.digipost.api.representations.SimpleStandardBusinessDocument;
 import no.digipost.api.representations.SimpleUserMessage;
+import no.digipost.api.xml.Constants;
+import no.digipost.api.xml.Marshalling;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.MessageInfo;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.SignalMessage;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.UserMessage;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.ws.client.WebServiceClientException;
-import org.springframework.ws.client.support.interceptor.ClientInterceptor;
-import org.springframework.ws.context.MessageContext;
-import org.springframework.ws.server.endpoint.MethodEndpoint;
 import org.springframework.ws.soap.SoapBody;
 import org.springframework.ws.soap.SoapFault;
-import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
-import org.springframework.ws.soap.server.SoapEndpointInterceptor;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
-
-import java.security.cert.X509Certificate;
 
 import static no.digipost.api.config.TransaksjonsLogg.Type.APPLIKASJONSKVITTERING;
 import static no.digipost.api.config.TransaksjonsLogg.Type.EBMSFEIL;
@@ -52,118 +43,21 @@ import static no.digipost.api.config.TransaksjonsLogg.Type.TRANSPORTKVITTERING;
 import static no.digipost.api.config.TransaksjonsLogg.Type.USERMESSAGE;
 import static no.digipost.api.exceptions.ebms.standard.processing.EmptyMessagePartitionChannelException.EMPTY_MPC_EBMS_CODE;
 
-public class TransactionLogInterceptor implements SoapEndpointInterceptor, ClientInterceptor {
-
-	public enum Phase {
-		OUTSIDE_WSSEC,
-		INSIDE_WSSEC
-	}
+public class TransactionLogInterceptor {
 
 	private final Jaxb2Marshaller jaxb2Marshaller;
 	private TransaksjonsLogg logg = new TransaksjonsLogg();
-	private final Phase phase;
-	private static final String KEY = "translog.requestlogged";
-	private final OrgnummerExtractor orgnrExtractor = new OrgnummerExtractor();
 
-	private TransactionLogInterceptor(final Jaxb2Marshaller jaxb2Marshaller, final Phase phase) {
+
+	public TransactionLogInterceptor(final Jaxb2Marshaller jaxb2Marshaller) {
 		this.jaxb2Marshaller = jaxb2Marshaller;
-		this.phase = phase;
 	}
 
-	protected void setTransaksjonslogg(final TransaksjonsLogg logg) {
+	public void setTransaksjonslogg(final TransaksjonsLogg logg) {
 		this.logg = logg;
 	}
 
-	public static TransactionLogInterceptor createClientInterceptor(final Jaxb2Marshaller jaxb2Marshaller) {
-		return new TransactionLogInterceptor(jaxb2Marshaller, null);
-	}
-
-	public static TransactionLogInterceptor createServerInterceptor(final Jaxb2Marshaller jaxb2Marshaller, final Phase phase) {
-		return new TransactionLogInterceptor(jaxb2Marshaller, phase);
-	}
-
-	/*
-	 * SoapEndpointInterceptor
-	 */
-
-	@Override
-	public boolean understands(final SoapHeaderElement header) {
-		return true;
-	}
-
-	@Override
-	public boolean handleRequest(final MessageContext messageContext, final Object endpoint) throws Exception {
-		if (phase == Phase.INSIDE_WSSEC) {
-			loggIncomingEndpointRequest(messageContext, getName(endpoint));
-			messageContext.setProperty(KEY, true);
-		}
-		return true;
-	}
-
-	private String getName(final Object endpoint) {
-		return ((MethodEndpoint) endpoint).getBean().toString();
-	}
-
-	private void loggIncomingEndpointRequest(final MessageContext messageContext, final String endpoint) {
-		setOrgNummer(messageContext);
-		handleIncoming(EbmsContext.from(messageContext), (SoapMessage) messageContext.getRequest(), endpoint);
-	}
-
-	@Override
-	public boolean handleResponse(final MessageContext messageContext, final Object endpoint) throws Exception {
-		if (phase == Phase.OUTSIDE_WSSEC) {
-			if (messageContext.getProperty(KEY) == null) {
-				loggIncomingEndpointRequest(messageContext, getName(endpoint));
-			}
-			handleOutgoing(EbmsContext.from(messageContext), (SoapMessage) messageContext.getResponse(), getName(endpoint));
-		}
-		return true;
-	}
-
-	@Override
-	public boolean handleFault(final MessageContext messageContext, final Object endpoint) throws Exception {
-		if (phase == Phase.OUTSIDE_WSSEC) {
-			if (messageContext.getProperty(KEY) == null) {
-				loggIncomingEndpointRequest(messageContext, getName(endpoint));
-			}
-			handleFault(TransaksjonsLogg.Retning.UTGÅENDE, EbmsContext.from(messageContext),
-					(SoapMessage) messageContext.getResponse(),
-					getName(endpoint));
-		}
-		return true;
-	}
-
-	@Override
-	public void afterCompletion(final MessageContext messageContext, final Object endpoint, final Exception ex) throws Exception {
-	}
-
-	@Override
-	public void afterCompletion(MessageContext messageContext, Exception ex) throws WebServiceClientException {
-	}
-	
-	/*
-	 * ClientInterceptor
-	 */
-
-	@Override
-	public boolean handleRequest(final MessageContext messageContext) throws WebServiceClientException {
-		handleOutgoing(EbmsContext.from(messageContext), (SoapMessage) messageContext.getRequest(), "sender");
-		return true;
-	}
-
-	@Override
-	public boolean handleResponse(final MessageContext messageContext) throws WebServiceClientException {
-		handleIncoming(EbmsContext.from(messageContext), (SoapMessage) messageContext.getResponse(), "sender");
-		return true;
-	}
-
-	@Override
-	public boolean handleFault(final MessageContext messageContext) throws WebServiceClientException {
-		handleFault(TransaksjonsLogg.Retning.INNKOMMENDE, EbmsContext.from(messageContext), (SoapMessage) messageContext.getResponse(), "sender");
-		return true;
-	}
-
-	private void handleIncoming(final EbmsContext context, final SoapMessage soapMessage, final String endpoint) {
+	public void handleIncoming(final EbmsContext context, final SoapMessage soapMessage, final String endpoint) {
 		decorate(context, soapMessage);
 
 		Messaging msg = Marshalling.getMessaging(jaxb2Marshaller, soapMessage);
@@ -179,7 +73,7 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 		}
 	}
 
-	private void handleOutgoing(final EbmsContext context, final SoapMessage soapMessage, final String endpoint) {
+	public void handleOutgoing(final EbmsContext context, final SoapMessage soapMessage, final String endpoint) {
 		decorate(context, soapMessage);
 
 		Messaging msg = Marshalling.getMessaging(jaxb2Marshaller, soapMessage);
@@ -195,7 +89,7 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 		}
 	}
 
-	private void handleFault(final Retning retning, final EbmsContext context, final SoapMessage soapMessage, final String endpoint) {
+	public void handleFault(final Retning retning, final EbmsContext context, final SoapMessage soapMessage, final String endpoint) {
 		SoapBody soapBody = soapMessage.getSoapBody();
 		SoapFault soapFault = soapBody.getFault();
 		logg.soapfault(endpoint, getOrgNr(context), retning, soapFault);
@@ -209,6 +103,8 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 			}
 		}
 	}
+
+	// Private
 
 	private String getMpcFromSignal(final EbmsContext context, final SignalMessage signalMessage) {
 		String mpc = null;
@@ -277,22 +173,6 @@ public class TransactionLogInterceptor implements SoapEndpointInterceptor, Clien
 		if (context.sbd == null && soapMessage.getSoapBody().getPayloadSource() != null) {
 			StandardBusinessDocument sbd = Marshalling.unmarshal(jaxb2Marshaller, soapMessage.getSoapBody(), StandardBusinessDocument.class);
 			context.sbd = new SimpleStandardBusinessDocument(sbd);
-		}
-	}
-
-	private void setOrgNummer(final MessageContext messageContext) {
-		EbmsContext ebmsContext = EbmsContext.from(messageContext);
-		if (ebmsContext.remoteParty != null) {
-			return;
-		}
-		ebmsContext.remoteParty = Organisasjonsnummer.NULL;
-
-		X509Certificate cert = (X509Certificate) messageContext.getProperty(Wss4jInterceptor.INCOMING_CERTIFICATE);
-		if (cert != null) {
-			Organisasjonsnummer orgnr = orgnrExtractor.tryParse(cert);
-			if (orgnr != null) {
-				ebmsContext.remoteParty = orgnr;
-			}
 		}
 	}
 

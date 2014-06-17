@@ -27,6 +27,7 @@ import no.digipost.api.interceptors.EbmsClientInterceptor;
 import no.digipost.api.interceptors.EbmsReferenceValidatorInterceptor;
 import no.digipost.api.interceptors.KeyStoreInfo;
 import no.digipost.api.interceptors.RemoveContentLengthInterceptor;
+import no.digipost.api.interceptors.TransactionLogClientInterceptor;
 import no.digipost.api.interceptors.TransactionLogInterceptor;
 import no.digipost.api.interceptors.WsSecurityInterceptor;
 import no.digipost.api.representations.EbmsAktoer;
@@ -233,7 +234,7 @@ public class MessageSender {
 			meldingInterceptors.add(new EbmsClientInterceptor(marshaller, tekniskMottaker));
 			meldingInterceptors.add(wsSecurityInterceptor);
 			meldingInterceptors.add(new EbmsReferenceValidatorInterceptor(marshaller));
-			meldingInterceptors.add(TransactionLogInterceptor.createClientInterceptor(marshaller));
+			meldingInterceptors.add(new TransactionLogClientInterceptor(marshaller));
 
 			for (InsertInterceptor insertInterceptor : interceptorBefore) {
 				insertInterceptor(meldingInterceptors, insertInterceptor);

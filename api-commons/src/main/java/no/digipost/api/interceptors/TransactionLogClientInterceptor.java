@@ -51,5 +51,4 @@ public class TransactionLogClientInterceptor extends TransactionLogInterceptor i
 	public void afterCompletion(MessageContext messageContext, Exception ex) throws WebServiceClientException {
 	}
 
-
 }

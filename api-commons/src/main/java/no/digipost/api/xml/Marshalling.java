@@ -16,7 +16,6 @@
 package no.digipost.api.xml;
 
 import no.difi.begrep.sdp.schema_v10.SDPKvittering;
-import no.difi.begrep.sdp.schema_v10.SDPManifest;
 import org.etsi.uri._01903.v1_3.QualifyingProperties;
 import org.etsi.uri._2918.v1_2.XAdESSignatures;
 import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.NonRepudiationInformation;
@@ -27,7 +26,6 @@ import org.springframework.ws.soap.SoapBody;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
-import org.w3.xmldsig.X509Data;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xmlsoap.schemas.soap.envelope.Envelope;
@@ -67,9 +65,7 @@ public class Marshalling {
 						packageName(Messaging.class),
 						packageName(NonRepudiationInformation.class),
 						packageName(SDPKvittering.class),
-						packageName(SDPManifest.class),
 						packageName(XAdESSignatures.class),
-						packageName(X509Data.class),
 						packageName(QualifyingProperties.class)
 				}
 		);

@@ -37,10 +37,16 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.Result;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
+
 import java.io.InputStream;
 import java.util.Iterator;
 
-import static no.digipost.api.xml.Schemas.*;
+import static no.digipost.api.xml.Schemas.ASICE_SCHEMA;
+import static no.digipost.api.xml.Schemas.EBMS_SCHEMA;
+import static no.digipost.api.xml.Schemas.SBDH_SCHEMA;
+import static no.digipost.api.xml.Schemas.SDP_SCHEMA;
+import static no.digipost.api.xml.Schemas.XADES_SCHEMA;
+import static no.digipost.api.xml.Schemas.XMLDSIG_SCHEMA;
 
 public class Marshalling {
 

@@ -22,6 +22,7 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import javax.xml.crypto.MarshalException;
@@ -52,6 +53,7 @@ import java.util.UUID;
 
 public class SdpMeldingSigner {
 
+	private static final String DSIG_PREFIX = "ds";
 	private final Jaxb2Marshaller marshaller;
 	private final KeyStoreInfo keystoreInfo;
 
@@ -62,6 +64,7 @@ public class SdpMeldingSigner {
 
 	public Document sign(final StandardBusinessDocument sbd) {
 		try {
+
 			PrivateKey privateKey = keystoreInfo.getPrivateKey();
 			X509Certificate certificate = keystoreInfo.getCertificate();
 
@@ -87,9 +90,10 @@ public class SdpMeldingSigner {
 			Node digitalPostNode = doc.getDocumentElement().getFirstChild().getNextSibling();
 			Node avsenderNode = digitalPostNode.getFirstChild();
 
-			DOMSignContext dsc = new DOMSignContext(privateKey, doc.getDocumentElement().getLastChild(), avsenderNode);
-
+			DOMSignContext dsc = new DOMSignContext(privateKey, digitalPostNode, avsenderNode);
+			fixDsigNamespace(doc, dsc);
 			signature.sign(dsc);
+			doc.normalizeDocument();
 			return doc;
 		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException(e);
@@ -105,5 +109,23 @@ public class SdpMeldingSigner {
             throw new RuntimeException(e);
         }
     }
+
+	private void fixDsigNamespace(final Document doc, final DOMSignContext dsc) {
+		NamedNodeMap attributes = doc.getDocumentElement().getAttributes();
+		int i = 0;
+		boolean found = false;
+		while(i < attributes.getLength()) {
+			if (attributes.item(i).getNodeValue().equals(Constants.DIGSIG_NAMESPACE)) {
+				dsc.putNamespacePrefix(Constants.DIGSIG_NAMESPACE, attributes.item(i).getLocalName());
+				found = true;
+				break;
+			}
+			i++;
+		}
+		if (!found) {
+			doc.getDocumentElement().setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:" + DSIG_PREFIX, Constants.DIGSIG_NAMESPACE);
+			dsc.putNamespacePrefix(Constants.DIGSIG_NAMESPACE, DSIG_PREFIX);
+		}
+	}
 
 }

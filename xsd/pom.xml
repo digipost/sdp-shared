@@ -76,6 +76,8 @@
 						<arg>-Xsetters</arg>
 						<arg>-Xannotate</arg>
 						<arg>-XtoString</arg>
+						<arg>-Xequals</arg>
+						<arg>-XhashCode</arg>
 						<arg>-Xfluent-api</arg>
 						<arg>-Xvalue-constructor</arg>
 						<arg>-Xwildcard</arg>

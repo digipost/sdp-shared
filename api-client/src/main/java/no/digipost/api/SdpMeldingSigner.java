@@ -21,6 +21,7 @@ import no.digipost.api.xml.Marshalling;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import javax.xml.crypto.MarshalException;
@@ -47,6 +48,7 @@ import java.security.PrivateKey;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.X509Certificate;
 import java.util.Collections;
+import java.util.UUID;
 
 public class SdpMeldingSigner {
 	private final Jaxb2Marshaller marshaller;
@@ -67,14 +69,12 @@ public class SdpMeldingSigner {
 			Document doc = (Document)result.getNode();
 			Marshalling.trimNamespaces(doc);
 
-//			String id = "SBD-" + UUID.randomUUID().toString();
-//			doc.getDocumentElement().setAttribute("Id", id);
-//			doc.getDocumentElement().setIdAttribute("Id", true);
+			String id = "SBD-" + UUID.randomUUID().toString();
+			((Element)doc.getFirstChild()).setAttribute("Id", id);
+			((Element)doc.getFirstChild()).setIdAttribute("Id", true);
 
 			XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
-//			Reference ref = fac.newReference("#" + id, fac.newDigestMethod(DigestMethod.SHA256, null),
-//					Collections.singletonList(fac.newTransform(Transform.ENVELOPED, (TransformParameterSpec) null)), null, null);
-			Reference ref = fac.newReference("#xpointer(/)", fac.newDigestMethod(DigestMethod.SHA256, null),
+			Reference ref = fac.newReference("#" + id, fac.newDigestMethod(DigestMethod.SHA256, null),
 					Collections.singletonList(fac.newTransform(Transform.ENVELOPED, (TransformParameterSpec) null)), null, null);
 
 			SignedInfo si = fac.newSignedInfo(

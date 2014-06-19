@@ -24,6 +24,7 @@ import no.digipost.api.exceptions.ebms.custom.Constants;
 public class SignatureValidationException extends AbstractEbmsException {
 
 	public static final String DEFAULT_DESCRIPTION = "The MSH could not validate Signature.";
+	public static final String ERROR_CODE = Constants.customSecurityErrorCode(Origin.security, "01");
 
 	public SignatureValidationException() {
 		this(null, null, DEFAULT_DESCRIPTION);
@@ -38,7 +39,8 @@ public class SignatureValidationException extends AbstractEbmsException {
 	}
 
 	public SignatureValidationException(final String refToMessageInError, final Throwable cause, final String description) {
-		super(Origin.security, Constants.customSecurityErrorCode(Origin.security, "01"), Severity.failure, Category.Content, description, refToMessageInError, cause);
+		super(Origin.security, ERROR_CODE, Severity.failure, Category.Content, description, refToMessageInError, cause);
+
 	}
 
 	@Override

@@ -15,6 +15,9 @@
  */
 package no.digipost.api.xml;
 
+import org.w3c.dom.Attr;
+import org.w3c.dom.NamedNodeMap;
+
 import no.difi.begrep.sdp.schema_v10.SDPKvittering;
 import org.etsi.uri._01903.v1_3.QualifyingProperties;
 import org.etsi.uri._2918.v1_2.XAdESSignatures;
@@ -39,7 +42,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import static no.digipost.api.xml.Schemas.ASICE_SCHEMA;
 import static no.digipost.api.xml.Schemas.EBMS_SCHEMA;
@@ -165,5 +170,18 @@ public class Marshalling {
 	@SuppressWarnings("unchecked")
 	public static <T> JAXBElement<T> wrap(final QName qName, final T object) {
 		return new JAXBElement<T>(qName, (Class<T>) object.getClass(), object);
+	}
+
+	public static void trimNamespaces(final Document doc) {
+		NamedNodeMap attributes = doc.getDocumentElement().getAttributes();
+		List<Attr> attrsToRemove = new ArrayList<Attr>();
+		for(int i = 0; i < attributes.getLength(); i++) {
+			if (doc.getElementsByTagNameNS(attributes.item(i).getNodeValue(), "*").getLength() == 0) {
+				attrsToRemove.add((Attr)attributes.item(i));
+			}
+		}
+		for(Attr a : attrsToRemove) {
+			doc.getDocumentElement().removeAttributeNode(a);
+		}
 	}
 }

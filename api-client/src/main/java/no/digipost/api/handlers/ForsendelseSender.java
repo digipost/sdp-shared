@@ -22,6 +22,7 @@ import no.digipost.api.representations.EbmsAktoer;
 import no.digipost.api.representations.EbmsForsendelse;
 import no.digipost.api.representations.Mpc;
 import no.digipost.api.xml.Marshalling;
+import no.digipost.api.xml.TransformerUtil;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
@@ -33,6 +34,8 @@ import org.w3c.dom.Document;
 
 import javax.activation.DataHandler;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.stream.StreamSource;
+
 import java.io.IOException;
 import java.util.UUID;
 
@@ -46,11 +49,11 @@ public class ForsendelseSender extends EbmsContextAware implements WebServiceMes
 	private final SDPDigitalPost digitalPost;
 	private final SdpMeldingSigner signer;
 
-	public ForsendelseSender(final SdpMeldingSigner signer, final EbmsAktoer tekniskAvsender, final EbmsAktoer tekniskMottaker, final StandardBusinessDocument doc, final EbmsForsendelse forsendelse, final Jaxb2Marshaller marshaller) {
+	public ForsendelseSender(final SdpMeldingSigner signer, final EbmsAktoer tekniskAvsender, final EbmsAktoer tekniskMottaker, final EbmsForsendelse forsendelse, final Jaxb2Marshaller marshaller) {
 		this.signer = signer;
 		this.tekniskAvsender = tekniskAvsender;
 		this.tekniskMottaker = tekniskMottaker;
-		this.doc = doc;
+		doc = forsendelse.doc;
 		this.forsendelse = forsendelse;
 		this.marshaller = marshaller;
 		digitalPost = ((SDPDigitalPost) doc.getAny());
@@ -61,7 +64,9 @@ public class ForsendelseSender extends EbmsContextAware implements WebServiceMes
 		SoapMessage soapMessage = (SoapMessage) message;
 		attachFile(soapMessage);
 		Mpc mpc = new Mpc(forsendelse.prioritet, null);
-		if (digitalPost.getSignature() == null) {
+		if (forsendelse.sbdStream != null) {
+			TransformerUtil.transform(new StreamSource(forsendelse.sbdStream), soapMessage.getEnvelope().getBody().getPayloadResult(), true);
+		} else if (digitalPost.getSignature() == null) {
 			Document signedDoc = signer.sign(doc);
 			Marshalling.marshal(signedDoc, soapMessage.getEnvelope().getBody().getPayloadResult());
 		} else {

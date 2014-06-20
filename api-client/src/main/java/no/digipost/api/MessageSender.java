@@ -28,7 +28,6 @@ import no.digipost.api.interceptors.EbmsReferenceValidatorInterceptor;
 import no.digipost.api.interceptors.KeyStoreInfo;
 import no.digipost.api.interceptors.RemoveContentLengthInterceptor;
 import no.digipost.api.interceptors.TransactionLogClientInterceptor;
-import no.digipost.api.interceptors.TransactionLogInterceptor;
 import no.digipost.api.interceptors.WsSecurityInterceptor;
 import no.digipost.api.representations.EbmsAktoer;
 import no.digipost.api.representations.EbmsApplikasjonsKvittering;
@@ -54,6 +53,7 @@ import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +80,7 @@ public class MessageSender {
 	}
 
 	public TransportKvittering send(final EbmsForsendelse forsendelse) {
-		ForsendelseSender sender = new ForsendelseSender(signer, tekniskAvsender, tekniskMottaker, forsendelse.doc, forsendelse, marshaller);
+		ForsendelseSender sender = new ForsendelseSender(signer, tekniskAvsender, tekniskMottaker, forsendelse, marshaller);
 		LOG.info("Sender forsendelse til : {} ", uri);
 		return meldingTemplate.sendAndReceive(uri, sender, new TransportKvitteringReceiver());
 	}
@@ -141,7 +141,7 @@ public class MessageSender {
 		private final String endpointUri;
 		private final EbmsAktoer tekniskAvsenderId;
 		private final EbmsAktoer tekniskMottaker;
-		private WsSecurityInterceptor wsSecurityInterceptor;
+		private final WsSecurityInterceptor wsSecurityInterceptor;
 		private final KeyStoreInfo keystoreInfo;
 		private Jaxb2Marshaller marshaller;
 		private final List<InsertInterceptor> interceptorBefore = new ArrayList<InsertInterceptor>();

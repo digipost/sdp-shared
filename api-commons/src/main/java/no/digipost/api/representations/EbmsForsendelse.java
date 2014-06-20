@@ -18,6 +18,8 @@ package no.digipost.api.representations;
 import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
+import java.io.InputStream;
+
 public class EbmsForsendelse extends EbmsOutgoingMessage {
 	private final Dokumentpakke dokumentpakke;
 	private final EbmsAktoer ebmsMottaker;
@@ -26,8 +28,9 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 	public final String instanceIdentifier;
 	public final StandardBusinessDocument doc;
 	private final Organisasjonsnummer sbdhMottaker;
+	public final InputStream sbdStream;
 
-	private EbmsForsendelse(final String messageId, final EbmsAktoer ebmsMottaker, final EbmsAktoer ebmsAvsender, final Organisasjonsnummer sbdhMottaker, final Prioritet prioritet, final String conversationId, final String instanceIdentifier, final StandardBusinessDocument doc, final Dokumentpakke dokumentpakke) {
+	private EbmsForsendelse(final String messageId, final EbmsAktoer ebmsMottaker, final EbmsAktoer ebmsAvsender, final Organisasjonsnummer sbdhMottaker, final Prioritet prioritet, final String conversationId, final String instanceIdentifier, final StandardBusinessDocument doc, final Dokumentpakke dokumentpakke, final InputStream sbdStream) {
 		super(ebmsMottaker, messageId, null, prioritet);
 		this.ebmsMottaker = ebmsMottaker;
 		this.ebmsAvsender = ebmsAvsender;
@@ -36,6 +39,7 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 		this.instanceIdentifier = instanceIdentifier;
 		this.doc = doc;
 		this.dokumentpakke = dokumentpakke;
+		this.sbdStream = sbdStream;
 	}
 
 	public Dokumentpakke getDokumentpakke() {
@@ -92,6 +96,7 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 		private StandardBusinessDocument doc;
 		private SDPDigitalPost digitalPost;
 		private String messageId = newId();
+		public InputStream sbdStream = null;
 		private Prioritet prioritet = Prioritet.NORMAL;
 
 		private Builder() {
@@ -99,6 +104,10 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 
 		public Builder withMessageId(final String messageId) {
 			this.messageId = messageId;
+			return this;
+		}
+		public Builder withSbdStream(final InputStream sbdStream) {
+			this.sbdStream = sbdStream;
 			return this;
 		}
 
@@ -117,7 +126,7 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 				doc = StandardBusinessDocumentFactory
 						.create(avsender.orgnr, sbdhMottaker, instanceIdentifier, conversationId, digitalPost);
 			}
-			return new EbmsForsendelse(messageId, mottaker, avsender, sbdhMottaker, prioritet, conversationId, instanceIdentifier, doc, dokumentpakke);
+			return new EbmsForsendelse(messageId, mottaker, avsender, sbdhMottaker, prioritet, conversationId, instanceIdentifier, doc, dokumentpakke, sbdStream);
 		}
 	}
 

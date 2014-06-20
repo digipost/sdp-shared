@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3.xmldsig.Reference;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,11 +28,13 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 	public final StandardBusinessDocument sbd;
 	public final List<Reference> references = new ArrayList<Reference>();
 	public EbmsAktoer avsender = null;
+	public final InputStream sbdStream;
 
-	private EbmsApplikasjonsKvittering(final EbmsAktoer avsender, final EbmsAktoer mottaker, final EbmsOutgoingMessage.Prioritet prioritet, final String messageId, final String refToMessageId, final StandardBusinessDocument sbd) {
+	private EbmsApplikasjonsKvittering(final EbmsAktoer avsender, final EbmsAktoer mottaker, final EbmsOutgoingMessage.Prioritet prioritet, final String messageId, final String refToMessageId, final StandardBusinessDocument sbd, final InputStream sbdStream) {
 		super(mottaker, messageId, refToMessageId, prioritet);
 		this.sbd = sbd;
 		this.avsender = avsender;
+		this.sbdStream = sbdStream;
 	}
 
 	public static Builder create(final EbmsAktoer avsender, final EbmsAktoer mottaker, final StandardBusinessDocument sbd) {
@@ -55,6 +58,7 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 		private String messageId = null;
 		private String refToMessageId = null;
 		private List<Reference> references = new ArrayList<Reference>();
+		private InputStream sbdStream = null;
 
 		public Builder(final EbmsAktoer avsender, final EbmsAktoer mottaker, final StandardBusinessDocument sbd) {
 			this.mottaker = mottaker;
@@ -78,13 +82,18 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 			references = incomingReferences;
 			return this;
 		}
+		public Builder withSbdStream(final InputStream sbdStream) {
+			this.sbdStream = sbdStream;
+			return this;
+		}
 
 		public EbmsApplikasjonsKvittering build() {
 			String id = StringUtils.isEmpty(messageId) ? newId() : messageId;
-			EbmsApplikasjonsKvittering kvittering = new EbmsApplikasjonsKvittering(avsender, mottaker, prioritet, id, refToMessageId, sbd);
+			EbmsApplikasjonsKvittering kvittering = new EbmsApplikasjonsKvittering(avsender, mottaker, prioritet, id, refToMessageId, sbd, sbdStream);
 			kvittering.references.addAll(references);
 			return kvittering;
 		}
+
 
 	}
 }

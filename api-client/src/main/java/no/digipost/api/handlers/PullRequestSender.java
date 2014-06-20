@@ -32,6 +32,7 @@ import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
 
 import javax.xml.transform.TransformerException;
+
 import java.io.IOException;
 
 public class PullRequestSender extends EbmsContextAware implements WebServiceMessageCallback {
@@ -56,7 +57,7 @@ public class PullRequestSender extends EbmsContextAware implements WebServiceMes
 
 			@Override
 			public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SoapMessage soapMessage) {
-				Mpc mpc = new Mpc(pullRequest.prioritet, null);
+				Mpc mpc = new Mpc(pullRequest.prioritet, pullRequest.mpcId);
 				SignalMessage signalMessage = new SignalMessage()
 						.withMessageInfo(pullRequest.createMessageInfo())
 						.withPullRequest(new PullRequest()

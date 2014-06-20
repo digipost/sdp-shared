@@ -53,12 +53,9 @@ import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static no.digipost.api.exceptions.ebms.standard.processing.EmptyMessagePartitionChannelException.EMPTY_MPC_EBMS_CODE;
 
 public class MessageSender {
 
@@ -90,14 +87,7 @@ public class MessageSender {
 	}
 
 	public EbmsApplikasjonsKvittering hentKvittering(final EbmsPullRequest pullRequest, final EbmsApplikasjonsKvittering tidligereKvitteringSomSkalBekreftes) {
-		try {
-			return meldingTemplate.sendAndReceive(uri, new PullRequestSender(pullRequest, marshaller, tidligereKvitteringSomSkalBekreftes), new ApplikasjonsKvitteringReceiver(marshaller));
-		} catch (EbmsClientException ex) {
-			if (ex.getError().getErrorCode().equals(EMPTY_MPC_EBMS_CODE)) {
-				return null;
-			}
-			throw ex;
-		}
+		return meldingTemplate.sendAndReceive(uri, new PullRequestSender(pullRequest, marshaller, tidligereKvitteringSomSkalBekreftes), new ApplikasjonsKvitteringReceiver(marshaller));
 	}
 
 	public void bekreft(final EbmsApplikasjonsKvittering appKvittering) {

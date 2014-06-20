@@ -63,7 +63,7 @@ public class ForsendelseSender extends EbmsContextAware implements WebServiceMes
 	public void doWithMessage(final WebServiceMessage message) throws IOException, TransformerException {
 		SoapMessage soapMessage = (SoapMessage) message;
 		attachFile(soapMessage);
-		Mpc mpc = new Mpc(forsendelse.prioritet, null);
+		Mpc mpc = new Mpc(forsendelse.prioritet, forsendelse.mpcId);
 		if (forsendelse.sbdStream != null) {
 			TransformerUtil.transform(new StreamSource(forsendelse.sbdStream), soapMessage.getEnvelope().getBody().getPayloadResult(), true);
 		} else if (digitalPost.getSignature() == null) {

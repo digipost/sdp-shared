@@ -30,8 +30,8 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 	private final Organisasjonsnummer sbdhMottaker;
 	public final InputStream sbdStream;
 
-	private EbmsForsendelse(final String messageId, final EbmsAktoer ebmsMottaker, final EbmsAktoer ebmsAvsender, final Organisasjonsnummer sbdhMottaker, final Prioritet prioritet, final String conversationId, final String instanceIdentifier, final StandardBusinessDocument doc, final Dokumentpakke dokumentpakke, final InputStream sbdStream) {
-		super(ebmsMottaker, messageId, null, prioritet);
+	private EbmsForsendelse(final String messageId, final EbmsAktoer ebmsMottaker, final EbmsAktoer ebmsAvsender, final String mpcId, final Organisasjonsnummer sbdhMottaker, final Prioritet prioritet, final String conversationId, final String instanceIdentifier, final StandardBusinessDocument doc, final Dokumentpakke dokumentpakke, final InputStream sbdStream) {
+		super(ebmsMottaker, messageId, null, prioritet, mpcId);
 		this.ebmsMottaker = ebmsMottaker;
 		this.ebmsAvsender = ebmsAvsender;
 		this.sbdhMottaker = sbdhMottaker;
@@ -98,6 +98,7 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 		private String messageId = newId();
 		public InputStream sbdStream = null;
 		private Prioritet prioritet = Prioritet.NORMAL;
+		private String mpcId = null;
 
 		private Builder() {
 		}
@@ -115,6 +116,10 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 			this.conversationId = conversationId;
 			return this;
 		}
+		public Builder withMpcId(final String mpcId) {
+			this.mpcId = mpcId;
+			return this;
+		}
 
 		public Builder withPrioritet(final Prioritet prioritet) {
 			this.prioritet = prioritet;
@@ -126,7 +131,7 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 				doc = StandardBusinessDocumentFactory
 						.create(avsender.orgnr, sbdhMottaker, instanceIdentifier, conversationId, digitalPost);
 			}
-			return new EbmsForsendelse(messageId, mottaker, avsender, sbdhMottaker, prioritet, conversationId, instanceIdentifier, doc, dokumentpakke, sbdStream);
+			return new EbmsForsendelse(messageId, mottaker, avsender, mpcId, sbdhMottaker, prioritet, conversationId, instanceIdentifier, doc, dokumentpakke, sbdStream);
 		}
 	}
 

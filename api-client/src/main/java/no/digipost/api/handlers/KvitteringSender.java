@@ -63,7 +63,7 @@ public class KvitteringSender extends EbmsContextAware implements WebServiceMess
 			Marshalling.marshal(marshaller, soapMessage.getEnvelope().getBody(), appKvittering.sbd);
 		}
 
-		Mpc mpc = new Mpc(appKvittering.prioritet, null);
+		Mpc mpc = new Mpc(appKvittering.prioritet, appKvittering.mpcId);
 		ebmsContext.addRequestStep(new AddUserMessageStep(mpc, appKvittering.messageId, null, appKvittering.sbd, tekniskAvsender, tekniskMottaker
 				, marshaller));
 	}

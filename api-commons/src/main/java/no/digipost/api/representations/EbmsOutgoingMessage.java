@@ -45,10 +45,12 @@ public class EbmsOutgoingMessage extends EbmsMessage {
 
     public final Prioritet prioritet;
 	protected EbmsAktoer ebmsMottaker;
+	public final String mpcId;
 
-	public EbmsOutgoingMessage(final EbmsAktoer ebmsMottaker, final String messageId, final String refToMessageId, final Prioritet prioritet) {
+	public EbmsOutgoingMessage(final EbmsAktoer ebmsMottaker, final String messageId, final String refToMessageId, final Prioritet prioritet, final String mpcId) {
 		super(messageId, refToMessageId);
 		this.ebmsMottaker = ebmsMottaker;
+		this.mpcId = mpcId;
 		this.prioritet = prioritet != null ? prioritet : Prioritet.NORMAL;
 	}
 

@@ -30,8 +30,8 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 	public EbmsAktoer avsender = null;
 	public final InputStream sbdStream;
 
-	private EbmsApplikasjonsKvittering(final EbmsAktoer avsender, final EbmsAktoer mottaker, final EbmsOutgoingMessage.Prioritet prioritet, final String messageId, final String refToMessageId, final StandardBusinessDocument sbd, final InputStream sbdStream) {
-		super(mottaker, messageId, refToMessageId, prioritet);
+	private EbmsApplikasjonsKvittering(final EbmsAktoer avsender, final String mpcId, final EbmsAktoer mottaker, final EbmsOutgoingMessage.Prioritet prioritet, final String messageId, final String refToMessageId, final StandardBusinessDocument sbd, final InputStream sbdStream) {
+		super(mottaker, messageId, refToMessageId, prioritet, mpcId);
 		this.sbd = sbd;
 		this.avsender = avsender;
 		this.sbdStream = sbdStream;
@@ -59,6 +59,7 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 		private String refToMessageId = null;
 		private List<Reference> references = new ArrayList<Reference>();
 		private InputStream sbdStream = null;
+		private String mpcId;
 
 		public Builder(final EbmsAktoer avsender, final EbmsAktoer mottaker, final StandardBusinessDocument sbd) {
 			this.mottaker = mottaker;
@@ -82,6 +83,10 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 			references = incomingReferences;
 			return this;
 		}
+		public Builder withMpcId(final String mpcId) {
+			this.mpcId = mpcId;
+			return this;
+		}
 		public Builder withSbdStream(final InputStream sbdStream) {
 			this.sbdStream = sbdStream;
 			return this;
@@ -89,7 +94,7 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 
 		public EbmsApplikasjonsKvittering build() {
 			String id = StringUtils.isEmpty(messageId) ? newId() : messageId;
-			EbmsApplikasjonsKvittering kvittering = new EbmsApplikasjonsKvittering(avsender, mottaker, prioritet, id, refToMessageId, sbd, sbdStream);
+			EbmsApplikasjonsKvittering kvittering = new EbmsApplikasjonsKvittering(avsender, mpcId, mottaker, prioritet, id, refToMessageId, sbd, sbdStream);
 			kvittering.references.addAll(references);
 			return kvittering;
 		}

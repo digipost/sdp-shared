@@ -53,6 +53,7 @@ import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -190,6 +191,10 @@ public class MessageSender {
 
 		public Builder withHttpProxy(final String proxyHost, final int proxyPort) {
 			httpHost = new HttpHost(proxyHost, proxyPort, "https");
+			return this;
+		}
+		public Builder withHttpProxy(final String proxyHost, final int proxyPort, final String scheme) {
+			httpHost = new HttpHost(proxyHost, proxyPort, scheme);
 			return this;
 		}
 

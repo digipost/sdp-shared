@@ -15,7 +15,6 @@
  */
 package no.digipost.api.xml;
 
-import no.digipost.api.xml.Marshalling;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -26,7 +25,7 @@ import java.io.InputStream;
 public class UnmarshallingTest {
 
 	@Test
-	public void test() {
+	public void should_unmashall_schema_valid_xml() {
 		InputStream xml = getClass().getResourceAsStream("/difi2.xml");
 		Marshalling.createUnManaged().unmarshal(new StreamSource(xml));
 	}

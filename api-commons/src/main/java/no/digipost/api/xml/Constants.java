@@ -28,6 +28,10 @@ public class Constants {
 	public static final String DIGSIG_NAMESPACE = "http://www.w3.org/2000/09/xmldsig#";
 	public static final String WSSEC_NAMESPACE = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
 	public static final String WSSEC_UTILS_NAMESPACE = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";
+	public static final String ASICE_NAMESPACE = "http://uri.etsi.org/01903/v1.3.2#";
+
+	public static final String C14V1 = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
+	public static final String C14N11 = "http://www.w3.org/2006/12/xml-c14n11";
 
 	public static final String SBDH_NAMESPACE = "http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader";
 

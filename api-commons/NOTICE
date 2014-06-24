@@ -27,8 +27,6 @@ This software includes third party software subject to the following licenses:
   JCL 1.1.1 implemented over SLF4J under MIT License
   Joda-Time under Apache 2
   JUnit under Common Public License Version 1.0
-  Logback Classic Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
-  Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   Mockito under The MIT License
   Objenesis under MIT License
   OpenSAML-J under Apache 2

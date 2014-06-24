@@ -16,6 +16,7 @@
 package no.digipost.api.xml;
 
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 public class Schemas {
 
@@ -26,4 +27,9 @@ public class Schemas {
 	public static final ClassPathResource XADES_SCHEMA = new ClassPathResource("etsi/XAdES.xsd");
 	public static final ClassPathResource ASICE_SCHEMA = new ClassPathResource("asic-e/ts_102918v010201.xsd");
 
+	public static Resource[] schemaResources() {
+		return new Resource[]{
+				SDP_SCHEMA, SBDH_SCHEMA, EBMS_SCHEMA, XMLDSIG_SCHEMA, XADES_SCHEMA, ASICE_SCHEMA
+		};
+	}
 }

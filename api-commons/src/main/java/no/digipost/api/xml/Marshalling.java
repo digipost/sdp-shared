@@ -46,13 +46,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static no.digipost.api.xml.Schemas.ASICE_SCHEMA;
-import static no.digipost.api.xml.Schemas.EBMS_SCHEMA;
-import static no.digipost.api.xml.Schemas.SBDH_SCHEMA;
-import static no.digipost.api.xml.Schemas.SDP_SCHEMA;
-import static no.digipost.api.xml.Schemas.XADES_SCHEMA;
-import static no.digipost.api.xml.Schemas.XMLDSIG_SCHEMA;
-
 public class Marshalling {
 
 	// Use when spring managed
@@ -80,7 +73,7 @@ public class Marshalling {
 						packageName(QualifyingProperties.class)
 				}
 		);
-		marshaller.setSchemas(SDP_SCHEMA, SBDH_SCHEMA, EBMS_SCHEMA, XMLDSIG_SCHEMA, XADES_SCHEMA, ASICE_SCHEMA);
+		marshaller.setSchemas(Schemas.schemaResources());
 		if (runAfterPropertiesSet) {
 			try {
 				marshaller.afterPropertiesSet();

@@ -42,7 +42,8 @@ public class Organisasjonsnummer {
 		Pattern pattern = Pattern.compile("^([0-9]{4}:)?([0-9]{9})$");
 		Matcher matcher = pattern.matcher(iso6523Orgnr);
 		if (!matcher.matches()) {
-			throw new IllegalArgumentException("Invalid PartyInfo:" + iso6523Orgnr);
+			throw new IllegalArgumentException("Invalid organizational number. " +
+					"Expected format is ISO 6523, got following organizational number: " + iso6523Orgnr);
 		}
 		return new Organisasjonsnummer(matcher.group(2));
 	}

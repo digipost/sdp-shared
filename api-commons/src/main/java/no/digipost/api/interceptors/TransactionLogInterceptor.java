@@ -172,7 +172,9 @@ public class TransactionLogInterceptor {
 	private void decorate(final EbmsContext context, final SoapMessage soapMessage) {
 		if (context.sbd == null && soapMessage.getSoapBody().getPayloadSource() != null) {
 			StandardBusinessDocument sbd = Marshalling.unmarshal(jaxb2Marshaller, soapMessage.getSoapBody(), StandardBusinessDocument.class);
-			context.sbd = new SimpleStandardBusinessDocument(sbd);
+			if (sbd != null && sbd.getStandardBusinessDocumentHeader() != null) {
+				context.sbd = new SimpleStandardBusinessDocument(sbd);
+			}
 		}
 	}
 

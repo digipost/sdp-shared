@@ -36,6 +36,7 @@ import no.digipost.api.representations.EbmsPullRequest;
 import no.digipost.api.representations.TransportKvittering;
 import no.digipost.api.xml.Marshalling;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -144,6 +145,7 @@ public class MessageSender {
 		private int socketTimeout = 30000;
 		private int connectTimeout = 10000;
 		private int connectionRequestTimeout = 10000;
+		private HttpRequestInterceptor[] httpRequestInterceptors;
 
 		private Builder(final String endpointUri, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker,
 		                final WsSecurityInterceptor wsSecurityInterceptor, final KeyStoreInfo keystoreInfo) {
@@ -195,6 +197,11 @@ public class MessageSender {
 		}
 		public Builder withHttpProxy(final String proxyHost, final int proxyPort, final String scheme) {
 			httpHost = new HttpHost(proxyHost, proxyPort, scheme);
+			return this;
+		}
+
+		public Builder withHttpRequestInterceptors(final HttpRequestInterceptor... httpRequestInterceptors) {
+			this.httpRequestInterceptors = httpRequestInterceptors;
 			return this;
 		}
 
@@ -256,8 +263,13 @@ public class MessageSender {
 				requestConfigBuilder.setProxy(httpHost);
 			}
 
-			CloseableHttpClient client = HttpClientBuilder
-					.create()
+			HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+
+			for (HttpRequestInterceptor httpRequestInterceptor : this.httpRequestInterceptors) {
+				httpClientBuilder.addInterceptorFirst(httpRequestInterceptor);
+			}
+			
+			CloseableHttpClient client = httpClientBuilder
 					.addInterceptorFirst(new RemoveContentLengthInterceptor())
 					.setConnectionManager(connectionManager)
 					.setDefaultRequestConfig(requestConfigBuilder.build())

@@ -59,6 +59,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 public class MessageSender {
 
 	private static final Logger LOG = LoggerFactory.getLogger(MessageSender.class);
@@ -145,7 +147,7 @@ public class MessageSender {
 		private int socketTimeout = 30000;
 		private int connectTimeout = 10000;
 		private int connectionRequestTimeout = 10000;
-		private HttpRequestInterceptor[] httpRequestInterceptors;
+		private final List<HttpRequestInterceptor> httpRequestInterceptors = new ArrayList<HttpRequestInterceptor>();
 
 		private Builder(final String endpointUri, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker,
 		                final WsSecurityInterceptor wsSecurityInterceptor, final KeyStoreInfo keystoreInfo) {
@@ -201,7 +203,7 @@ public class MessageSender {
 		}
 
 		public Builder withHttpRequestInterceptors(final HttpRequestInterceptor... httpRequestInterceptors) {
-			this.httpRequestInterceptors = httpRequestInterceptors;
+			this.httpRequestInterceptors.addAll(asList(httpRequestInterceptors));
 			return this;
 		}
 

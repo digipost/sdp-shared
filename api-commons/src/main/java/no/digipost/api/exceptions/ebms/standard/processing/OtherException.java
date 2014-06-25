@@ -25,6 +25,7 @@ public class OtherException extends AbstractEbmsException {
 	public static final OtherException GENERAL_ERROR = new OtherException(null, "Something went wrong, please try again later.");
 
 	public static final String DEFAULT_DESCRIPTION = "-";
+	public static final String ERROR_CODE = "0004";
 
 	public OtherException() {
 		this(null, null, DEFAULT_DESCRIPTION);
@@ -39,7 +40,7 @@ public class OtherException extends AbstractEbmsException {
 	}
 
 	public OtherException(final String refToMessageInError, final Throwable cause, final String description) {
-		super(Origin.ebMS, "0004", Severity.failure, Category.Content, description, refToMessageInError, cause);
+		super(Origin.ebMS, ERROR_CODE, Severity.failure, Category.Content, description, refToMessageInError, cause);
 	}
 
 	@Override

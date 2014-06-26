@@ -41,6 +41,7 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.Result;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -50,31 +51,23 @@ import static no.digipost.api.xml.Constants.MESSAGING_QNAME;
 
 public class Marshalling {
 
-	private static class MarshallerForContainerManagement {
-		private static final Jaxb2Marshaller instance = create();
-	}
-
 	private static class FullyInitializedMarshaller {
-		private static final Jaxb2Marshaller instance = create(); static {
+		private static final Jaxb2Marshaller instance = createNewMarshaller(); static {
 			try {
 				instance.afterPropertiesSet();
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				throw e instanceof RuntimeException ? (RuntimeException) e : new RuntimeException(e.getMessage(), e);
 			}
 		}
 	}
 
-	// Use when spring managed
-	public static Jaxb2Marshaller getManaged() {
-		return MarshallerForContainerManagement.instance;
-	}
 
 	// Use when not spring managed
-	public static Jaxb2Marshaller getUnManaged() {
+	public static Jaxb2Marshaller getMarshallerSingleton() {
 		return FullyInitializedMarshaller.instance;
 	}
 
-	private static Jaxb2Marshaller create() {
+	public static Jaxb2Marshaller createNewMarshaller() {
 		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
 		marshaller.setPackagesToScan(
 				new String[]{

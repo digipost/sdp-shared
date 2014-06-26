@@ -43,7 +43,7 @@ import static org.mockito.Mockito.when;
 
 public class MarshallingTest {
 
-	private final Jaxb2Marshaller jaxb2Marshaller = Marshalling.getUnManaged();
+	private final Jaxb2Marshaller jaxb2Marshaller = Marshalling.getMarshallerSingleton();
 
 	@Mock
 	private SoapMessage soapMessage;

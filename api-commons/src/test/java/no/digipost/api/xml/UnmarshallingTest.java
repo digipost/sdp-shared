@@ -27,7 +27,7 @@ public class UnmarshallingTest {
 	@Test
 	public void should_unmashall_schema_valid_xml() {
 		InputStream xml = getClass().getResourceAsStream("/difi2.xml");
-		Marshalling.getUnManaged().unmarshal(new StreamSource(xml));
+		Marshalling.getMarshallerSingleton().unmarshal(new StreamSource(xml));
 	}
 
 }

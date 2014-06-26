@@ -50,17 +50,31 @@ import static no.digipost.api.xml.Constants.MESSAGING_QNAME;
 
 public class Marshalling {
 
+	private static class MarshallerForContainerManagement {
+		private static final Jaxb2Marshaller instance = create();
+	}
+
+	private static class FullyInitializedMarshaller {
+		private static final Jaxb2Marshaller instance = create(); static {
+			try {
+				instance.afterPropertiesSet();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
 	// Use when spring managed
-	public static Jaxb2Marshaller createManaged() {
-		return create(false);
+	public static Jaxb2Marshaller getManaged() {
+		return MarshallerForContainerManagement.instance;
 	}
 
 	// Use when not spring managed
-	public static Jaxb2Marshaller createUnManaged() {
-		return create(true);
+	public static Jaxb2Marshaller getUnManaged() {
+		return FullyInitializedMarshaller.instance;
 	}
 
-	private static Jaxb2Marshaller create(final boolean runAfterPropertiesSet) {
+	private static Jaxb2Marshaller create() {
 		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
 		marshaller.setPackagesToScan(
 				new String[]{
@@ -76,13 +90,6 @@ public class Marshalling {
 				}
 		);
 		marshaller.setSchemas(Schemas.schemaResources());
-		if (runAfterPropertiesSet) {
-			try {
-				marshaller.afterPropertiesSet();
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
 		return marshaller;
 	}
 

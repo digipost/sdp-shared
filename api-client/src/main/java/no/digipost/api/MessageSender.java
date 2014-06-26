@@ -292,7 +292,7 @@ public class MessageSender {
 
         protected static synchronized Jaxb2Marshaller getDefaultMarshaller() {
             if (defaultMarshaller == null) {
-                defaultMarshaller = Marshalling.createUnManaged();
+                defaultMarshaller = Marshalling.getUnManaged();
             }
             return defaultMarshaller;
         }

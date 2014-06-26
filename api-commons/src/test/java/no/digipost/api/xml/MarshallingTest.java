@@ -27,24 +27,11 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.BusinessScope;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.DocumentIdentification;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.Partner;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.PartnerIdentification;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocumentHeader;
-import org.w3.xmldsig.CanonicalizationMethod;
-import org.w3.xmldsig.DigestMethod;
-import org.w3.xmldsig.Reference;
-import org.w3.xmldsig.Signature;
-import org.w3.xmldsig.SignatureMethod;
-import org.w3.xmldsig.SignatureValue;
-import org.w3.xmldsig.SignedInfo;
-import org.w3.xmldsig.Transform;
-import org.w3.xmldsig.Transforms;
+import org.unece.cefact.namespaces.standardbusinessdocumentheader.*;
+import org.w3.xmldsig.*;
 
 import javax.xml.transform.stream.StreamResult;
+
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +43,7 @@ import static org.mockito.Mockito.when;
 
 public class MarshallingTest {
 
-	private final Jaxb2Marshaller jaxb2Marshaller = Marshalling.createUnManaged();
+	private final Jaxb2Marshaller jaxb2Marshaller = Marshalling.getUnManaged();
 
 	@Mock
 	private SoapMessage soapMessage;
@@ -78,7 +65,7 @@ public class MarshallingTest {
 	@Test(expected = InvalidHeaderException.class)
 	public void manglende_ebms_header_skal_kaste_invalid_header() {
 		when(soapMessage.getSoapHeader()).thenReturn(soapHeader);
-		List<SoapHeaderElement> soapHeaderElements = new ArrayList();
+		List<SoapHeaderElement> soapHeaderElements = new ArrayList<SoapHeaderElement>();
 		when(soapHeader.examineHeaderElements(MESSAGING_QNAME)).thenReturn(soapHeaderElements.iterator());
 		Marshalling.getMessaging(jaxb2Marshaller, soapMessage);
 	}
@@ -132,7 +119,7 @@ public class MarshallingTest {
 	}
 
 
-	private StandardBusinessDocument createValidStandardBusinessDocument(Object any) {
+	private StandardBusinessDocument createValidStandardBusinessDocument(java.lang.Object any) {
 		Partner partner = new Partner().withIdentifier(new PartnerIdentification("parner", "authority"));
 
 		return new StandardBusinessDocument()

@@ -15,10 +15,8 @@
  */
 package no.digipost.api.xml;
 
-import org.w3c.dom.Attr;
-import org.w3c.dom.NamedNodeMap;
-
 import no.difi.begrep.sdp.schema_v10.SDPKvittering;
+import no.digipost.api.exceptions.ebms.standard.processing.InvalidHeaderException;
 import org.etsi.uri._01903.v1_3.QualifyingProperties;
 import org.etsi.uri._2918.v1_2.XAdESSignatures;
 import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.NonRepudiationInformation;
@@ -26,10 +24,13 @@ import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.soap.SoapBody;
+import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xmlsoap.schemas.soap.envelope.Envelope;
 
@@ -40,11 +41,12 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.Result;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import static no.digipost.api.xml.Constants.MESSAGING_QNAME;
 
 public class Marshalling {
 
@@ -114,14 +116,28 @@ public class Marshalling {
 		TransformerUtil.transform(source, payloadResult);
 	}
 
+	/**
+	 * Enten returnerer denne et Messaging objekt, eller så kaster den en InvalidHeaderException
+	 */
 	public static Messaging getMessaging(final Jaxb2Marshaller jaxb2Marshaller, final WebServiceMessage message) {
-		Iterator<SoapHeaderElement> soapHeaderElementIterator = ((SoapMessage) message).getSoapHeader().examineHeaderElements(Constants.MESSAGING_QNAME);
-		if (!soapHeaderElementIterator.hasNext()) {
-			throw new RuntimeException("Missing required EBMS SOAP header");
-		}
-		SoapHeaderElement incomingSoapHeaderElement = soapHeaderElementIterator.next();
 
-		return (Messaging) jaxb2Marshaller.unmarshal(incomingSoapHeaderElement.getSource());
+		SoapHeader soapHeader = ((SoapMessage) message).getSoapHeader();
+		if (soapHeader == null) {
+			throw new InvalidHeaderException(null, "The ebMS header is missing (no SOAP header found in SOAP request)");
+		}
+
+		Iterator<SoapHeaderElement> soapHeaderElementIterator = soapHeader.examineHeaderElements(MESSAGING_QNAME);
+		if (!soapHeaderElementIterator.hasNext()) {
+			throw new InvalidHeaderException(null, "The ebMS header is missing in SOAP header");
+		}
+
+		SoapHeaderElement incomingSoapHeaderElement = soapHeaderElementIterator.next();
+		try {
+			return (Messaging) jaxb2Marshaller.unmarshal(incomingSoapHeaderElement.getSource());
+		} catch (Exception e) {
+			throw new InvalidHeaderException();
+		}
+
 	}
 
 	public static <T> T unmarshal(final Jaxb2Marshaller jaxb2Marshaller, final Node node, final Class<T> clazz) {
@@ -168,12 +184,12 @@ public class Marshalling {
 	public static void trimNamespaces(final Document doc) {
 		NamedNodeMap attributes = doc.getDocumentElement().getAttributes();
 		List<Attr> attrsToRemove = new ArrayList<Attr>();
-		for(int i = 0; i < attributes.getLength(); i++) {
+		for (int i = 0; i < attributes.getLength(); i++) {
 			if (doc.getElementsByTagNameNS(attributes.item(i).getNodeValue(), "*").getLength() == 0) {
-				attrsToRemove.add((Attr)attributes.item(i));
+				attrsToRemove.add((Attr) attributes.item(i));
 			}
 		}
-		for(Attr a : attrsToRemove) {
+		for (Attr a : attrsToRemove) {
 			doc.getDocumentElement().removeAttributeNode(a);
 		}
 	}

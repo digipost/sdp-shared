@@ -33,6 +33,9 @@ public class SimpleStandardBusinessDocument {
 	}
 
 	public String getInstanceIdentifier() {
+		if (doc.getStandardBusinessDocumentHeader() == null || doc.getStandardBusinessDocumentHeader().getDocumentIdentification() == null) {
+			return null;
+		}
 		return doc.getStandardBusinessDocumentHeader().getDocumentIdentification().getInstanceIdentifier();
 	}
 
@@ -54,7 +57,7 @@ public class SimpleStandardBusinessDocument {
 	}
 
 	public Scope getScope() {
-		if (doc.getStandardBusinessDocumentHeader().getBusinessScope() != null) {
+		if (doc.getStandardBusinessDocumentHeader() != null && doc.getStandardBusinessDocumentHeader().getBusinessScope() != null) {
 			List<Scope> scopes = doc.getStandardBusinessDocumentHeader().getBusinessScope().getScopes();
 			if (!isEmpty(scopes)) {
 				return scopes.get(0);
@@ -80,10 +83,26 @@ public class SimpleStandardBusinessDocument {
 	}
 
 	public Organisasjonsnummer getSender() {
-		return Organisasjonsnummer.fromIso6523(doc.getStandardBusinessDocumentHeader().getSenders().get(0).getIdentifier().getValue());
+		if (doc.getStandardBusinessDocumentHeader() == null || doc.getStandardBusinessDocumentHeader().getSenders() == null ||
+				doc.getStandardBusinessDocumentHeader().getSenders().isEmpty() || doc.getStandardBusinessDocumentHeader().getSenders().get(0).getIdentifier() == null) {
+			return null;
+		}
+		try {
+			return Organisasjonsnummer.fromIso6523(doc.getStandardBusinessDocumentHeader().getSenders().get(0).getIdentifier().getValue());
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
 	}
 	public Organisasjonsnummer getReceiver() {
-		return Organisasjonsnummer.fromIso6523(doc.getStandardBusinessDocumentHeader().getReceivers().get(0).getIdentifier().getValue());
+		if (doc.getStandardBusinessDocumentHeader() == null || doc.getStandardBusinessDocumentHeader().getReceivers() == null ||
+				doc.getStandardBusinessDocumentHeader().getReceivers().isEmpty() || doc.getStandardBusinessDocumentHeader().getReceivers().get(0).getIdentifier() == null) {
+			return null;
+		}
+		try {
+			return Organisasjonsnummer.fromIso6523(doc.getStandardBusinessDocumentHeader().getReceivers().get(0).getIdentifier().getValue());
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
 	}
 
 	public StandardBusinessDocument getUnderlyingDoc() {

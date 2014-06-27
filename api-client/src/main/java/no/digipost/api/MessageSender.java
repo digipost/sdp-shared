@@ -37,6 +37,7 @@ import no.digipost.api.representations.TransportKvittering;
 import no.digipost.api.xml.Marshalling;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -148,6 +149,7 @@ public class MessageSender {
 		private int connectTimeout = 10000;
 		private int connectionRequestTimeout = 10000;
 		private final List<HttpRequestInterceptor> httpRequestInterceptors = new ArrayList<HttpRequestInterceptor>();
+		private final List<HttpResponseInterceptor> httpResponseInterceptors = new ArrayList<HttpResponseInterceptor>();
 
 		private Builder(final String endpointUri, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker,
 		                final WsSecurityInterceptor wsSecurityInterceptor, final KeyStoreInfo keystoreInfo) {
@@ -204,6 +206,11 @@ public class MessageSender {
 
 		public Builder withHttpRequestInterceptors(final HttpRequestInterceptor... httpRequestInterceptors) {
 			this.httpRequestInterceptors.addAll(asList(httpRequestInterceptors));
+			return this;
+		}
+
+		public Builder withHttpResponseInterceptors(final HttpResponseInterceptor... httpResponseInterceptors) {
+			this.httpResponseInterceptors.addAll(asList(httpResponseInterceptors));
 			return this;
 		}
 
@@ -270,7 +277,11 @@ public class MessageSender {
 			for (HttpRequestInterceptor httpRequestInterceptor : this.httpRequestInterceptors) {
 				httpClientBuilder.addInterceptorFirst(httpRequestInterceptor);
 			}
-			
+
+			for (HttpResponseInterceptor httpResponseInterceptor : this.httpResponseInterceptors) {
+				httpClientBuilder.addInterceptorFirst(httpResponseInterceptor);
+			}
+
 			CloseableHttpClient client = httpClientBuilder
 					.addInterceptorFirst(new RemoveContentLengthInterceptor())
 					.setConnectionManager(connectionManager)

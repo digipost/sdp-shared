@@ -19,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Organisasjonsnummer {
+	public static final Pattern ISO6523_PATTERN = Pattern.compile("^([0-9]{4}:)?([0-9]{9})$");
 
 	private final String orgNummer;
 	public static final String ISO6523_ACTORID = "iso6523-actorid-upis";
@@ -39,13 +40,15 @@ public class Organisasjonsnummer {
 	}
 
 	public static Organisasjonsnummer fromIso6523(final String iso6523Orgnr) {
-		Pattern pattern = Pattern.compile("^([0-9]{4}:)?([0-9]{9})$");
-		Matcher matcher = pattern.matcher(iso6523Orgnr);
+		Matcher matcher = ISO6523_PATTERN.matcher(iso6523Orgnr);
 		if (!matcher.matches()) {
 			throw new IllegalArgumentException("Invalid organizational number. " +
 					"Expected format is ISO 6523, got following organizational number: " + iso6523Orgnr);
 		}
 		return new Organisasjonsnummer(matcher.group(2));
+	}
+	public static boolean isIso6523(final String iso6523Orgnr) {
+		return ISO6523_PATTERN.matcher(iso6523Orgnr).matches();
 	}
 
     @Override

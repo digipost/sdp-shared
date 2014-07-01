@@ -82,7 +82,7 @@ public class Marshalling {
 						packageName(QualifyingProperties.class)
 				}
 		);
-		marshaller.setSchemas(Schemas.schemaResources());
+		marshaller.setSchemas(Schemas.allSchemaResources());
 		return marshaller;
 	}
 

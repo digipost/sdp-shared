@@ -16,6 +16,7 @@
 package no.digipost.api.interceptors;
 
 import no.digipost.api.exceptions.ebms.standard.processing.OtherException;
+import no.digipost.api.security.OrgnummerExtractor;
 import no.digipost.api.xml.Constants;
 import org.apache.wss4j.common.ConfigurationConstants;
 import org.apache.wss4j.common.crypto.AlgorithmSuite;
@@ -53,6 +54,7 @@ import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.DigestMethod;
+
 import java.io.IOException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -294,6 +296,7 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
             requestData.setWssConfig(wssConfig);
             requestData.setSigVerCrypto(validationSignatureCrypto);
             requestData.setCallbackHandler(validationCallbackHandler);
+            requestData.setSubjectCertConstraints(OrgnummerExtractor.PATTERNS);
             AlgorithmSuite algorithmSuite = new AlgorithmSuite();
             algorithmSuite.addDigestAlgorithm(digestAlgorithm);
             algorithmSuite.addSignatureMethod(securementSignatureAlgorithm);
@@ -406,6 +409,7 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
             RequestData requestData = new RequestData();
             requestData.setSigVerCrypto(validationSignatureCrypto);
             requestData.setEnableRevocation(enableRevocation);
+            requestData.setSubjectCertConstraints(OrgnummerExtractor.PATTERNS);
 
             SignatureTrustValidator validator = new SignatureTrustValidator();
             validator.validate(credential, requestData);

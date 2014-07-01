@@ -18,6 +18,8 @@ package no.digipost.api.security;
 import no.digipost.api.representations.Organisasjonsnummer;
 
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +29,7 @@ public class OrgnummerExtractor {
 
 	private static final Pattern CN_PATTERN = Pattern.compile("CN=([0-9]{9})([^0-9].*)?$");
 	private static final Pattern BUYPASS_PATTERN = Pattern.compile("SERIALNUMBER=([0-9]{9})", CASE_INSENSITIVE);
+	public static final Collection<Pattern> PATTERNS = Arrays.asList(CN_PATTERN, BUYPASS_PATTERN);
 
 	public Organisasjonsnummer tryParse(final X509Certificate cert) {
 		String dn = cert.getSubjectDN().getName();

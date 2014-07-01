@@ -23,6 +23,8 @@ import no.digipost.api.handlers.ForsendelseSender;
 import no.digipost.api.handlers.KvitteringSender;
 import no.digipost.api.handlers.PullRequestSender;
 import no.digipost.api.handlers.TransportKvitteringReceiver;
+import no.digipost.api.interceptors.SoapLoggInterceptor;
+import no.digipost.api.interceptors.SoapLoggInterceptor.LogLevel;
 import no.digipost.api.interceptors.EbmsClientInterceptor;
 import no.digipost.api.interceptors.EbmsReferenceValidatorInterceptor;
 import no.digipost.api.interceptors.KeyStoreInfo;
@@ -65,6 +67,7 @@ import static java.util.Arrays.asList;
 public class MessageSender {
 
 	private static final Logger LOG = LoggerFactory.getLogger(MessageSender.class);
+
 
 	private WebServiceTemplate meldingTemplate;
 	private final Jaxb2Marshaller marshaller;
@@ -151,6 +154,8 @@ public class MessageSender {
 		private final List<HttpRequestInterceptor> httpRequestInterceptors = new ArrayList<HttpRequestInterceptor>();
 		private final List<HttpResponseInterceptor> httpResponseInterceptors = new ArrayList<HttpResponseInterceptor>();
 
+		private SoapLoggInterceptor.LogLevel logLevel = LogLevel.NONE;
+
 		private Builder(final String endpointUri, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker,
 		                final WsSecurityInterceptor wsSecurityInterceptor, final KeyStoreInfo keystoreInfo) {
 			this.endpointUri = endpointUri;
@@ -213,6 +218,10 @@ public class MessageSender {
 			this.httpResponseInterceptors.addAll(asList(httpResponseInterceptors));
 			return this;
 		}
+		public Builder withMessageLogLevel(final LogLevel logLevel) {
+			this.logLevel = logLevel;
+			return this;
+		}
 
 		public MessageSender build() {
 
@@ -246,6 +255,8 @@ public class MessageSender {
 			meldingInterceptors.add(wsSecurityInterceptor);
 			meldingInterceptors.add(new EbmsReferenceValidatorInterceptor(marshaller));
 			meldingInterceptors.add(new TransactionLogClientInterceptor(marshaller));
+			meldingInterceptors.add(new SoapLoggInterceptor(logLevel));
+
 
 			for (InsertInterceptor insertInterceptor : interceptorBefore) {
 				insertInterceptor(meldingInterceptors, insertInterceptor);
@@ -274,11 +285,11 @@ public class MessageSender {
 
 			HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
 
-			for (HttpRequestInterceptor httpRequestInterceptor : this.httpRequestInterceptors) {
+			for (HttpRequestInterceptor httpRequestInterceptor : httpRequestInterceptors) {
 				httpClientBuilder.addInterceptorFirst(httpRequestInterceptor);
 			}
 
-			for (HttpResponseInterceptor httpResponseInterceptor : this.httpResponseInterceptors) {
+			for (HttpResponseInterceptor httpResponseInterceptor : httpResponseInterceptors) {
 				httpClientBuilder.addInterceptorFirst(httpResponseInterceptor);
 			}
 

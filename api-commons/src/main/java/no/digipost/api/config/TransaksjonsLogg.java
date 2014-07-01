@@ -61,7 +61,7 @@ public class TransaksjonsLogg {
 			log(endpoint, orgnr, retning, EBMSFEIL, mpc, conversationId, instanceIdentifier, messageInfo.getMessageId(), messageInfo.getRefToMessageId(), "");
 			return;
 		}
-		String errorMsg = String.format("error:[%s][%s]", error.getShortDescription(), error.getDescription().getValue());
+		String errorMsg = String.format("error:[%s][%s]", error.getShortDescription(), error.getDescription() != null ? error.getDescription().getValue() : "");
 		log(endpoint, orgnr, retning, EBMSFEIL, mpc, conversationId, instanceIdentifier, messageInfo.getMessageId(), messageInfo.getRefToMessageId(), errorMsg);
 	}
 

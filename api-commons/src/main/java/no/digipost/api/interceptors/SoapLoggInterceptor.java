@@ -35,7 +35,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
 
 public class SoapLoggInterceptor extends TransformerObjectSupport implements ClientInterceptor, EndpointInterceptor {
-	private static final Logger LOG = LoggerFactory.getLogger(SoapLoggInterceptor.class);
+	private static final Logger LOG = LoggerFactory.getLogger("PAYLOAD_FILE");
 
 	public enum LogLevel {
 		NONE,

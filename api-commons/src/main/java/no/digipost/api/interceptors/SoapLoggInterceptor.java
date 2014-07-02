@@ -52,16 +52,13 @@ public class SoapLoggInterceptor extends TransformerObjectSupport implements Cli
 
 	@Override
 	public boolean handleRequest(final MessageContext messageContext) throws WebServiceClientException {
-		if (logLevel == LogLevel.ALL) {
-			logMessageSource("Utgående request: ", getSource(messageContext.getRequest()));
-		}
-
 		return true;
 	}
 
 	@Override
 	public boolean handleResponse(final MessageContext messageContext) throws WebServiceClientException {
-		if (logLevel == LogLevel.ALL) {
+		if (logLevel == LogLevel.ALL || LOG.isTraceEnabled()) {
+			logMessageSource("Utgående request: ", getSource(messageContext.getRequest()));
 			logMessageSource("Innkommende response: ", getSource(messageContext.getResponse()));
 		}
 		return true;
@@ -69,28 +66,24 @@ public class SoapLoggInterceptor extends TransformerObjectSupport implements Cli
 
     @Override
     public boolean handleFault(final MessageContext messageContext) throws WebServiceClientException {
-    		if (logLevel == LogLevel.FAULTS_ONLY) {
-    	        logMessageSource("Utgående feilende request: ", getSource(messageContext.getRequest()));
-    	        logMessageSource("Innkommende fault: ", getSource(messageContext.getResponse()));
-    		}
-    		if (logLevel == LogLevel.ALL) {
-    			logMessageSource("Innkommende fault: ", getSource(messageContext.getResponse()));
-    		}
+		if (logLevel == LogLevel.FAULTS_ONLY || logLevel == LogLevel.ALL || logger.isTraceEnabled()) {
+			logMessageSource("Utgående feilende request: ", getSource(messageContext.getRequest()));
+	        logMessageSource("Innkommende fault: ", getSource(messageContext.getResponse()));
+		}
         return true;
     }
+
 
     // Endpoint interceptor
 	@Override
 	public boolean handleRequest(final MessageContext messageContext, final Object endpoint) throws Exception {
-		if (logLevel == LogLevel.ALL) {
-			logMessageSource("Innkommende request: ", getSource(messageContext.getRequest()));
-		}
 		return true;
 	}
 
 	@Override
 	public boolean handleResponse(final MessageContext messageContext, final Object endpoint) throws Exception {
-		if (logLevel == LogLevel.ALL) {
+		if (logLevel == LogLevel.ALL || LOG.isTraceEnabled()) {
+			logMessageSource("Innkommende request: ", getSource(messageContext.getRequest()));
 			logMessageSource("Utgående response: ", getSource(messageContext.getResponse()));
 		}
 		return true;
@@ -98,12 +91,9 @@ public class SoapLoggInterceptor extends TransformerObjectSupport implements Cli
 
 	@Override
 	public boolean handleFault(final MessageContext messageContext, final Object endpoint) throws Exception {
-		if (logLevel == LogLevel.FAULTS_ONLY) {
-	        logMessageSource("Innkommende feilende request: ", getSource(messageContext.getRequest()));
+		if (logLevel == LogLevel.FAULTS_ONLY || logLevel == LogLevel.ALL || LOG.isTraceEnabled()) {
+			logMessageSource("Innkommende feilende request: ", getSource(messageContext.getRequest()));
 	        logMessageSource("Utgående fault: ", getSource(messageContext.getResponse()));
-		}
-		if (logLevel == LogLevel.ALL) {
-			logMessageSource("Utgående fault: ", getSource(messageContext.getResponse()));
 		}
 		return true;
 	}

@@ -15,7 +15,7 @@
  */
 package no.digipost.api.interceptors;
 
-import no.digipost.api.EbmsClientException;
+import no.digipost.api.exceptions.MessageSenderValidationException;
 import no.digipost.api.representations.EbmsAktoer;
 import no.digipost.api.representations.EbmsContext;
 import no.digipost.api.representations.Organisasjonsnummer;
@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static java.lang.String.format;
 import static no.digipost.api.xml.Constants.MESSAGING_QNAME;
 
 public class EbmsClientInterceptor implements ClientInterceptor {
@@ -71,7 +72,7 @@ public class EbmsClientInterceptor implements ClientInterceptor {
 		SoapMessage saajSoapMessage = (SoapMessage) messageContext.getResponse();
 		Iterator<SoapHeaderElement> soapHeaderElementIterator = saajSoapMessage.getSoapHeader().examineHeaderElements(MESSAGING_QNAME);
 		if (!soapHeaderElementIterator.hasNext()) {
-			throw new RuntimeException("Missing required EBMS SOAP header");
+			throw new MessageSenderValidationException("Missing required ebMS SOAP header");
 		}
 		SoapHeaderElement ebmsMessaging = soapHeaderElementIterator.next();
 		Messaging messaging = Marshalling.unmarshal(jaxb2Marshaller, ebmsMessaging, Messaging.class);
@@ -104,7 +105,7 @@ public class EbmsClientInterceptor implements ClientInterceptor {
 			X509Certificate cert = (X509Certificate) messageContext.getProperty(Wss4jInterceptor.INCOMING_CERTIFICATE);
 			Organisasjonsnummer responder = extractor.from(cert);
 			if (!tekniskMottaker.orgnr.equals(responder)) {
-				throw new RuntimeException(String.format("Unexpected signer in incoming message. Expected: [%s] Extracted: [%s] from %s", tekniskMottaker.orgnr, responder, cert.getSubjectDN().getName()));
+				throw new MessageSenderValidationException(format("Unexpected signer in incoming message. Expected: [%s] Extracted: [%s] from %s", tekniskMottaker.orgnr, responder, cert.getSubjectDN().getName()));
 			}
 		}
 		return true;
@@ -112,37 +113,12 @@ public class EbmsClientInterceptor implements ClientInterceptor {
 
 	@Override
 	public boolean handleFault(final MessageContext messageContext) throws WebServiceClientException {
-		SoapMessage saajSoapMessage = (SoapMessage) messageContext.getResponse();
-		Iterator<SoapHeaderElement> soapHeaderElementIterator = saajSoapMessage.getSoapHeader().examineHeaderElements(MESSAGING_QNAME);
-		if (!soapHeaderElementIterator.hasNext()) {
-			// SOAP fault without ebMS header. That's just a regular SOAP fault, and we won't handle it here.
-			return true;
-		}
-
-		Messaging messaging = Marshalling.unmarshal(jaxb2Marshaller, soapHeaderElementIterator.next(), Messaging.class);
-		List<Error> errors = new ArrayList<Error>();
-		for (SignalMessage message : messaging.getSignalMessages()) {
-			errors.addAll(message.getErrors());
-		}
-
-		if (errors.size() == 0) {
-			// No error in ebMS header. Treat as regular SOAP fault (forward to next handler).
-			return true;
-		}
-
-		if (errors.size() > 1) {
-			// If this happens in practice, we should log what the errors are.
-			log.warn("Got more than one ebMS error in response. Throwing exception with the first one and disregarding the rest.");
-		}
-
-		throw new EbmsClientException(saajSoapMessage, errors.get(0));
-
+		return true;
 	}
 
 	@Override
 	public void afterCompletion(MessageContext messageContext, Exception ex) throws WebServiceClientException {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 }

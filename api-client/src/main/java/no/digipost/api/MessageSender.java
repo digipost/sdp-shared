@@ -15,6 +15,7 @@
  */
 package no.digipost.api;
 
+import no.digipost.api.exceptions.MessageSenderFaultMessageResolver;
 import no.digipost.api.handlers.ApplikasjonsKvitteringReceiver;
 import no.digipost.api.handlers.BekreftelseSender;
 import no.digipost.api.handlers.EbmsContextAwareWebServiceTemplate;
@@ -23,12 +24,12 @@ import no.digipost.api.handlers.ForsendelseSender;
 import no.digipost.api.handlers.KvitteringSender;
 import no.digipost.api.handlers.PullRequestSender;
 import no.digipost.api.handlers.TransportKvitteringReceiver;
-import no.digipost.api.interceptors.SoapLoggInterceptor;
-import no.digipost.api.interceptors.SoapLoggInterceptor.LogLevel;
 import no.digipost.api.interceptors.EbmsClientInterceptor;
 import no.digipost.api.interceptors.EbmsReferenceValidatorInterceptor;
 import no.digipost.api.interceptors.KeyStoreInfo;
 import no.digipost.api.interceptors.RemoveContentLengthInterceptor;
+import no.digipost.api.interceptors.SoapLoggInterceptor;
+import no.digipost.api.interceptors.SoapLoggInterceptor.LogLevel;
 import no.digipost.api.interceptors.TransactionLogClientInterceptor;
 import no.digipost.api.interceptors.WsSecurityInterceptor;
 import no.digipost.api.representations.EbmsAktoer;
@@ -57,7 +58,6 @@ import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +67,6 @@ import static java.util.Arrays.asList;
 public class MessageSender {
 
 	private static final Logger LOG = LoggerFactory.getLogger(MessageSender.class);
-
 
 	private WebServiceTemplate meldingTemplate;
 	private final Jaxb2Marshaller marshaller;
@@ -127,12 +126,13 @@ public class MessageSender {
 		EbmsContextAwareWebServiceTemplate template = new EbmsContextAwareWebServiceTemplate(factory, remoteParty);
 		template.setMarshaller(marshaller);
 		template.setUnmarshaller(marshaller);
+		template.setFaultMessageResolver(new MessageSenderFaultMessageResolver(marshaller));
 		return template;
 	}
 
 	public static class Builder {
 
-        private static Jaxb2Marshaller defaultMarshaller;
+		private static Jaxb2Marshaller defaultMarshaller;
 
 		public static final int DEFAULT_MAX_PER_ROUTE = 10;
 
@@ -204,6 +204,7 @@ public class MessageSender {
 			httpHost = new HttpHost(proxyHost, proxyPort, "https");
 			return this;
 		}
+
 		public Builder withHttpProxy(final String proxyHost, final int proxyPort, final String scheme) {
 			httpHost = new HttpHost(proxyHost, proxyPort, scheme);
 			return this;
@@ -218,6 +219,7 @@ public class MessageSender {
 			this.httpResponseInterceptors.addAll(asList(httpResponseInterceptors));
 			return this;
 		}
+
 		public Builder withMessageLogLevel(final LogLevel logLevel) {
 			this.logLevel = logLevel;
 			return this;
@@ -234,15 +236,15 @@ public class MessageSender {
 			sender.tekniskAvsender = tekniskAvsenderId;
 			sender.tekniskMottaker = tekniskMottaker;
 
-            SaajSoapMessageFactory factory;
-            try {
-                factory = new SaajSoapMessageFactory(MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL));
-                factory.setMessageProperties(getMessageProperties());
-                factory.setSoapVersion(SoapVersion.SOAP_12);
-                factory.afterPropertiesSet();
-            } catch (SOAPException e) {
-                throw new RuntimeException("Unable to initialize SoapMessageFactory", e);
-            }
+			SaajSoapMessageFactory factory;
+			try {
+				factory = new SaajSoapMessageFactory(MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL));
+				factory.setMessageProperties(getMessageProperties());
+				factory.setSoapVersion(SoapVersion.SOAP_12);
+				factory.afterPropertiesSet();
+			} catch (SOAPException e) {
+				throw new RuntimeException("Unable to initialize SoapMessageFactory", e);
+			}
 
 			WebServiceTemplate wsTemplate = createTemplate(factory, marshaller, tekniskMottaker);
 
@@ -312,12 +314,12 @@ public class MessageSender {
 			throw new IllegalArgumentException("Could not find interceptor of class " + insertInterceptor.clazz);
 		}
 
-        protected static synchronized Jaxb2Marshaller getDefaultMarshaller() {
-            if (defaultMarshaller == null) {
-                defaultMarshaller = Marshalling.getMarshallerSingleton();
-            }
-            return defaultMarshaller;
-        }
+		protected static synchronized Jaxb2Marshaller getDefaultMarshaller() {
+			if (defaultMarshaller == null) {
+				defaultMarshaller = Marshalling.getMarshallerSingleton();
+			}
+			return defaultMarshaller;
+		}
 
 	}
 
@@ -336,7 +338,7 @@ public class MessageSender {
 		return marshaller;
 	}
 
-    public WebServiceTemplate getMeldingTemplate() {
-        return meldingTemplate;
-    }
+	public WebServiceTemplate getMeldingTemplate() {
+		return meldingTemplate;
+	}
 }

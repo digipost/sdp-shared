@@ -15,8 +15,10 @@
  */
 package no.digipost.api.handlers;
 
+import no.digipost.api.exceptions.MessageSenderIOException;
 import no.digipost.api.representations.EbmsAktoer;
 import no.digipost.api.representations.EbmsContext;
+import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.WebServiceMessageExtractor;
 import org.springframework.ws.client.core.WebServiceTemplate;
@@ -37,7 +39,7 @@ public class EbmsContextAwareWebServiceTemplate extends WebServiceTemplate {
 
 	@Override
 	protected <T> T doSendAndReceive(final MessageContext messageContext, final WebServiceConnection connection,
-			final WebServiceMessageCallback requestCallback, final WebServiceMessageExtractor<T> responseExtractor) throws IOException {
+	                                 final WebServiceMessageCallback requestCallback, final WebServiceMessageExtractor<T> responseExtractor) throws IOException {
 		EbmsContext context = EbmsContext.from(messageContext);
 		context.remoteParty = remoteParty.orgnr;
 		if (requestCallback instanceof EbmsContextAware) {
@@ -47,6 +49,11 @@ public class EbmsContextAwareWebServiceTemplate extends WebServiceTemplate {
 			((EbmsContextAware) responseExtractor).setContext(context);
 		}
 		return super.doSendAndReceive(messageContext, connection, requestCallback, responseExtractor);
+	}
+
+	@Override
+	protected Object handleError(WebServiceConnection connection, WebServiceMessage request) throws IOException {
+		throw new MessageSenderIOException(connection.getErrorMessage());
 	}
 
 }

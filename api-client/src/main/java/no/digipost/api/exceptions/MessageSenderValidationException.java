@@ -13,27 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.digipost.api;
+package no.digipost.api.exceptions;
 
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
-import org.springframework.ws.soap.SoapMessage;
+public class MessageSenderValidationException extends MessageSenderException {
 
-public class EbmsClientException extends RuntimeException {
-
-	private final SoapMessage soapError;
-	private final Error error;
-
-	public EbmsClientException(final SoapMessage soapError, final Error error) {
-		super((error != null && error.getDescription() != null) ? error.getDescription().getValue() : null);
-		this.soapError = soapError;
-		this.error = error;
+	public MessageSenderValidationException(String message) {
+		super(message);
 	}
 
-	public Error getError() {
-		return error;
-	}
-
-	public SoapMessage getSoapError() {
-		return soapError;
-	}
 }

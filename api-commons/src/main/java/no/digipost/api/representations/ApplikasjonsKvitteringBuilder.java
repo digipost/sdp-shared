@@ -15,12 +15,7 @@
  */
 package no.digipost.api.representations;
 
-import no.difi.begrep.sdp.schema_v10.SDPAapning;
-import no.difi.begrep.sdp.schema_v10.SDPFeil;
-import no.difi.begrep.sdp.schema_v10.SDPFeiltype;
-import no.difi.begrep.sdp.schema_v10.SDPKvittering;
-import no.difi.begrep.sdp.schema_v10.SDPLevering;
-import no.difi.begrep.sdp.schema_v10.SDPMelding;
+import no.difi.begrep.sdp.schema_v10.*;
 import org.joda.time.DateTime;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
@@ -66,6 +61,14 @@ public class ApplikasjonsKvitteringBuilder {
 		kvittering = new SDPKvittering()
 			.withAapning(new SDPAapning())
 			.withTidspunkt(DateTime.now());
+		return this;
+	}
+
+	public ApplikasjonsKvitteringBuilder medVarslingfeilet(SDPVarslingskanal varslingskanal, String beskrivelse) {
+		kvittering = new SDPKvittering()
+				.withVarslingfeilet(new SDPVarslingfeilet()
+					.withBeskrivelse(beskrivelse)
+					.withVarslingskanal(varslingskanal));
 		return this;
 	}
 

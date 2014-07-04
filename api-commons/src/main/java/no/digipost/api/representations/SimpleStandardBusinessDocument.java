@@ -15,10 +15,7 @@
  */
 package no.digipost.api.representations;
 
-import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
-import no.difi.begrep.sdp.schema_v10.SDPFeil;
-import no.difi.begrep.sdp.schema_v10.SDPKvittering;
-import no.difi.begrep.sdp.schema_v10.SDPMelding;
+import no.difi.begrep.sdp.schema_v10.*;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
@@ -138,6 +135,15 @@ public class SimpleStandardBusinessDocument {
 		public boolean erAapnet() {
 			return kvittering.getAapning() != null;
 		}
+
+		public boolean erVarslingFeilet() {
+			return kvittering.getVarslingfeilet() != null;
+		}
+
+		public SDPVarslingfeilet getVarslingFeilet() {
+			return kvittering.getVarslingfeilet();
+		}
+
 	}
 
 	public class SimpleDigitalPost {

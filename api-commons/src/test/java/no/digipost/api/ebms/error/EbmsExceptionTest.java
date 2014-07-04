@@ -43,7 +43,7 @@ public class EbmsExceptionTest {
 	@Test
 	public void shouldTransformCorrectlyToErrorWithDetail() {
 		Error error = new EmptyMessagePartitionChannelException(new RuntimeException("WTF")).toError();
-		assertThat("WTF", is(error.getErrorDetail()));
+		assertThat(null, is(error.getErrorDetail()));
 	}
 
 	@Test

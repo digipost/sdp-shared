@@ -52,10 +52,6 @@ public abstract class AbstractEbmsException extends RuntimeException {
 			error.withRefToMessageInError(refToMessageInError);
 		}
 
-		if (getCause() != null) {
-			error.withErrorDetail(getCause().getMessage());
-		}
-
 		return error;
 	}
 

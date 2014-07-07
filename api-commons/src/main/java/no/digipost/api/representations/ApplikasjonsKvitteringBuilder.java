@@ -15,9 +15,17 @@
  */
 package no.digipost.api.representations;
 
-import no.difi.begrep.sdp.schema_v10.*;
-import org.joda.time.DateTime;
+import no.difi.begrep.sdp.schema_v10.SDPAapning;
+import no.difi.begrep.sdp.schema_v10.SDPFeil;
+import no.difi.begrep.sdp.schema_v10.SDPFeiltype;
+import no.difi.begrep.sdp.schema_v10.SDPKvittering;
+import no.difi.begrep.sdp.schema_v10.SDPLevering;
+import no.difi.begrep.sdp.schema_v10.SDPMelding;
+import no.difi.begrep.sdp.schema_v10.SDPVarslingfeilet;
+import no.difi.begrep.sdp.schema_v10.SDPVarslingskanal;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
+
+import static org.joda.time.DateTime.now;
 
 public class ApplikasjonsKvitteringBuilder {
 
@@ -30,11 +38,11 @@ public class ApplikasjonsKvitteringBuilder {
 	private EbmsOutgoingMessage.Prioritet prioritet = EbmsOutgoingMessage.Prioritet.NORMAL;
 
 	private SDPMelding kvittering = new SDPKvittering()
-		.withLevering(new SDPLevering())
-		.withTidspunkt(DateTime.now());
+			.withLevering(new SDPLevering())
+			.withTidspunkt(now());
 
 	public static ApplikasjonsKvitteringBuilder create(final EbmsAktoer avsender, final EbmsAktoer ebmsMottaker, final Organisasjonsnummer sbdhMottaker, final String messageId,
-	                                                    final String conversationId, final String instanceIdentifier) {
+	                                                   final String conversationId, final String instanceIdentifier) {
 		ApplikasjonsKvitteringBuilder builder = new ApplikasjonsKvitteringBuilder();
 		builder.ebmsMottaker = ebmsMottaker;
 		builder.sbdhMottaker = sbdhMottaker;
@@ -50,25 +58,26 @@ public class ApplikasjonsKvitteringBuilder {
 		return this;
 	}
 
-    public ApplikasjonsKvitteringBuilder medFeil(SDPFeiltype feiltype, final String feilinformasjon) {
+	public ApplikasjonsKvitteringBuilder medFeil(SDPFeiltype feiltype, final String feilinformasjon) {
 		kvittering = new SDPFeil()
-			.withFeiltype(feiltype)
-			.withDetaljer(feilinformasjon);
+				.withFeiltype(feiltype)
+				.withDetaljer(feilinformasjon)
+				.withTidspunkt(now());
 		return this;
 	}
 
 	public ApplikasjonsKvitteringBuilder medAapning() {
 		kvittering = new SDPKvittering()
-			.withAapning(new SDPAapning())
-			.withTidspunkt(DateTime.now());
+				.withAapning(new SDPAapning())
+				.withTidspunkt(now());
 		return this;
 	}
 
 	public ApplikasjonsKvitteringBuilder medVarslingfeilet(SDPVarslingskanal varslingskanal, String beskrivelse) {
 		kvittering = new SDPKvittering()
 				.withVarslingfeilet(new SDPVarslingfeilet()
-					.withBeskrivelse(beskrivelse)
-					.withVarslingskanal(varslingskanal));
+						.withBeskrivelse(beskrivelse)
+						.withVarslingskanal(varslingskanal));
 		return this;
 	}
 

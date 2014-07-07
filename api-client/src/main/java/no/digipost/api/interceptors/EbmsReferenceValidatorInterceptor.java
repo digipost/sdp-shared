@@ -60,8 +60,7 @@ public class EbmsReferenceValidatorInterceptor implements ClientInterceptor {
 
 	@Override
 	public void afterCompletion(MessageContext messageContext, Exception ex) throws WebServiceClientException {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 }

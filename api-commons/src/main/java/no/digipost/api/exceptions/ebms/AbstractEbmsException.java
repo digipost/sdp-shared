@@ -40,19 +40,14 @@ public abstract class AbstractEbmsException extends RuntimeException {
 	}
 
 	public Error toError() {
-		Error error = new Error()
+		return new Error()
 				.withOrigin(origin)
 				.withErrorCode(code)
 				.withSeverity(severity)
 				.withCategory(category)
 				.withShortDescription(getShortDescription())
-				.withDescription(new Description(description, LANGUAGE_CODE_ERROR_DESCRIPTION));
-
-		if (refToMessageInError != null) {
-			error.withRefToMessageInError(refToMessageInError);
-		}
-
-		return error;
+				.withDescription(new Description(description, LANGUAGE_CODE_ERROR_DESCRIPTION))
+				.withRefToMessageInError(refToMessageInError);
 	}
 
 	public abstract String getShortDescription();

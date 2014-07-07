@@ -48,12 +48,17 @@ public class EbmsContextAwareWebServiceTemplate extends WebServiceTemplate {
 		if (responseExtractor instanceof EbmsContextAware) {
 			((EbmsContextAware) responseExtractor).setContext(context);
 		}
-		return super.doSendAndReceive(messageContext, connection, requestCallback, responseExtractor);
+		try {
+			return super.doSendAndReceive(messageContext, connection, requestCallback, responseExtractor);
+		}
+		catch(IOException e) {
+			throw new MessageSenderIOException(e.getMessage(), e);
+		}
 	}
 
 	@Override
 	protected Object handleError(WebServiceConnection connection, WebServiceMessage request) throws IOException {
-		throw new MessageSenderIOException(connection.getErrorMessage());
+		throw new MessageSenderIOException(connection.getErrorMessage(), null);
 	}
 
 }

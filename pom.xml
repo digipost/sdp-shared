@@ -23,6 +23,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- This module needs to compile to Java 1.6, as it's used by the Sikker Digital Post client -->
         <maven.compiler.source>1.6</maven.compiler.source>

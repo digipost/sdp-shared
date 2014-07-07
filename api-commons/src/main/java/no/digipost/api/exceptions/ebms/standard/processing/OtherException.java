@@ -22,6 +22,8 @@ import no.digipost.api.exceptions.ebms.Severity;
 
 public class OtherException extends AbstractEbmsException {
 
+	public static final String INTERNAL_SERVER_ERROR = "Internal server error";
+
 	public static final OtherException GENERAL_ERROR = new OtherException(null, "Something went wrong, please try again later.");
 
 	public static final String DEFAULT_DESCRIPTION = "-";

@@ -15,7 +15,6 @@
  */
 package no.digipost.api.interceptors;
 
-import no.digipost.api.ebms.exceptions.standard.processing.OtherException;
 import no.digipost.api.security.OrgnummerExtractor;
 import no.digipost.api.xml.Constants;
 import org.apache.wss4j.common.ConfigurationConstants;
@@ -216,7 +215,7 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 			logger.warn("Could not handle request: " + ex.getMessage());
 		}
 
-        throw new OtherException();
+        throw new RuntimeException("Could not handle request", ex);
 	}
 
     @Override

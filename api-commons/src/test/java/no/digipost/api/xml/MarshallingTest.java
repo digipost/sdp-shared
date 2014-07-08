@@ -16,60 +16,36 @@
 package no.digipost.api.xml;
 
 import no.difi.begrep.sdp.schema_v10.SDPFeil;
-import no.digipost.api.ebms.exceptions.standard.processing.InvalidHeaderException;
 import org.joda.time.DateTime;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.oxm.MarshallingFailureException;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.ws.soap.SoapHeader;
-import org.springframework.ws.soap.SoapHeaderElement;
-import org.springframework.ws.soap.SoapMessage;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.*;
-import org.w3.xmldsig.*;
+import org.unece.cefact.namespaces.standardbusinessdocumentheader.BusinessScope;
+import org.unece.cefact.namespaces.standardbusinessdocumentheader.DocumentIdentification;
+import org.unece.cefact.namespaces.standardbusinessdocumentheader.Partner;
+import org.unece.cefact.namespaces.standardbusinessdocumentheader.PartnerIdentification;
+import org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
+import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
+import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocumentHeader;
+import org.w3.xmldsig.CanonicalizationMethod;
+import org.w3.xmldsig.DigestMethod;
+import org.w3.xmldsig.Reference;
+import org.w3.xmldsig.Signature;
+import org.w3.xmldsig.SignatureMethod;
+import org.w3.xmldsig.SignatureValue;
+import org.w3.xmldsig.SignedInfo;
+import org.w3.xmldsig.Transform;
+import org.w3.xmldsig.Transforms;
 
 import javax.xml.transform.stream.StreamResult;
-
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 import static no.difi.begrep.sdp.schema_v10.SDPFeiltype.KLIENT;
-import static no.digipost.api.xml.Constants.MESSAGING_QNAME;
 import static org.joda.time.DateTime.now;
-import static org.mockito.Mockito.when;
 
 public class MarshallingTest {
 
 	private final Jaxb2Marshaller jaxb2Marshaller = Marshalling.getMarshallerSingleton();
-
-	@Mock
-	private SoapMessage soapMessage;
-
-	@Mock
-	private SoapHeader soapHeader;
-
-
-	@Before
-	public void initMocks() {
-		MockitoAnnotations.initMocks(this);
-	}
-
-	@Test(expected = InvalidHeaderException.class)
-	public void manglende_soap_header_skal_kaste_invalid_header() {
-		Marshalling.getMessaging(jaxb2Marshaller, soapMessage);
-	}
-
-	@Test(expected = InvalidHeaderException.class)
-	public void manglende_ebms_header_skal_kaste_invalid_header() {
-		when(soapMessage.getSoapHeader()).thenReturn(soapHeader);
-		List<SoapHeaderElement> soapHeaderElements = new ArrayList<SoapHeaderElement>();
-		when(soapHeader.examineHeaderElements(MESSAGING_QNAME)).thenReturn(soapHeaderElements.iterator());
-		Marshalling.getMessaging(jaxb2Marshaller, soapMessage);
-	}
-
 
 	@Test
 	public void marshalling_av_gyldig_SBD_skal_ikke_feile() {
@@ -106,8 +82,9 @@ public class MarshallingTest {
 				.withDetaljer("Detaljer")
 				.withFeiltype(KLIENT)
 				.withTidspunkt(now());
-		StandardBusinessDocument sbd = createValidStandardBusinessDocument(sdpFeil);
-		jaxb2Marshaller.marshal(sbd, result);
+
+		jaxb2Marshaller.marshal(createValidStandardBusinessDocument(sdpFeil), result);
+
 	}
 
 	@Test(expected = MarshallingFailureException.class)

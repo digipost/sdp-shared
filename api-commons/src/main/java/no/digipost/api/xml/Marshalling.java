@@ -16,7 +16,6 @@
 package no.digipost.api.xml;
 
 import no.difi.begrep.sdp.schema_v10.SDPKvittering;
-import no.digipost.api.ebms.exceptions.standard.processing.InvalidHeaderException;
 import org.etsi.uri._01903.v1_3.QualifyingProperties;
 import org.etsi.uri._2918.v1_2.XAdESSignatures;
 import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.NonRepudiationInformation;
@@ -41,7 +40,6 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.Result;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,7 +50,9 @@ import static no.digipost.api.xml.Constants.MESSAGING_QNAME;
 public class Marshalling {
 
 	private static class FullyInitializedMarshaller {
-		private static final Jaxb2Marshaller instance = createNewMarshaller(); static {
+		private static final Jaxb2Marshaller instance = createNewMarshaller();
+
+		static {
 			try {
 				instance.afterPropertiesSet();
 			} catch (Exception e) {
@@ -114,30 +114,6 @@ public class Marshalling {
 	public static void marshal(final Document doc, final Result payloadResult) {
 		DOMSource source = new DOMSource(doc);
 		TransformerUtil.transform(source, payloadResult);
-	}
-
-	/**
-	 * Enten returnerer denne et Messaging objekt, eller så kaster den en InvalidHeaderException
-	 */
-	public static Messaging getMessaging(final Jaxb2Marshaller jaxb2Marshaller, final WebServiceMessage message) {
-
-		SoapHeader soapHeader = ((SoapMessage) message).getSoapHeader();
-		if (soapHeader == null) {
-			throw new InvalidHeaderException(null, "The ebMS header is missing (no SOAP header found in SOAP request)");
-		}
-
-		Iterator<SoapHeaderElement> soapHeaderElementIterator = soapHeader.examineHeaderElements(MESSAGING_QNAME);
-		if (!soapHeaderElementIterator.hasNext()) {
-			throw new InvalidHeaderException(null, "The ebMS header is missing in SOAP header");
-		}
-
-		SoapHeaderElement incomingSoapHeaderElement = soapHeaderElementIterator.next();
-		try {
-			return (Messaging) jaxb2Marshaller.unmarshal(incomingSoapHeaderElement.getSource());
-		} catch (Exception e) {
-			throw new InvalidHeaderException();
-		}
-
 	}
 
 	public static <T> T unmarshal(final Jaxb2Marshaller jaxb2Marshaller, final Node node, final Class<T> clazz) {

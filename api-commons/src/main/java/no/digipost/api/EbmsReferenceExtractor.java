@@ -15,7 +15,6 @@
  */
 package no.digipost.api;
 
-import no.digipost.api.ebms.exceptions.standard.processing.InvalidHeaderException;
 import no.digipost.api.xml.Constants;
 import no.digipost.api.xml.Marshalling;
 import no.digipost.api.xml.XpathUtil;
@@ -71,7 +70,7 @@ public class EbmsReferenceExtractor {
 	private List<String> getHrefsToInclude(final SoapMessage request) {
 		Iterator<SoapHeaderElement> soapHeaderElementIterator = request.getSoapHeader().examineHeaderElements(Constants.MESSAGING_QNAME);
 		if (!soapHeaderElementIterator.hasNext()) {
-			throw new InvalidHeaderException();
+			throw new SecurityException("Missing ebMS Messaging header");
 		}
 		SoapHeaderElement incomingSoapHeaderElement = soapHeaderElementIterator.next();
 		Messaging messaging = (Messaging) jaxb2Marshaller.unmarshal(incomingSoapHeaderElement.getSource());

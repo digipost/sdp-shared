@@ -25,6 +25,7 @@ import no.digipost.api.representations.SimpleStandardBusinessDocument;
 import no.digipost.api.representations.SimpleUserMessage;
 import no.digipost.api.xml.Constants;
 import no.digipost.api.xml.Marshalling;
+import no.digipost.api.xml.MessagingMarshalling;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.MessageInfo;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
@@ -36,12 +37,12 @@ import org.springframework.ws.soap.SoapFault;
 import org.springframework.ws.soap.SoapMessage;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
+import static no.digipost.api.config.TransaksjonsLogg.EMPTY_MESSAGE_PARTITION_CHANNEL_EBMS_ERROR_CODE;
 import static no.digipost.api.config.TransaksjonsLogg.Type.APPLIKASJONSKVITTERING;
 import static no.digipost.api.config.TransaksjonsLogg.Type.EBMSFEIL;
 import static no.digipost.api.config.TransaksjonsLogg.Type.PULLREQUEST;
 import static no.digipost.api.config.TransaksjonsLogg.Type.TRANSPORTKVITTERING;
 import static no.digipost.api.config.TransaksjonsLogg.Type.USERMESSAGE;
-import static no.digipost.api.ebms.error.EbmsError.EMPTY_MPC_EBMS_CODE;
 
 public class TransactionLogInterceptor {
 
@@ -60,7 +61,7 @@ public class TransactionLogInterceptor {
 	public void handleIncoming(final EbmsContext context, final SoapMessage soapMessage, final String endpoint) {
 		decorate(context, soapMessage);
 
-		Messaging msg = Marshalling.getMessaging(jaxb2Marshaller, soapMessage);
+		Messaging msg = MessagingMarshalling.getMessaging(jaxb2Marshaller, soapMessage);
 		for (UserMessage userMessage : msg.getUserMessages()) {
 			SimpleUserMessage u = new SimpleUserMessage(userMessage);
 			context.mpcMap.put(u.getMessageId(), u.getMpc());
@@ -76,7 +77,7 @@ public class TransactionLogInterceptor {
 	public void handleOutgoing(final EbmsContext context, final SoapMessage soapMessage, final String endpoint) {
 		decorate(context, soapMessage);
 
-		Messaging msg = Marshalling.getMessaging(jaxb2Marshaller, soapMessage);
+		Messaging msg = MessagingMarshalling.getMessaging(jaxb2Marshaller, soapMessage);
 		for (UserMessage userMessage : msg.getUserMessages()) {
 			SimpleUserMessage u = new SimpleUserMessage(userMessage);
 			context.mpcMap.put(u.getMessageId(), u.getMpc());
@@ -95,7 +96,7 @@ public class TransactionLogInterceptor {
 		logg.soapfault(endpoint, getOrgNr(context), retning, soapFault);
 
 		if (soapMessage.getSoapHeader().examineHeaderElements(Constants.MESSAGING_QNAME).hasNext()) {
-			Messaging messaging = Marshalling.getMessaging(jaxb2Marshaller, soapMessage);
+			Messaging messaging = MessagingMarshalling.getMessaging(jaxb2Marshaller, soapMessage);
 			for (SignalMessage signalMessage : messaging.getSignalMessages()) {
 				for (Error error : signalMessage.getErrors()) {
 					logg.ebmserror(endpoint, getOrgNr(context), retning, error, signalMessage.getMessageInfo(), getMpcFromSignal(context, signalMessage), getConversationId(context), getInstanceIdentifier(context));
@@ -160,7 +161,7 @@ public class TransactionLogInterceptor {
 		if (signalMessage.getPullRequest() != null) {
 			return PULLREQUEST;
 		} else if (!signalMessage.getErrors().isEmpty()) {
-			if (signalMessage.getErrors().size() == 1 && EMPTY_MPC_EBMS_CODE.equals(signalMessage.getErrors().get(0).getErrorCode())) {
+			if (signalMessage.getErrors().size() == 1 && EMPTY_MESSAGE_PARTITION_CHANNEL_EBMS_ERROR_CODE.equals(signalMessage.getErrors().get(0).getErrorCode())) {
 				return Type.TOMKØ;
 			}
 			return EBMSFEIL;

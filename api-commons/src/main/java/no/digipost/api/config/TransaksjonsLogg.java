@@ -25,10 +25,11 @@ import static no.digipost.api.config.TransaksjonsLogg.Retning.INNKOMMENDE;
 import static no.digipost.api.config.TransaksjonsLogg.Retning.UTGÅENDE;
 import static no.digipost.api.config.TransaksjonsLogg.Type.EBMSFEIL;
 import static no.digipost.api.config.TransaksjonsLogg.Type.SOAPFAULT;
-import static no.digipost.api.ebms.error.EbmsError.EMPTY_MPC_EBMS_CODE;
 import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
 
 public class TransaksjonsLogg {
+
+	public static final String EMPTY_MESSAGE_PARTITION_CHANNEL_EBMS_ERROR_CODE = "EBMS:0006";
 
 	private static final String N_A = "";
 	public static final String MF_LOGGER_TRANSLOG = "mf.logger.translog";
@@ -58,7 +59,7 @@ public class TransaksjonsLogg {
 
 
 	public void ebmserror(final String endpoint, final String orgnr, final Retning retning, final Error error, final MessageInfo messageInfo, final String mpc, final String conversationId, final String instanceIdentifier) {
-		if (EMPTY_MPC_EBMS_CODE.equals(error.getErrorCode())) {
+		if (EMPTY_MESSAGE_PARTITION_CHANNEL_EBMS_ERROR_CODE.equals(error.getErrorCode())) {
 			log(endpoint, orgnr, retning, EBMSFEIL, mpc, conversationId, instanceIdentifier, messageInfo.getMessageId(), messageInfo.getRefToMessageId(), "");
 			return;
 		}

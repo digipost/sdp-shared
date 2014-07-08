@@ -53,7 +53,6 @@ import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.DigestMethod;
-
 import java.io.IOException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -67,133 +66,137 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 	public static final String INCOMING_CERTIFICATE = "Wss4jInterceptor.incoming.certificate";
 
 
-    private String securementActions;
+	private String securementActions;
 
-    private List<Integer> securementActionsVector;
+	private List<Integer> securementActionsVector;
 
-    private String securementUsername;
+	private String securementUsername;
 
-    private CallbackHandler validationCallbackHandler;
-
-
-    private String validationActions;
-
-    private List<Integer> validationActionsVector;
-
-    private String validationActor;
-
-    private Crypto validationSignatureCrypto;
-
-    private final boolean timestampStrict = true;
-
-    private boolean enableSignatureConfirmation;
-
-    private int validationTimeToLive = 120;
-
-    private int securementTimeToLive = 120;
-
-    private WSSConfig wssConfig;
-
-    private final WSSecurityEngine securityEngine = new WSSecurityEngine();
-
-    private boolean enableRevocation;
+	private CallbackHandler validationCallbackHandler;
 
 
-    private final Wss4jHandler handler = new Wss4jHandler();
+	private String validationActions;
+
+	private List<Integer> validationActionsVector;
+
+	private String validationActor;
+
+	private Crypto validationSignatureCrypto;
+
+	private final boolean timestampStrict = true;
+
+	private boolean enableSignatureConfirmation;
+
+	private int validationTimeToLive = 120;
+
+	private int securementTimeToLive = 120;
+
+	private WSSConfig wssConfig;
+
+	private final WSSecurityEngine securityEngine = new WSSecurityEngine();
+
+	private boolean enableRevocation;
+
+
+	private final Wss4jHandler handler = new Wss4jHandler();
 
 	private String digestAlgorithm;
 
 	private String securementSignatureAlgorithm;
 
-    public Wss4jInterceptor() {
-    	setSecurementSignatureAlgorithm(Constants.RSA_SHA256);
-    	setSecurementSignatureDigestAlgorithm(DigestMethod.SHA256);
-    	setSecurementSignatureKeyIdentifier("DirectReference");
-    	setSecurementActions("Timestamp Signature");
-    	setValidationActions("Timestamp Signature");
-    }
+	public Wss4jInterceptor() {
+		setSecurementSignatureAlgorithm(Constants.RSA_SHA256);
+		setSecurementSignatureDigestAlgorithm(DigestMethod.SHA256);
+		setSecurementSignatureKeyIdentifier("DirectReference");
+		setSecurementActions("Timestamp Signature");
+		setValidationActions("Timestamp Signature");
+	}
 
-    public void setSecurementActions(final String actions) {
-        securementActions = actions;
-        try {
-        	securementActionsVector = WSSecurityUtil.decodeAction(securementActions);
-        }
-        catch (WSSecurityException ex) {
-            throw new IllegalArgumentException(ex);
-        }
-    }
+	public void setSecurementActions(final String actions) {
+		securementActions = actions;
+		try {
+			securementActionsVector = WSSecurityUtil.decodeAction(securementActions);
+		} catch (WSSecurityException ex) {
+			throw new IllegalArgumentException(ex);
+		}
+	}
 
-    public void setSecurementActor(final String securementActor) {
-        handler.setOption(WSHandlerConstants.ACTOR, securementActor);
-    }
+	public void setSecurementActor(final String securementActor) {
+		handler.setOption(WSHandlerConstants.ACTOR, securementActor);
+	}
 
-    public void setSecurementPassword(final String securementPassword) {
-        handler.setSecurementPassword(securementPassword);
-    }
+	public void setSecurementPassword(final String securementPassword) {
+		handler.setSecurementPassword(securementPassword);
+	}
 
-    public void setSecurementSignatureAlgorithm(final String securementSignatureAlgorithm) {
-        handler.setOption(WSHandlerConstants.SIG_ALGO, securementSignatureAlgorithm);
-        this.securementSignatureAlgorithm = securementSignatureAlgorithm;
-    }
-    public void setSecurementSignatureDigestAlgorithm(final String digestAlgorithm) {
-        handler.setOption(WSHandlerConstants.SIG_DIGEST_ALGO, digestAlgorithm);
-        this.digestAlgorithm = digestAlgorithm;
-    }
-    public void setSecurementSignatureCrypto(final Crypto securementSignatureCrypto) {
-        handler.setSecurementSignatureCrypto(securementSignatureCrypto);
-    }
-    public void setSecurementSignatureKeyIdentifier(final String securementSignatureKeyIdentifier) {
-        handler.setOption(WSHandlerConstants.SIG_KEY_ID, securementSignatureKeyIdentifier);
-    }
+	public void setSecurementSignatureAlgorithm(final String securementSignatureAlgorithm) {
+		handler.setOption(WSHandlerConstants.SIG_ALGO, securementSignatureAlgorithm);
+		this.securementSignatureAlgorithm = securementSignatureAlgorithm;
+	}
 
-    public void setSecurementSignatureParts(final String securementSignatureParts) {
-        handler.setOption(WSHandlerConstants.SIGNATURE_PARTS, securementSignatureParts);
-    }
-    public void setSecurementSignatureIfPresentParts(final String securementSignatureParts) {
-        handler.setOption(ConfigurationConstants.OPTIONAL_SIGNATURE_PARTS, securementSignatureParts);
-    }
+	public void setSecurementSignatureDigestAlgorithm(final String digestAlgorithm) {
+		handler.setOption(WSHandlerConstants.SIG_DIGEST_ALGO, digestAlgorithm);
+		this.digestAlgorithm = digestAlgorithm;
+	}
 
-    public void setSecurementSignatureUser(final String securementSignatureUser) {
-        handler.setOption(WSHandlerConstants.SIGNATURE_USER, securementSignatureUser);
-    }
+	public void setSecurementSignatureCrypto(final Crypto securementSignatureCrypto) {
+		handler.setSecurementSignatureCrypto(securementSignatureCrypto);
+	}
 
-    /** Sets the time to live on the outgoing message */
-    public void setSecurementTimeToLive(final int ttl) {
-        if (ttl <= 0) {
-            throw new IllegalArgumentException("timeToLive must be positive");
-        }
-        securementTimeToLive = ttl;
-    }
+	public void setSecurementSignatureKeyIdentifier(final String securementSignatureKeyIdentifier) {
+		handler.setOption(WSHandlerConstants.SIG_KEY_ID, securementSignatureKeyIdentifier);
+	}
+
+	public void setSecurementSignatureParts(final String securementSignatureParts) {
+		handler.setOption(WSHandlerConstants.SIGNATURE_PARTS, securementSignatureParts);
+	}
+
+	public void setSecurementSignatureIfPresentParts(final String securementSignatureParts) {
+		handler.setOption(ConfigurationConstants.OPTIONAL_SIGNATURE_PARTS, securementSignatureParts);
+	}
+
+	public void setSecurementSignatureUser(final String securementSignatureUser) {
+		handler.setOption(WSHandlerConstants.SIGNATURE_USER, securementSignatureUser);
+	}
+
+	/**
+	 * Sets the time to live on the outgoing message
+	 */
+	public void setSecurementTimeToLive(final int ttl) {
+		if (ttl <= 0) {
+			throw new IllegalArgumentException("timeToLive must be positive");
+		}
+		securementTimeToLive = ttl;
+	}
 
 
-    public void setValidationTimeToLive(final int ttl) {
-        if (ttl <= 0) {
-            throw new IllegalArgumentException("timeToLive must be positive");
-        }
-        validationTimeToLive = ttl;
-    }
+	public void setValidationTimeToLive(final int ttl) {
+		if (ttl <= 0) {
+			throw new IllegalArgumentException("timeToLive must be positive");
+		}
+		validationTimeToLive = ttl;
+	}
 
-    public void setValidationActions(final String actions) {
-        validationActions = actions;
-        try {
-            validationActionsVector = WSSecurityUtil.decodeAction(actions);
-        }
-        catch (WSSecurityException ex) {
-            throw new IllegalArgumentException(ex);
-        }
-    }
+	public void setValidationActions(final String actions) {
+		validationActions = actions;
+		try {
+			validationActionsVector = WSSecurityUtil.decodeAction(actions);
+		} catch (WSSecurityException ex) {
+			throw new IllegalArgumentException(ex);
+		}
+	}
 
-    public void setValidationSignatureCrypto(final Crypto signatureCrypto) {
-        validationSignatureCrypto = signatureCrypto;
-    }
+	public void setValidationSignatureCrypto(final Crypto signatureCrypto) {
+		validationSignatureCrypto = signatureCrypto;
+	}
 
-    public void setEnableRevocation(final boolean enabled) {
-        enableRevocation = enabled;
-    }
+	public void setEnableRevocation(final boolean enabled) {
+		enableRevocation = enabled;
+	}
 
-    public void setBspCompliant(final boolean compliant) {
-	    handler.setOption(WSHandlerConstants.IS_BSP_COMPLIANT, compliant);
-    }
+	public void setBspCompliant(final boolean compliant) {
+		handler.setOption(WSHandlerConstants.IS_BSP_COMPLIANT, compliant);
+	}
 
 	public void afterPropertiesSet() throws Exception {
 		Assert.isTrue(validationActions != null || securementActions != null,
@@ -215,127 +218,124 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 			logger.warn("Could not handle request: " + ex.getMessage());
 		}
 
-        throw new RuntimeException("Could not handle request", ex);
+		throw new RuntimeException("Could not handle request", ex);
 	}
 
-    @Override
-    protected void secureMessage(final SoapMessage soapMessage, final MessageContext messageContext)
-            throws WsSecuritySecurementException {
-    	boolean noSecurity = securementActionsVector.isEmpty() || securementActionsVector.contains(0);
-		if (noSecurity && !enableSignatureConfirmation){
-            return;
-        }
-        if (logger.isDebugEnabled()) {
-            logger.debug("Securing message [" + soapMessage + "] with actions [" + securementActions + "]");
-        }
-        RequestData requestData = initializeRequestData(messageContext);
-        requestData.setAttachmentCallbackHandler(new AttachmentCallbackHandler(soapMessage));
+	@Override
+	protected void secureMessage(final SoapMessage soapMessage, final MessageContext messageContext)
+			throws WsSecuritySecurementException {
+		boolean noSecurity = securementActionsVector.isEmpty() || securementActionsVector.contains(0);
+		if (noSecurity && !enableSignatureConfirmation) {
+			return;
+		}
+		if (logger.isDebugEnabled()) {
+			logger.debug("Securing message [" + soapMessage + "] with actions [" + securementActions + "]");
+		}
+		RequestData requestData = initializeRequestData(messageContext);
+		requestData.setAttachmentCallbackHandler(new AttachmentCallbackHandler(soapMessage));
 
-        Document envelopeAsDocument = soapMessage.getDocument();
-        try {
-            // In case on signature confirmation with no other securement
-            // action, we need to pass an empty securementActionsVector to avoid
-            // NPE
-            if (noSecurity) {
-                securementActionsVector = new ArrayList<Integer>(0);
-            }
+		Document envelopeAsDocument = soapMessage.getDocument();
+		try {
+			// In case on signature confirmation with no other securement
+			// action, we need to pass an empty securementActionsVector to avoid
+			// NPE
+			if (noSecurity) {
+				securementActionsVector = new ArrayList<Integer>(0);
+			}
 
-            handler.doSenderAction(envelopeAsDocument, requestData, WSSecurityUtil.decodeHandlerAction(securementActions, wssConfig), true);
-        }
-        catch (WSSecurityException ex) {
-            throw new Wss4jSecuritySecurementException(ex.getMessage(), ex);
-        }
+			handler.doSenderAction(envelopeAsDocument, requestData, WSSecurityUtil.decodeHandlerAction(securementActions, wssConfig), true);
+		} catch (WSSecurityException ex) {
+			throw new Wss4jSecuritySecurementException(ex.getMessage(), ex);
+		}
 
-        soapMessage.setDocument(envelopeAsDocument);
-    }
+		soapMessage.setDocument(envelopeAsDocument);
+	}
 
-    /**
-     * Creates and initializes a request data for the given message context.
-     *
-     * @param messageContext the message context
-     * @return the request data
-     */
-    protected RequestData initializeRequestData(final MessageContext messageContext) {
-        RequestData requestData = new RequestData();
-        requestData.setMsgContext(messageContext);
+	/**
+	 * Creates and initializes a request data for the given message context.
+	 *
+	 * @param messageContext the message context
+	 * @return the request data
+	 */
+	protected RequestData initializeRequestData(final MessageContext messageContext) {
+		RequestData requestData = new RequestData();
+		requestData.setMsgContext(messageContext);
 
-        // reads securementUsername first from the context then from the property
-        String contextUsername = (String) messageContext.getProperty(SECUREMENT_USER_PROPERTY_NAME);
-        if (StringUtils.hasLength(contextUsername)) {
-            requestData.setUsername(contextUsername);
-        }
-        else {
-            requestData.setUsername(securementUsername);
-        }
-        requestData.setAppendSignatureAfterTimestamp(true);
-        requestData.setTimeToLive(securementTimeToLive);
+		// reads securementUsername first from the context then from the property
+		String contextUsername = (String) messageContext.getProperty(SECUREMENT_USER_PROPERTY_NAME);
+		if (StringUtils.hasLength(contextUsername)) {
+			requestData.setUsername(contextUsername);
+		} else {
+			requestData.setUsername(securementUsername);
+		}
+		requestData.setAppendSignatureAfterTimestamp(true);
+		requestData.setTimeToLive(securementTimeToLive);
 
-        requestData.setWssConfig(wssConfig);
-        return requestData;
-    }
+		requestData.setWssConfig(wssConfig);
+		return requestData;
+	}
 
-    @Override
-    protected void validateMessage(final SoapMessage soapMessage, final MessageContext messageContext)
-            throws WsSecurityValidationException {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Validating message [" + soapMessage + "] with actions [" + validationActions + "]");
-        }
+	@Override
+	protected void validateMessage(final SoapMessage soapMessage, final MessageContext messageContext)
+			throws WsSecurityValidationException {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Validating message [" + soapMessage + "] with actions [" + validationActions + "]");
+		}
 
-        if (validationActionsVector.isEmpty() || validationActionsVector.contains(WSConstants.NO_SECURITY)) {
-            return;
-        }
+		if (validationActionsVector.isEmpty() || validationActionsVector.contains(WSConstants.NO_SECURITY)) {
+			return;
+		}
 
-        Document envelopeAsDocument = soapMessage.getDocument();
+		Document envelopeAsDocument = soapMessage.getDocument();
 
-        // Header processing
+		// Header processing
 
-        try {
-            RequestData requestData = new RequestData();
-            requestData.setAttachmentCallbackHandler(new AttachmentCallbackHandler(soapMessage));
-            requestData.setWssConfig(wssConfig);
-            requestData.setSigVerCrypto(validationSignatureCrypto);
-            requestData.setCallbackHandler(validationCallbackHandler);
-            requestData.setSubjectCertConstraints(OrgnummerExtractor.PATTERNS);
-            AlgorithmSuite algorithmSuite = new AlgorithmSuite();
-            algorithmSuite.addDigestAlgorithm(digestAlgorithm);
-            algorithmSuite.addSignatureMethod(securementSignatureAlgorithm);
-            algorithmSuite.addC14nAlgorithm(CanonicalizationMethod.EXCLUSIVE);
-            //algorithmSuite.addTransformAlgorithm("http://www.w3.org/2001/10/xml-exc-c14n#");
-            //algorithmSuite.addTransformAlgorithm("http://docs.oasis-open.org/wss/2004/XX/oasis-2004XX-wss-swa-profile-1.0#Attachment-Complete-Transform");
+		try {
+			RequestData requestData = new RequestData();
+			requestData.setAttachmentCallbackHandler(new AttachmentCallbackHandler(soapMessage));
+			requestData.setWssConfig(wssConfig);
+			requestData.setSigVerCrypto(validationSignatureCrypto);
+			requestData.setCallbackHandler(validationCallbackHandler);
+			requestData.setSubjectCertConstraints(OrgnummerExtractor.PATTERNS);
+			AlgorithmSuite algorithmSuite = new AlgorithmSuite();
+			algorithmSuite.addDigestAlgorithm(digestAlgorithm);
+			algorithmSuite.addSignatureMethod(securementSignatureAlgorithm);
+			algorithmSuite.addC14nAlgorithm(CanonicalizationMethod.EXCLUSIVE);
+			//algorithmSuite.addTransformAlgorithm("http://www.w3.org/2001/10/xml-exc-c14n#");
+			//algorithmSuite.addTransformAlgorithm("http://docs.oasis-open.org/wss/2004/XX/oasis-2004XX-wss-swa-profile-1.0#Attachment-Complete-Transform");
 			requestData.setAlgorithmSuite(algorithmSuite);
 			requestData.setEnableTimestampReplayCache(false);
 
 
-        	List<WSSecurityEngineResult> results = securityEngine
-                    .processSecurityHeader(envelopeAsDocument, validationActor, requestData );
+			List<WSSecurityEngineResult> results = securityEngine
+					.processSecurityHeader(envelopeAsDocument, validationActor, requestData);
 
-            // Results verification
-            if (CollectionUtils.isEmpty(results)) {
-                throw new Wss4jSecurityValidationException("No WS-Security header found");
-            }
+			// Results verification
+			if (CollectionUtils.isEmpty(results)) {
+				throw new Wss4jSecurityValidationException("No WS-Security header found");
+			}
 
-            updateMessageContextWithCertificate(messageContext, results);
+			updateMessageContextWithCertificate(messageContext, results);
 
-            checkResults(results, validationActionsVector);
+			checkResults(results, validationActionsVector);
 
-            validateEbmsMessagingIsSigned(envelopeAsDocument.getDocumentElement().getPrefix(), results);
+			validateEbmsMessagingIsSigned(envelopeAsDocument.getDocumentElement().getPrefix(), results);
 
-            // puts the results in the context
-            // useful for Signature Confirmation
-            updateContextWithResults(messageContext, results);
+			// puts the results in the context
+			// useful for Signature Confirmation
+			updateContextWithResults(messageContext, results);
 
-            verifyCertificateTrust(results);
+			verifyCertificateTrust(results);
 
-            verifyTimestamp(results);
-    	}
-        catch (WSSecurityException ex) {
-            throw new Wss4jSecurityValidationException(ex.getMessage(), ex);
-        }
+			verifyTimestamp(results);
+		} catch (WSSecurityException ex) {
+			throw new Wss4jSecurityValidationException(ex.getMessage(), ex);
+		}
 
-        soapMessage.setDocument(envelopeAsDocument);
+		soapMessage.setDocument(envelopeAsDocument);
 
-        soapMessage.getEnvelope().getHeader().removeHeaderElement(WS_SECURITY_NAME);
-    }
+		soapMessage.getEnvelope().getHeader().removeHeaderElement(WS_SECURITY_NAME);
+	}
 
 	private void updateMessageContextWithCertificate(final MessageContext messageContext, final List<WSSecurityEngineResult> results) {
 		WSSecurityEngineResult signResult = WSSecurityUtil.fetchActionResult(results, WSConstants.SIGN);
@@ -348,109 +348,110 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 	}
 
 	private void validateEbmsMessagingIsSigned(final String envelopePrefix, final List<WSSecurityEngineResult> results) {
-    	for (WSSecurityEngineResult r : results) {
-    		if (r.containsKey("data-ref-uris")) {
-    			List<WSDataRef> refs = (List<WSDataRef>)r.get("data-ref-uris");
-    			for(WSDataRef ref : refs) {
-    				if (ref.getName().equals(Constants.MESSAGING_QNAME)) {
-    					if (ref.getXpath().equals("/" + envelopePrefix + ":Envelope/" + envelopePrefix + ":Header/" + ref.getName().getPrefix() + ":" + ref.getName().getLocalPart())) {
-    						return;
-    					}
-    				}
-    			}
-    		}
-    	}
+		for (WSSecurityEngineResult r : results) {
+			if (r.containsKey("data-ref-uris")) {
+				List<WSDataRef> refs = (List<WSDataRef>) r.get("data-ref-uris");
+				for (WSDataRef ref : refs) {
+					if (ref.getName().equals(Constants.MESSAGING_QNAME)) {
+						if (ref.getXpath().equals("/" + envelopePrefix + ":Envelope/" + envelopePrefix + ":Header/" + ref.getName().getPrefix() + ":" + ref.getName().getLocalPart())) {
+							return;
+						}
+					}
+				}
+			}
+		}
 		throw new Wss4jSecurityValidationException("ebms:Messaging was not signed");
 	}
 
-    /**
-     * Checks whether the received headers match the configured validation actions. Subclasses could override this method
-     * for custom verification behavior.
-     *
-     *
-     * @param results the results of the validation function
-     * @param validationActions the decoded validation actions
-     * @throws Wss4jSecurityValidationException if the results are deemed invalid
-     */
-    protected void checkResults(final List<WSSecurityEngineResult> results, final List<Integer> validationActions)
-            throws Wss4jSecurityValidationException {
-        if (!handler.checkReceiverResultsAnyOrder(results, validationActions)) {
-            throw new Wss4jSecurityValidationException("Security processing failed (actions mismatch)");
-        }
-    }
+	/**
+	 * Checks whether the received headers match the configured validation actions. Subclasses could override this method
+	 * for custom verification behavior.
+	 *
+	 * @param results           the results of the validation function
+	 * @param validationActions the decoded validation actions
+	 * @throws Wss4jSecurityValidationException if the results are deemed invalid
+	 */
+	protected void checkResults(final List<WSSecurityEngineResult> results, final List<Integer> validationActions)
+			throws Wss4jSecurityValidationException {
+		if (!handler.checkReceiverResultsAnyOrder(results, validationActions)) {
+			throw new Wss4jSecurityValidationException("Security processing failed (actions mismatch)");
+		}
+	}
 
-    /**
-     * Puts the results of WS-Security headers processing in the message context. Some actions like Signature
-     * Confirmation require this.
-     */
-    @SuppressWarnings("unchecked")
-    private void updateContextWithResults(final MessageContext messageContext, final List<WSSecurityEngineResult> results) {
-        List<WSHandlerResult> handlerResults;
-        if ((handlerResults = (List<WSHandlerResult>) messageContext.getProperty(WSHandlerConstants.RECV_RESULTS)) == null) {
-            handlerResults = new ArrayList<WSHandlerResult>();
-            messageContext.setProperty(WSHandlerConstants.RECV_RESULTS, handlerResults);
-        }
-        WSHandlerResult rResult = new WSHandlerResult(validationActor, results);
-        handlerResults.add(0, rResult);
-        messageContext.setProperty(WSHandlerConstants.RECV_RESULTS, handlerResults);
-    }
+	/**
+	 * Puts the results of WS-Security headers processing in the message context. Some actions like Signature
+	 * Confirmation require this.
+	 */
+	@SuppressWarnings("unchecked")
+	private void updateContextWithResults(final MessageContext messageContext, final List<WSSecurityEngineResult> results) {
+		List<WSHandlerResult> handlerResults;
+		if ((handlerResults = (List<WSHandlerResult>) messageContext.getProperty(WSHandlerConstants.RECV_RESULTS)) == null) {
+			handlerResults = new ArrayList<WSHandlerResult>();
+			messageContext.setProperty(WSHandlerConstants.RECV_RESULTS, handlerResults);
+		}
+		WSHandlerResult rResult = new WSHandlerResult(validationActor, results);
+		handlerResults.add(0, rResult);
+		messageContext.setProperty(WSHandlerConstants.RECV_RESULTS, handlerResults);
+	}
 
-    /** Verifies the trust of a certificate. */
-    protected void verifyCertificateTrust(final List<WSSecurityEngineResult> results) throws WSSecurityException {
-        WSSecurityEngineResult actionResult = WSSecurityUtil.fetchActionResult(results, WSConstants.SIGN);
+	/**
+	 * Verifies the trust of a certificate.
+	 */
+	protected void verifyCertificateTrust(final List<WSSecurityEngineResult> results) throws WSSecurityException {
+		WSSecurityEngineResult actionResult = WSSecurityUtil.fetchActionResult(results, WSConstants.SIGN);
 
-        if (actionResult != null) {
-            X509Certificate returnCert =
-                    (X509Certificate) actionResult.get(WSSecurityEngineResult.TAG_X509_CERTIFICATE);
-            Credential credential = new Credential();
-            credential.setCertificates(new X509Certificate[] { returnCert});
+		if (actionResult != null) {
+			X509Certificate returnCert =
+					(X509Certificate) actionResult.get(WSSecurityEngineResult.TAG_X509_CERTIFICATE);
+			Credential credential = new Credential();
+			credential.setCertificates(new X509Certificate[]{returnCert});
 
-            RequestData requestData = new RequestData();
-            requestData.setSigVerCrypto(validationSignatureCrypto);
-            requestData.setEnableRevocation(enableRevocation);
-            requestData.setSubjectCertConstraints(OrgnummerExtractor.PATTERNS);
+			RequestData requestData = new RequestData();
+			requestData.setSigVerCrypto(validationSignatureCrypto);
+			requestData.setEnableRevocation(enableRevocation);
+			requestData.setSubjectCertConstraints(OrgnummerExtractor.PATTERNS);
 
-            SignatureTrustValidator validator = new SignatureTrustValidator();
-            validator.validate(credential, requestData);
-        }
-    }
+			SignatureTrustValidator validator = new SignatureTrustValidator();
+			validator.validate(credential, requestData);
+		}
+	}
 
-    /** Verifies the timestamp. */
-    protected void verifyTimestamp(final List<WSSecurityEngineResult> results) throws WSSecurityException {
-        WSSecurityEngineResult actionResult = WSSecurityUtil.fetchActionResult(results, WSConstants.TS);
+	/**
+	 * Verifies the timestamp.
+	 */
+	protected void verifyTimestamp(final List<WSSecurityEngineResult> results) throws WSSecurityException {
+		WSSecurityEngineResult actionResult = WSSecurityUtil.fetchActionResult(results, WSConstants.TS);
 
-        if (actionResult != null) {
-            Timestamp timestamp = (Timestamp) actionResult.get(WSSecurityEngineResult.TAG_TIMESTAMP);
-            if (timestamp != null && timestampStrict) {
-                Credential credential = new Credential();
-                credential.setTimestamp(timestamp);
+		if (actionResult != null) {
+			Timestamp timestamp = (Timestamp) actionResult.get(WSSecurityEngineResult.TAG_TIMESTAMP);
+			if (timestamp != null && timestampStrict) {
+				Credential credential = new Credential();
+				credential.setTimestamp(timestamp);
 
-                RequestData requestData = new RequestData();
-                WSSConfig config = WSSConfig.getNewInstance();
-                config.setTimeStampTTL(validationTimeToLive);
-                config.setTimeStampStrict(timestampStrict);
-                requestData.setWssConfig(config);
+				RequestData requestData = new RequestData();
+				WSSConfig config = WSSConfig.getNewInstance();
+				config.setTimeStampTTL(validationTimeToLive);
+				config.setTimeStampStrict(timestampStrict);
+				requestData.setWssConfig(config);
 
-                TimestampValidator validator = new TimestampValidator();
-                validator.validate(credential, requestData);
-            }
-        }
-    }
+				TimestampValidator validator = new TimestampValidator();
+				validator.validate(credential, requestData);
+			}
+		}
+	}
 
-    @Override
-    protected void cleanUp() {
-        if (validationCallbackHandler != null) {
-            try {
-                CleanupCallback cleanupCallback = new CleanupCallback();
-                validationCallbackHandler.handle(new Callback[]{cleanupCallback});
-            }
-            catch (IOException ex) {
-                logger.warn("Cleanup callback resulted in IOException", ex);
-            }
-            catch (UnsupportedCallbackException ex) {
-                // ignore
-            }
-        }
-    }
+	@Override
+	protected void cleanUp() {
+		if (validationCallbackHandler != null) {
+			try {
+				CleanupCallback cleanupCallback = new CleanupCallback();
+				validationCallbackHandler.handle(new Callback[]{cleanupCallback});
+			} catch (IOException ex) {
+				logger.warn("Cleanup callback resulted in IOException", ex);
+			} catch (UnsupportedCallbackException ex) {
+				// ignore
+			}
+		}
+	}
 
 }

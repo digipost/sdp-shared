@@ -13,26 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.digipost.api.exceptions.ebms.custom;
+package no.digipost.api.ebms;
 
-import no.digipost.api.exceptions.ebms.Origin;
+public enum Category {
 
-public class Constants {
+	Content,
+	Communication,
+	UnPackaging,
+	Processing;
 
-	public static final String customSecurityErrorCode(Origin origin, String suffix) {
-		if (suffix.length() != 2) {
-			throw new IllegalArgumentException("Illegal error code suffix");
-		}
-		switch (origin) {
-			case security:
-				return "11" + suffix;
-			case ebMS:
-				return "10" + suffix;
-			case reliability:
-				return "12" + suffix;
-			default:
-				throw new IllegalArgumentException("Illegal error code origin");
-		}
+	@Override
+	public String toString() {
+		return this.name();
 	}
 
 }

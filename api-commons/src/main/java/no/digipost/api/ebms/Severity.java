@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.digipost.api.exceptions.ebms;
+package no.digipost.api.ebms;
 
-public enum Origin {
+public enum Severity {
 
-	ebMS,
-	security,
-	reliability;
+	failure,
+	warning;
 
 	@Override
 	public String toString() {

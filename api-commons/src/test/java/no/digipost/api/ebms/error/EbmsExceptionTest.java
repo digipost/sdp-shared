@@ -15,11 +15,11 @@
  */
 package no.digipost.api.ebms.error;
 
-import no.digipost.api.exceptions.ebms.standard.processing.InvalidHeaderException;
+import no.digipost.api.ebms.exceptions.standard.processing.InvalidHeaderException;
 import org.junit.Test;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
 
-import static no.digipost.api.exceptions.ebms.standard.processing.InvalidHeaderException.INVALID_HEADER_EBMS_CODE;
+import static no.digipost.api.ebms.exceptions.standard.processing.InvalidHeaderException.INVALID_HEADER_EBMS_CODE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.nullValue;

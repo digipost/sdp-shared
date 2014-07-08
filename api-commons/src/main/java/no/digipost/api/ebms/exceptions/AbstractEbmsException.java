@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.digipost.api.exceptions.ebms;
+package no.digipost.api.ebms.exceptions;
 
+import no.digipost.api.ebms.Category;
+import no.digipost.api.ebms.Origin;
+import no.digipost.api.ebms.Severity;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Description;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
 

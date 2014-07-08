@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.digipost.api.exceptions.ebms.standard.processing;
+package no.digipost.api.ebms.exceptions.standard.processing;
 
-import no.digipost.api.exceptions.ebms.AbstractEbmsException;
-import no.digipost.api.exceptions.ebms.Category;
-import no.digipost.api.exceptions.ebms.Origin;
-import no.digipost.api.exceptions.ebms.Severity;
+import no.digipost.api.ebms.exceptions.AbstractEbmsException;
+import no.digipost.api.ebms.Category;
+import no.digipost.api.ebms.Origin;
+import no.digipost.api.ebms.Severity;
 
 public class ConnectionFailureException extends AbstractEbmsException {
 

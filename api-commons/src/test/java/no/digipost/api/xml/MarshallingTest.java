@@ -16,7 +16,7 @@
 package no.digipost.api.xml;
 
 import no.difi.begrep.sdp.schema_v10.SDPFeil;
-import no.digipost.api.exceptions.ebms.standard.processing.InvalidHeaderException;
+import no.digipost.api.ebms.exceptions.standard.processing.InvalidHeaderException;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;

@@ -15,7 +15,7 @@
  */
 package no.digipost.api;
 
-import no.digipost.api.exceptions.ebms.standard.processing.InvalidHeaderException;
+import no.digipost.api.ebms.exceptions.standard.processing.InvalidHeaderException;
 import no.digipost.api.xml.Constants;
 import no.digipost.api.xml.Marshalling;
 import no.digipost.api.xml.XpathUtil;

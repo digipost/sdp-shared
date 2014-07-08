@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package no.digipost.api.exceptions.ebms.error;
+package no.digipost.api.ebms.error;
 
 
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Description;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
 
-import static no.digipost.api.exceptions.ebms.Category.Communication;
-import static no.digipost.api.exceptions.ebms.Category.Content;
-import static no.digipost.api.exceptions.ebms.Origin.ebMS;
-import static no.digipost.api.exceptions.ebms.Severity.warning;
+import static no.digipost.api.ebms.Category.Communication;
+import static no.digipost.api.ebms.Category.Content;
+import static no.digipost.api.ebms.Origin.ebMS;
+import static no.digipost.api.ebms.Severity.warning;
 
 /**
  * Bruk denne klassen for å generere ebMS errors med secerity warning

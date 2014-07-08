@@ -16,7 +16,7 @@
 package no.digipost.api.xml;
 
 import no.difi.begrep.sdp.schema_v10.SDPKvittering;
-import no.digipost.api.exceptions.ebms.standard.processing.InvalidHeaderException;
+import no.digipost.api.ebms.exceptions.standard.processing.InvalidHeaderException;
 import org.etsi.uri._01903.v1_3.QualifyingProperties;
 import org.etsi.uri._2918.v1_2.XAdESSignatures;
 import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.NonRepudiationInformation;

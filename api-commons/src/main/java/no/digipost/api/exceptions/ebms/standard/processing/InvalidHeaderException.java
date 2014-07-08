@@ -25,6 +25,9 @@ public class InvalidHeaderException extends AbstractEbmsException {
 	public static final String DEFAULT_DESCRIPTION = "The ebMS header is either not well formed as an XML document, " +
 			"or does not conform to the ebMS packaging rules.";
 
+	public static final String INVALID_HEADER_CODE = "0009";
+	public static final String INVALID_HEADER_EBMS_CODE = EBMS_STANDARD_ERROR_CODE_PREFIX + ":" + INVALID_HEADER_CODE;
+
 	public InvalidHeaderException() {
 		this(null, null, DEFAULT_DESCRIPTION);
 	}
@@ -38,7 +41,7 @@ public class InvalidHeaderException extends AbstractEbmsException {
 	}
 
 	public InvalidHeaderException(final String refToMessageInError, final Throwable cause, final String description) {
-		super(Origin.ebMS, "0009", Severity.failure, Category.UnPackaging, description, refToMessageInError, cause);
+		super(Origin.ebMS, INVALID_HEADER_CODE, Severity.failure, Category.UnPackaging, description, refToMessageInError, cause);
 	}
 
 	@Override

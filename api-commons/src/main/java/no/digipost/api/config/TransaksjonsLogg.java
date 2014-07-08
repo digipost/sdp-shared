@@ -25,7 +25,7 @@ import static no.digipost.api.config.TransaksjonsLogg.Retning.INNKOMMENDE;
 import static no.digipost.api.config.TransaksjonsLogg.Retning.UTGÅENDE;
 import static no.digipost.api.config.TransaksjonsLogg.Type.EBMSFEIL;
 import static no.digipost.api.config.TransaksjonsLogg.Type.SOAPFAULT;
-import static no.digipost.api.exceptions.ebms.standard.processing.EmptyMessagePartitionChannelException.EMPTY_MPC_EBMS_CODE;
+import static no.digipost.api.exceptions.ebms.error.EbmsError.EMPTY_MPC_EBMS_CODE;
 import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
 
 public class TransaksjonsLogg {
@@ -51,6 +51,7 @@ public class TransaksjonsLogg {
 	public void soapfault(final String endpoint, final String orgnr, final Retning retning, final SoapFault soapFault) {
 		LOG.warn("[{}] [{}] {} fault:[{}]", endpoint, toLoggable(orgnr), SOAPFAULT, soapFault.getFaultStringOrReason());
 	}
+
 	private String toLoggable(final String s) {
 		return defaultIfEmpty(s, N_A);
 	}

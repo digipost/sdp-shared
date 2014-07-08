@@ -41,7 +41,7 @@ import static no.digipost.api.config.TransaksjonsLogg.Type.EBMSFEIL;
 import static no.digipost.api.config.TransaksjonsLogg.Type.PULLREQUEST;
 import static no.digipost.api.config.TransaksjonsLogg.Type.TRANSPORTKVITTERING;
 import static no.digipost.api.config.TransaksjonsLogg.Type.USERMESSAGE;
-import static no.digipost.api.exceptions.ebms.standard.processing.EmptyMessagePartitionChannelException.EMPTY_MPC_EBMS_CODE;
+import static no.digipost.api.exceptions.ebms.error.EbmsError.EMPTY_MPC_EBMS_CODE;
 
 public class TransactionLogInterceptor {
 

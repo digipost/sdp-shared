@@ -44,13 +44,13 @@ import static no.digipost.api.config.TransaksjonsLogg.Type.PULLREQUEST;
 import static no.digipost.api.config.TransaksjonsLogg.Type.TRANSPORTKVITTERING;
 import static no.digipost.api.config.TransaksjonsLogg.Type.USERMESSAGE;
 
-public class TransactionLogInterceptor {
+public class TransactionLog {
 
 	private final Jaxb2Marshaller jaxb2Marshaller;
 	private TransaksjonsLogg logg = new TransaksjonsLogg();
 
 
-	public TransactionLogInterceptor(final Jaxb2Marshaller jaxb2Marshaller) {
+	public TransactionLog(final Jaxb2Marshaller jaxb2Marshaller) {
 		this.jaxb2Marshaller = jaxb2Marshaller;
 	}
 

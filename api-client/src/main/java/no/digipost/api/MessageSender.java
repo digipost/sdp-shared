@@ -28,8 +28,9 @@ import no.digipost.api.interceptors.EbmsClientInterceptor;
 import no.digipost.api.interceptors.EbmsReferenceValidatorInterceptor;
 import no.digipost.api.interceptors.KeyStoreInfo;
 import no.digipost.api.interceptors.RemoveContentLengthInterceptor;
-import no.digipost.api.interceptors.SoapLoggInterceptor;
-import no.digipost.api.interceptors.SoapLoggInterceptor.LogLevel;
+import no.digipost.api.interceptors.SoapLog;
+import no.digipost.api.interceptors.SoapLog.LogLevel;
+import no.digipost.api.interceptors.SoapLogClientInterceptor;
 import no.digipost.api.interceptors.TransactionLogClientInterceptor;
 import no.digipost.api.interceptors.WsSecurityInterceptor;
 import no.digipost.api.representations.EbmsAktoer;
@@ -154,7 +155,7 @@ public class MessageSender {
 		private final List<HttpRequestInterceptor> httpRequestInterceptors = new ArrayList<HttpRequestInterceptor>();
 		private final List<HttpResponseInterceptor> httpResponseInterceptors = new ArrayList<HttpResponseInterceptor>();
 
-		private SoapLoggInterceptor.LogLevel logLevel = LogLevel.NONE;
+		private SoapLog.LogLevel logLevel = LogLevel.NONE;
 
 		private Builder(final String endpointUri, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker,
 		                final WsSecurityInterceptor wsSecurityInterceptor, final KeyStoreInfo keystoreInfo) {
@@ -257,7 +258,7 @@ public class MessageSender {
 			meldingInterceptors.add(wsSecurityInterceptor);
 			meldingInterceptors.add(new EbmsReferenceValidatorInterceptor(marshaller));
 			meldingInterceptors.add(new TransactionLogClientInterceptor(marshaller));
-			meldingInterceptors.add(new SoapLoggInterceptor(logLevel));
+			meldingInterceptors.add(new SoapLogClientInterceptor(logLevel));
 
 
 			for (InsertInterceptor insertInterceptor : interceptorBefore) {

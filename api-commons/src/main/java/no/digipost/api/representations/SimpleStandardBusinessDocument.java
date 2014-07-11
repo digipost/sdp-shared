@@ -157,6 +157,11 @@ public class SimpleStandardBusinessDocument {
 		public boolean kreverAapningsKvittering() {
 			return digitalPost.getDigitalPostInfo().getAapningskvittering() != null && digitalPost.getDigitalPostInfo().getAapningskvittering();
 		}
+
+		public String getAvsender() {
+			return digitalPost.getAvsender().getOrganisasjon().getValue();
+		}
+
 	}
 
 }

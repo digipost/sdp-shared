@@ -42,10 +42,14 @@ public class Constants {
 	public static final QName SIGNAL_MESSAGE_QNAME = new QName(EBMS_NAMESPACE, "SignalMessage");
 	public static final QName USER_MESSAGE_QNAME = new QName(EBMS_NAMESPACE, "UserMessage");
 	public static final QName WSSEC_HEADER_QNAME = new QName(WSSEC_NAMESPACE, "Security");
+	public static final QName WSU_TIMESTAMP_QNAME = new QName(WSSEC_UTILS_NAMESPACE, "Timestamp");
 	public static final QName ID_ATTRIBUTE_QNAME = new QName(WSSEC_UTILS_NAMESPACE, "Id");
 	public static final QName TIMESTAMP = new QName(WSSEC_UTILS_NAMESPACE, "Timestamp");
 	public static final QName SBDH_QNAME = new QName(SBDH_NAMESPACE, "StandardBusinessDocumentHeader");
 	public static final QName SBD_QNAME = new QName(SBDH_NAMESPACE, "StandardBusinessDocument");
+	public static final QName ENVELOPE_QNAME = new QName(SOAP_ENVELOPE12_NAMESPACE, "Envelope");
+	public static final QName HEADER_QNAME = new QName(SOAP_ENVELOPE12_NAMESPACE, "Header");
+
 
 
 }

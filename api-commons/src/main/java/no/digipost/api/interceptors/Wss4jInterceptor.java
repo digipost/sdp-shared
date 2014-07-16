@@ -47,12 +47,15 @@ import org.springframework.ws.soap.security.callback.CleanupCallback;
 import org.springframework.ws.soap.security.wss4j.Wss4jSecuritySecurementException;
 import org.springframework.ws.soap.security.wss4j.Wss4jSecurityValidationException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.DigestMethod;
+import javax.xml.namespace.QName;
+
 import java.io.IOException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -319,7 +322,8 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 
 			checkResults(results, validationActionsVector);
 
-			validateEbmsMessagingIsSigned(envelopeAsDocument.getDocumentElement().getPrefix(), results);
+			validateEbmsMessagingIsSigned(envelopeAsDocument, results);
+			validateTimestampIsSigned(envelopeAsDocument, results);
 
 			// puts the results in the context
 			// useful for Signature Confirmation
@@ -347,21 +351,44 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 		}
 	}
 
-	private void validateEbmsMessagingIsSigned(final String envelopePrefix, final List<WSSecurityEngineResult> results) {
+	private void validateTimestampIsSigned(final Document doc, final List<WSSecurityEngineResult> results) {
+		validateIsSigned(doc, results, Constants.HEADER_QNAME, Constants.WSSEC_HEADER_QNAME, Constants.WSU_TIMESTAMP_QNAME);
+	}
+	private void validateEbmsMessagingIsSigned(final Document doc, final List<WSSecurityEngineResult> results) {
+		validateIsSigned(doc, results, Constants.HEADER_QNAME, Constants.MESSAGING_QNAME);
+	}
+	private void validateIsSigned(final Document doc, final List<WSSecurityEngineResult> results, final QName... qnamePath) {
+		if (!wasSigned(doc, results, qnamePath)) {
+			QName qName = qnamePath[qnamePath.length - 1];
+			throw new Wss4jSecurityValidationException(qName.getPrefix() + ":" + qName.getLocalPart() + " was not signed");
+		}
+	}
+
+	private boolean wasSigned(final Document doc, final List<WSSecurityEngineResult> results, final QName... qnamePath) {
+		String path = "/" + doc.getDocumentElement().getPrefix() + ":Envelope";
+		for (QName qn : qnamePath) {
+			Node n = doc.getDocumentElement().getElementsByTagNameNS(qn.getNamespaceURI(), qn.getLocalPart()).item(0);
+			if (n == null) {
+				return false;
+			}
+			path += "/" + n.getPrefix() + ":" + n.getLocalName();
+		}
 		for (WSSecurityEngineResult r : results) {
 			if (r.containsKey("data-ref-uris")) {
 				List<WSDataRef> refs = (List<WSDataRef>) r.get("data-ref-uris");
 				for (WSDataRef ref : refs) {
-					if (ref.getName().equals(Constants.MESSAGING_QNAME)) {
-						if (ref.getXpath().equals("/" + envelopePrefix + ":Envelope/" + envelopePrefix + ":Header/" + ref.getName().getPrefix() + ":" + ref.getName().getLocalPart())) {
-							return;
+					if (ref.getName().equals(qnamePath[qnamePath.length - 1])) {
+						if (ref.getXpath().equals(path)) {
+							return true;
 						}
 					}
 				}
 			}
 		}
-		throw new Wss4jSecurityValidationException("ebms:Messaging was not signed");
+		return false;
 	}
+
+
 
 	/**
 	 * Checks whether the received headers match the configured validation actions. Subclasses could override this method

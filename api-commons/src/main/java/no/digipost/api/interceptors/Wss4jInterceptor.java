@@ -61,6 +61,11 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static no.digipost.api.xml.Constants.HEADER_QNAME;
+import static no.digipost.api.xml.Constants.MESSAGING_QNAME;
+import static no.digipost.api.xml.Constants.WSSEC_HEADER_QNAME;
+import static no.digipost.api.xml.Constants.WSU_TIMESTAMP_QNAME;
+
 
 public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 
@@ -352,10 +357,10 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 	}
 
 	private void validateTimestampIsSigned(final Document doc, final List<WSSecurityEngineResult> results) {
-		validateIsSigned(doc, results, Constants.HEADER_QNAME, Constants.WSSEC_HEADER_QNAME, Constants.WSU_TIMESTAMP_QNAME);
+		validateIsSigned(doc, results, HEADER_QNAME, WSSEC_HEADER_QNAME, WSU_TIMESTAMP_QNAME);
 	}
 	private void validateEbmsMessagingIsSigned(final Document doc, final List<WSSecurityEngineResult> results) {
-		validateIsSigned(doc, results, Constants.HEADER_QNAME, Constants.MESSAGING_QNAME);
+		validateIsSigned(doc, results, HEADER_QNAME, MESSAGING_QNAME);
 	}
 	private void validateIsSigned(final Document doc, final List<WSSecurityEngineResult> results, final QName... qnamePath) {
 		if (!wasSigned(doc, results, qnamePath)) {

@@ -75,6 +75,10 @@ public class SimpleStandardBusinessDocument {
 		return doc.getAny() instanceof SDPDigitalPost;
 	}
 
+	public boolean erFlyttetDigitalPost() {
+		return doc.getAny() instanceof SDPFlyttetDigitalPost;
+	}
+
 	public boolean erFeil() {
 		return doc.getAny() instanceof SDPFeil;
 	}

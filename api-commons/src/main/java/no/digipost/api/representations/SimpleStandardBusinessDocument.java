@@ -18,6 +18,7 @@ package no.digipost.api.representations;
 import no.difi.begrep.sdp.schema_v10.*;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
+import org.w3.xmldsig.Reference;
 
 import java.util.List;
 
@@ -150,7 +151,7 @@ public class SimpleStandardBusinessDocument {
 
 	}
 
-	public class SimpleDigitalPost {
+	public static class SimpleDigitalPost {
 
 		public final SDPDigitalPost digitalPost;
 
@@ -162,9 +163,17 @@ public class SimpleStandardBusinessDocument {
 			return digitalPost.getDigitalPostInfo().getAapningskvittering() != null && digitalPost.getDigitalPostInfo().getAapningskvittering();
 		}
 
-		public String getAvsender() {
-			return digitalPost.getAvsender().getOrganisasjon().getValue();
+		public SDPAvsender getAvsender() {
+			return digitalPost.getAvsender();
 		}
+
+		public SDPMottaker getMottaker() {
+			return digitalPost.getMottaker();
+        }
+
+		public Reference getDokumentpakkefingeravtrykk() {
+			return digitalPost.getDokumentpakkefingeravtrykk();
+        }
 
 	}
 

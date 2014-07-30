@@ -16,11 +16,15 @@
 package no.digipost.api.representations;
 
 import no.difi.begrep.sdp.schema_v10.*;
+import no.digipost.xsd.types.Postleveranse;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3.xmldsig.Reference;
 
 import java.util.List;
+
+import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
+import static org.apache.commons.lang3.Validate.notNull;
 
 public class SimpleStandardBusinessDocument {
 
@@ -118,8 +122,8 @@ public class SimpleStandardBusinessDocument {
 	public SimpleKvittering getKvittering() {
 		return new SimpleKvittering((SDPKvittering)doc.getAny());
 	}
-	public SimpleDigitalPost getDigitalPost() {
-		return new SimpleDigitalPost((SDPDigitalPost)doc.getAny());
+	public SimpleDigitalPostleveranse getDigitalPost() {
+		return new SimpleDigitalPostleveranse((SDPDigitalPost)doc.getAny());
 	}
 	public SDPMelding getMelding() {
 		return (SDPMelding)doc.getAny();
@@ -151,32 +155,76 @@ public class SimpleStandardBusinessDocument {
 
 	}
 
-	public static class SimpleDigitalPost {
 
-		public final SDPDigitalPost digitalPost;
-		public final boolean erFlytting;
-		public final SDPFlyttetDigitalPost flyttetDigitalPost;
+	public static class SimpleDigitalPostleveranse {
+		public static enum Type {
+			NY_POST(SDPDigitalPost.class),
+			FLYTTET(SDPFlyttetDigitalPost.class);
 
-		public SimpleDigitalPost(final SDPDigitalPost digitalPost) {
+			private final Class<?> associatedClass;
+
+			Type(Class<?> associatedClass) {
+				this.associatedClass = associatedClass;
+			}
+
+			public <T> T validateInstance(T candidate) {
+				if (associatedClass.isInstance(candidate)) {
+					return candidate;
+				} else {
+					throw new IllegalStateException(candidate + " er ikke av type " + this);
+				}
+			}
+		}
+
+		public final Type type;
+
+		private final SDPDigitalPost digitalPost;
+		private final SDPFlyttetDigitalPost flyttetDigitalPost;
+		private final Postleveranse postleveranse;
+
+		public SimpleDigitalPostleveranse(SDPFlyttetDigitalPost flyttetDigitalPost) {
+			this(Type.FLYTTET, null, notNull(flyttetDigitalPost, "flyttetDigitalPost"));
+		}
+
+		public SimpleDigitalPostleveranse(SDPDigitalPost digitalPost) {
+			this(Type.NY_POST, notNull(digitalPost, "digitalPost"), null);
+		}
+
+		@SuppressWarnings("unchecked")
+        private SimpleDigitalPostleveranse(Type type, SDPDigitalPost digitalPost, SDPFlyttetDigitalPost flyttetDigitalPost) {
+			this.type = type;
 			this.digitalPost = digitalPost;
-			this.erFlytting = false;
-			this.flyttetDigitalPost = null;
+			this.flyttetDigitalPost = flyttetDigitalPost;
+			this.postleveranse = firstNonNull(digitalPost, flyttetDigitalPost);
+		}
+
+		public SDPDigitalPost getDigitalPost() {
+			return Type.NY_POST.validateInstance(digitalPost);
+		}
+
+		public SDPFlyttetDigitalPost getFlyttetDigitalPost() {
+			return Type.FLYTTET.validateInstance(flyttetDigitalPost);
 		}
 
 		public boolean kreverAapningsKvittering() {
-			return digitalPost.getDigitalPostInfo().getAapningskvittering() != null && digitalPost.getDigitalPostInfo().getAapningskvittering();
+			Boolean aapningskvittering = postleveranse.getDigitalPostInfo().getAapningskvittering();
+			return aapningskvittering != null && aapningskvittering;
 		}
 
 		public SDPAvsender getAvsender() {
-			return digitalPost.getAvsender();
+			return postleveranse.getAvsender();
 		}
 
 		public SDPMottaker getMottaker() {
-			return digitalPost.getMottaker();
+			return postleveranse.getMottaker();
         }
 
 		public Reference getDokumentpakkefingeravtrykk() {
-			return digitalPost.getDokumentpakkefingeravtrykk();
+			return postleveranse.getDokumentpakkefingeravtrykk();
+        }
+
+		public SDPDigitalPostInfo getDigitalPostInfo() {
+			return postleveranse.getDigitalPostInfo();
         }
 
 	}

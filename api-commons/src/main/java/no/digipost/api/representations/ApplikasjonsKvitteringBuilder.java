@@ -77,7 +77,8 @@ public class ApplikasjonsKvitteringBuilder {
 		kvittering = new SDPKvittering()
 				.withVarslingfeilet(new SDPVarslingfeilet()
 						.withBeskrivelse(beskrivelse)
-						.withVarslingskanal(varslingskanal));
+						.withVarslingskanal(varslingskanal))
+				.withTidspunkt(now());
 		return this;
 	}
 

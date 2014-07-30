@@ -154,9 +154,13 @@ public class SimpleStandardBusinessDocument {
 	public static class SimpleDigitalPost {
 
 		public final SDPDigitalPost digitalPost;
+		public final boolean erFlytting;
+		public final SDPFlyttetDigitalPost flyttetDigitalPost;
 
 		public SimpleDigitalPost(final SDPDigitalPost digitalPost) {
 			this.digitalPost = digitalPost;
+			this.erFlytting = false;
+			this.flyttetDigitalPost = null;
 		}
 
 		public boolean kreverAapningsKvittering() {

@@ -17,12 +17,15 @@ package no.digipost.api.representations;
 
 import no.difi.begrep.sdp.schema_v10.*;
 import no.digipost.xsd.types.Postleveranse;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3.xmldsig.Reference;
 
 import java.util.List;
 
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -226,6 +229,25 @@ public class SimpleStandardBusinessDocument {
 		public SDPDigitalPostInfo getDigitalPostInfo() {
 			return postleveranse.getDigitalPostInfo();
         }
+
+		public DateTime getLeveringsTidspunkt() {
+			LocalDate virkningsdato = postleveranse.getDigitalPostInfo().getVirkningsdato();
+			DateTime leveringstidspunkt = null;
+
+			if(virkningsdato != null) {
+				leveringstidspunkt =  virkningsdato.toDateTimeAtStartOfDay();
+			}
+
+			if(type == Type.FLYTTET) {
+				LocalDate mottaksdato = getFlyttetDigitalPost().getMottaksdato();
+				if(mottaksdato != null
+						&& (leveringstidspunkt == null || mottaksdato.toDateTimeAtStartOfDay().isAfter(leveringstidspunkt))){
+					leveringstidspunkt = mottaksdato.toDateTimeAtStartOfDay();
+				}
+			}
+
+			return leveringstidspunkt;
+		}
 
 	}
 

@@ -25,8 +25,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.nullValue;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.*;
 
 
@@ -35,8 +35,8 @@ public class SimpleDigitalPostTest {
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
 
-	SimpleDigitalPostleveranse nyPost = new SimpleDigitalPostleveranse(new SDPDigitalPost());
-	SimpleDigitalPostleveranse tilFlytting = new SimpleDigitalPostleveranse(new SDPFlyttetDigitalPost());
+	private SimpleDigitalPostleveranse nyPost = new SimpleDigitalPostleveranse(new SDPDigitalPost());
+	private SimpleDigitalPostleveranse tilFlytting = new SimpleDigitalPostleveranse(new SDPFlyttetDigitalPost());
 
 	@Test
     public void kanIkkeHenteUtFlyttetDigitalPostNaarTypeErNY_POST() {

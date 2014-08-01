@@ -40,15 +40,15 @@ public class SimpleDigitalPostTest {
 
 	@Test
     public void kanIkkeHenteUtFlyttetDigitalPostNaarTypeErNY_POST() {
-		assertEquals(Type.NY_POST, nyPost.type);
-		expectedException.expect(IllegalStateException.class);
+		assertThat(nyPost.type, is(Type.NY_POST));
+		expectedException.expect(IllegalArgumentException.class);
 		nyPost.getFlyttetDigitalPost();
     }
 
 	@Test
 	public void kanIkkeHenteUtDigitalPostNaarTypeErFLYTTET() {
-		assertEquals(Type.FLYTTET, tilFlytting.type);
-		expectedException.expect(IllegalStateException.class);
+		assertThat(tilFlytting.type, is(Type.FLYTTET));
+		expectedException.expect(IllegalArgumentException.class);
 		tilFlytting.getDigitalPost();
 	}
 

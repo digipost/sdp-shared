@@ -25,9 +25,6 @@ import org.w3.xmldsig.Reference;
 
 import java.util.List;
 
-import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
-import static org.apache.commons.lang3.Validate.notNull;
-
 public class SimpleStandardBusinessDocument {
 
 	private final StandardBusinessDocument doc;
@@ -124,8 +121,8 @@ public class SimpleStandardBusinessDocument {
 	public SimpleKvittering getKvittering() {
 		return new SimpleKvittering((SDPKvittering)doc.getAny());
 	}
-	public SimpleDigitalPostleveranse getDigitalPost() {
-		return new SimpleDigitalPostleveranse((SDPDigitalPost)doc.getAny());
+	public SimpleDigitalPostleveranse getDigitalPostleveranse() {
+		return new SimpleDigitalPostleveranse((Postleveranse) doc.getAny());
 	}
 	public SDPMelding getMelding() {
 		return (SDPMelding)doc.getAny();
@@ -159,53 +156,56 @@ public class SimpleStandardBusinessDocument {
 
 
 	public static class SimpleDigitalPostleveranse {
+
 		public static enum Type {
 			NY_POST(SDPDigitalPost.class),
-			FLYTTET(SDPFlyttetDigitalPost.class);
+			FLYTTET(SDPFlyttetDigitalPost.class),
+			INVALID(null);
 
-			private final Class<?> associatedClass;
+			private final Class<? extends Postleveranse> associatedClass;
 
-			Type(Class<?> associatedClass) {
+			Type(Class<? extends Postleveranse> associatedClass) {
 				this.associatedClass = associatedClass;
 			}
 
-			public <T> T validateInstance(T candidate) {
-				if (associatedClass.isInstance(candidate)) {
+			public boolean isInstance(Postleveranse melding) {
+				return this != INVALID && associatedClass.isInstance(melding);
+			}
+
+			public <T extends Postleveranse> T validateInstance(T candidate) {
+				if (isInstance(candidate)) {
 					return candidate;
 				} else {
-					throw new IllegalStateException(candidate + " er ikke av type " + this);
+					throw new IllegalArgumentException(
+							"Postleveranse av type " +
+							candidate.getClass().getName() +
+							(this == INVALID ? " er ikke en gyldig type" : " er ikke av type " + this));
 				}
+			}
+
+			public static Type of(Postleveranse melding) {
+				Type actual = INVALID;
+				for (Type type : values()) {
+	                if (type.isInstance(melding)) actual = type;
+                }
+				return actual;
 			}
 		}
 
 		public final Type type;
-
-		private final SDPDigitalPost digitalPost;
-		private final SDPFlyttetDigitalPost flyttetDigitalPost;
 		private final Postleveranse postleveranse;
 
-		public SimpleDigitalPostleveranse(SDPFlyttetDigitalPost flyttetDigitalPost) {
-			this(Type.FLYTTET, null, notNull(flyttetDigitalPost, "flyttetDigitalPost"));
-		}
-
-		public SimpleDigitalPostleveranse(SDPDigitalPost digitalPost) {
-			this(Type.NY_POST, notNull(digitalPost, "digitalPost"), null);
-		}
-
-		@SuppressWarnings("unchecked")
-        private SimpleDigitalPostleveranse(Type type, SDPDigitalPost digitalPost, SDPFlyttetDigitalPost flyttetDigitalPost) {
-			this.type = type;
-			this.digitalPost = digitalPost;
-			this.flyttetDigitalPost = flyttetDigitalPost;
-			this.postleveranse = firstNonNull(digitalPost, flyttetDigitalPost);
+        public SimpleDigitalPostleveranse(Postleveranse postleveranse) {
+			this.type = Type.of(postleveranse);
+			this.postleveranse = type.validateInstance(postleveranse);
 		}
 
 		public SDPDigitalPost getDigitalPost() {
-			return Type.NY_POST.validateInstance(digitalPost);
+			return (SDPDigitalPost) Type.NY_POST.validateInstance(postleveranse);
 		}
 
 		public SDPFlyttetDigitalPost getFlyttetDigitalPost() {
-			return Type.FLYTTET.validateInstance(flyttetDigitalPost);
+			return (SDPFlyttetDigitalPost) Type.FLYTTET.validateInstance(postleveranse);
 		}
 
 		public boolean kreverAapningsKvittering() {
@@ -249,7 +249,7 @@ public class SimpleStandardBusinessDocument {
 		}
 
 		public boolean erAlleredeAapnet() {
-			return type == Type.FLYTTET ? flyttetDigitalPost.isAapnet() : false;
+			return type == Type.FLYTTET ? getFlyttetDigitalPost().isAapnet() : false;
 		}
 
 	}

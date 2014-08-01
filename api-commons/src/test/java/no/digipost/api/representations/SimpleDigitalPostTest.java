@@ -20,19 +20,15 @@ import no.difi.begrep.sdp.schema_v10.SDPDigitalPostInfo;
 import no.difi.begrep.sdp.schema_v10.SDPFlyttetDigitalPost;
 import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostleveranse;
 import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostleveranse.Type;
-import org.hamcrest.core.Is;
-import org.hamcrest.core.IsNull;
 import org.joda.time.LocalDate;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
+
 
 public class SimpleDigitalPostTest {
 
@@ -144,4 +140,16 @@ public class SimpleDigitalPostTest {
 
 		assertThat(simpleDigitalPostleveranse.getLeveringsTidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay()));
 	}
+
+	@Test
+	public void vanligDigitalPostErAldriAapnet() {
+	    assertFalse(nyPost.erAlleredeAapnet());
+    }
+
+	@Test
+    public void flyttetPostKanVaereAapnetEllerUaapnet() {
+		assertFalse(tilFlytting.erAlleredeAapnet());
+		assertTrue(new SimpleDigitalPostleveranse(new SDPFlyttetDigitalPost().withAapnet(true)).erAlleredeAapnet());
+    }
+
 }

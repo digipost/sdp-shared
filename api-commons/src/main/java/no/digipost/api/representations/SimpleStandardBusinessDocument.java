@@ -25,7 +25,6 @@ import org.w3.xmldsig.Reference;
 
 import java.util.List;
 
-import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -247,6 +246,10 @@ public class SimpleStandardBusinessDocument {
 			}
 
 			return leveringstidspunkt;
+		}
+
+		public boolean erAlleredeAapnet() {
+			return type == Type.FLYTTET ? flyttetDigitalPost.isAapnet() : false;
 		}
 
 	}

@@ -36,6 +36,12 @@
 	</bindings>
 
 	<bindings schemaLocation="../difi-begrepskatalog/xsd/sdp-melding.xsd">
+		<bindings node="//xs:complexType[@name='DigitalPost']">
+			<inheritance:implements>no.digipost.xsd.types.DigitalPostformidling</inheritance:implements>
+		</bindings>
+		<bindings node="//xs:complexType[@name='FlyttetDigitalPost']">
+			<inheritance:implements>no.digipost.xsd.types.DigitalPostformidling</inheritance:implements>
+		</bindings>
 		<bindings node="//xs:complexType[@name='EpostVarselTekst']">
 			<inheritance:implements>no.digipost.xsd.types.TekstMedSpraak</inheritance:implements>
 		</bindings>

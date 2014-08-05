@@ -15,7 +15,6 @@
  */
 package no.digipost.api.handlers;
 
-import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
 import no.digipost.api.SdpMeldingSigner;
 import no.digipost.api.interceptors.steps.AddUserMessageStep;
 import no.digipost.api.representations.EbmsAktoer;
@@ -23,6 +22,7 @@ import no.digipost.api.representations.EbmsForsendelse;
 import no.digipost.api.representations.Mpc;
 import no.digipost.api.xml.Marshalling;
 import no.digipost.api.xml.TransformerUtil;
+import no.digipost.xsd.types.DigitalPostformidling;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
@@ -46,17 +46,17 @@ public class ForsendelseSender extends EbmsContextAware implements WebServiceMes
 	private final Jaxb2Marshaller marshaller;
 	private final EbmsAktoer tekniskAvsender;
 	private final EbmsAktoer tekniskMottaker;
-	private final SDPDigitalPost digitalPost;
+	private final DigitalPostformidling digitalPostformidling;
 	private final SdpMeldingSigner signer;
 
 	public ForsendelseSender(final SdpMeldingSigner signer, final EbmsAktoer tekniskAvsender, final EbmsAktoer tekniskMottaker, final EbmsForsendelse forsendelse, final Jaxb2Marshaller marshaller) {
 		this.signer = signer;
 		this.tekniskAvsender = tekniskAvsender;
 		this.tekniskMottaker = tekniskMottaker;
-		doc = forsendelse.doc;
+		this.doc = forsendelse.doc;
 		this.forsendelse = forsendelse;
 		this.marshaller = marshaller;
-		digitalPost = ((SDPDigitalPost) doc.getAny());
+		this.digitalPostformidling = (DigitalPostformidling) doc.getAny();
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class ForsendelseSender extends EbmsContextAware implements WebServiceMes
 		Mpc mpc = new Mpc(forsendelse.prioritet, forsendelse.mpcId);
 		if (forsendelse.sbdStream != null) {
 			TransformerUtil.transform(new StreamSource(forsendelse.sbdStream), soapMessage.getEnvelope().getBody().getPayloadResult(), true);
-		} else if (digitalPost.getSignature() == null) {
+		} else if (digitalPostformidling.getSignature() == null) {
 			Document signedDoc = signer.sign(doc);
 			Marshalling.marshal(signedDoc, soapMessage.getEnvelope().getBody().getPayloadResult());
 		} else {
@@ -76,9 +76,9 @@ public class ForsendelseSender extends EbmsContextAware implements WebServiceMes
 	}
 
 	private void attachFile(final SoapMessage soapMessage) throws IOException {
-		if (digitalPost.getDokumentpakkefingeravtrykk() == null) {
+		if (digitalPostformidling.getDokumentpakkefingeravtrykk() == null) {
 			byte[] hash = forsendelse.getDokumentpakke().getSHA256();
-			digitalPost.withDokumentpakkefingeravtrykk(new Reference()
+			digitalPostformidling.setDokumentpakkefingeravtrykk(new Reference()
 							.withDigestMethod(new DigestMethod().withAlgorithm(javax.xml.crypto.dsig.DigestMethod.SHA256))
 							.withDigestValue(org.bouncycastle.util.encoders.Base64.encode(hash))
 			);

@@ -15,7 +15,8 @@
  */
 package no.digipost.api.representations;
 
-import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
+import no.difi.begrep.sdp.schema_v10.SDPMelding;
+import no.digipost.xsd.types.DigitalPostformidling;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
 import java.io.InputStream;
@@ -58,12 +59,12 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 		return sbdhMottaker;
 	}
 
-	public static Builder create(final EbmsAktoer avsender, final EbmsAktoer mottaker, final Organisasjonsnummer sbdhMottaker, final SDPDigitalPost digitalPost, final Dokumentpakke dokumentpakke) {
+	public static <P extends SDPMelding & DigitalPostformidling> Builder create(final EbmsAktoer avsender, final EbmsAktoer mottaker, final Organisasjonsnummer sbdhMottaker, final P digitalPostformidling, final Dokumentpakke dokumentpakke) {
 		Builder builder = new Builder();
 		builder.avsender = avsender;
 		builder.mottaker = mottaker;
 		builder.sbdhMottaker = sbdhMottaker;
-		builder.digitalPost = digitalPost;
+		builder.digitalPost = digitalPostformidling;
 		builder.dokumentpakke = dokumentpakke;
 		return builder;
 	}
@@ -78,7 +79,7 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 		builder.conversationId = sdoc.getConversationId();
 		builder.instanceIdentifier = sdoc.getInstanceIdentifier();
 		builder.doc = sbd;
-		builder.digitalPost = (SDPDigitalPost)sbd.getAny();
+		builder.digitalPost = (SDPMelding)sbd.getAny();
 		return builder;
 	}
 
@@ -94,7 +95,7 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 		private String conversationId = newId();
 		private String instanceIdentifier = newId();
 		private StandardBusinessDocument doc;
-		private SDPDigitalPost digitalPost;
+		private SDPMelding digitalPost;
 		private String messageId = newId();
 		public InputStream sbdStream = null;
 		private Prioritet prioritet = Prioritet.NORMAL;

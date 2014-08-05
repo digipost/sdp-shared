@@ -16,7 +16,7 @@
 package no.digipost.api.representations;
 
 import no.difi.begrep.sdp.schema_v10.*;
-import no.digipost.xsd.types.Postleveranse;
+import no.digipost.xsd.types.DigitalPostformidling;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
@@ -24,6 +24,8 @@ import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusine
 import org.w3.xmldsig.Reference;
 
 import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.join;
 
 public class SimpleStandardBusinessDocument {
 
@@ -121,8 +123,8 @@ public class SimpleStandardBusinessDocument {
 	public SimpleKvittering getKvittering() {
 		return new SimpleKvittering((SDPKvittering)doc.getAny());
 	}
-	public SimpleDigitalPostleveranse getDigitalPostleveranse() {
-		return new SimpleDigitalPostleveranse((Postleveranse) doc.getAny());
+	public SimpleDigitalPostformidling getDigitalPostformidling() {
+		return new SimpleDigitalPostformidling((DigitalPostformidling) doc.getAny());
 	}
 	public SDPMelding getMelding() {
 		return (SDPMelding)doc.getAny();
@@ -155,93 +157,97 @@ public class SimpleStandardBusinessDocument {
 	}
 
 
-	public static class SimpleDigitalPostleveranse {
+	public static class SimpleDigitalPostformidling {
 
 		public static enum Type {
 			NY_POST(SDPDigitalPost.class),
-			FLYTTET(SDPFlyttetDigitalPost.class),
-			INVALID(null);
+			FLYTTET(SDPFlyttetDigitalPost.class);
 
-			private final Class<? extends Postleveranse> associatedClass;
+			private final Class<? extends DigitalPostformidling> associatedClass;
 
-			Type(Class<? extends Postleveranse> associatedClass) {
+			Type(Class<? extends DigitalPostformidling> associatedClass) {
 				this.associatedClass = associatedClass;
 			}
 
-			public boolean isInstance(Postleveranse melding) {
-				return this != INVALID && associatedClass.isInstance(melding);
+			public boolean isInstance(DigitalPostformidling melding) {
+				return associatedClass.isInstance(melding);
 			}
 
-			public <T extends Postleveranse> T validateInstance(T candidate) {
+			public <T extends DigitalPostformidling> T validateInstance(T candidate) {
 				if (isInstance(candidate)) {
 					return candidate;
 				} else {
+					Type type = Type.of(candidate);
 					throw new IllegalArgumentException(
-							"Postleveranse av type " +
-							candidate.getClass().getName() +
-							(this == INVALID ? " er ikke en gyldig type" : " er ikke av type " + this));
+							candidate.getClass().getName() + " er ikke av forventet type " +
+							this + ", men ble gjenkjent som " + type);
 				}
 			}
 
-			public static Type of(Postleveranse melding) {
-				Type actual = INVALID;
+			public static Type of(DigitalPostformidling melding) {
 				for (Type type : values()) {
-	                if (type.isInstance(melding)) actual = type;
+	                if (type.isInstance(melding)) return type;
                 }
-				return actual;
+				throw new IllegalArgumentException(
+						DigitalPostformidling.class.getSimpleName() + " av type " +	melding.getClass().getName() +
+						"ble ikke gjenkjent som noen av [" + join(values(), ", ") + "]");
 			}
 		}
 
 		public final Type type;
-		private final Postleveranse postleveranse;
+		private final DigitalPostformidling digitalPostformidling;
 
-        public SimpleDigitalPostleveranse(Postleveranse postleveranse) {
-			this.type = Type.of(postleveranse);
-			this.postleveranse = type.validateInstance(postleveranse);
+        public SimpleDigitalPostformidling(DigitalPostformidling digitalPostformidling) {
+			this.type = Type.of(digitalPostformidling);
+			this.digitalPostformidling = digitalPostformidling;
 		}
 
 		public SDPDigitalPost getDigitalPost() {
-			return (SDPDigitalPost) Type.NY_POST.validateInstance(postleveranse);
+			return (SDPDigitalPost) Type.NY_POST.validateInstance(digitalPostformidling);
 		}
 
 		public SDPFlyttetDigitalPost getFlyttetDigitalPost() {
-			return (SDPFlyttetDigitalPost) Type.FLYTTET.validateInstance(postleveranse);
+			return (SDPFlyttetDigitalPost) Type.FLYTTET.validateInstance(digitalPostformidling);
 		}
 
 		public boolean kreverAapningsKvittering() {
-			Boolean aapningskvittering = postleveranse.getDigitalPostInfo().getAapningskvittering();
+			SDPDigitalPostInfo postinfo = getDigitalPostInfo();
+			if (postinfo == null) return false;
+			Boolean aapningskvittering = postinfo.getAapningskvittering();
 			return aapningskvittering != null && aapningskvittering;
 		}
 
 		public SDPAvsender getAvsender() {
-			return postleveranse.getAvsender();
+			return digitalPostformidling.getAvsender();
 		}
 
 		public SDPMottaker getMottaker() {
-			return postleveranse.getMottaker();
+			return digitalPostformidling.getMottaker();
         }
 
 		public Reference getDokumentpakkefingeravtrykk() {
-			return postleveranse.getDokumentpakkefingeravtrykk();
+			return digitalPostformidling.getDokumentpakkefingeravtrykk();
         }
 
 		public SDPDigitalPostInfo getDigitalPostInfo() {
-			return postleveranse.getDigitalPostInfo();
+			return digitalPostformidling.getDigitalPostInfo();
         }
 
 		public DateTime getLeveringsTidspunkt() {
-			LocalDate virkningsdato = postleveranse.getDigitalPostInfo().getVirkningsdato();
+			SDPDigitalPostInfo postinfo = getDigitalPostInfo();
+			LocalDate virkningsdato = postinfo != null ? postinfo.getVirkningsdato() : null;
 			DateTime leveringstidspunkt = null;
 
 			if(virkningsdato != null) {
-				leveringstidspunkt =  virkningsdato.toDateTimeAtStartOfDay();
+				leveringstidspunkt = virkningsdato.toDateTimeAtStartOfDay();
 			}
 
 			if(type == Type.FLYTTET) {
-				LocalDate mottaksdato = getFlyttetDigitalPost().getMottaksdato();
-				if(mottaksdato != null
-						&& (leveringstidspunkt == null || mottaksdato.toDateTimeAtStartOfDay().isAfter(leveringstidspunkt))){
-					leveringstidspunkt = mottaksdato.toDateTimeAtStartOfDay();
+				DateTime mottakstidspunkt = getFlyttetDigitalPost().getMottaksdato().toDateTimeAtStartOfDay();
+				if (leveringstidspunkt == null) {
+					leveringstidspunkt = mottakstidspunkt;
+				} else if (mottakstidspunkt.isAfter(leveringstidspunkt)) {
+					leveringstidspunkt = mottakstidspunkt;
 				}
 			}
 

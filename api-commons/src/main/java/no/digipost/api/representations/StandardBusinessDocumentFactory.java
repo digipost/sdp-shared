@@ -15,23 +15,15 @@
  */
 package no.digipost.api.representations;
 
-import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
-import no.difi.begrep.sdp.schema_v10.SDPFeil;
-import no.difi.begrep.sdp.schema_v10.SDPKvittering;
-import no.difi.begrep.sdp.schema_v10.SDPMelding;
+import no.difi.begrep.sdp.schema_v10.*;
 import org.joda.time.DateTime;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.BusinessScope;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.DocumentIdentification;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.Partner;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.PartnerIdentification;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocumentHeader;
+import org.unece.cefact.namespaces.standardbusinessdocumentheader.*;
 
 public class StandardBusinessDocumentFactory {
 
 	public enum Type {
 		DigitalPost("digitalPost", SDPDigitalPost.class),
+		FlyttetDigitalPost("flyttetDigitalPost", SDPFlyttetDigitalPost.class),
 		Kvittering("kvittering", SDPKvittering.class),
 		Feil("feil", SDPFeil.class);
 

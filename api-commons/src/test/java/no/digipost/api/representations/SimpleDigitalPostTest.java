@@ -18,8 +18,8 @@ package no.digipost.api.representations;
 import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
 import no.difi.begrep.sdp.schema_v10.SDPDigitalPostInfo;
 import no.difi.begrep.sdp.schema_v10.SDPFlyttetDigitalPost;
-import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostleveranse;
-import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostleveranse.Type;
+import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling;
+import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.Type;
 import org.joda.time.LocalDate;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,8 +35,8 @@ public class SimpleDigitalPostTest {
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
 
-	private SimpleDigitalPostleveranse nyPost = new SimpleDigitalPostleveranse(new SDPDigitalPost());
-	private SimpleDigitalPostleveranse tilFlytting = new SimpleDigitalPostleveranse(new SDPFlyttetDigitalPost());
+	private SimpleDigitalPostformidling nyPost = new SimpleDigitalPostformidling(new SDPDigitalPost());
+	private SimpleDigitalPostformidling tilFlytting = new SimpleDigitalPostformidling(new SDPFlyttetDigitalPost());
 
 	@Test
     public void kanIkkeHenteUtFlyttetDigitalPostNaarTypeErNY_POST() {
@@ -62,54 +62,67 @@ public class SimpleDigitalPostTest {
 	public void leveringsdatoSkalSettesNaarSattOgTypeErNY_POST() {
 		LocalDate leveringsdato = LocalDate.now().plusDays(7);
 
-		SimpleDigitalPostleveranse simpleDigitalPostleveranse = new SimpleDigitalPostleveranse(
+		SimpleDigitalPostformidling digitalPostformidling = new SimpleDigitalPostformidling(
 				new SDPDigitalPost()
 						.withDigitalPostInfo(new SDPDigitalPostInfo()
 								.withVirkningsdato(leveringsdato)));
 
-		assertThat(simpleDigitalPostleveranse.getLeveringsTidspunkt(), is(leveringsdato.toDateTimeAtStartOfDay()));
+		assertThat(digitalPostformidling.getLeveringsTidspunkt(), is(leveringsdato.toDateTimeAtStartOfDay()));
 	}
 
 	@Test
 	public void leveringsdatoSkalIkkeSettesNaasIkkeSattOgTypeErNY_POST() {
-		SimpleDigitalPostleveranse simpleDigitalPostleveranse = new SimpleDigitalPostleveranse(
+		SimpleDigitalPostformidling digitalPostformidling = new SimpleDigitalPostformidling(
 				new SDPDigitalPost()
 						.withDigitalPostInfo(new SDPDigitalPostInfo()));
 
-		assertThat(simpleDigitalPostleveranse.getLeveringsTidspunkt(), is(nullValue()));
+		assertThat(digitalPostformidling.getLeveringsTidspunkt(), is(nullValue()));
 	}
 
 	@Test
 	public void leveringsdatoSkalSettesNaarSattOgTypeErFLYTTET() {
 		LocalDate virkningsdato = LocalDate.now().plusDays(7);
 
-		SimpleDigitalPostleveranse simpleDigitalPostleveranse = new SimpleDigitalPostleveranse(
+		SimpleDigitalPostformidling digitalPostformidling = new SimpleDigitalPostformidling(
 				new SDPFlyttetDigitalPost()
-						.withDigitalPostInfo(new SDPDigitalPostInfo()
-								.withVirkningsdato(virkningsdato)));
+						.withMottaksdato(virkningsdato.minusDays(1))
+						.withDigitalPostInfo(new SDPDigitalPostInfo().withVirkningsdato(virkningsdato)));
 
-		assertThat(simpleDigitalPostleveranse.getLeveringsTidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay()));
+		assertThat(digitalPostformidling.getLeveringsTidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay()));
 	}
 
 	@Test
-	public void leveringsdatoSkalIkkeSettesNaarIkkeSattOgTypeErFLYTTET() {
-		SimpleDigitalPostleveranse simpleDigitalPostleveranse = new SimpleDigitalPostleveranse(
+	public void leveringstidspunktErAlltidMottakstidspunktHvisVirkningsdatoIkkeErSattOgTypeErFLYTTET() {
+		LocalDate mottaksdato = LocalDate.now().minusDays(7);
+		SimpleDigitalPostformidling digitalPostformidling = new SimpleDigitalPostformidling(
 				new SDPFlyttetDigitalPost()
+						.withMottaksdato(mottaksdato)
 						.withDigitalPostInfo(new SDPDigitalPostInfo()));
 
-		assertThat(simpleDigitalPostleveranse.getLeveringsTidspunkt(), is(nullValue()));
+		assertThat(digitalPostformidling.getLeveringsTidspunkt(), is(mottaksdato.toDateTimeAtStartOfDay()));
+	}
+
+	@Test
+	public void leveringstidspunktErVirkningsdatoDersomDenErSenereEnnMottakstidspunktOgTypeErFLYTTET() {
+		LocalDate virkningsdato = LocalDate.now().minusDays(7);
+		SimpleDigitalPostformidling digitalPostformidling = new SimpleDigitalPostformidling(
+				new SDPFlyttetDigitalPost()
+						.withMottaksdato(virkningsdato.minusDays(1))
+						.withDigitalPostInfo(new SDPDigitalPostInfo().withVirkningsdato(virkningsdato)));
+
+		assertThat(digitalPostformidling.getLeveringsTidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay()));
 	}
 
 	@Test
 	public void leveringsdatoSkalVaereMottattDatoHvisSatt() {
 		LocalDate mottaksdato = LocalDate.now().minusDays(10);
 
-		SimpleDigitalPostleveranse simpleDigitalPostleveranse = new SimpleDigitalPostleveranse(
+		SimpleDigitalPostformidling digitalPostformidling = new SimpleDigitalPostformidling(
 				new SDPFlyttetDigitalPost()
 						.withDigitalPostInfo(new SDPDigitalPostInfo())
 						.withMottaksdato(mottaksdato));
 
-		assertThat(simpleDigitalPostleveranse.getLeveringsTidspunkt(), is(mottaksdato.toDateTimeAtStartOfDay()));
+		assertThat(digitalPostformidling.getLeveringsTidspunkt(), is(mottaksdato.toDateTimeAtStartOfDay()));
 	}
 
 
@@ -118,13 +131,13 @@ public class SimpleDigitalPostTest {
 		LocalDate mottaksdato = LocalDate.now().plusDays(8);
 		LocalDate virkningsdato = LocalDate.now().plusDays(7);
 
-		SimpleDigitalPostleveranse simpleDigitalPostleveranse = new SimpleDigitalPostleveranse(
+		SimpleDigitalPostformidling digitalPostformidling = new SimpleDigitalPostformidling(
 				new SDPFlyttetDigitalPost()
 						.withDigitalPostInfo(new SDPDigitalPostInfo()
 								.withVirkningsdato(virkningsdato))
 						.withMottaksdato(mottaksdato));
 
-		assertThat(simpleDigitalPostleveranse.getLeveringsTidspunkt(), is(mottaksdato.toDateTimeAtStartOfDay()));
+		assertThat(digitalPostformidling.getLeveringsTidspunkt(), is(mottaksdato.toDateTimeAtStartOfDay()));
 	}
 
 	@Test
@@ -132,13 +145,13 @@ public class SimpleDigitalPostTest {
 		LocalDate mottaksdato = LocalDate.now();
 		LocalDate virkningsdato = LocalDate.now().plusDays(7);
 
-		SimpleDigitalPostleveranse simpleDigitalPostleveranse = new SimpleDigitalPostleveranse(
+		SimpleDigitalPostformidling digitalPostformidling = new SimpleDigitalPostformidling(
 				new SDPFlyttetDigitalPost()
 						.withDigitalPostInfo(new SDPDigitalPostInfo()
 								.withVirkningsdato(virkningsdato))
 						.withMottaksdato(mottaksdato));
 
-		assertThat(simpleDigitalPostleveranse.getLeveringsTidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay()));
+		assertThat(digitalPostformidling.getLeveringsTidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay()));
 	}
 
 	@Test
@@ -149,7 +162,7 @@ public class SimpleDigitalPostTest {
 	@Test
     public void flyttetPostKanVaereAapnetEllerUaapnet() {
 		assertFalse(tilFlytting.erAlleredeAapnet());
-		assertTrue(new SimpleDigitalPostleveranse(new SDPFlyttetDigitalPost().withAapnet(true)).erAlleredeAapnet());
+		assertTrue(new SimpleDigitalPostformidling(new SDPFlyttetDigitalPost().withAapnet(true)).erAlleredeAapnet());
     }
 
 }

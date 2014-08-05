@@ -15,28 +15,16 @@
  */
 package no.digipost.api.interceptors.steps;
 
-import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
 import no.digipost.api.PMode;
+import no.digipost.api.representations.EbmsAktoer;
 import no.digipost.api.representations.EbmsContext;
 import no.digipost.api.representations.EbmsProcessingStep;
 import no.digipost.api.representations.Mpc;
 import no.digipost.api.xml.Constants;
 import no.digipost.api.xml.Marshalling;
-import no.digipost.api.representations.EbmsAktoer;
+import no.digipost.xsd.types.DigitalPostformidling;
 import org.joda.time.DateTime;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.AgreementRef;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.CollaborationInfo;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.From;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.MessageInfo;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PartInfo;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PartProperties;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PartyId;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PartyInfo;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PayloadInfo;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Property;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Service;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.To;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.UserMessage;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.*;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.mime.Attachment;
 import org.springframework.ws.soap.SoapHeaderElement;
@@ -64,7 +52,7 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 		this.tekniskAvsender = tekniskAvsender;
 		this.mottaker = mottaker;
 		this.marshaller = marshaller;
-		if (doc.getAny() instanceof SDPDigitalPost) {
+		if (doc.getAny() instanceof DigitalPostformidling) {
 			action = PMode.ACTION_FORMIDLE;
 		} else {
 			action = PMode.ACTION_KVITTERING;

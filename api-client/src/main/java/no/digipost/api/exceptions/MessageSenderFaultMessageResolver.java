@@ -62,7 +62,7 @@ public class MessageSenderFaultMessageResolver implements FaultMessageResolver {
 			errors.addAll(signalMessage.getErrors());
 		}
 
-		if (errors.size() == 0) {
+		if (errors.isEmpty()) {
 			LOG.warn("Got no ebMS error in SOAP fault response that contains ebMS Messaging header.");
 			throw new MessageSenderSoapFaultException(soapMessage);
 		}

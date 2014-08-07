@@ -20,6 +20,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.UnrecoverableKeyException;
+import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 
 public class KeyStoreInfo {
@@ -39,5 +40,9 @@ public class KeyStoreInfo {
 
 	public X509Certificate getCertificate() throws KeyStoreException {
 		return (X509Certificate)keystore.getCertificate(alias);
+	}
+
+	public Certificate[] getCertificateChain() throws KeyStoreException{
+		return keystore.getCertificateChain(alias);
 	}
 }

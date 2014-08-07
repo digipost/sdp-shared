@@ -87,6 +87,10 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 		return create(avsender, mottaker, new SimpleStandardBusinessDocument(sbd).getReceiver(), sbd, dokumentpakke).build();
 	}
 
+	public static Builder builderFrom(final EbmsAktoer avsender, final EbmsAktoer mottaker, final StandardBusinessDocument sbd, final Dokumentpakke dokumentpakke) {
+		return create(avsender, mottaker, new SimpleStandardBusinessDocument(sbd).getReceiver(), sbd, dokumentpakke);
+	}
+
 	public static class Builder {
 		private Dokumentpakke dokumentpakke;
 		private Organisasjonsnummer sbdhMottaker;

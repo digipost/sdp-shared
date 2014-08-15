@@ -15,6 +15,13 @@
  */
 package no.digipost.api.handlers;
 
+import java.io.IOException;
+import java.util.UUID;
+
+import javax.activation.DataHandler;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.stream.StreamSource;
+
 import no.digipost.api.SdpMeldingSigner;
 import no.digipost.api.interceptors.steps.AddUserMessageStep;
 import no.digipost.api.representations.EbmsAktoer;
@@ -23,6 +30,7 @@ import no.digipost.api.representations.Mpc;
 import no.digipost.api.xml.Marshalling;
 import no.digipost.api.xml.TransformerUtil;
 import no.digipost.xsd.types.DigitalPostformidling;
+
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
@@ -31,13 +39,6 @@ import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusine
 import org.w3.xmldsig.DigestMethod;
 import org.w3.xmldsig.Reference;
 import org.w3c.dom.Document;
-
-import javax.activation.DataHandler;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.stream.StreamSource;
-
-import java.io.IOException;
-import java.util.UUID;
 
 public class ForsendelseSender extends EbmsContextAware implements WebServiceMessageCallback {
 
@@ -53,10 +54,10 @@ public class ForsendelseSender extends EbmsContextAware implements WebServiceMes
 		this.signer = signer;
 		this.tekniskAvsender = tekniskAvsender;
 		this.tekniskMottaker = tekniskMottaker;
-		this.doc = forsendelse.doc;
+		doc = forsendelse.doc;
 		this.forsendelse = forsendelse;
 		this.marshaller = marshaller;
-		this.digitalPostformidling = (DigitalPostformidling) doc.getAny();
+		digitalPostformidling = (DigitalPostformidling) doc.getAny();
 	}
 
 	@Override
@@ -77,14 +78,18 @@ public class ForsendelseSender extends EbmsContextAware implements WebServiceMes
 
 	private void attachFile(final SoapMessage soapMessage) throws IOException {
 		if (digitalPostformidling.getDokumentpakkefingeravtrykk() == null) {
-			byte[] hash = forsendelse.getDokumentpakke().getSHA256();
-			digitalPostformidling.setDokumentpakkefingeravtrykk(new Reference()
-							.withDigestMethod(new DigestMethod().withAlgorithm(javax.xml.crypto.dsig.DigestMethod.SHA256))
-							.withDigestValue(org.bouncycastle.util.encoders.Base64.encode(hash))
-			);
+			lagFingeravtrykk(forsendelse, digitalPostformidling);
 		}
 		DataHandler handler = new DataHandler(forsendelse.getDokumentpakke());
 		soapMessage.addAttachment(generateContentId(), handler);
+	}
+
+	public static void lagFingeravtrykk(final EbmsForsendelse forsendelse, final DigitalPostformidling digitalPostformidling) throws IOException {
+		byte[] hash = forsendelse.getDokumentpakke().getSHA256();
+		digitalPostformidling.setDokumentpakkefingeravtrykk(new Reference()
+						.withDigestMethod(new DigestMethod().withAlgorithm(javax.xml.crypto.dsig.DigestMethod.SHA256))
+						.withDigestValue(hash)
+		);
 	}
 
 	private String generateContentId() {

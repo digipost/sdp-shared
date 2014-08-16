@@ -16,11 +16,6 @@
 package no.digipost.api.representations;
 
 
-import org.apache.commons.io.IOUtils;
-import org.bouncycastle.jcajce.provider.digest.SHA3.Digest256;
-
-import javax.activation.DataSource;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,6 +23,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
+
+import javax.activation.DataSource;
+
+import org.apache.commons.io.IOUtils;
+import org.bouncycastle.jcajce.provider.digest.SHA256;
 
 public class Dokumentpakke implements DataSource {
 
@@ -46,7 +46,7 @@ public class Dokumentpakke implements DataSource {
     }
 
     public byte[] getSHA256() throws IOException {
-		MessageDigest digest = new Digest256();
+		MessageDigest digest =new  SHA256.Digest();
 		if (asicBytes != null) {
 			return digest.digest(asicBytes);
 		}

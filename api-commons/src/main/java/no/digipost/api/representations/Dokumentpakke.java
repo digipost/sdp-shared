@@ -46,7 +46,7 @@ public class Dokumentpakke implements DataSource {
     }
 
     public byte[] getSHA256() throws IOException {
-		MessageDigest digest =new  SHA256.Digest();
+		MessageDigest digest = getDigest();
 		if (asicBytes != null) {
 			return digest.digest(asicBytes);
 		}
@@ -61,6 +61,10 @@ public class Dokumentpakke implements DataSource {
 		asicStream = new ByteArrayInputStream(baos.toByteArray());
 		return digest.digest();
     }
+
+	protected MessageDigest getDigest() {
+		return new  SHA256.Digest();
+	}
 
 
 	@Override

@@ -34,6 +34,8 @@ This software includes third party software subject to the following licenses:
   JUnit under Common Public License Version 1.0
   Log4j Implemented Over SLF4J under Apache Software Licenses
   MIME streaming extension under CDDL 1.1 or GPL2 w/ CPE
+  Mockito under The MIT License
+  Objenesis under MIT License
   OpenSAML-J under Apache 2
   OpenWS under Apache 2
   saaj-impl under Dual license consisting of the CDDL v1.1 and GPL v2

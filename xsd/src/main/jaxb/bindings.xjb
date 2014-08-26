@@ -65,12 +65,6 @@
 	</bindings>
 
 	<bindings schemaLocation="../difi-begrepskatalog/xsd/sdp-felles.xsd">
-		<bindings node="//xs:complexType[@name='Person']">
-			<inheritance:implements>no.digipost.xsd.types.HarSikkerDigitalPostAdresse</inheritance:implements>
-		</bindings>
-		<bindings node="//xs:complexType[@name='Virksomhet']">
-			<inheritance:implements>no.digipost.xsd.types.HarSikkerDigitalPostAdresse</inheritance:implements>
-		</bindings>
 		<bindings node="//xs:complexType[@name='Tittel']">
 			<inheritance:implements>no.digipost.xsd.types.TekstMedSpraak</inheritance:implements>
 		</bindings>

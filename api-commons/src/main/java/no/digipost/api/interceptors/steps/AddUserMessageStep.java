@@ -15,26 +15,38 @@
  */
 package no.digipost.api.interceptors.steps;
 
-import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
-import no.difi.begrep.sdp.schema_v10.SDPFlyttetDigitalPost;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import no.digipost.api.PMode;
 import no.digipost.api.representations.EbmsAktoer;
 import no.digipost.api.representations.EbmsContext;
 import no.digipost.api.representations.EbmsProcessingStep;
 import no.digipost.api.representations.Mpc;
+import no.digipost.api.representations.SimpleStandardBusinessDocument;
 import no.digipost.api.xml.Constants;
 import no.digipost.api.xml.Marshalling;
+
 import org.joda.time.DateTime;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.*;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.AgreementRef;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.CollaborationInfo;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.From;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.MessageInfo;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PartInfo;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PartProperties;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PartyId;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PartyInfo;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PayloadInfo;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Property;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Service;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.To;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.UserMessage;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.mime.Attachment;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class AddUserMessageStep implements EbmsProcessingStep {
 
@@ -45,8 +57,9 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 	private final String messageId;
 	private final PMode.Action action;
 	private final String refToMessageId;
+	private final String instanceIdentifier;
 
-	public AddUserMessageStep(final Mpc mpc, final String messageId, PMode.Action action, final String refToMessageId, final StandardBusinessDocument doc, final EbmsAktoer tekniskAvsender, final EbmsAktoer mottaker, final Jaxb2Marshaller marshaller) {
+	public AddUserMessageStep(final Mpc mpc, final String messageId, final PMode.Action action, final String refToMessageId, final StandardBusinessDocument doc, final EbmsAktoer tekniskAvsender, final EbmsAktoer mottaker, final Jaxb2Marshaller marshaller) {
 		this.mpc = mpc;
 		this.messageId = messageId;
 		this.action = action;
@@ -54,6 +67,7 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 		this.tekniskAvsender = tekniskAvsender;
 		this.mottaker = mottaker;
 		this.marshaller = marshaller;
+		instanceIdentifier = new SimpleStandardBusinessDocument(doc).getInstanceIdentifier();
 	}
 
 	@Override
@@ -77,8 +91,8 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 		return new CollaborationInfo()
 				.withAction(action.value)
 				.withAgreementRef(new AgreementRef()
-						.withValue(action == PMode.Action.FLYTT ? PMode.FLYTT_AGREEMENT_REF : PMode.FORMIDLING_AGREEMENT_REF))
-				.withConversationId("1")
+						.withValue(action.agreementRef))
+				.withConversationId(instanceIdentifier)
 				.withService(new Service().withValue(PMode.SERVICE));
 	}
 

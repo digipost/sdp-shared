@@ -15,10 +15,10 @@
  */
 package no.digipost.api;
 
+import static java.util.Arrays.asList;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import static java.util.Arrays.asList;
 
 public interface PMode {
 
@@ -37,13 +37,17 @@ public interface PMode {
 	public static final String SERVICE = "SDP";
 
 	public enum Action {
-		FORMIDLE("FormidleDigitalPost"),
-		KVITTERING("KvitteringsForespoersel"),
-		FLYTT("FlyttetDigitalPost");
+		FORMIDLE("FormidleDigitalPost", FORMIDLING_AGREEMENT_REF),
+		KVITTERING("KvitteringsForespoersel", FORMIDLING_AGREEMENT_REF),
+		FLYTT("FlyttetDigitalPost", FLYTT_AGREEMENT_REF);
 		public final String value;
-		Action(String value) { this.value = value; }
+		public final String agreementRef;
+		Action(final String value, final String agreementRef) {
+			this.value = value;
+			this.agreementRef = agreementRef;
+		}
 
-		public static Action fromValue(String value) {
+		public static Action fromValue(final String value) {
 			for (Action action : values()) {
 				if (action.value.equals(value)) {
 					return action;

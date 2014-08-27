@@ -73,7 +73,7 @@ public class ForsendelseSender extends EbmsContextAware implements WebServiceMes
 		} else {
 			Marshalling.marshal(marshaller, soapMessage.getEnvelope().getBody(), doc);
 		}
-		ebmsContext.addRequestStep(new AddUserMessageStep(mpc, forsendelse.messageId, null, doc, tekniskAvsender, tekniskMottaker, marshaller));
+		ebmsContext.addRequestStep(new AddUserMessageStep(mpc, forsendelse.messageId, forsendelse.action, null, doc, tekniskAvsender, tekniskMottaker, marshaller));
 	}
 
 	private void attachFile(final SoapMessage soapMessage) throws IOException {

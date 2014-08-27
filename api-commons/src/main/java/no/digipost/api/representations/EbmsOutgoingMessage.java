@@ -15,6 +15,7 @@
  */
 package no.digipost.api.representations;
 
+import no.digipost.api.PMode;
 import org.joda.time.DateTime;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.MessageInfo;
 
@@ -45,11 +46,14 @@ public class EbmsOutgoingMessage extends EbmsMessage {
 
     public final Prioritet prioritet;
 	protected EbmsAktoer ebmsMottaker;
+	public final PMode.Action action;
 	public final String mpcId;
 
-	public EbmsOutgoingMessage(final EbmsAktoer ebmsMottaker, final String messageId, final String refToMessageId, final Prioritet prioritet, final String mpcId) {
+	public EbmsOutgoingMessage(final EbmsAktoer ebmsMottaker, final String messageId, final String refToMessageId,
+							   PMode.Action action, final Prioritet prioritet, final String mpcId) {
 		super(messageId, refToMessageId);
 		this.ebmsMottaker = ebmsMottaker;
+		this.action = action;
 		this.mpcId = mpcId;
 		this.prioritet = prioritet != null ? prioritet : Prioritet.NORMAL;
 	}

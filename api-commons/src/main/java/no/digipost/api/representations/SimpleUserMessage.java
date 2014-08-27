@@ -15,6 +15,7 @@
  */
 package no.digipost.api.representations;
 
+import no.digipost.api.PMode;
 import org.joda.time.DateTime;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.UserMessage;
 
@@ -52,5 +53,9 @@ public class SimpleUserMessage {
 
     public String getMpc() {
 		return message.getMpc();
+	}
+
+	public boolean erFlytt() {
+		return getAction().equals(PMode.Action.FLYTT.value);
 	}
 }

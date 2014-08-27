@@ -64,7 +64,7 @@ public class KvitteringSender extends EbmsContextAware implements WebServiceMess
 		}
 
 		Mpc mpc = new Mpc(appKvittering.prioritet, appKvittering.mpcId);
-		ebmsContext.addRequestStep(new AddUserMessageStep(mpc, appKvittering.messageId, null, appKvittering.sbd, tekniskAvsender, tekniskMottaker
+		ebmsContext.addRequestStep(new AddUserMessageStep(mpc, appKvittering.messageId, appKvittering.action, null, appKvittering.sbd, tekniskAvsender, tekniskMottaker
 				, marshaller));
 	}
 

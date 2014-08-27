@@ -15,6 +15,7 @@
  */
 package no.digipost.api.representations;
 
+import no.digipost.api.PMode;
 import org.springframework.util.StringUtils;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3.xmldsig.Reference;
@@ -30,8 +31,9 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 	public EbmsAktoer avsender = null;
 	public final InputStream sbdStream;
 
-	private EbmsApplikasjonsKvittering(final EbmsAktoer avsender, final String mpcId, final EbmsAktoer mottaker, final EbmsOutgoingMessage.Prioritet prioritet, final String messageId, final String refToMessageId, final StandardBusinessDocument sbd, final InputStream sbdStream) {
-		super(mottaker, messageId, refToMessageId, prioritet, mpcId);
+	private EbmsApplikasjonsKvittering(final EbmsAktoer avsender, final String mpcId, final EbmsAktoer mottaker, final Prioritet prioritet,
+									   final String messageId, PMode.Action action, final String refToMessageId, final StandardBusinessDocument sbd, final InputStream sbdStream) {
+		super(mottaker, messageId, refToMessageId, action, prioritet, mpcId);
 		this.sbd = sbd;
 		this.avsender = avsender;
 		this.sbdStream = sbdStream;
@@ -60,6 +62,7 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 		private List<Reference> references = new ArrayList<Reference>();
 		private InputStream sbdStream = null;
 		private String mpcId;
+		private PMode.Action action = PMode.Action.KVITTERING;
 
 		public Builder(final EbmsAktoer avsender, final EbmsAktoer mottaker, final StandardBusinessDocument sbd) {
 			this.mottaker = mottaker;
@@ -75,6 +78,10 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 			this.prioritet = prioritet;
 			return this;
 		}
+		public Builder withAction(PMode.Action action) {
+			this.action = action;
+			return this;
+		}
 		public Builder withRefToMessageId(final String refToMessageId) {
 			this.refToMessageId = refToMessageId;
 			return this;
@@ -87,18 +94,18 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 			this.mpcId = mpcId;
 			return this;
 		}
+
 		public Builder withSbdStream(final InputStream sbdStream) {
 			this.sbdStream = sbdStream;
 			return this;
 		}
 
+
 		public EbmsApplikasjonsKvittering build() {
 			String id = StringUtils.isEmpty(messageId) ? newId() : messageId;
-			EbmsApplikasjonsKvittering kvittering = new EbmsApplikasjonsKvittering(avsender, mpcId, mottaker, prioritet, id, refToMessageId, sbd, sbdStream);
+			EbmsApplikasjonsKvittering kvittering = new EbmsApplikasjonsKvittering(avsender, mpcId, mottaker, prioritet, id, action, refToMessageId, sbd, sbdStream);
 			kvittering.references.addAll(references);
 			return kvittering;
 		}
-
-
 	}
 }

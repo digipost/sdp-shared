@@ -23,6 +23,7 @@ import no.difi.begrep.sdp.schema_v10.SDPLevering;
 import no.difi.begrep.sdp.schema_v10.SDPMelding;
 import no.difi.begrep.sdp.schema_v10.SDPVarslingfeilet;
 import no.difi.begrep.sdp.schema_v10.SDPVarslingskanal;
+import no.digipost.api.PMode;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
 import static org.joda.time.DateTime.now;
@@ -36,6 +37,7 @@ public class ApplikasjonsKvitteringBuilder {
 	private EbmsAktoer ebmsMottaker;
 	private Organisasjonsnummer sbdhMottaker;
 	private EbmsOutgoingMessage.Prioritet prioritet = EbmsOutgoingMessage.Prioritet.NORMAL;
+	private PMode.Action action = PMode.Action.KVITTERING;
 
 	private SDPMelding kvittering = new SDPKvittering()
 			.withLevering(new SDPLevering())
@@ -51,6 +53,11 @@ public class ApplikasjonsKvitteringBuilder {
 		builder.conversationId = conversationId;
 		builder.instanceIdentifier = instanceIdentifier;
 		return builder;
+	}
+
+	public ApplikasjonsKvitteringBuilder medAction(PMode.Action action) {
+		this.action = action;
+		return this;
 	}
 
 	public ApplikasjonsKvitteringBuilder medPrioritet(EbmsOutgoingMessage.Prioritet prioritet) {
@@ -85,6 +92,10 @@ public class ApplikasjonsKvitteringBuilder {
 	public EbmsApplikasjonsKvittering build() {
 		final StandardBusinessDocument doc = StandardBusinessDocumentFactory
 				.create(avsender.orgnr, sbdhMottaker, instanceIdentifier, conversationId, kvittering);
-		return EbmsApplikasjonsKvittering.create(avsender, ebmsMottaker, doc).withMessageId(messageId).withPrioritet(prioritet).build();
+		return EbmsApplikasjonsKvittering.create(avsender, ebmsMottaker, doc)
+				.withMessageId(messageId)
+				.withPrioritet(prioritet)
+				.withAction(action)
+				.build();
 	}
 }

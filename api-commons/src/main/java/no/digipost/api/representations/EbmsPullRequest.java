@@ -15,6 +15,8 @@
  */
 package no.digipost.api.representations;
 
+import no.digipost.api.PMode;
+
 public class EbmsPullRequest extends EbmsOutgoingMessage {
 
 	public EbmsPullRequest(final EbmsAktoer mottaker) {
@@ -29,7 +31,7 @@ public class EbmsPullRequest extends EbmsOutgoingMessage {
 	}
 
 	public EbmsPullRequest(final EbmsAktoer mottaker, final Prioritet prioritet, final String mpcId) {
-		super(mottaker, newId(), null, prioritet, mpcId);
+		super(mottaker, newId(), null, PMode.Action.KVITTERING, prioritet, mpcId);
 	}
 
 }

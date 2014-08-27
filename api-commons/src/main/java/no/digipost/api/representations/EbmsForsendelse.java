@@ -16,6 +16,7 @@
 package no.digipost.api.representations;
 
 import no.difi.begrep.sdp.schema_v10.SDPMelding;
+import no.digipost.api.PMode;
 import no.digipost.xsd.types.DigitalPostformidling;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
@@ -31,8 +32,8 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 	private final Organisasjonsnummer sbdhMottaker;
 	public final InputStream sbdStream;
 
-	private EbmsForsendelse(final String messageId, final EbmsAktoer ebmsMottaker, final EbmsAktoer ebmsAvsender, final String mpcId, final Organisasjonsnummer sbdhMottaker, final Prioritet prioritet, final String conversationId, final String instanceIdentifier, final StandardBusinessDocument doc, final Dokumentpakke dokumentpakke, final InputStream sbdStream) {
-		super(ebmsMottaker, messageId, null, prioritet, mpcId);
+	private EbmsForsendelse(final String messageId, PMode.Action action, final EbmsAktoer ebmsMottaker, final EbmsAktoer ebmsAvsender, final String mpcId, final Organisasjonsnummer sbdhMottaker, final Prioritet prioritet, final String conversationId, final String instanceIdentifier, final StandardBusinessDocument doc, final Dokumentpakke dokumentpakke, final InputStream sbdStream) {
+		super(ebmsMottaker, messageId, null, action, prioritet, mpcId);
 		this.ebmsMottaker = ebmsMottaker;
 		this.ebmsAvsender = ebmsAvsender;
 		this.sbdhMottaker = sbdhMottaker;
@@ -59,7 +60,8 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 		return sbdhMottaker;
 	}
 
-	public static <P extends SDPMelding & DigitalPostformidling> Builder create(final EbmsAktoer avsender, final EbmsAktoer mottaker, final Organisasjonsnummer sbdhMottaker, final P digitalPostformidling, final Dokumentpakke dokumentpakke) {
+	public static <P extends SDPMelding & DigitalPostformidling> Builder create(final EbmsAktoer avsender, final EbmsAktoer mottaker, final Organisasjonsnummer sbdhMottaker,
+																				final P digitalPostformidling, final Dokumentpakke dokumentpakke) {
 		Builder builder = new Builder();
 		builder.avsender = avsender;
 		builder.mottaker = mottaker;
@@ -104,6 +106,7 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 		public InputStream sbdStream = null;
 		private Prioritet prioritet = Prioritet.NORMAL;
 		private String mpcId = null;
+		private PMode.Action action = PMode.Action.FORMIDLE;
 
 		private Builder() {
 		}
@@ -112,15 +115,20 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 			this.messageId = messageId;
 			return this;
 		}
+		public Builder withAction(PMode.Action action) {
+			this.action = action;
+			return this;
+		}
+
 		public Builder withSbdStream(final InputStream sbdStream) {
 			this.sbdStream = sbdStream;
 			return this;
 		}
-
 		public Builder withConversationId(final String conversationId) {
 			this.conversationId = conversationId;
 			return this;
 		}
+
 		public Builder withMpcId(final String mpcId) {
 			this.mpcId = mpcId;
 			return this;
@@ -136,7 +144,7 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 				doc = StandardBusinessDocumentFactory
 						.create(avsender.orgnr, sbdhMottaker, instanceIdentifier, conversationId, digitalPost);
 			}
-			return new EbmsForsendelse(messageId, mottaker, avsender, mpcId, sbdhMottaker, prioritet, conversationId, instanceIdentifier, doc, dokumentpakke, sbdStream);
+			return new EbmsForsendelse(messageId, action, mottaker, avsender, mpcId, sbdhMottaker, prioritet, conversationId, instanceIdentifier, doc, dokumentpakke, sbdStream);
 		}
 	}
 

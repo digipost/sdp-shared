@@ -15,6 +15,8 @@
  */
 package no.digipost.api.representations;
 
+import no.digipost.api.PMode;
+
 import java.util.UUID;
 
 public abstract class EbmsMessage {
@@ -22,7 +24,7 @@ public abstract class EbmsMessage {
 	public final String messageId;
 	public final String refToMessageId;
 
-    public EbmsMessage(final String messageId, final String refToMessageId) {
+	public EbmsMessage(final String messageId, final String refToMessageId) {
 		this.messageId = messageId;
 		this.refToMessageId = refToMessageId;
 	}

@@ -15,6 +15,8 @@
  */
 package no.digipost.api.interceptors.steps;
 
+import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
+import no.difi.begrep.sdp.schema_v10.SDPFlyttetDigitalPost;
 import no.digipost.api.PMode;
 import no.digipost.api.representations.EbmsAktoer;
 import no.digipost.api.representations.EbmsContext;
@@ -22,7 +24,6 @@ import no.digipost.api.representations.EbmsProcessingStep;
 import no.digipost.api.representations.Mpc;
 import no.digipost.api.xml.Constants;
 import no.digipost.api.xml.Marshalling;
-import no.digipost.xsd.types.DigitalPostformidling;
 import org.joda.time.DateTime;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.*;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -42,21 +43,17 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 	private final Jaxb2Marshaller marshaller;
 	private final Mpc mpc;
 	private final String messageId;
+	private final PMode.Action action;
 	private final String refToMessageId;
-	private final String action;
 
-	public AddUserMessageStep(final Mpc mpc, final String messageId, final String refToMessageId, final StandardBusinessDocument doc, final EbmsAktoer tekniskAvsender, final EbmsAktoer mottaker, final Jaxb2Marshaller marshaller) {
+	public AddUserMessageStep(final Mpc mpc, final String messageId, PMode.Action action, final String refToMessageId, final StandardBusinessDocument doc, final EbmsAktoer tekniskAvsender, final EbmsAktoer mottaker, final Jaxb2Marshaller marshaller) {
 		this.mpc = mpc;
 		this.messageId = messageId;
+		this.action = action;
 		this.refToMessageId = refToMessageId;
 		this.tekniskAvsender = tekniskAvsender;
 		this.mottaker = mottaker;
 		this.marshaller = marshaller;
-		if (doc.getAny() instanceof DigitalPostformidling) {
-			action = PMode.ACTION_FORMIDLE;
-		} else {
-			action = PMode.ACTION_KVITTERING;
-		}
 	}
 
 	@Override
@@ -78,8 +75,9 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 
 	private CollaborationInfo createCollaborationInfo() {
 		return new CollaborationInfo()
-				.withAction(action)
-				.withAgreementRef(new AgreementRef().withValue(PMode.AGREEMENT_REF))
+				.withAction(action.value)
+				.withAgreementRef(new AgreementRef()
+						.withValue(action == PMode.Action.FLYTT ? PMode.FLYTT_AGREEMENT_REF : PMode.FORMIDLING_AGREEMENT_REF))
 				.withConversationId("1")
 				.withService(new Service().withValue(PMode.SERVICE));
 	}

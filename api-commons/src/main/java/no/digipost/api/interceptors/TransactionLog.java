@@ -38,11 +38,7 @@ import org.springframework.ws.soap.SoapMessage;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
 import static no.digipost.api.config.TransaksjonsLogg.EMPTY_MESSAGE_PARTITION_CHANNEL_EBMS_ERROR_CODE;
-import static no.digipost.api.config.TransaksjonsLogg.Type.APPLIKASJONSKVITTERING;
-import static no.digipost.api.config.TransaksjonsLogg.Type.EBMSFEIL;
-import static no.digipost.api.config.TransaksjonsLogg.Type.PULLREQUEST;
-import static no.digipost.api.config.TransaksjonsLogg.Type.TRANSPORTKVITTERING;
-import static no.digipost.api.config.TransaksjonsLogg.Type.USERMESSAGE;
+import static no.digipost.api.config.TransaksjonsLogg.Type.*;
 
 public class TransactionLog {
 
@@ -120,8 +116,10 @@ public class TransactionLog {
 	}
 
 	private Type getType(final SimpleUserMessage u) {
-		if (u.getAction().equals(PMode.ACTION_FORMIDLE)) {
-			return USERMESSAGE;
+		if (u.getAction().equals(PMode.Action.FORMIDLE.value)) {
+			return USERMESSAGE_SDP;
+		} else if (u.getAction().equals(PMode.Action.FLYTT.value)) {
+			return USERMESSAGE_FLYTT;
 		} else {
 			return APPLIKASJONSKVITTERING;
 		}

@@ -18,11 +18,14 @@ package no.digipost.api.representations;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import no.digipost.api.PMode;
+
 public class Organisasjonsnummer {
 	public static final Pattern ISO6523_PATTERN = Pattern.compile("^([0-9]{4}:)?([0-9]{9})$");
 
 	private final String orgNummer;
-	public static final String ISO6523_ACTORID = "iso6523-actorid-upis";
+	public static final String ISO6523_ACTORID = PMode.PARTY_ID_TYPE;
+	public static final String ISO6523_ACTORID_OLD = "iso6523-actorid-upis";
 
 	public static final Organisasjonsnummer NULL = new Organisasjonsnummer("");
 

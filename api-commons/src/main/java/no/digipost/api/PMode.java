@@ -15,10 +15,10 @@
  */
 package no.digipost.api;
 
-import static java.util.Arrays.asList;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import static java.util.Arrays.asList;
 
 public interface PMode {
 
@@ -33,7 +33,7 @@ public interface PMode {
 	// COLLABORATION INFO
 	public static final String FORMIDLING_AGREEMENT_REF_OLD = "http://begrep.difi.no/SikkerDigitalPost/Meldingsutveksling/FormidleDigitalPostForsendelse";
 	public static final String FORMIDLING_AGREEMENT_REF = "http://begrep.difi.no/SikkerDigitalPost/1.0/transportlag/Meldingsutveksling/FormidleDigitalPostForsendelse";
-	public static final String FLYTT_AGREEMENT_REF = "http://begrep.difi.no/SikkerDigitalPost/1.0/transportlag/Meldingsutveksling/FlyttDigitalPost";
+	public static final String FLYTT_AGREEMENT_REF = "http://begrep.difi.no/SikkerDigitalPost/1.0/transportlag/Meldingsutveksling/FlyttetDigitalPost";
 	public static final String SERVICE = "SDP";
 
 	public enum Action {

@@ -15,44 +15,46 @@
  */
 package no.digipost.api.representations;
 
+import static org.apache.commons.lang3.StringUtils.join;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
 import no.difi.begrep.sdp.schema_v10.SDPDigitalPostInfo;
 import no.difi.begrep.sdp.schema_v10.SDPFlyttetDigitalPost;
 import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling;
 import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.Type;
 import no.digipost.xsd.types.DigitalPostformidling;
+
 import org.joda.time.LocalDate;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
-import static org.apache.commons.lang3.StringUtils.join;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-
 public class SimpleStandardBusinessDocumentTest {
 
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
 
-	private LocalDate virkningsdato = new LocalDate(2014, 6, 24);
-	private LocalDate mottaksdato = new LocalDate(2013, 2, 17);
+	private final LocalDate virkningsdato = new LocalDate(2014, 6, 24);
+	private final LocalDate mottaksdato = new LocalDate(2013, 2, 17);
 
-	private SDPDigitalPost sdpPost = new SDPDigitalPost().withDigitalPostInfo(new SDPDigitalPostInfo().withVirkningsdato(virkningsdato));
-	private SimpleDigitalPostformidling nyPost = new SimpleStandardBusinessDocument(new StandardBusinessDocument().withAny(sdpPost)).getDigitalPostformidling();
+	private final SDPDigitalPost sdpPost = new SDPDigitalPost().withDigitalPostInfo(new SDPDigitalPostInfo().withVirkningsdato(virkningsdato));
+	private final SimpleDigitalPostformidling nyPost = new SimpleStandardBusinessDocument(new StandardBusinessDocument().withAny(sdpPost)).getDigitalPostformidling();
 
-	private SDPFlyttetDigitalPost sdpFlyttetPost = new SDPFlyttetDigitalPost().withMottaksdato(mottaksdato);
-	private SimpleDigitalPostformidling flyttetPost = new SimpleStandardBusinessDocument(new StandardBusinessDocument().withAny(sdpFlyttetPost)).getDigitalPostformidling();
+	private final SDPFlyttetDigitalPost sdpFlyttetPost = new SDPFlyttetDigitalPost().withMottaksdato(mottaksdato);
+	private final SimpleDigitalPostformidling flyttetPost = new SimpleStandardBusinessDocument(new StandardBusinessDocument().withAny(sdpFlyttetPost)).getDigitalPostformidling();
 
 	@Test
     public void girDigitalPostformidlingMedTypeNY_POST() {
 		assertThat(nyPost.type, is(Type.NY_POST));
 		assertThat(nyPost.getDigitalPost(), instanceOf(SDPDigitalPost.class));
 		assertFalse(nyPost.erAlleredeAapnet());
-		assertThat(nyPost.getLeveringsTidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay()));
+		assertThat(nyPost.getLeveringsDato(), is(virkningsdato));
 		assertFalse(nyPost.kreverAapningsKvittering());
 
 		sdpPost.getDigitalPostInfo().setAapningskvittering(false);
@@ -68,14 +70,14 @@ public class SimpleStandardBusinessDocumentTest {
 	@Test
     public void leveringstidspunktErSenesteTidspunktAvMottaksdatoOgVirkningsdato() {
 		sdpFlyttetPost.setDigitalPostInfo(new SDPDigitalPostInfo().withVirkningsdato(virkningsdato));
-		assertThat(flyttetPost.getLeveringsTidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay()));
+		assertThat(flyttetPost.getLeveringsDato(), is(virkningsdato));
 
 		LocalDate senereMottaksdato = virkningsdato.plusDays(1);
 		sdpFlyttetPost.setMottaksdato(senereMottaksdato);
-		assertThat(flyttetPost.getLeveringsTidspunkt(), is(senereMottaksdato.toDateTimeAtStartOfDay()));
+		assertThat(flyttetPost.getLeveringsDato(), is(senereMottaksdato));
 
 		sdpFlyttetPost.setMottaksdato(virkningsdato.minusDays(1));
-		assertThat(flyttetPost.getLeveringsTidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay()));
+		assertThat(flyttetPost.getLeveringsDato(), is(virkningsdato));
     }
 
 
@@ -83,7 +85,7 @@ public class SimpleStandardBusinessDocumentTest {
     public void girDigitalPostformidlingMedTypeFLYTTET() {
 		assertThat(flyttetPost.type, is(Type.FLYTTET));
 		assertThat(flyttetPost.getFlyttetDigitalPost(), instanceOf(SDPFlyttetDigitalPost.class));
-		assertThat(flyttetPost.getLeveringsTidspunkt(), is(mottaksdato.toDateTimeAtStartOfDay()));
+		assertThat(flyttetPost.getLeveringsDato(), is(mottaksdato));
 		assertFalse(flyttetPost.erAlleredeAapnet());
 		sdpFlyttetPost.setAapnet(true);
 		assertTrue(flyttetPost.erAlleredeAapnet());

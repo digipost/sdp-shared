@@ -15,6 +15,11 @@
  */
 package no.digipost.api.representations;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.SignalMessage;
@@ -25,11 +30,6 @@ import org.springframework.ws.soap.SoapMessage;
 import org.w3.xmldsig.Reference;
 import org.w3c.dom.Document;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class EbmsContext {
 
 	private static final String PROPERTY_NAME = "no.posten.dpost.ebms.context";
@@ -39,7 +39,7 @@ public class EbmsContext {
 	public UserMessage userMessage = null;
 	public List<SignalMessage> receipts = new ArrayList<SignalMessage>();
 	public SignalMessage pullSignal = null;
-	public List<Reference> incomingReferences = new ArrayList<Reference>();
+	public Map<String, Reference> incomingReferences = new HashMap<String, Reference>();
 
 	public SimpleStandardBusinessDocument sbd = null;
 	public Map<String, String> mpcMap = new HashMap<String, String>();

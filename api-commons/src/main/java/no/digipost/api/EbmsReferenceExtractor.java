@@ -15,9 +15,18 @@
  */
 package no.digipost.api;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.transform.dom.DOMSource;
+
 import no.digipost.api.xml.Constants;
 import no.digipost.api.xml.Marshalling;
 import no.digipost.api.xml.XpathUtil;
+
 import org.apache.commons.lang3.StringUtils;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PartInfo;
@@ -26,12 +35,9 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
 import org.w3.xmldsig.Reference;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class EbmsReferenceExtractor {
 
@@ -41,14 +47,17 @@ public class EbmsReferenceExtractor {
 		this.jaxb2Marshaller = jaxb2Marshaller;
 	}
 
-	public List<Reference> getReferences(final SoapMessage request) {
+	public Map<String, Reference> getReferences(final SoapMessage request) {
 		List<String> hrefs = getHrefsToInclude(request);
-		List<Reference> references = new ArrayList<Reference>();
+		Map<String, Reference> references = new HashMap<String, Reference>();
 
 		SoapHeaderElement wssec = request.getSoapHeader().examineHeaderElements(Constants.WSSEC_HEADER_QNAME).next();
 		Element element = (Element) Marshalling.unmarshal(jaxb2Marshaller, wssec, Object.class);
 
+		Document doc = ((DOMSource)(request.getEnvelope().getSource())).getNode().getOwnerDocument();
+
 		for (String href : hrefs) {
+
 			List<Node> refs = XpathUtil.getDOMXPath("//ds:Reference[@URI='" + href + "']", element);
 			if (refs.size() == 0) {
 				List<Node> parts = XpathUtil.getDOMXPath("//*[@Id='" + href.substring(1) + "']", request.getDocument().getDocumentElement());
@@ -59,7 +68,12 @@ public class EbmsReferenceExtractor {
 			}
 			if (refs.size() > 0) {
 				Reference ref = Marshalling.unmarshal(jaxb2Marshaller, refs.get(0), Reference.class);
-				references.add(ref);
+				String name = "attachment";
+				Element elm = doc.getElementById(href.replace("#", ""));
+				if (elm != null) {
+					name = elm.getLocalName().toLowerCase();
+				}
+				references.put(name, ref);
 			} else {
 				throw new SecurityException("Missing reference for " + href);
 			}
@@ -89,7 +103,6 @@ public class EbmsReferenceExtractor {
 				href = "#" + attributeValue;
 			}
 			hrefs.add(href);
-
 		}
 		return hrefs;
 	}

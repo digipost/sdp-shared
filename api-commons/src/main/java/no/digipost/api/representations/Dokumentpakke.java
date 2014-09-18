@@ -31,8 +31,8 @@ import org.bouncycastle.jcajce.provider.digest.SHA256;
 
 public class Dokumentpakke implements DataSource {
 
-    private InputStream asicStream;
-    private final byte[] asicBytes;
+    private final InputStream asicStream;
+    private byte[] asicBytes;
 	public static final String CONTENT_TYPE_KRYPTERT_DOKUMENTPAKKE = "application/cms";
 
     public Dokumentpakke(final InputStream asicStream) {
@@ -58,7 +58,7 @@ public class Dokumentpakke implements DataSource {
 		} finally {
 			IOUtils.closeQuietly(digestStream);
         }
-		asicStream = new ByteArrayInputStream(baos.toByteArray());
+		asicBytes = baos.toByteArray();
 		return digest.digest();
     }
 
@@ -74,6 +74,9 @@ public class Dokumentpakke implements DataSource {
 
 	@Override
 	public InputStream getInputStream() throws IOException {
+		if (asicBytes != null) {
+			return new ByteArrayInputStream(asicBytes);
+		}
 		return asicStream;
 	}
 

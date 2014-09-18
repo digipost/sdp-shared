@@ -15,8 +15,12 @@
  */
 package no.digipost.api.interceptors.steps;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import no.digipost.api.representations.EbmsContext;
 import no.digipost.api.representations.EbmsProcessingStep;
+
 import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.MessagePartNRInformation;
 import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.NonRepudiationInformation;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
@@ -27,15 +31,12 @@ import org.springframework.ws.soap.SoapMessage;
 import org.w3.xmldsig.Reference;
 import org.w3.xmldsig.Transform;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class ReferenceValidatorStep implements EbmsProcessingStep {
 
-	private final List<Reference> references;
+	private final Collection<Reference> references;
 	private final Jaxb2Marshaller jaxb2Marshaller;
 
-	public ReferenceValidatorStep(final Jaxb2Marshaller jaxb2Marshaller, final List<Reference> references) {
+	public ReferenceValidatorStep(final Jaxb2Marshaller jaxb2Marshaller, final Collection<Reference> references) {
 		this.jaxb2Marshaller = jaxb2Marshaller;
 		this.references = references;
 	}

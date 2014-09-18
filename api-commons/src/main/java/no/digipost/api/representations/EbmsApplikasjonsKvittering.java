@@ -15,14 +15,16 @@
  */
 package no.digipost.api.representations;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import no.digipost.api.PMode;
+
 import org.springframework.util.StringUtils;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3.xmldsig.Reference;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 
@@ -32,7 +34,7 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 	public final InputStream sbdStream;
 
 	private EbmsApplikasjonsKvittering(final EbmsAktoer avsender, final String mpcId, final EbmsAktoer mottaker, final Prioritet prioritet,
-									   final String messageId, PMode.Action action, final String refToMessageId, final StandardBusinessDocument sbd, final InputStream sbdStream) {
+									   final String messageId, final PMode.Action action, final String refToMessageId, final StandardBusinessDocument sbd, final InputStream sbdStream) {
 		super(mottaker, messageId, refToMessageId, action, prioritet, mpcId);
 		this.sbd = sbd;
 		this.avsender = avsender;
@@ -59,7 +61,7 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 		private final StandardBusinessDocument sbd;
 		private String messageId = null;
 		private String refToMessageId = null;
-		private List<Reference> references = new ArrayList<Reference>();
+		private Collection<Reference> references = new ArrayList<Reference>();
 		private InputStream sbdStream = null;
 		private String mpcId;
 		private PMode.Action action = PMode.Action.KVITTERING;
@@ -78,7 +80,7 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 			this.prioritet = prioritet;
 			return this;
 		}
-		public Builder withAction(PMode.Action action) {
+		public Builder withAction(final PMode.Action action) {
 			this.action = action;
 			return this;
 		}
@@ -86,7 +88,7 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 			this.refToMessageId = refToMessageId;
 			return this;
 		}
-		public Builder withReferences(final List<Reference> incomingReferences) {
+		public Builder withReferences(final Collection<Reference> incomingReferences) {
 			references = incomingReferences;
 			return this;
 		}

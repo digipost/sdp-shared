@@ -24,9 +24,9 @@ import no.difi.begrep.sdp.schema_v10.SDPMelding;
 import no.difi.begrep.sdp.schema_v10.SDPVarslingfeilet;
 import no.difi.begrep.sdp.schema_v10.SDPVarslingskanal;
 import no.digipost.api.PMode;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
-import static org.joda.time.DateTime.now;
+import org.joda.time.DateTime;
+import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
 public class ApplikasjonsKvitteringBuilder {
 
@@ -39,9 +39,8 @@ public class ApplikasjonsKvitteringBuilder {
 	private EbmsOutgoingMessage.Prioritet prioritet = EbmsOutgoingMessage.Prioritet.NORMAL;
 	private PMode.Action action = PMode.Action.KVITTERING;
 
-	private SDPMelding kvittering = new SDPKvittering()
-			.withLevering(new SDPLevering())
-			.withTidspunkt(now());
+	private SDPMelding kvittering = null;
+	private DateTime kvitteringTidspunkt = DateTime.now();
 
 	public static ApplikasjonsKvitteringBuilder create(final EbmsAktoer avsender, final EbmsAktoer ebmsMottaker, final Organisasjonsnummer sbdhMottaker, final String messageId,
 	                                                   final String conversationId, final String instanceIdentifier) {
@@ -55,41 +54,53 @@ public class ApplikasjonsKvitteringBuilder {
 		return builder;
 	}
 
-	public ApplikasjonsKvitteringBuilder medAction(PMode.Action action) {
+	public ApplikasjonsKvitteringBuilder medAction(final PMode.Action action) {
 		this.action = action;
 		return this;
 	}
 
-	public ApplikasjonsKvitteringBuilder medPrioritet(EbmsOutgoingMessage.Prioritet prioritet) {
+	public ApplikasjonsKvitteringBuilder medPrioritet(final EbmsOutgoingMessage.Prioritet prioritet) {
 		this.prioritet = prioritet;
 		return this;
 	}
 
-	public ApplikasjonsKvitteringBuilder medFeil(SDPFeiltype feiltype, final String feilinformasjon) {
+	public ApplikasjonsKvitteringBuilder medFeil(final SDPFeiltype feiltype, final String feilinformasjon) {
 		kvittering = new SDPFeil()
 				.withFeiltype(feiltype)
 				.withDetaljer(feilinformasjon)
-				.withTidspunkt(now());
+				.withTidspunkt(kvitteringTidspunkt);
 		return this;
 	}
 
 	public ApplikasjonsKvitteringBuilder medAapning() {
 		kvittering = new SDPKvittering()
 				.withAapning(new SDPAapning())
-				.withTidspunkt(now());
+				.withTidspunkt(kvitteringTidspunkt);
 		return this;
 	}
 
-	public ApplikasjonsKvitteringBuilder medVarslingfeilet(SDPVarslingskanal varslingskanal, String beskrivelse) {
+	public ApplikasjonsKvitteringBuilder medVarslingfeilet(final SDPVarslingskanal varslingskanal, final String beskrivelse) {
 		kvittering = new SDPKvittering()
 				.withVarslingfeilet(new SDPVarslingfeilet()
 						.withBeskrivelse(beskrivelse)
 						.withVarslingskanal(varslingskanal))
-				.withTidspunkt(now());
+				.withTidspunkt(kvitteringTidspunkt);
+		return this;
+	}
+	public ApplikasjonsKvitteringBuilder medTidspunkt(final DateTime kvitteringTidspunkt) {
+		if (kvitteringTidspunkt != null) {
+			this.kvitteringTidspunkt = kvitteringTidspunkt;
+		}
 		return this;
 	}
 
 	public EbmsApplikasjonsKvittering build() {
+		if (kvittering == null) {
+			kvittering = new SDPKvittering()
+				.withLevering(new SDPLevering())
+				.withTidspunkt(kvitteringTidspunkt);
+		}
+
 		final StandardBusinessDocument doc = StandardBusinessDocumentFactory
 				.create(avsender.orgnr, sbdhMottaker, instanceIdentifier, conversationId, kvittering);
 		return EbmsApplikasjonsKvittering.create(avsender, ebmsMottaker, doc)
@@ -98,4 +109,5 @@ public class ApplikasjonsKvitteringBuilder {
 				.withAction(action)
 				.build();
 	}
+
 }

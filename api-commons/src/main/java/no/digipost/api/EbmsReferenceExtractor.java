@@ -47,20 +47,20 @@ public class EbmsReferenceExtractor {
 		this.jaxb2Marshaller = jaxb2Marshaller;
 	}
 
-	public Map<String, Reference> getReferences(final SoapMessage request) {
-		List<String> hrefs = getHrefsToInclude(request);
+	public Map<String, Reference> getReferences(final SoapMessage message) {
+		List<String> hrefs = getHrefsToInclude(message);
 		Map<String, Reference> references = new HashMap<String, Reference>();
 
-		SoapHeaderElement wssec = request.getSoapHeader().examineHeaderElements(Constants.WSSEC_HEADER_QNAME).next();
+		SoapHeaderElement wssec = message.getSoapHeader().examineHeaderElements(Constants.WSSEC_HEADER_QNAME).next();
 		Element element = (Element) Marshalling.unmarshal(jaxb2Marshaller, wssec, Object.class);
 
-		Document doc = ((DOMSource)(request.getEnvelope().getSource())).getNode().getOwnerDocument();
+		Document doc = ((DOMSource)(message.getEnvelope().getSource())).getNode().getOwnerDocument();
 
 		for (String href : hrefs) {
 
 			List<Node> refs = XpathUtil.getDOMXPath("//ds:Reference[@URI='" + href + "']", element);
 			if (refs.size() == 0) {
-				List<Node> parts = XpathUtil.getDOMXPath("//*[@Id='" + href.substring(1) + "']", request.getDocument().getDocumentElement());
+				List<Node> parts = XpathUtil.getDOMXPath("//*[@Id='" + href.substring(1) + "']", message.getDocument().getDocumentElement());
 				if (parts.size() > 0) {
 					String refId = parts.get(0).getAttributes().getNamedItemNS(Constants.WSSEC_UTILS_NAMESPACE, "Id").getNodeValue();
 					refs = XpathUtil.getDOMXPath("//ds:Reference[@URI='#" + refId + "']", element);
@@ -81,8 +81,8 @@ public class EbmsReferenceExtractor {
 		return references;
 	}
 
-	private List<String> getHrefsToInclude(final SoapMessage request) {
-		Iterator<SoapHeaderElement> soapHeaderElementIterator = request.getSoapHeader().examineHeaderElements(Constants.MESSAGING_QNAME);
+	private List<String> getHrefsToInclude(final SoapMessage message) {
+		Iterator<SoapHeaderElement> soapHeaderElementIterator = message.getSoapHeader().examineHeaderElements(Constants.MESSAGING_QNAME);
 		if (!soapHeaderElementIterator.hasNext()) {
 			throw new SecurityException("Missing ebMS Messaging header");
 		}
@@ -96,7 +96,7 @@ public class EbmsReferenceExtractor {
 		for (PartInfo part : userMessage.getPayloadInfo().getPartInfos()) {
 			String href = part.getHref();
 			if (href == null) {
-				String attributeValue = request.getSoapBody().getAttributeValue(Constants.ID_ATTRIBUTE_QNAME);
+				String attributeValue = message.getSoapBody().getAttributeValue(Constants.ID_ATTRIBUTE_QNAME);
 				if (StringUtils.isBlank(attributeValue)) {
 					throw new SecurityException("Missing reference for partInfo soapBody");
 				}

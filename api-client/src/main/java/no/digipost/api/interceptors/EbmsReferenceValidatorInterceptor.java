@@ -51,6 +51,11 @@ public class EbmsReferenceValidatorInterceptor implements ClientInterceptor {
 
 	@Override
 	public boolean handleResponse(final MessageContext messageContext) throws WebServiceClientException {
+		EbmsContext context = EbmsContext.from(messageContext);
+		Map<String, Reference> references = extractor.getReferences((SoapMessage) messageContext.getResponse());
+		if (references.size() > 0) {
+			context.incomingReferences = references;
+		}
 		return true;
 	}
 

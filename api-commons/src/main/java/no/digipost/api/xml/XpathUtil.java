@@ -15,6 +15,12 @@
  */
 package no.digipost.api.xml;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.transform.Source;
+
 import org.jaxen.JaxenException;
 import org.jaxen.dom.DOMXPath;
 import org.springframework.xml.xpath.Jaxp13XPathTemplate;
@@ -22,12 +28,6 @@ import org.springframework.xml.xpath.NodeMapper;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
-import javax.xml.transform.Source;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class XpathUtil {
 
@@ -59,6 +59,8 @@ public class XpathUtil {
 		map.put("ds", Constants.DIGSIG_NAMESPACE);
 		map.put("wsse", Constants.WSSEC_NAMESPACE);
 		map.put("wsu", Constants.WSSEC_UTILS_NAMESPACE);
+		map.put("sbd", Constants.SBDH_NAMESPACE);
+		map.put("sdp", Constants.SDP_NAMESPACE);
 		return map;
 	}
 

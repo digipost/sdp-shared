@@ -15,9 +15,7 @@
  */
 package no.digipost.api.security;
 
-import no.digipost.api.representations.Organisasjonsnummer;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.security.NoSuchProviderException;
@@ -26,7 +24,10 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
-import static org.junit.Assert.assertEquals;
+import no.digipost.api.representations.Organisasjonsnummer;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.junit.Test;
 
 public class OrgnummerExtractorTest {
 	private static final String PROD_VIRKSOMHETSSERTIFIKAT = "-----BEGIN CERTIFICATE-----" + "\n"

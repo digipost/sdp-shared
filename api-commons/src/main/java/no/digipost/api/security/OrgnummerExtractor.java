@@ -15,7 +15,7 @@
  */
 package no.digipost.api.security;
 
-import no.digipost.api.representations.Organisasjonsnummer;
+import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.util.regex.Pattern.CASE_INSENSITIVE;
+import no.digipost.api.representations.Organisasjonsnummer;
 
 public class OrgnummerExtractor {
 
@@ -33,13 +33,11 @@ public class OrgnummerExtractor {
 
 	public Organisasjonsnummer tryParse(final X509Certificate cert) {
 		String dn = cert.getSubjectDN().getName();
-		if (cert.getIssuerDN().getName().toLowerCase().contains("buypass")) {
-			Matcher matcher = BUYPASS_PATTERN.matcher(dn);
-			if (matcher.find()) {
-				return new Organisasjonsnummer(matcher.group(1));
-			}
+		Matcher matcher = BUYPASS_PATTERN.matcher(dn);
+		if (matcher.find()) {
+			return new Organisasjonsnummer(matcher.group(1));
 		}
-		Matcher matcher = CN_PATTERN.matcher(dn);
+		matcher = CN_PATTERN.matcher(dn);
 		if (matcher.find()) {
 			return new Organisasjonsnummer(matcher.group(1));
 		}

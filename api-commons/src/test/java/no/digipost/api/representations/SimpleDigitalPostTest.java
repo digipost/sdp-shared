@@ -15,22 +15,21 @@
  */
 package no.digipost.api.representations;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
 import no.difi.begrep.sdp.schema_v10.SDPDigitalPostInfo;
 import no.difi.begrep.sdp.schema_v10.SDPFlyttetDigitalPost;
+import no.difi.begrep.sdp.schema_v10.SDPFysiskPostInfo;
 import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling;
 import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.Type;
-
 import org.joda.time.LocalDate;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import static no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.Type.NY_POST;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.*;
 
 
 public class SimpleDigitalPostTest {
@@ -167,5 +166,18 @@ public class SimpleDigitalPostTest {
 		assertFalse(tilFlytting.erAlleredeAapnet());
 		assertTrue(new SimpleDigitalPostformidling(new SDPFlyttetDigitalPost().withAapnet(true)).erAlleredeAapnet());
     }
+
+	@Test
+	public void erIkkeFysiskPostDersomFysiskPostInfoIkkeErSatt() {
+		assertFalse(nyPost.erDigitalPostTilFysiskLevering());
+		assertFalse(tilFlytting.erDigitalPostTilFysiskLevering());
+	}
+
+	@Test
+	public void gjenkjennerDigitalPostTilFysiskLevering() {
+		SimpleDigitalPostformidling fysiskPost = new SimpleDigitalPostformidling(new SDPDigitalPost().withFysiskPostInfo(new SDPFysiskPostInfo()));
+		assertTrue(fysiskPost.erDigitalPostTilFysiskLevering());
+		assertTrue(fysiskPost.type == NY_POST);
+	}
 
 }

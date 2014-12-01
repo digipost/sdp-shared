@@ -236,6 +236,10 @@ public class SimpleStandardBusinessDocument {
 			return digitalPostformidling.getDigitalPostInfo();
         }
 
+		public boolean erDigitalPostTilFysiskLevering() {
+			return digitalPostformidling instanceof SDPDigitalPost && ((SDPDigitalPost) digitalPostformidling).getFysiskPostInfo() != null;
+		}
+
 		public SDPFysiskPostInfo getFysiskPostInfo() {
 			return ((SDPDigitalPost) digitalPostformidling).getFysiskPostInfo();
 		}

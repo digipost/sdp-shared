@@ -13,3 +13,27 @@ Etter _git clone ..._, må du kjøre
 og deretter
 
     git submodule update
+
+
+Release
+-------
+
+Kjør
+
+    mvn release:prepare
+
+Og deretter
+
+    mvn release:perform
+
+
+For å tilgjengeliggjøre artefaktet i maven central
+
+- Logg inn på sonatype med Digipost-brukeren
+- Velg *Staging Repositories*
+- Finn frem til *nodigi-1036* nederst i listen
+- Velg *Content*, ekspander og verifiser at ting ser ut som forventet
+- Velg *Close* og *Confirm*
+- *Refresh* til status er *Closed*
+- Velg *Release* og *Confirm*
+

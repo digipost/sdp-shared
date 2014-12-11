@@ -15,25 +15,16 @@
  */
 package no.digipost.api.representations;
 
-import static org.apache.commons.lang3.StringUtils.join;
-
-import java.util.List;
-
-import no.difi.begrep.sdp.schema_v10.SDPAvsender;
-import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
-import no.difi.begrep.sdp.schema_v10.SDPDigitalPostInfo;
-import no.difi.begrep.sdp.schema_v10.SDPFeil;
-import no.difi.begrep.sdp.schema_v10.SDPFlyttetDigitalPost;
-import no.difi.begrep.sdp.schema_v10.SDPKvittering;
-import no.difi.begrep.sdp.schema_v10.SDPMelding;
-import no.difi.begrep.sdp.schema_v10.SDPMottaker;
-import no.difi.begrep.sdp.schema_v10.SDPVarslingfeilet;
+import no.difi.begrep.sdp.schema_v10.*;
 import no.digipost.xsd.types.DigitalPostformidling;
-
 import org.joda.time.LocalDate;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3.xmldsig.Reference;
+
+import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.join;
 
 public class SimpleStandardBusinessDocument {
 
@@ -244,6 +235,14 @@ public class SimpleStandardBusinessDocument {
 		public SDPDigitalPostInfo getDigitalPostInfo() {
 			return digitalPostformidling.getDigitalPostInfo();
         }
+
+		public boolean erDigitalPostTilFysiskLevering() {
+			return digitalPostformidling instanceof SDPDigitalPost && ((SDPDigitalPost) digitalPostformidling).getFysiskPostInfo() != null;
+		}
+
+		public SDPFysiskPostInfo getFysiskPostInfo() {
+			return ((SDPDigitalPost) digitalPostformidling).getFysiskPostInfo();
+		}
 
 		public LocalDate getLeveringsDato() {
 			SDPDigitalPostInfo postinfo = getDigitalPostInfo();

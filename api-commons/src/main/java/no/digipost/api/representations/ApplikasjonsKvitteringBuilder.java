@@ -21,6 +21,7 @@ import no.difi.begrep.sdp.schema_v10.SDPFeiltype;
 import no.difi.begrep.sdp.schema_v10.SDPKvittering;
 import no.difi.begrep.sdp.schema_v10.SDPLevering;
 import no.difi.begrep.sdp.schema_v10.SDPMelding;
+import no.difi.begrep.sdp.schema_v10.SDPReturpost;
 import no.difi.begrep.sdp.schema_v10.SDPVarslingfeilet;
 import no.difi.begrep.sdp.schema_v10.SDPVarslingskanal;
 import no.digipost.api.PMode;
@@ -75,6 +76,13 @@ public class ApplikasjonsKvitteringBuilder {
 	public ApplikasjonsKvitteringBuilder medAapning() {
 		kvittering = new SDPKvittering()
 				.withAapning(new SDPAapning())
+				.withTidspunkt(kvitteringTidspunkt);
+		return this;
+	}
+
+	public ApplikasjonsKvitteringBuilder medReturpost() {
+		kvittering = new SDPKvittering()
+				.withReturpost(new SDPReturpost())
 				.withTidspunkt(kvitteringTidspunkt);
 		return this;
 	}

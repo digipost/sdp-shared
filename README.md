@@ -31,7 +31,7 @@ For å tilgjengeliggjøre artefaktet i maven central
 
 - Logg inn på sonatype med Digipost-brukeren
 - Velg *Staging Repositories*
-- Finn frem til *nodigi-1036* nederst i listen
+- Finn frem til *nodigi-xxxx* nederst i listen
 - Velg *Content*, ekspander og verifiser at ting ser ut som forventet
 - Velg *Close* og *Confirm*
 - *Refresh* til status er *Closed*

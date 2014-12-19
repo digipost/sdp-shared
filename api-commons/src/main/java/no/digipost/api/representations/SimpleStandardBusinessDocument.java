@@ -137,6 +137,10 @@ public class SimpleStandardBusinessDocument {
 			this.kvittering = kvittering;
 		}
 
+		public boolean erMottak() {
+			return kvittering.getMottak() != null;
+		}
+
 		public boolean erLevertTilPostkasse() {
 			return kvittering.getLevering() != null;
 		}
@@ -147,6 +151,10 @@ public class SimpleStandardBusinessDocument {
 
 		public boolean erVarslingFeilet() {
 			return kvittering.getVarslingfeilet() != null;
+		}
+
+		public boolean erReturpost() {
+			return kvittering.getReturpost() != null;
 		}
 
 		public SDPVarslingfeilet getVarslingFeilet() {

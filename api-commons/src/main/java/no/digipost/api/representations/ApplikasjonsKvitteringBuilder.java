@@ -15,15 +15,7 @@
  */
 package no.digipost.api.representations;
 
-import no.difi.begrep.sdp.schema_v10.SDPAapning;
-import no.difi.begrep.sdp.schema_v10.SDPFeil;
-import no.difi.begrep.sdp.schema_v10.SDPFeiltype;
-import no.difi.begrep.sdp.schema_v10.SDPKvittering;
-import no.difi.begrep.sdp.schema_v10.SDPLevering;
-import no.difi.begrep.sdp.schema_v10.SDPMelding;
-import no.difi.begrep.sdp.schema_v10.SDPReturpost;
-import no.difi.begrep.sdp.schema_v10.SDPVarslingfeilet;
-import no.difi.begrep.sdp.schema_v10.SDPVarslingskanal;
+import no.difi.begrep.sdp.schema_v10.*;
 import no.digipost.api.PMode;
 
 import org.joda.time.DateTime;
@@ -62,6 +54,20 @@ public class ApplikasjonsKvitteringBuilder {
 
 	public ApplikasjonsKvitteringBuilder medPrioritet(final EbmsOutgoingMessage.Prioritet prioritet) {
 		this.prioritet = prioritet;
+		return this;
+	}
+
+	public ApplikasjonsKvitteringBuilder medMottak() {
+		kvittering = new SDPKvittering()
+				.withMottak(new SDPMottak())
+				.withTidspunkt(kvitteringTidspunkt);
+		return this;
+	}
+
+	public ApplikasjonsKvitteringBuilder medLevering() {
+		kvittering = new SDPKvittering()
+				.withLevering(new SDPLevering())
+				.withTidspunkt(kvitteringTidspunkt);
 		return this;
 	}
 

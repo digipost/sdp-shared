@@ -25,16 +25,6 @@
 		</schemaBindings>
 	</bindings>
 
-	<bindings schemaLocation="../difi-begrepskatalog/xsd/oppslag/oppslagstjeneste-metadata-14-05.xsd" node="/xs:schema">
-		<schemaBindings>
-			<nameXmlTransform>
-				<typeName prefix="Difi" />
-				<anonymousTypeName prefix="Difi" />
-				<elementName prefix="Difi" />
-			</nameXmlTransform>
-		</schemaBindings>
-	</bindings>
-
 	<bindings schemaLocation="../difi-begrepskatalog/xsd/sdp-melding.xsd">
 		<bindings node="//xs:complexType[@name='DigitalPost']">
 			<inheritance:implements>no.digipost.xsd.types.DigitalPostformidling</inheritance:implements>

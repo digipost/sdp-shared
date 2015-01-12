@@ -67,6 +67,7 @@
 					</schemaIncludes>
 					<schemaExcludes>
 						<exclude>ubl/*.xsd</exclude>
+						<exclude>oppslag/*.xsd</exclude>
 					</schemaExcludes>
 					<verbose>true</verbose>
 					<extension>true</extension>

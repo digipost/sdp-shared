@@ -27,7 +27,7 @@ This software includes third party software subject to the following licenses:
   jaxen under The BSD 3-Clause License
   JCL 1.1.1 implemented over SLF4J under MIT License
   Joda-Time under Apache 2
-  JUnit under Common Public License Version 1.0
+  JUnit under Eclipse Public License 1.0
   Mockito under The MIT License
   Objenesis under MIT License
   OpenSAML-J under Apache 2

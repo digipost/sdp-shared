@@ -221,11 +221,7 @@ public class SimpleStandardBusinessDocument {
 
 		public boolean kreverAapningsKvittering() {
 			SDPDigitalPostInfo postinfo = getDigitalPostInfo();
-			if (postinfo == null) {
-				return false;
-			}
-			Boolean aapningskvittering = postinfo.getAapningskvittering();
-			return aapningskvittering != null && aapningskvittering;
+			return postinfo != null ? postinfo.getAapningskvittering() : false;
 		}
 
 		public SDPAvsender getAvsender() {

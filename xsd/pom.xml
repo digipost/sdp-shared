@@ -80,6 +80,7 @@
 						<arg>-XhashCode</arg>
 						<arg>-Xfluent-api</arg>
 						<arg>-Xvalue-constructor</arg>
+						<arg>-Xdefault-value</arg>
 						<arg>-Xwildcard</arg>
 						<arg>-Xinheritance</arg>
 					</args>
@@ -109,6 +110,11 @@
 							<artifactId>jaxb2-value-constructor</artifactId>
 							<version>3.0</version>
 						</plugin>
+						<plugin>
+                        	<groupId>org.jvnet.jaxb2_commons</groupId>
+                        	<artifactId>jaxb2-default-value</artifactId>
+                        	<version>1.1</version>
+                        </plugin>						
 					</plugins>
 				</configuration>
 			</plugin>

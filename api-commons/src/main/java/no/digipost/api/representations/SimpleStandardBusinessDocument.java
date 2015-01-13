@@ -17,13 +17,15 @@ package no.digipost.api.representations;
 
 import no.difi.begrep.sdp.schema_v10.*;
 import no.digipost.xsd.types.DigitalPostformidling;
-import org.joda.time.LocalDate;
+import org.joda.time.DateTime;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3.xmldsig.Reference;
 
 import java.util.List;
 
+import static no.digipost.api.util.Choice.choice;
+import static no.digipost.api.util.Converters.toDateTimeAtStartOfDay;
 import static org.apache.commons.lang3.StringUtils.join;
 
 public class SimpleStandardBusinessDocument {
@@ -248,17 +250,17 @@ public class SimpleStandardBusinessDocument {
 			return ((SDPDigitalPost) digitalPostformidling).getFysiskPostInfo();
 		}
 
-		public LocalDate getLeveringsDato() {
+		public DateTime getLeveringstidspunkt() {
 			SDPDigitalPostInfo postinfo = getDigitalPostInfo();
-			LocalDate virkningsdato = postinfo != null ? postinfo.getVirkningsdato() : null;
-			LocalDate leveringstidspunkt = null;
+			DateTime virkningstidspunkt = postinfo != null ? choice(postinfo.getVirkningstidspunkt(), postinfo.getVirkningsdato(), toDateTimeAtStartOfDay) : null;
+			DateTime leveringstidspunkt = null;
 
-			if(virkningsdato != null) {
-				leveringstidspunkt = virkningsdato;
+			if(virkningstidspunkt != null) {
+				leveringstidspunkt = virkningstidspunkt;
 			}
 
 			if(type == Type.FLYTTET) {
-				LocalDate mottakstidspunkt = getFlyttetDigitalPost().getMottaksdato();
+				DateTime mottakstidspunkt = getFlyttetDigitalPost().getMottaksdato().toDateTimeAtStartOfDay();
 				if (leveringstidspunkt == null) {
 					leveringstidspunkt = mottakstidspunkt;
 				} else if (mottakstidspunkt.isAfter(leveringstidspunkt)) {

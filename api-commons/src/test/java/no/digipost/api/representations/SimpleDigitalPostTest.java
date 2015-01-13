@@ -69,7 +69,7 @@ public class SimpleDigitalPostTest {
 						.withDigitalPostInfo(new SDPDigitalPostInfo()
 								.withVirkningsdato(leveringsdato)));
 
-		assertThat(digitalPostformidling.getLeveringsDato(), is(leveringsdato));
+		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(leveringsdato.toDateTimeAtStartOfDay()));
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class SimpleDigitalPostTest {
 				new SDPDigitalPost()
 						.withDigitalPostInfo(new SDPDigitalPostInfo()));
 
-		assertThat(digitalPostformidling.getLeveringsDato(), is(nullValue()));
+		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(nullValue()));
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class SimpleDigitalPostTest {
 						.withMottaksdato(virkningsdato.minusDays(1))
 						.withDigitalPostInfo(new SDPDigitalPostInfo().withVirkningsdato(virkningsdato)));
 
-		assertThat(digitalPostformidling.getLeveringsDato(), is(virkningsdato));
+		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay()));
 	}
 
 	@Test
@@ -101,7 +101,7 @@ public class SimpleDigitalPostTest {
 						.withMottaksdato(mottaksdato)
 						.withDigitalPostInfo(new SDPDigitalPostInfo()));
 
-		assertThat(digitalPostformidling.getLeveringsDato(), is(mottaksdato));
+		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(mottaksdato.toDateTimeAtStartOfDay()));
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class SimpleDigitalPostTest {
 						.withMottaksdato(virkningsdato.minusDays(1))
 						.withDigitalPostInfo(new SDPDigitalPostInfo().withVirkningsdato(virkningsdato)));
 
-		assertThat(digitalPostformidling.getLeveringsDato(), is(virkningsdato));
+		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay()));
 	}
 
 	@Test
@@ -124,7 +124,7 @@ public class SimpleDigitalPostTest {
 						.withDigitalPostInfo(new SDPDigitalPostInfo())
 						.withMottaksdato(mottaksdato));
 
-		assertThat(digitalPostformidling.getLeveringsDato(), is(mottaksdato));
+		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(mottaksdato.toDateTimeAtStartOfDay()));
 	}
 
 
@@ -139,7 +139,7 @@ public class SimpleDigitalPostTest {
 								.withVirkningsdato(virkningsdato))
 						.withMottaksdato(mottaksdato));
 
-		assertThat(digitalPostformidling.getLeveringsDato(), is(mottaksdato));
+		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(mottaksdato.toDateTimeAtStartOfDay()));
 	}
 
 	@Test
@@ -153,7 +153,7 @@ public class SimpleDigitalPostTest {
 								.withVirkningsdato(virkningsdato))
 						.withMottaksdato(mottaksdato));
 
-		assertThat(digitalPostformidling.getLeveringsDato(), is(virkningsdato));
+		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay()));
 	}
 
 	@Test

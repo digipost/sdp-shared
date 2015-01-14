@@ -16,10 +16,8 @@
 package no.digipost.api.util;
 
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-
-import static org.joda.time.LocalTime.MIDNIGHT;
 
 public final class Converters {
 
@@ -36,16 +34,21 @@ public final class Converters {
 		return NOP;
 	}
 
-	public static final Converter<LocalDate, DateTime> toDateTimeAt(final LocalTime time) {
+	public static final Converter<LocalDate, DateTime> toDateTimeAfterStartOfDay(final Duration duration) {
 		return new Converter<LocalDate, DateTime>() {
         	@Override
         	public DateTime apply(LocalDate date) {
-        		return date.toDateTime(time);
+        		return date.toDateTimeAtStartOfDay().plus(duration);
         	}
-		};
+    	};
 	}
 
-	public static final Converter<LocalDate, DateTime> toDateTimeAtStartOfDay = toDateTimeAt(MIDNIGHT);
+	public static final Converter<LocalDate, DateTime> toDateTimeAtStartOfDay = new Converter<LocalDate, DateTime>() {
+    	@Override
+    	public DateTime apply(LocalDate date) {
+    		return date.toDateTimeAtStartOfDay();
+    	}
+	};
 
 	private Converters() {}
 

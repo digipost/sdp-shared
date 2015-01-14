@@ -18,7 +18,8 @@ package no.digipost.api.representations;
 import no.difi.begrep.sdp.schema_v10.*;
 import no.digipost.xsd.types.DigitalPostformidling;
 import org.joda.time.DateTime;
-import org.joda.time.LocalTime;
+import org.joda.time.Duration;
+import org.joda.time.LocalDate;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3.xmldsig.Reference;
@@ -26,7 +27,7 @@ import org.w3.xmldsig.Reference;
 import java.util.List;
 
 import static no.digipost.api.util.Choice.choice;
-import static no.digipost.api.util.Converters.toDateTimeAt;
+import static no.digipost.api.util.Converters.toDateTimeAfterStartOfDay;
 import static org.apache.commons.lang3.StringUtils.join;
 
 public class SimpleStandardBusinessDocument {
@@ -251,11 +252,11 @@ public class SimpleStandardBusinessDocument {
 			return ((SDPDigitalPost) digitalPostformidling).getFysiskPostInfo();
 		}
 
-		public static final LocalTime defaultTidspunkt = new LocalTime(8, 0);
+		public static final Duration defaultTidEtterMidnatt = Duration.standardHours(8);
 
 		public DateTime getLeveringstidspunkt() {
 			SDPDigitalPostInfo postinfo = getDigitalPostInfo();
-			DateTime virkningstidspunkt = postinfo != null ? choice(postinfo.getVirkningstidspunkt(), postinfo.getVirkningsdato(), toDateTimeAt(defaultTidspunkt)) : null;
+			DateTime virkningstidspunkt = postinfo != null ? choice(postinfo.getVirkningstidspunkt(), postinfo.getVirkningsdato(), toDateTimeAfterStartOfDay(defaultTidEtterMidnatt)) : null;
 			DateTime leveringstidspunkt = null;
 
 			if(virkningstidspunkt != null) {
@@ -263,7 +264,7 @@ public class SimpleStandardBusinessDocument {
 			}
 
 			if(type == Type.FLYTTET) {
-				DateTime mottakstidspunkt = getFlyttetDigitalPost().getMottaksdato().toDateTime(defaultTidspunkt);
+				DateTime mottakstidspunkt = getFlyttetDigitalPost().getMottaksdato().toDateTimeAtStartOfDay().plus(defaultTidEtterMidnatt);
 				if (leveringstidspunkt == null) {
 					leveringstidspunkt = mottakstidspunkt;
 				} else if (mottakstidspunkt.isAfter(leveringstidspunkt)) {

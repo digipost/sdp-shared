@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
-import static no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.defaultTidspunkt;
+import static no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.defaultTidEtterMidnatt;
 import static org.apache.commons.lang3.StringUtils.join;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -53,7 +53,7 @@ public class SimpleStandardBusinessDocumentTest {
 		assertThat(nyPost.type, is(Type.NY_POST));
 		assertThat(nyPost.getDigitalPost(), instanceOf(SDPDigitalPost.class));
 		assertFalse(nyPost.erAlleredeAapnet());
-		assertThat(nyPost.getLeveringstidspunkt(), is(virkningsdato.toDateTime(defaultTidspunkt)));
+		assertThat(nyPost.getLeveringstidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay().plus(defaultTidEtterMidnatt)));
 		assertFalse(nyPost.kreverAapningsKvittering());
 
 		sdpPost.getDigitalPostInfo().setAapningskvittering(false);
@@ -69,14 +69,14 @@ public class SimpleStandardBusinessDocumentTest {
 	@Test
     public void leveringstidspunktErSenesteTidspunktAvMottaksdatoOgVirkningsdato() {
 		sdpFlyttetPost.setDigitalPostInfo(new SDPDigitalPostInfo().withVirkningsdato(virkningsdato));
-		assertThat(flyttetPost.getLeveringstidspunkt(), is(virkningsdato.toDateTime(defaultTidspunkt)));
+		assertThat(flyttetPost.getLeveringstidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay().plus(defaultTidEtterMidnatt)));
 
 		LocalDate senereMottaksdato = virkningsdato.plusDays(1);
 		sdpFlyttetPost.setMottaksdato(senereMottaksdato);
-		assertThat(flyttetPost.getLeveringstidspunkt(), is(senereMottaksdato.toDateTime(defaultTidspunkt)));
+		assertThat(flyttetPost.getLeveringstidspunkt(), is(senereMottaksdato.toDateTimeAtStartOfDay().plus(defaultTidEtterMidnatt)));
 
 		sdpFlyttetPost.setMottaksdato(virkningsdato.minusDays(1));
-		assertThat(flyttetPost.getLeveringstidspunkt(), is(virkningsdato.toDateTime(defaultTidspunkt)));
+		assertThat(flyttetPost.getLeveringstidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay().plus(defaultTidEtterMidnatt)));
     }
 
 
@@ -84,7 +84,7 @@ public class SimpleStandardBusinessDocumentTest {
     public void girDigitalPostformidlingMedTypeFLYTTET() {
 		assertThat(flyttetPost.type, is(Type.FLYTTET));
 		assertThat(flyttetPost.getFlyttetDigitalPost(), instanceOf(SDPFlyttetDigitalPost.class));
-		assertThat(flyttetPost.getLeveringstidspunkt(), is(mottaksdato.toDateTime(defaultTidspunkt)));
+		assertThat(flyttetPost.getLeveringstidspunkt(), is(mottaksdato.toDateTimeAtStartOfDay().plus(defaultTidEtterMidnatt)));
 		assertFalse(flyttetPost.erAlleredeAapnet());
 		sdpFlyttetPost.setAapnet(true);
 		assertTrue(flyttetPost.erAlleredeAapnet());

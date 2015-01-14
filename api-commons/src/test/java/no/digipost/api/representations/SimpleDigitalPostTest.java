@@ -26,7 +26,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.defaultTidspunkt;
+import static no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.defaultTidEtterMidnatt;
 import static no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.Type.NY_POST;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -70,7 +70,7 @@ public class SimpleDigitalPostTest {
 						.withDigitalPostInfo(new SDPDigitalPostInfo()
 								.withVirkningsdato(leveringsdato)));
 
-		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(leveringsdato.toDateTime(defaultTidspunkt)));
+		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(leveringsdato.toDateTimeAtStartOfDay().plus(defaultTidEtterMidnatt)));
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class SimpleDigitalPostTest {
 						.withMottaksdato(virkningsdato.minusDays(1))
 						.withDigitalPostInfo(new SDPDigitalPostInfo().withVirkningsdato(virkningsdato)));
 
-		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(virkningsdato.toDateTime(defaultTidspunkt)));
+		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay().plus(defaultTidEtterMidnatt)));
 	}
 
 	@Test
@@ -102,7 +102,7 @@ public class SimpleDigitalPostTest {
 						.withMottaksdato(mottaksdato)
 						.withDigitalPostInfo(new SDPDigitalPostInfo()));
 
-		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(mottaksdato.toDateTime(defaultTidspunkt)));
+		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(mottaksdato.toDateTimeAtStartOfDay().plus(defaultTidEtterMidnatt)));
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class SimpleDigitalPostTest {
 						.withMottaksdato(virkningsdato.minusDays(1))
 						.withDigitalPostInfo(new SDPDigitalPostInfo().withVirkningsdato(virkningsdato)));
 
-		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(virkningsdato.toDateTime(defaultTidspunkt)));
+		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay().plus(defaultTidEtterMidnatt)));
 	}
 
 	@Test
@@ -125,7 +125,7 @@ public class SimpleDigitalPostTest {
 						.withDigitalPostInfo(new SDPDigitalPostInfo())
 						.withMottaksdato(mottaksdato));
 
-		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(mottaksdato.toDateTime(defaultTidspunkt)));
+		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(mottaksdato.toDateTimeAtStartOfDay().plus(defaultTidEtterMidnatt)));
 	}
 
 
@@ -140,7 +140,7 @@ public class SimpleDigitalPostTest {
 								.withVirkningsdato(virkningsdato))
 						.withMottaksdato(mottaksdato));
 
-		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(mottaksdato.toDateTime(defaultTidspunkt)));
+		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(mottaksdato.toDateTimeAtStartOfDay().plus(defaultTidEtterMidnatt)));
 	}
 
 	@Test
@@ -154,7 +154,7 @@ public class SimpleDigitalPostTest {
 								.withVirkningsdato(virkningsdato))
 						.withMottaksdato(mottaksdato));
 
-		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(virkningsdato.toDateTime(defaultTidspunkt)));
+		assertThat(digitalPostformidling.getLeveringstidspunkt(), is(virkningsdato.toDateTimeAtStartOfDay().plus(defaultTidEtterMidnatt)));
 	}
 
 	@Test

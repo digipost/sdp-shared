@@ -106,7 +106,7 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 		public InputStream sbdStream = null;
 		private Prioritet prioritet = Prioritet.NORMAL;
 		private String mpcId = null;
-		private PMode.Action action = PMode.Action.FORMIDLE;
+		private PMode.Action action = PMode.Action.FORMIDLE_DIGITAL;
 
 		private Builder() {
 		}

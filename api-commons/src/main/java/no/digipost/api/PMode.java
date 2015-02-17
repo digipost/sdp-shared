@@ -32,13 +32,15 @@ public interface PMode {
 
 	// COLLABORATION INFO
 	public static final String FORMIDLING_AGREEMENT_REF_OLD = "http://begrep.difi.no/SikkerDigitalPost/Meldingsutveksling/FormidleDigitalPostForsendelse";
-	public static final String FORMIDLING_AGREEMENT_REF = "http://begrep.difi.no/SikkerDigitalPost/1.0/transportlag/Meldingsutveksling/FormidleDigitalPostForsendelse";
+	public static final String FORMIDLING_DIGITAL_AGREEMENT_REF = "http://begrep.difi.no/SikkerDigitalPost/1.0/transportlag/Meldingsutveksling/FormidleDigitalPostForsendelse";
+	public static final String FORMIDLING_FYSISK_AGREEMENT_REF = "http://begrep.difi.no/SikkerDigitalPost/1.0/transportlag/Meldingsutveksling/FormidleFysiskPostForsendelse";
 	public static final String FLYTT_AGREEMENT_REF = "http://begrep.difi.no/SikkerDigitalPost/1.0/transportlag/Meldingsutveksling/FlyttetDigitalPost";
 	public static final String SERVICE = "SDP";
 
 	public enum Action {
-		FORMIDLE("FormidleDigitalPost", FORMIDLING_AGREEMENT_REF),
-		KVITTERING("KvitteringsForespoersel", FORMIDLING_AGREEMENT_REF),
+		FORMIDLE_DIGITAL("FormidleDigitalPost", FORMIDLING_DIGITAL_AGREEMENT_REF),
+		FORMIDLE_FYSISK("FormidleFysiskPost", FORMIDLING_FYSISK_AGREEMENT_REF),
+		KVITTERING("KvitteringsForespoersel", FORMIDLING_DIGITAL_AGREEMENT_REF),
 		FLYTT("FlyttetDigitalPost", FLYTT_AGREEMENT_REF);
 		public final String value;
 		public final String agreementRef;
@@ -57,6 +59,6 @@ public interface PMode {
 		}
 	}
 
-	public static final Set<String> VALID_AGREEMENTS = new HashSet(asList(FORMIDLING_AGREEMENT_REF, FLYTT_AGREEMENT_REF, FORMIDLING_AGREEMENT_REF_OLD));
+	public static final Set<String> VALID_AGREEMENTS = new HashSet(asList(FORMIDLING_DIGITAL_AGREEMENT_REF, FLYTT_AGREEMENT_REF, FORMIDLING_AGREEMENT_REF_OLD));
 
 }

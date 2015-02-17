@@ -116,7 +116,7 @@ public class TransactionLog {
 	}
 
 	private Type getType(final SimpleUserMessage u) {
-		if (u.getAction().equals(PMode.Action.FORMIDLE.value)) {
+		if (u.getAction().equals(PMode.Action.FORMIDLE_DIGITAL.value)) {
 			return USERMESSAGE_SDP;
 		} else if (u.getAction().equals(PMode.Action.FLYTT.value)) {
 			return USERMESSAGE_FLYTT;

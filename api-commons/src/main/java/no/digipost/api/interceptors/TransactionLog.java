@@ -120,6 +120,8 @@ public class TransactionLog {
 			return USERMESSAGE_SDP;
 		} else if (u.getAction().equals(PMode.Action.FLYTT.value)) {
 			return USERMESSAGE_FLYTT;
+		} else if (u.getAction().equals(PMode.Action.FORMIDLE_FYSISK.value)) {
+			return USERMESSAGE_FYSISK;
 		} else {
 			return APPLIKASJONSKVITTERING;
 		}

@@ -15,12 +15,13 @@
  */
 package no.digipost.api.representations;
 
+import no.digipost.api.PMode;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import no.digipost.api.PMode;
-
 public class Organisasjonsnummer {
+
 	public static final Pattern ISO6523_PATTERN = Pattern.compile("^([0-9]{4}:)?([0-9]{9})$");
 
 	private final String orgNummer;

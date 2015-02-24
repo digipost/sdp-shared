@@ -53,4 +53,6 @@ public interface PMode {
 		}
 	}
 
+	public static final String FORMIDLING_AGREEMENT_REF_OLD = "http://begrep.difi.no/SikkerDigitalPost/Meldingsutveksling/FormidleDigitalPostForsendelse";
+
 }

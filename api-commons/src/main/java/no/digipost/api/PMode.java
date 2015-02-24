@@ -15,11 +15,6 @@
  */
 package no.digipost.api;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import static java.util.Arrays.asList;
-
 public interface PMode {
 
 	// ROLES
@@ -31,7 +26,6 @@ public interface PMode {
 	public static final String PARTY_ID_TYPE = "urn:oasis:names:tc:ebcore:partyid-type:iso6523:9908";
 
 	// COLLABORATION INFO
-	public static final String FORMIDLING_AGREEMENT_REF_OLD = "http://begrep.difi.no/SikkerDigitalPost/Meldingsutveksling/FormidleDigitalPostForsendelse";
 	public static final String FORMIDLING_DIGITAL_AGREEMENT_REF = "http://begrep.difi.no/SikkerDigitalPost/1.0/transportlag/Meldingsutveksling/FormidleDigitalPostForsendelse";
 	public static final String FORMIDLING_FYSISK_AGREEMENT_REF = "http://begrep.difi.no/SikkerDigitalPost/1.0/transportlag/Meldingsutveksling/FormidleFysiskPostForsendelse";
 	public static final String FLYTT_AGREEMENT_REF = "http://begrep.difi.no/SikkerDigitalPost/1.0/transportlag/Meldingsutveksling/FlyttetDigitalPost";
@@ -58,7 +52,5 @@ public interface PMode {
 			return null;
 		}
 	}
-
-	public static final Set<String> VALID_AGREEMENTS = new HashSet(asList(FORMIDLING_DIGITAL_AGREEMENT_REF, FLYTT_AGREEMENT_REF, FORMIDLING_AGREEMENT_REF_OLD));
 
 }

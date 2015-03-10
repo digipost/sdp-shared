@@ -44,6 +44,7 @@ import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.config.SocketConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -287,6 +288,11 @@ public class MessageSender {
 			}
 
 			HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+
+			SocketConfig socketConfig = SocketConfig.custom()
+					.setSoTimeout(connectTimeout)
+					.build();
+			httpClientBuilder.setDefaultSocketConfig(socketConfig);
 
 			for (HttpRequestInterceptor httpRequestInterceptor : httpRequestInterceptors) {
 				httpClientBuilder.addInterceptorFirst(httpRequestInterceptor);

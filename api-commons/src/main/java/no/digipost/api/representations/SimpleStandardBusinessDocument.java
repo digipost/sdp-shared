@@ -72,6 +72,13 @@ public class SimpleStandardBusinessDocument {
 		return null;
 	}
 
+	public DateTime getCreationDateAndTime() {
+		if (doc.getStandardBusinessDocumentHeader() == null || doc.getStandardBusinessDocumentHeader().getDocumentIdentification() == null) {
+			return null;
+		}
+		return doc.getStandardBusinessDocumentHeader().getDocumentIdentification().getCreationDateAndTime();
+	}
+
 	private static boolean isEmpty(final List<?> list) {
 		return list == null || list.size() == 0;
 	}

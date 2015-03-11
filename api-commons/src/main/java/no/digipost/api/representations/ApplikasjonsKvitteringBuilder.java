@@ -23,6 +23,7 @@ import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusine
 
 public class ApplikasjonsKvitteringBuilder {
 
+	private DateTime creationTime;
 	private EbmsAktoer avsender;
 	private String instanceIdentifier;
 	private String messageId;
@@ -36,8 +37,9 @@ public class ApplikasjonsKvitteringBuilder {
 	private DateTime kvitteringTidspunkt = DateTime.now();
 
 	public static ApplikasjonsKvitteringBuilder create(final EbmsAktoer avsender, final EbmsAktoer ebmsMottaker, final Organisasjonsnummer sbdhMottaker, final String messageId,
-	                                                   final String conversationId, final String instanceIdentifier) {
+	                                                   final String conversationId, final String instanceIdentifier, DateTime creationTime) {
 		ApplikasjonsKvitteringBuilder builder = new ApplikasjonsKvitteringBuilder();
+		builder.creationTime = creationTime;
 		builder.ebmsMottaker = ebmsMottaker;
 		builder.sbdhMottaker = sbdhMottaker;
 		builder.messageId = messageId;
@@ -116,7 +118,7 @@ public class ApplikasjonsKvitteringBuilder {
 		}
 
 		final StandardBusinessDocument doc = StandardBusinessDocumentFactory
-				.create(avsender.orgnr, sbdhMottaker, instanceIdentifier, conversationId, kvittering);
+				.create(avsender.orgnr, sbdhMottaker, instanceIdentifier, creationTime, conversationId, kvittering);
 		return EbmsApplikasjonsKvittering.create(avsender, ebmsMottaker, doc)
 				.withMessageId(messageId)
 				.withPrioritet(prioritet)

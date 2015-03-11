@@ -64,7 +64,7 @@ public class StandardBusinessDocumentFactory {
 	public static final String TYPE_VERSION = "1.0";
 	public static final String CONVERSATIONID = "ConversationId";
 
-	public static StandardBusinessDocument create(final Organisasjonsnummer avsender, final Organisasjonsnummer mottaker, final String instanceIdentifier, final String conversationId, final SDPMelding body) {
+	public static StandardBusinessDocument create(final Organisasjonsnummer avsender, final Organisasjonsnummer mottaker, final String instanceIdentifier, DateTime creationTime, final String conversationId, final SDPMelding body) {
 		return new StandardBusinessDocument()
 				.withStandardBusinessDocumentHeader(
 						new StandardBusinessDocumentHeader()
@@ -76,7 +76,7 @@ public class StandardBusinessDocumentFactory {
 												.withTypeVersion(TYPE_VERSION)
 												.withInstanceIdentifier(instanceIdentifier)
 												.withType(Type.from(body).toString())
-												.withCreationDateAndTime(DateTime.now())
+												.withCreationDateAndTime(creationTime)
 								)
 								.withBusinessScope(new BusinessScope()
 												.withScopes(new Scope()

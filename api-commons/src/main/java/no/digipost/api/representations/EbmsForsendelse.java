@@ -18,6 +18,7 @@ package no.digipost.api.representations;
 import no.difi.begrep.sdp.schema_v10.SDPMelding;
 import no.digipost.api.PMode;
 import no.digipost.xsd.types.DigitalPostformidling;
+import org.joda.time.DateTime;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
 import java.io.InputStream;
@@ -100,6 +101,7 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 		private EbmsAktoer avsender;
 		private String conversationId = newId();
 		private String instanceIdentifier = newId();
+		private DateTime creationTime = DateTime.now();
 		private StandardBusinessDocument doc;
 		private SDPMelding digitalPost;
 		private String messageId = newId();
@@ -142,7 +144,7 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
 		public EbmsForsendelse build() {
 			if (doc == null) {
 				doc = StandardBusinessDocumentFactory
-						.create(avsender.orgnr, sbdhMottaker, instanceIdentifier, conversationId, digitalPost);
+						.create(avsender.orgnr, sbdhMottaker, instanceIdentifier, creationTime, conversationId, digitalPost);
 			}
 			return new EbmsForsendelse(messageId, action, mottaker, avsender, mpcId, sbdhMottaker, prioritet, conversationId, instanceIdentifier, doc, dokumentpakke, sbdStream);
 		}

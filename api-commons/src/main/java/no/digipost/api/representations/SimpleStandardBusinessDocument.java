@@ -53,6 +53,11 @@ public class SimpleStandardBusinessDocument {
 		return null;
 	}
 
+	public String getConversationUuid() {
+		String convId = getConversationId();
+		return convId != null ? convId.toLowerCase() : null;
+	}
+
 	public void setConversationId(final String conversationId) {
 		Scope scope = getScope();
 		if (scope != null) {

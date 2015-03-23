@@ -136,7 +136,7 @@ public class TransactionLog {
 
 	private String getConversationId(final EbmsContext context) {
 		if (context.sbd != null) {
-			return context.sbd.getConversationId();
+			return context.sbd.getConversationUuid();
 		}
 		return null;
 	}

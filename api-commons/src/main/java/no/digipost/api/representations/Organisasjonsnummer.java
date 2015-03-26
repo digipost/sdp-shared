@@ -16,6 +16,7 @@
 package no.digipost.api.representations;
 
 import no.digipost.api.PMode;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,5 +70,9 @@ public class Organisasjonsnummer {
     @Override
 	public int hashCode() {
 		return orgNummer.hashCode();
+	}
+
+	public boolean oneOf(Organisasjonsnummer ... candidates) {
+		return ArrayUtils.contains(candidates, this);
 	}
 }

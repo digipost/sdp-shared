@@ -51,8 +51,10 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.ws.client.WebServiceClientException;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
+import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.soap.SoapVersion;
 import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
 import org.springframework.ws.transport.http.HttpComponentsMessageSender;
@@ -157,6 +159,7 @@ public class MessageSender {
 		private final List<HttpResponseInterceptor> httpResponseInterceptors = new ArrayList<HttpResponseInterceptor>();
 
 		private SoapLog.LogLevel logLevel = LogLevel.NONE;
+		private ClientInterceptorWrapper clientInterceptorWrapper = new DoNothingClientInterceptorWrapper();
 
 		private Builder(final String endpointUri, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker,
 		                final WsSecurityInterceptor wsSecurityInterceptor, final KeyStoreInfo keystoreInfo) {
@@ -222,6 +225,11 @@ public class MessageSender {
 			return this;
 		}
 
+		public Builder withClientInterceptorWrapper(final ClientInterceptorWrapper clientInterceptorWrapper) {
+			this.clientInterceptorWrapper = clientInterceptorWrapper;
+			return this;
+		}
+
 		public Builder withMessageLogLevel(final LogLevel logLevel) {
 			this.logLevel = logLevel;
 			return this;
@@ -266,7 +274,12 @@ public class MessageSender {
 				insertInterceptor(meldingInterceptors, insertInterceptor);
 			}
 
-			wsTemplate.setInterceptors(meldingInterceptors.toArray(new ClientInterceptor[meldingInterceptors.size()]));
+			ClientInterceptor[] clientInterceptors = new ClientInterceptor[meldingInterceptors.size()];
+			for (int i = 0; i < meldingInterceptors.size(); i++) {
+				clientInterceptors[i] = clientInterceptorWrapper.wrap(meldingInterceptors.get(i));
+			}
+
+			wsTemplate.setInterceptors(clientInterceptors);
 
 			return sender;
 		}
@@ -338,6 +351,16 @@ public class MessageSender {
 		public InsertInterceptor(final Class clazz, final ClientInterceptor interceptor) {
 			this.clazz = clazz;
 			this.interceptor = interceptor;
+		}
+	}
+
+	public static interface ClientInterceptorWrapper {
+		ClientInterceptor wrap(ClientInterceptor clientInterceptor);
+	}
+	public static class DoNothingClientInterceptorWrapper implements ClientInterceptorWrapper {
+		@Override
+		public ClientInterceptor wrap(ClientInterceptor clientInterceptor) {
+			return clientInterceptor;
 		}
 	}
 

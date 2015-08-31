@@ -22,17 +22,14 @@
     </modules>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <!-- This module needs to compile to Java 1.6, as it's used by the Sikker Digital Post client -->
+        <!-- This module needs to compile to Java 6, as it's used by the Sikker Digital Post client -->
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
 
         <config.profiler>inmemhsql</config.profiler>
         <surefire.version>2.18.1</surefire.version>
-        <logback.version>1.1.2</logback.version>
-        <org.slf4j.version>1.7.7</org.slf4j.version>
+        <logback.version>1.1.3</logback.version>
+        <org.slf4j.version>1.7.12</org.slf4j.version>
         <spring.version>4.0.5.RELEASE</spring.version>
         <spring.ws.version>2.2.0.RELEASE</spring.ws.version>
         <spring.security.version>3.2.5.RELEASE</spring.security.version>
@@ -81,7 +78,7 @@
             <dependency>
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
-                <version>2.6</version>
+                <version>2.8.2</version>
             </dependency>
 
             <dependency>
@@ -118,7 +115,7 @@
             <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk15on</artifactId>
-                <version>1.50</version>
+                <version>1.52</version>
             </dependency>
 
             <dependency>
@@ -267,7 +264,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.3.2</version>
+                <version>3.4</version>
             </dependency>
 
         </dependencies>

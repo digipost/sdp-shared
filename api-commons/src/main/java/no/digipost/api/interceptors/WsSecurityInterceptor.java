@@ -18,6 +18,8 @@ package no.digipost.api.interceptors;
 import no.digipost.api.xml.Constants;
 import org.apache.wss4j.common.crypto.Merlin;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.ws.client.WebServiceClientException;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
@@ -35,9 +37,14 @@ public class WsSecurityInterceptor implements ClientInterceptor, SoapEndpointInt
 	private final KeyStoreInfo keystoreInfo;
 
 	public WsSecurityInterceptor(final KeyStoreInfo keystoreInfo, final EndpointExceptionResolver exceptionResolver) {
+		this(keystoreInfo, exceptionResolver, new LogFault.LogFaultsAsWarn(Wss4jInterceptor.LOG));
+	}
+
+	public WsSecurityInterceptor(final KeyStoreInfo keystoreInfo, final EndpointExceptionResolver exceptionResolver,
+								 LogFault logFault) {
 		this.keystoreInfo = keystoreInfo;
 		this.exceptionResolver = exceptionResolver;
-		this.interceptor = new Wss4jInterceptor();
+		this.interceptor = new Wss4jInterceptor(logFault, exceptionResolver);
 	}
 
 	private WsSecurityInterceptor(final KeyStoreInfo keystoreInfo, final EndpointExceptionResolver exceptionResolver, final Wss4jInterceptor interceptor) {
@@ -61,7 +68,6 @@ public class WsSecurityInterceptor implements ClientInterceptor, SoapEndpointInt
 		interceptor.setSecurementPassword(keystoreInfo.password);
 		interceptor.setValidationSignatureCrypto(crypto);
 
-		interceptor.setExceptionResolver(exceptionResolver);
 	}
 
 	public static String getSignParts() {

@@ -34,10 +34,14 @@ import org.apache.wss4j.dom.util.WSSecurityUtil;
 import org.apache.wss4j.dom.validate.Credential;
 import org.apache.wss4j.dom.validate.SignatureTrustValidator;
 import org.apache.wss4j.dom.validate.TimestampValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.ws.context.MessageContext;
+import org.springframework.ws.server.EndpointExceptionResolver;
+import org.springframework.ws.soap.SoapBody;
 import org.springframework.ws.soap.SoapMessage;
 import org.springframework.ws.soap.security.AbstractWsSecurityInterceptor;
 import org.springframework.ws.soap.security.WsSecurityFaultException;
@@ -60,6 +64,7 @@ import java.io.IOException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static no.digipost.api.xml.Constants.HEADER_QNAME;
 import static no.digipost.api.xml.Constants.MESSAGING_QNAME;
@@ -68,6 +73,8 @@ import static no.digipost.api.xml.Constants.WSU_TIMESTAMP_QNAME;
 
 
 public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
+
+	public static final Logger LOG = LoggerFactory.getLogger(Wss4jInterceptor.class);
 
 	public static final String SECUREMENT_USER_PROPERTY_NAME = "Wss4jSecurityInterceptor.securementUser";
 
@@ -112,7 +119,17 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 
 	private String securementSignatureAlgorithm;
 
-	public Wss4jInterceptor() {
+	private LogFault logFault;
+	private EndpointExceptionResolver exceptionResolver;
+
+	public Wss4jInterceptor(EndpointExceptionResolver exceptionResolver) {
+		this(new LogFault.LogFaultsAsWarn(LOG), exceptionResolver);
+	}
+
+	public Wss4jInterceptor(LogFault logFault, EndpointExceptionResolver exceptionResolver) {
+		setExceptionResolver(exceptionResolver);
+		this.exceptionResolver = exceptionResolver;
+		this.logFault = logFault;
 		setSecurementSignatureAlgorithm(Constants.RSA_SHA256);
 		setSecurementSignatureDigestAlgorithm(DigestMethod.SHA256);
 		setSecurementSignatureKeyIdentifier("DirectReference");
@@ -220,11 +237,27 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 		}
 	}
 
+	@Override //Overridden in order to be able to set the level of logging
+	protected boolean handleValidationException(WsSecurityValidationException ex, MessageContext messageContext) {
+		logFault.log(ex);
+
+		if(this.exceptionResolver != null) {
+			this.exceptionResolver.resolveException(messageContext, (Object)null, ex);
+		} else {
+			if(this.logger.isDebugEnabled()) {
+				this.logger.debug("No exception resolver present, creating basic soap fault");
+			}
+
+			SoapBody response = ((SoapMessage)messageContext.getResponse()).getSoapBody();
+			response.addClientOrSenderFault(ex.getMessage(), Locale.ENGLISH);
+		}
+
+		return false;
+	}
+
 	@Override
 	protected boolean handleFaultException(final WsSecurityFaultException ex, final MessageContext messageContext) {
-		if (logger.isWarnEnabled()) {
-			logger.warn("Could not handle request: " + ex.getMessage());
-		}
+		logFault.log(ex);
 
 		throw new RuntimeException("Could not handle request", ex);
 	}

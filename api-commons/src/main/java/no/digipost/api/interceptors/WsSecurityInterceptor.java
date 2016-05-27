@@ -57,9 +57,9 @@ public class WsSecurityInterceptor implements ClientInterceptor, SoapEndpointInt
 	public void afterPropertiesSet() {
 		Merlin crypto = new Merlin();
 		crypto.setCryptoProvider(BouncyCastleProvider.PROVIDER_NAME);
-		crypto.setKeyStore(keystoreInfo.keystore);
-		crypto.setTrustStore(keystoreInfo.keystore);
 
+		crypto.setKeyStore(keystoreInfo.keystore);
+		crypto.setTrustStore(keystoreInfo.trustStore);
 
 		interceptor.setSecurementSignatureParts(getSignParts());
 		interceptor.setSecurementSignatureIfPresentParts("{}cid:Attachments");

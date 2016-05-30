@@ -36,6 +36,8 @@
         <!-- WSS4J 2.1.x requires Java 7. We need to stay on 2.0.x as long as we need to be Java 6 compatible -->
         <wss4j.version>2.0.5</wss4j.version>
 
+        <org.easytesting.fest.assert.core.version>2.0M10</org.easytesting.fest.assert.core.version>
+
         <additionalparam>-Xdoclint:none</additionalparam>
     </properties>
 
@@ -312,6 +314,7 @@
                             <exclude>**/NOTICE</exclude>
                             <exclude>**/*.pdf</exclude>
                             <exclude>**/*.p12</exclude>
+                            <exclude>**/*.jks</exclude>
                             <exclude>**/*.txt</exclude>
                             <exclude>**/*.xml</exclude>
                             <exclude>**/*.xsd</exclude>

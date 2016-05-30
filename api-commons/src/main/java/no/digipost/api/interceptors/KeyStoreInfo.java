@@ -25,11 +25,17 @@ import java.security.cert.X509Certificate;
 
 public class KeyStoreInfo {
 	public final KeyStore keystore;
+	public final KeyStore trustStore;
 	public final String alias;
 	public final String password;
 
 	public KeyStoreInfo(final KeyStore keystore, final String alias, final String password) {
+		this(keystore, keystore, alias, password);
+	}
+
+	public KeyStoreInfo(KeyStore keystore, KeyStore trustStore, String alias, String password) {
 		this.keystore = keystore;
+		this.trustStore = trustStore;
 		this.alias = alias;
 		this.password = password;
 	}

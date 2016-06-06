@@ -23,7 +23,7 @@ import org.w3.xmldsig.Reference;
 import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 
-public class Referanse {
+public class KvitteringsReferanse {
 
 	private final String marshaled;
 	private final Jaxb2Marshaller marshallerSingleton = Marshalling.getMarshallerSingleton();
@@ -36,7 +36,7 @@ public class Referanse {
 		return (Reference) marshallerSingleton.unmarshal(new StreamSource(new StringReader(marshaled)));
 	}
 
-	private Referanse(Reference reference) {
+	private KvitteringsReferanse(Reference reference) {
 		StringResult marshaledReference = new StringResult();
 
 		Jaxb2Marshaller marshallerSingleton = Marshalling.getMarshallerSingleton();
@@ -50,14 +50,14 @@ public class Referanse {
 	}
 
 	public static class Builder {
-		private Referanse target;
+		private KvitteringsReferanse target;
 		private boolean built = false;
 
 		private Builder(Reference reference) {
-			this.target = new Referanse(reference);
+			this.target = new KvitteringsReferanse(reference);
 		}
 
-		public Referanse build() {
+		public KvitteringsReferanse build() {
 			if (built) {
 				throw new IllegalStateException("Can't build twice");
 			}

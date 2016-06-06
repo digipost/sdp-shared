@@ -20,11 +20,11 @@ import org.w3.xmldsig.Reference;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class ReferanseTest {
+public class KvitteringsReferanseTest {
 
 	@Test
 	public void testBuilder() throws Exception {
-		Referanse referanse = Referanse.builder(ObjectMother.getReference()).build();
+		KvitteringsReferanse referanse = KvitteringsReferanse.builder(ObjectMother.getReference()).build();
 
 		assertThat(referanse.getMarshaled()).isNotNull();
 	}
@@ -32,7 +32,7 @@ public class ReferanseTest {
 	@Test
 	public void testGetUnmarshaled() {
 		Reference reference = ObjectMother.getReference();
-		Referanse referanse = Referanse.builder(reference).build();
+		KvitteringsReferanse referanse = KvitteringsReferanse.builder(reference).build();
 
 		assertThat(referanse.getUnmarshaled()).isEqualTo(reference);
 	}

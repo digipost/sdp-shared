@@ -22,10 +22,7 @@ import java.util.List;
 
 import no.digipost.api.PMode;
 
-import no.digipost.api.xml.Marshalling;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.util.StringUtils;
-import org.springframework.xml.transform.StringResult;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3.xmldsig.Reference;
 
@@ -62,9 +59,9 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage implements K
 	}
 
 	@Override
-	public Referanse getReferanse() {
+	public KvitteringsReferanse getReferanse() {
 		Reference reference = references.get(0);
-		return Referanse.builder(reference).build();
+		return KvitteringsReferanse.builder(reference).build();
 	}
 
 	public static class Builder {

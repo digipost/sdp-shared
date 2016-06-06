@@ -45,9 +45,18 @@ public class KvitteringsReferanse {
 		this.marshaled = marshaledReference.toString();
 	}
 
+	private KvitteringsReferanse(String marshaledReference) {
+		marshaled = marshaledReference;
+	}
+
 	public static Builder builder(Reference reference) {
 		return new Builder(reference);
 	}
+
+	public static Builder builder(String marshaledReference) {
+		return new Builder(marshaledReference);
+	}
+
 
 	public static class Builder {
 		private KvitteringsReferanse target;
@@ -57,9 +66,13 @@ public class KvitteringsReferanse {
 			this.target = new KvitteringsReferanse(reference);
 		}
 
+		private Builder(String marshaledReference){
+			this.target = new KvitteringsReferanse(marshaledReference);
+		}
+
 		public KvitteringsReferanse build() {
 			if (built) {
-				throw new IllegalStateException("Can't build twice");
+				throw new IllegalStateException("Kan ikke bygges flere ganger.");
 			}
 			built = true;
 			return target;

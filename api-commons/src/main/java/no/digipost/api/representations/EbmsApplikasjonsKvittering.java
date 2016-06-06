@@ -59,7 +59,7 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage implements K
 	}
 
 	@Override
-	public KvitteringsReferanse getReferanse() {
+	public KvitteringsReferanse getReferanseTilMeldingSomKvitteres() {
 		Reference reference = references.get(0);
 		return KvitteringsReferanse.builder(reference).build();
 	}

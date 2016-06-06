@@ -23,17 +23,29 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class KvitteringsReferanseTest {
 
 	@Test
-	public void testBuilder() throws Exception {
-		KvitteringsReferanse referanse = KvitteringsReferanse.builder(ObjectMother.getReference()).build();
+	public void testBuilder_FromReference() throws Exception {
+		Reference referenceToOriginalMessage = ObjectMother.getReference();
 
-		assertThat(referanse.getMarshaled()).isNotNull();
+		KvitteringsReferanse kvitteringsReferanse = KvitteringsReferanse.builder(referenceToOriginalMessage).build();
+
+		assertThat(kvitteringsReferanse.getMarshaled()).isNotNull();
+	}
+
+	@Test
+	public void testBuilder_FromMarshaledReference() throws Exception {
+		String marshaledReferenceToOriginalMessage = KvitteringsReferanse.builder(ObjectMother.getReference()).build().getMarshaled();
+
+		KvitteringsReferanse kvitteringsReferanse = KvitteringsReferanse.builder(marshaledReferenceToOriginalMessage).build();
+
+		assertThat(kvitteringsReferanse.getMarshaled()).isEqualTo(marshaledReferenceToOriginalMessage);
 	}
 
 	@Test
 	public void testGetUnmarshaled() {
-		Reference reference = ObjectMother.getReference();
-		KvitteringsReferanse referanse = KvitteringsReferanse.builder(reference).build();
+		Reference referenceToOriginalMessage = ObjectMother.getReference();
 
-		assertThat(referanse.getUnmarshaled()).isEqualTo(reference);
+		KvitteringsReferanse kvitteringsReferanse = KvitteringsReferanse.builder(referenceToOriginalMessage).build();
+
+		assertThat(kvitteringsReferanse.getUnmarshaled()).isEqualTo(referenceToOriginalMessage);
 	}
 }

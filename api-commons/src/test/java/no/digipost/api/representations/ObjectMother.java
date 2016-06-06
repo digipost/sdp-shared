@@ -22,7 +22,7 @@ import org.w3.xmldsig.Transform;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObjectMother {
+class ObjectMother {
 
 	public static Reference getReference() {
 		Reference reference = new Reference();

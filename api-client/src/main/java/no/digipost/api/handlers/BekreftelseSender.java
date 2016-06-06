@@ -42,7 +42,7 @@ public class BekreftelseSender extends EbmsContextAware implements WebServiceMes
 	@Override
 	public void doWithMessage(final WebServiceMessage message) throws IOException, TransformerException {
 		List<Reference> references = new ArrayList<Reference>();
-		references.add(kanBekreftesSomBehandletKvittering.getReferanse().getUnmarshaled());
+		references.add(kanBekreftesSomBehandletKvittering.getReferanseTilMeldingSomKvitteres().getUnmarshaled());
 
 		ebmsContext.addRequestStep(new AddReferencesStep(jaxb2Marshaller, kanBekreftesSomBehandletKvittering.getMeldingsId(), references));
 	}

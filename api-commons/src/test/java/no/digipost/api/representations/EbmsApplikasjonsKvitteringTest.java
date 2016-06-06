@@ -37,7 +37,7 @@ public class EbmsApplikasjonsKvitteringTest {
 	public void testGetReferanse() throws Exception {
 		EbmsApplikasjonsKvittering ebmsApplikasjonskvittering = getEbmsApplikasjonskvittering();
 
-		assertThat(ebmsApplikasjonskvittering.getReferanse()).isNotNull();
+		assertThat(ebmsApplikasjonskvittering.getReferanseTilMeldingSomKvitteres()).isNotNull();
 	}
 
 	private EbmsApplikasjonsKvittering getEbmsApplikasjonskvittering() {

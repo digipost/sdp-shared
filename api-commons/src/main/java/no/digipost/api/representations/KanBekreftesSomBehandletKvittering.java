@@ -19,5 +19,5 @@ public interface KanBekreftesSomBehandletKvittering {
 
 	String getMeldingsId();
 
-	KvitteringsReferanse getReferanse();
+	KvitteringsReferanse getReferanseTilMeldingSomKvitteres();
 }

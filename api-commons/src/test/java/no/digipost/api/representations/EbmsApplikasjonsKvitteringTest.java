@@ -15,6 +15,7 @@
  */
 package no.digipost.api.representations;
 
+import org.fest.assertions.core.Condition;
 import org.junit.Test;
 import org.w3.xmldsig.Reference;
 
@@ -34,10 +35,19 @@ public class EbmsApplikasjonsKvitteringTest {
 	}
 
 	@Test
-	public void testGetReferanse() throws Exception {
-		EbmsApplikasjonsKvittering ebmsApplikasjonskvittering = getEbmsApplikasjonskvittering();
+	public void testGetReferanseTilMeldingSomKvitteres() throws Exception {
+		KvitteringsReferanse referanseTilMeldingSomKvitteres = getEbmsApplikasjonskvittering().getReferanseTilMeldingSomKvitteres();
 
-		assertThat(ebmsApplikasjonskvittering.getReferanseTilMeldingSomKvitteres()).isNotNull();
+		assertThat(referanseTilMeldingSomKvitteres.getMarshalled()).has(lengthGreaterThan(500));
+	}
+
+	private Condition<String> lengthGreaterThan(final int length) {
+		return new Condition<String>() {
+			@Override
+			public boolean matches(String s) {
+				return s.length() > length;
+			}
+		};
 	}
 
 	private EbmsApplikasjonsKvittering getEbmsApplikasjonskvittering() {

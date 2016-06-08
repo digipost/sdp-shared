@@ -26,7 +26,7 @@ import org.springframework.util.StringUtils;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3.xmldsig.Reference;
 
-public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
+public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage implements KanBekreftesSomBehandletKvittering {
 
 	public final StandardBusinessDocument sbd;
 	public final List<Reference> references = new ArrayList<Reference>();
@@ -51,6 +51,17 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage {
 	}
 	public SimpleStandardBusinessDocument.SimpleKvittering getKvittering() {
 		return new SimpleStandardBusinessDocument(sbd).getKvittering();
+	}
+
+	@Override
+	public String getMeldingsId() {
+		return messageId;
+	}
+
+	@Override
+	public KvitteringsReferanse getReferanseTilMeldingSomKvitteres() {
+		Reference reference = references.get(0);
+		return KvitteringsReferanse.builder(reference).build();
 	}
 
 	public static class Builder {

@@ -37,6 +37,7 @@ import no.digipost.api.representations.EbmsAktoer;
 import no.digipost.api.representations.EbmsApplikasjonsKvittering;
 import no.digipost.api.representations.EbmsForsendelse;
 import no.digipost.api.representations.EbmsPullRequest;
+import no.digipost.api.representations.KanBekreftesSomBehandletKvittering;
 import no.digipost.api.representations.TransportKvittering;
 import no.digipost.api.xml.Marshalling;
 import org.apache.http.HttpHost;
@@ -99,8 +100,8 @@ public class MessageSender {
 		return meldingTemplate.sendAndReceive(uri, new PullRequestSender(pullRequest, marshaller, tidligereKvitteringSomSkalBekreftes), new ApplikasjonsKvitteringReceiver(marshaller));
 	}
 
-	public void bekreft(final EbmsApplikasjonsKvittering appKvittering) {
-		meldingTemplate.sendAndReceive(uri, new BekreftelseSender(appKvittering, marshaller), new EmptyReceiver());
+	public void bekreft(final KanBekreftesSomBehandletKvittering kanBekreftesSomBehandletKvittering) {
+		meldingTemplate.sendAndReceive(uri, new BekreftelseSender(kanBekreftesSomBehandletKvittering, marshaller), new EmptyReceiver());
 	}
 
 	public void send(final EbmsApplikasjonsKvittering appKvittering) {

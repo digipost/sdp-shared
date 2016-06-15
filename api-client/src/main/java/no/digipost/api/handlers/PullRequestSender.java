@@ -65,8 +65,7 @@ public class PullRequestSender extends EbmsContextAware implements WebServiceMes
 				Mpc mpc = new Mpc(pullRequest.prioritet, pullRequest.mpcId);
 				SignalMessage signalMessage = new SignalMessage()
 						.withMessageInfo(pullRequest.createMessageInfo())
-						.withPullRequest(new PullRequest()
-								.withMpc(mpc.toString())
+						.withPullRequest(new PullRequest().withMpc(mpc.toString())
 						);
 				Marshalling.marshal(marshaller, ebmsMessaging, Constants.SIGNAL_MESSAGE_QNAME, signalMessage);
 			}

@@ -96,7 +96,7 @@ public class MessageSender {
 		return hentKvittering(pullRequest, null);
 	}
 
-	public EbmsApplikasjonsKvittering hentKvittering(final EbmsPullRequest pullRequest, final EbmsApplikasjonsKvittering tidligereKvitteringSomSkalBekreftes) {
+	public EbmsApplikasjonsKvittering hentKvittering(final EbmsPullRequest pullRequest, final KanBekreftesSomBehandletKvittering tidligereKvitteringSomSkalBekreftes) {
 		return meldingTemplate.sendAndReceive(uri, new PullRequestSender(pullRequest, marshaller, tidligereKvitteringSomSkalBekreftes), new ApplikasjonsKvitteringReceiver(marshaller));
 	}
 
@@ -161,7 +161,7 @@ public class MessageSender {
 		private ClientInterceptorWrapper clientInterceptorWrapper = new DoNothingClientInterceptorWrapper();
 
 		private Builder(final String endpointUri, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker,
-		                final WsSecurityInterceptor wsSecurityInterceptor, final KeyStoreInfo keystoreInfo) {
+						final WsSecurityInterceptor wsSecurityInterceptor, final KeyStoreInfo keystoreInfo) {
 			this.endpointUri = endpointUri;
 			this.tekniskAvsenderId = tekniskAvsenderId;
 			this.tekniskMottaker = tekniskMottaker;
@@ -356,6 +356,7 @@ public class MessageSender {
 	public static interface ClientInterceptorWrapper {
 		ClientInterceptor wrap(ClientInterceptor clientInterceptor);
 	}
+
 	public static class DoNothingClientInterceptorWrapper implements ClientInterceptorWrapper {
 		@Override
 		public ClientInterceptor wrap(ClientInterceptor clientInterceptor) {

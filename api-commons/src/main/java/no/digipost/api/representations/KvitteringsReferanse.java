@@ -25,38 +25,37 @@ import java.io.StringReader;
 
 public class KvitteringsReferanse {
 
-	private final String marshaled;
+	private final String marshalled;
 	private final Jaxb2Marshaller marshallerSingleton = Marshalling.getMarshallerSingleton();
 
-	public String getMarshaled() {
-		return marshaled;
+	public String getMarshalled() {
+		return marshalled;
 	}
 
-	public Reference getUnmarshaled() {
-		return (Reference) marshallerSingleton.unmarshal(new StreamSource(new StringReader(marshaled)));
+	public Reference getUnmarshalled() {
+		return (Reference) marshallerSingleton.unmarshal(new StreamSource(new StringReader(marshalled)));
 	}
 
 	private KvitteringsReferanse(Reference reference) {
-		StringResult marshaledReference = new StringResult();
+		StringResult marshalledReference = new StringResult();
 
 		Jaxb2Marshaller marshallerSingleton = Marshalling.getMarshallerSingleton();
-		Marshalling.marshal(marshallerSingleton, reference, marshaledReference);
+		Marshalling.marshal(marshallerSingleton, reference, marshalledReference);
 
-		this.marshaled = marshaledReference.toString();
+		this.marshalled = marshalledReference.toString();
 	}
 
-	private KvitteringsReferanse(String marshaledReference) {
-		marshaled = marshaledReference;
+	private KvitteringsReferanse(String marshalledReference) {
+		marshalled = marshalledReference;
 	}
 
 	public static Builder builder(Reference reference) {
 		return new Builder(reference);
 	}
 
-	public static Builder builder(String marshaledReference) {
-		return new Builder(marshaledReference);
+	public static Builder builder(String marshalledReference) {
+		return new Builder(marshalledReference);
 	}
-
 
 	public static class Builder {
 		private KvitteringsReferanse target;
@@ -66,8 +65,8 @@ public class KvitteringsReferanse {
 			this.target = new KvitteringsReferanse(reference);
 		}
 
-		private Builder(String marshaledReference){
-			this.target = new KvitteringsReferanse(marshaledReference);
+		private Builder(String marshalledReference) {
+			this.target = new KvitteringsReferanse(marshalledReference);
 		}
 
 		public KvitteringsReferanse build() {

@@ -24,52 +24,53 @@ import java.util.regex.Pattern;
 public class Organisasjonsnummer {
 
 	public static final Pattern ISO6523_PATTERN = Pattern.compile("^([0-9]{4}:)?([0-9]{9})$");
-
-	private final String orgNummer;
-	public static final String ISO6523_ACTORID = PMode.PARTY_ID_TYPE;
-	public static final String ISO6523_ACTORID_OLD = "iso6523-actorid-upis";
-
 	public static final Organisasjonsnummer NULL = new Organisasjonsnummer("");
+	public static final String ISO6523_ACTORID = PMode.PARTY_ID_TYPE;
 
-	public Organisasjonsnummer(final String orgNummer) {
-		this.orgNummer = orgNummer;
+	private final String organisasjonsnummer;
+
+	private Organisasjonsnummer(final String organisasjonsnummer) {
+		this.organisasjonsnummer = organisasjonsnummer;
 	}
 
 	public String asIso6523() {
-		return "9908:" + orgNummer;
+		return "9908:" + organisasjonsnummer;
 	}
 
 	@Override
 	public String toString() {
-		return orgNummer;
+		return organisasjonsnummer;
 	}
 
-	public static Organisasjonsnummer fromIso6523(final String iso6523Orgnr) {
-		Matcher matcher = ISO6523_PATTERN.matcher(iso6523Orgnr);
-		if (!matcher.matches()) {
-			throw new IllegalArgumentException("Invalid organizational number. " +
-					"Expected format is ISO 6523, got following organizational number: " + iso6523Orgnr);
-		}
-		return new Organisasjonsnummer(matcher.group(2));
-	}
 	public static boolean isIso6523(final String iso6523Orgnr) {
 		return ISO6523_PATTERN.matcher(iso6523Orgnr).matches();
 	}
+
+	public static Organisasjonsnummer fromIso6523(final String iso6523Organisasjonsnummer) {
+		Matcher matcher = ISO6523_PATTERN.matcher(iso6523Organisasjonsnummer);
+		if (!matcher.matches()) {
+			throw new IllegalArgumentException("Invalid organizational number. " +
+					"Expected format is ISO 6523, got following organizational number: " + iso6523Organisasjonsnummer);
+		}
+		return new Organisasjonsnummer(matcher.group(2));
+	}
+
 
     @Override
 	public boolean equals(final Object obj) {
 		if (obj == null) {
 			return false;
 		}
+
 		if (obj instanceof Organisasjonsnummer) {
-			return orgNummer.equals(((Organisasjonsnummer)obj).orgNummer);
+			return organisasjonsnummer.equals(((Organisasjonsnummer)obj).organisasjonsnummer);
 		}
 		return false;
 	}
 
     @Override
 	public int hashCode() {
-		return orgNummer.hashCode();
+		return organisasjonsnummer.hashCode();
 	}
 
 	public boolean oneOf(Organisasjonsnummer ... candidates) {

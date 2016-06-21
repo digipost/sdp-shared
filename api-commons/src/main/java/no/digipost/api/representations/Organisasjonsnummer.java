@@ -27,34 +27,43 @@ public class Organisasjonsnummer {
 	public static final Organisasjonsnummer NULL = new Organisasjonsnummer("");
 	public static final String ISO6523_ACTORID = PMode.PARTY_ID_TYPE;
 
+	private static final String COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY = "9908";
+
 	private final String organisasjonsnummer;
 
 	private Organisasjonsnummer(final String organisasjonsnummer) {
 		this.organisasjonsnummer = organisasjonsnummer;
 	}
 
-	public String asIso6523() {
-		return "9908:" + organisasjonsnummer;
+	public String medLandkode() {
+		return String.format("%s:%s", COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY, organisasjonsnummer);
 	}
 
-	@Override
-	public String toString() {
+	public String utenLandkode() {
 		return organisasjonsnummer;
 	}
 
-	public static boolean isIso6523(final String iso6523Orgnr) {
-		return ISO6523_PATTERN.matcher(iso6523Orgnr).matches();
+	public static boolean isOrganisasjonsnummer(final String organisasjosnummer) {
+		return ISO6523_PATTERN.matcher(organisasjosnummer).matches();
 	}
 
-	public static Organisasjonsnummer fromIso6523(final String iso6523Organisasjonsnummer) {
-		Matcher matcher = ISO6523_PATTERN.matcher(iso6523Organisasjonsnummer);
+	public static Organisasjonsnummer fraString(final String organisasjonsnummer) {
+		Matcher matcher = ISO6523_PATTERN.matcher(organisasjonsnummer);
 		if (!matcher.matches()) {
-			throw new IllegalArgumentException("Invalid organizational number. " +
-					"Expected format is ISO 6523, got following organizational number: " + iso6523Organisasjonsnummer);
+			throw new IllegalArgumentException(
+					String.format("Ugyldig organisasjonsnummer. Forventet format er ISO 6523, men fikk følgende nummer: '%s'. " +
+							"Organisasjonsnummeret skal være 9 siffer og kan prefikses med landkode 9908. " +
+							"Eksempler på dette er '9908:984661185' og '984661185'.",
+							organisasjonsnummer)
+			);
 		}
 		return new Organisasjonsnummer(matcher.group(2));
 	}
 
+	@Override
+	public String toString() {
+		return utenLandkode();
+	}
 
     @Override
 	public boolean equals(final Object obj) {
@@ -76,4 +85,6 @@ public class Organisasjonsnummer {
 	public boolean oneOf(Organisasjonsnummer ... candidates) {
 		return ArrayUtils.contains(candidates, this);
 	}
+
+
 }

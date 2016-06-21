@@ -53,19 +53,19 @@ public class EbmsAktoer {
 	}
 
 	public static EbmsAktoer meldingsformidler(final String orgnr) {
-		return meldingsformidler(Organisasjonsnummer.fromIso6523(orgnr));
+		return meldingsformidler(Organisasjonsnummer.fraString(orgnr));
 	}
 	public static EbmsAktoer meldingsformidler(final Organisasjonsnummer orgnr) {
 		return new EbmsAktoer(orgnr, Rolle.MELDINGSFORMIDLER);
 	}
 	public static EbmsAktoer avsender(final String orgnr) {
-		return avsender(Organisasjonsnummer.fromIso6523(orgnr));
+		return avsender(Organisasjonsnummer.fraString(orgnr));
 	}
 	public static EbmsAktoer avsender(final Organisasjonsnummer orgnr) {
 		return new EbmsAktoer(orgnr, Rolle.AVSENDER);
 	}
 	public static EbmsAktoer postkasse(final String orgnr) {
-		return postkasse(Organisasjonsnummer.fromIso6523(orgnr));
+		return postkasse(Organisasjonsnummer.fraString(orgnr));
 	}
 	public static EbmsAktoer postkasse(final Organisasjonsnummer orgnr) {
 		return new EbmsAktoer(orgnr, Rolle.POSTKASSE);
@@ -83,7 +83,7 @@ public class EbmsAktoer {
 
 	private static EbmsAktoer create(final String id, final String role) {
 		Rolle rolle = Rolle.parse(role);
-		Organisasjonsnummer nummer = Organisasjonsnummer.fromIso6523(id);
+		Organisasjonsnummer nummer = Organisasjonsnummer.fraString(id);
 		return new EbmsAktoer(nummer, rolle);
 	}
 

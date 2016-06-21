@@ -20,18 +20,18 @@ import java.net.URI;
 public class MeldingsformidlerUri {
 
 	public final URI baseUri;
-	private DatabehandlerOrganisasjonsNummer databehandlerOrganisasjonsnummer;
+	private Organisasjonsnummer databehandlerOrganisasjonsnummer;
 
-	public MeldingsformidlerUri(URI baseUri, DatabehandlerOrganisasjonsNummer databehandlerOrganisasjonsnummer){
+	public MeldingsformidlerUri(URI baseUri, Organisasjonsnummer databehandlerOrganisasjonsnummer){
 		this.baseUri = baseUri;
 		this.databehandlerOrganisasjonsnummer = databehandlerOrganisasjonsnummer;
 	}
 
-	public URI getFull(AvsenderOrganisasjonsNummer avsenderOrganisasjonsNummer){
+	public URI getFull(Organisasjonsnummer avsenderOrganisasjonsnummer){
 		String uriWithOrganisasjonsnummer = String.format("%s/%s/%s",
 				baseUri,
-				databehandlerOrganisasjonsnummer.GetMedLankode(),
-				avsenderOrganisasjonsNummer.GetMedLankode()
+				databehandlerOrganisasjonsnummer.medLandkode(),
+				avsenderOrganisasjonsnummer.medLandkode()
 				);
 
 		return URI.create(uriWithOrganisasjonsnummer);

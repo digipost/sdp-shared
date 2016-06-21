@@ -19,7 +19,6 @@ import no.difi.begrep.sdp.schema_v10.*;
 import no.digipost.xsd.types.DigitalPostformidling;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
-import org.joda.time.LocalDate;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3.xmldsig.Reference;
@@ -110,7 +109,7 @@ public class SimpleStandardBusinessDocument {
 			return null;
 		}
 		try {
-			return Organisasjonsnummer.fromIso6523(doc.getStandardBusinessDocumentHeader().getSenders().get(0).getIdentifier().getValue());
+			return Organisasjonsnummer.fraString(doc.getStandardBusinessDocumentHeader().getSenders().get(0).getIdentifier().getValue());
 		} catch (IllegalArgumentException e) {
 			return null;
 		}
@@ -121,7 +120,7 @@ public class SimpleStandardBusinessDocument {
 			return null;
 		}
 		try {
-			return Organisasjonsnummer.fromIso6523(doc.getStandardBusinessDocumentHeader().getReceivers().get(0).getIdentifier().getValue());
+			return Organisasjonsnummer.fraString(doc.getStandardBusinessDocumentHeader().getReceivers().get(0).getIdentifier().getValue());
 		} catch (IllegalArgumentException e) {
 			return null;
 		}

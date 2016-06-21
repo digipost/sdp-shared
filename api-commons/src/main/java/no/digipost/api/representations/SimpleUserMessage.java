@@ -28,11 +28,11 @@ public class SimpleUserMessage {
 	}
 
 	public Organisasjonsnummer getTo() {
-		return Organisasjonsnummer.fromIso6523(message.getPartyInfo().getTo().getPartyIds().get(0).getValue());
+		return Organisasjonsnummer.fraString(message.getPartyInfo().getTo().getPartyIds().get(0).getValue());
 	}
 
     public Organisasjonsnummer getFrom() {
-		return Organisasjonsnummer.fromIso6523(message.getPartyInfo().getFrom().getPartyIds().get(0).getValue());
+		return Organisasjonsnummer.fraString(message.getPartyInfo().getFrom().getPartyIds().get(0).getValue());
 	}
 
     public String getMessageId() {

@@ -19,38 +19,38 @@ import org.junit.Test;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class OrganisasjonsNummerTest {
+public class OrganisasjonsnummerTest {
 
 	@Test
-	public void Constructor_InitializesOrganisasjonsnummer() {
-		String organisasjonsnummer = "984661185";
-		OrganisasjonsNummerMedLengdeValidering Organisasjonsnummer = new OrganisasjonsNummerMedLengdeValidering(organisasjonsnummer);
+	public void fraString_InitializesOrganisasjonsnummer() {
+		String nummer = "984661185";
+		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.fraString(nummer);
 
-		assertThat(Organisasjonsnummer.organisasjonsnummer).isEqualTo(organisasjonsnummer);
+		assertThat(organisasjonsnummer.toString()).isEqualTo(nummer);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void Constructor_ThrowsExceptionIfNotValid() {
-		String organisasjonsnummer = "98466118522222";
-		OrganisasjonsNummerMedLengdeValidering Organisasjonsnummer = new OrganisasjonsNummerMedLengdeValidering(organisasjonsnummer);
+		String nummer = "98466118522222";
+		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.fraString(nummer);
 	}
 
 	@Test
-	public void GetMedLandkode_ReturnsOrganisasjosnummerWith9908Prefix() {
+	public void medLandkode_ReturnsOrganisasjosnummerWith9908Prefix() {
 		String expected = "9908:984661185";
-		OrganisasjonsNummerMedLengdeValidering organisasjonsnummer = new OrganisasjonsNummerMedLengdeValidering("984661185");
+		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.fraString("984661185");
 
-		String actual = organisasjonsnummer.GetMedLankode();
+		String actual = organisasjonsnummer.medLandkode();
 
 		assertThat(actual).isEqualTo(expected);
 	}
 
 	@Test
-	public void GetUtenLandkode_ReturnsOrganisasjosnummerWithoutPrefix() {
+	public void utenLandkode_ReturnsOrganisasjosnummerWithoutPrefix() {
 		String expected = "984661185";
-		OrganisasjonsNummerMedLengdeValidering organisasjonsnummer = new OrganisasjonsNummerMedLengdeValidering(expected);
+		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.fraString(expected);
 
-		String actual = organisasjonsnummer.GetUtenLandkode();
+		String actual = organisasjonsnummer.utenLandkode();
 
 		assertThat(actual).isEqualTo(expected);
 	}

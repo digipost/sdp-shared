@@ -35,11 +35,11 @@ public class OrgnummerExtractor {
 		String dn = cert.getSubjectDN().getName();
 		Matcher matcher = BUYPASS_PATTERN.matcher(dn);
 		if (matcher.find()) {
-			return Organisasjonsnummer.fraString(matcher.group(1));
+			return Organisasjonsnummer.of(matcher.group(1));
 		}
 		matcher = CN_PATTERN.matcher(dn);
 		if (matcher.find()) {
-			return Organisasjonsnummer.fraString(matcher.group(1));
+			return Organisasjonsnummer.of(matcher.group(1));
 		}
 		return null;
 	}

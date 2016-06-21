@@ -47,7 +47,7 @@ public class Organisasjonsnummer {
 		return ISO6523_PATTERN.matcher(organisasjosnummer).matches();
 	}
 
-	public static Organisasjonsnummer fraString(final String organisasjonsnummer) {
+	public static Organisasjonsnummer of(final String organisasjonsnummer) {
 		Matcher matcher = ISO6523_PATTERN.matcher(organisasjonsnummer);
 		if (!matcher.matches()) {
 			throw new IllegalArgumentException(

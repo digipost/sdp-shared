@@ -24,7 +24,7 @@ public class OrganisasjonsnummerTest {
 	@Test
 	public void fraString_InitializesOrganisasjonsnummer() {
 		String nummer = "984661185";
-		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.fraString(nummer);
+		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(nummer);
 
 		assertThat(organisasjonsnummer.toString()).isEqualTo(nummer);
 	}
@@ -32,13 +32,13 @@ public class OrganisasjonsnummerTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void Constructor_ThrowsExceptionIfNotValid() {
 		String nummer = "98466118522222";
-		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.fraString(nummer);
+		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(nummer);
 	}
 
 	@Test
 	public void medLandkode_ReturnsOrganisasjosnummerWith9908Prefix() {
 		String expected = "9908:984661185";
-		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.fraString("984661185");
+		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
 
 		String actual = organisasjonsnummer.medLandkode();
 
@@ -48,7 +48,7 @@ public class OrganisasjonsnummerTest {
 	@Test
 	public void utenLandkode_ReturnsOrganisasjosnummerWithoutPrefix() {
 		String expected = "984661185";
-		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.fraString(expected);
+		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(expected);
 
 		String actual = organisasjonsnummer.utenLandkode();
 

@@ -109,7 +109,7 @@ public class SimpleStandardBusinessDocument {
 			return null;
 		}
 		try {
-			return Organisasjonsnummer.fraString(doc.getStandardBusinessDocumentHeader().getSenders().get(0).getIdentifier().getValue());
+			return Organisasjonsnummer.of(doc.getStandardBusinessDocumentHeader().getSenders().get(0).getIdentifier().getValue());
 		} catch (IllegalArgumentException e) {
 			return null;
 		}
@@ -120,7 +120,7 @@ public class SimpleStandardBusinessDocument {
 			return null;
 		}
 		try {
-			return Organisasjonsnummer.fraString(doc.getStandardBusinessDocumentHeader().getReceivers().get(0).getIdentifier().getValue());
+			return Organisasjonsnummer.of(doc.getStandardBusinessDocumentHeader().getReceivers().get(0).getIdentifier().getValue());
 		} catch (IllegalArgumentException e) {
 			return null;
 		}

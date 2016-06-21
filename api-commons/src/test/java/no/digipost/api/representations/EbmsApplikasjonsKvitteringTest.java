@@ -54,7 +54,7 @@ public class EbmsApplikasjonsKvitteringTest {
 		List<Reference> references = new ArrayList<Reference>();
 		references.add(ObjectMother.getReference());
 
-		return EbmsApplikasjonsKvittering.create(EbmsAktoer.avsender("999999999"), EbmsAktoer.avsender("88888888"), null)
+		return EbmsApplikasjonsKvittering.create(EbmsAktoer.avsender("984661185"), EbmsAktoer.avsender("988015814"), null)
 				.withReferences(references)
 				.build();
 	}

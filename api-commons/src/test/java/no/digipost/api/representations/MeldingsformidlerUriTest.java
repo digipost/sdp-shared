@@ -28,7 +28,7 @@ public class MeldingsformidlerUriTest {
 	@Test
 	public void Constructor_InitializesWithBaseUri() {
 		URI baseUri = URI.create("http://baseuri.no");
-		Organisasjonsnummer databehandlerOrganisasjonsNummer = Organisasjonsnummer.fraString("984661185");
+		Organisasjonsnummer databehandlerOrganisasjonsNummer = Organisasjonsnummer.of("984661185");
 
 		MeldingsformidlerUri meldingsformidlerUri = new MeldingsformidlerUri(baseUri, databehandlerOrganisasjonsNummer);
 
@@ -38,8 +38,8 @@ public class MeldingsformidlerUriTest {
 	@Test
 	public void getFull_AppendsAvsenderAndDatabehandlerOganisasjonsnummerToBaseUri() {
 		URI baseUri = URI.create("http://baseuri.no");
-		Organisasjonsnummer databehandlerOrganisasjonsNummer = Organisasjonsnummer.fraString("984661185");
-		Organisasjonsnummer avsenderOrganisasjonsNummer = Organisasjonsnummer.fraString("988015814");
+		Organisasjonsnummer databehandlerOrganisasjonsNummer = Organisasjonsnummer.of("984661185");
+		Organisasjonsnummer avsenderOrganisasjonsNummer = Organisasjonsnummer.of("988015814");
 		MeldingsformidlerUri meldingsformidlerUri = new MeldingsformidlerUri(baseUri, databehandlerOrganisasjonsNummer);
 
 		String actual = meldingsformidlerUri.getFull(avsenderOrganisasjonsNummer).toString();

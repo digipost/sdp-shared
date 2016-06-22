@@ -90,7 +90,9 @@ public class MessageSender {
 
 	public TransportKvittering send(final EbmsForsendelse forsendelse) {
 		ForsendelseSender sender = new ForsendelseSender(signer, tekniskAvsender, tekniskMottaker, forsendelse, marshaller);
+
 		LOG.info("Sender forsendelse til : {} ", uri);
+
 		return meldingTemplate.sendAndReceive(
 				uri.getFull(forsendelse.getAvsender().orgnr).toString(),
 				sender,
@@ -111,7 +113,10 @@ public class MessageSender {
 	}
 
 	public void bekreft(final KanBekreftesSomBehandletKvittering kanBekreftesSomBehandletKvittering) {
-		meldingTemplate.sendAndReceive(uri.baseUri.toString(), new BekreftelseSender(kanBekreftesSomBehandletKvittering, marshaller), new EmptyReceiver());
+		meldingTemplate.sendAndReceive(
+				uri.baseUri.toString(),
+				new BekreftelseSender(kanBekreftesSomBehandletKvittering, marshaller),
+				new EmptyReceiver());
 	}
 
 	public void send(final EbmsApplikasjonsKvittering appKvittering) {
@@ -125,6 +130,7 @@ public class MessageSender {
 	public static Builder create(final MeldingsformidlerUri uri, final KeyStoreInfo keystoreInfo, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker) {
 		WsSecurityInterceptor wssecMelding = new WsSecurityInterceptor(keystoreInfo, null);
 		wssecMelding.afterPropertiesSet();
+
 		return create(uri, keystoreInfo, wssecMelding, tekniskAvsenderId, tekniskMottaker);
 	}
 
@@ -136,6 +142,7 @@ public class MessageSender {
 		HashMap<String, Object> messageProperties = new HashMap<String, Object>();
 		// Removed this in order to avoid issues occurring when not using internal saaj-impl
 		//messageProperties.put("saaj.lazy.soap.body", "true");
+
 		return messageProperties;
 	}
 

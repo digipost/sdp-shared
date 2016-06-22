@@ -48,6 +48,10 @@ import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class AddUserMessageStep implements EbmsProcessingStep {
 
 	private final EbmsAktoer tekniskAvsender;
@@ -67,7 +71,7 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 		this.tekniskAvsender = tekniskAvsender;
 		this.mottaker = mottaker;
 		this.marshaller = marshaller;
-		instanceIdentifier = new SimpleStandardBusinessDocument(doc).getInstanceIdentifier();
+		this.instanceIdentifier = new SimpleStandardBusinessDocument(doc).getInstanceIdentifier();
 	}
 
 	@Override
@@ -112,7 +116,7 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 		return new PartInfo()
 				.withHref(href)
 				.withPartProperties(new PartProperties()
-								.withProperties(new Property(mimeType, "MimeType"), new Property(content, "Content"))
+						.withProperties(new Property(mimeType, "MimeType"), new Property(content, "Content"))
 				);
 
 	}

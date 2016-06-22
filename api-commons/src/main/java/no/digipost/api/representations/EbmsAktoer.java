@@ -55,18 +55,23 @@ public class EbmsAktoer {
 	public static EbmsAktoer meldingsformidler(final String orgnr) {
 		return meldingsformidler(Organisasjonsnummer.of(orgnr));
 	}
+
 	public static EbmsAktoer meldingsformidler(final Organisasjonsnummer orgnr) {
 		return new EbmsAktoer(orgnr, Rolle.MELDINGSFORMIDLER);
 	}
+
 	public static EbmsAktoer avsender(final String orgnr) {
 		return avsender(Organisasjonsnummer.of(orgnr));
 	}
+
 	public static EbmsAktoer avsender(final Organisasjonsnummer orgnr) {
 		return new EbmsAktoer(orgnr, Rolle.AVSENDER);
 	}
+
 	public static EbmsAktoer postkasse(final String orgnr) {
 		return postkasse(Organisasjonsnummer.of(orgnr));
 	}
+
 	public static EbmsAktoer postkasse(final Organisasjonsnummer orgnr) {
 		return new EbmsAktoer(orgnr, Rolle.POSTKASSE);
 	}

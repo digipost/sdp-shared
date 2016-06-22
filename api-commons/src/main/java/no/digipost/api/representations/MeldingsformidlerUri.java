@@ -22,17 +22,17 @@ public class MeldingsformidlerUri {
 	public final URI baseUri;
 	private Organisasjonsnummer databehandlerOrganisasjonsnummer;
 
-	public MeldingsformidlerUri(URI baseUri, Organisasjonsnummer databehandlerOrganisasjonsnummer){
+	public MeldingsformidlerUri(URI baseUri, Organisasjonsnummer databehandlerOrganisasjonsnummer) {
 		this.baseUri = baseUri;
 		this.databehandlerOrganisasjonsnummer = databehandlerOrganisasjonsnummer;
 	}
 
-	public URI getFull(Organisasjonsnummer avsenderOrganisasjonsnummer){
+	public URI getFull(Organisasjonsnummer avsenderOrganisasjonsnummer) {
 		String uriWithOrganisasjonsnummer = String.format("%s/%s/%s",
 				baseUri,
 				databehandlerOrganisasjonsnummer.medLandkode(),
 				avsenderOrganisasjonsnummer.medLandkode()
-				);
+		);
 
 		return URI.create(uriWithOrganisasjonsnummer);
 	}

@@ -48,6 +48,10 @@ import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class AddUserMessageStep implements EbmsProcessingStep {
 
 	private final EbmsAktoer tekniskAvsender;
@@ -67,16 +71,16 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 		this.tekniskAvsender = tekniskAvsender;
 		this.mottaker = mottaker;
 		this.marshaller = marshaller;
-		instanceIdentifier = new SimpleStandardBusinessDocument(doc).getInstanceIdentifier();
+		this.instanceIdentifier = new SimpleStandardBusinessDocument(doc).getInstanceIdentifier();
 	}
 
 	@Override
 	public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SoapMessage soapMessage) {
 		PartyInfo partyInfo = new PartyInfo(
 				new From().withRole(tekniskAvsender.rolle.urn)
-						.withPartyIds(new PartyId(tekniskAvsender.orgnr.asIso6523(), PMode.PARTY_ID_TYPE)),
+						.withPartyIds(new PartyId(tekniskAvsender.orgnr.medLandkode(), PMode.PARTY_ID_TYPE)),
 				new To().withRole(mottaker.rolle.urn)
-						.withPartyIds(new PartyId(mottaker.orgnr.asIso6523(), PMode.PARTY_ID_TYPE))
+						.withPartyIds(new PartyId(mottaker.orgnr.medLandkode(), PMode.PARTY_ID_TYPE))
 		);
 		UserMessage userMessage = new UserMessage()
 				.withMpc(mpc.toString())
@@ -112,7 +116,7 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 		return new PartInfo()
 				.withHref(href)
 				.withPartProperties(new PartProperties()
-								.withProperties(new Property(mimeType, "MimeType"), new Property(content, "Content"))
+						.withProperties(new Property(mimeType, "MimeType"), new Property(content, "Content"))
 				);
 
 	}

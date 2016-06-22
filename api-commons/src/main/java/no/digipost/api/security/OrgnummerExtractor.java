@@ -35,14 +35,13 @@ public class OrgnummerExtractor {
 		String dn = cert.getSubjectDN().getName();
 		Matcher matcher = BUYPASS_PATTERN.matcher(dn);
 		if (matcher.find()) {
-			return new Organisasjonsnummer(matcher.group(1));
+			return Organisasjonsnummer.of(matcher.group(1));
 		}
 		matcher = CN_PATTERN.matcher(dn);
 		if (matcher.find()) {
-			return new Organisasjonsnummer(matcher.group(1));
+			return Organisasjonsnummer.of(matcher.group(1));
 		}
 		return null;
-
 	}
 
 	public Organisasjonsnummer from(final X509Certificate cert) {

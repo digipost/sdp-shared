@@ -38,6 +38,7 @@ import no.digipost.api.representations.EbmsApplikasjonsKvittering;
 import no.digipost.api.representations.EbmsForsendelse;
 import no.digipost.api.representations.EbmsPullRequest;
 import no.digipost.api.representations.KanBekreftesSomBehandletKvittering;
+import no.digipost.api.representations.MeldingsformidlerUri;
 import no.digipost.api.representations.TransportKvittering;
 import no.digipost.api.xml.Marshalling;
 import org.apache.http.HttpHost;
@@ -74,22 +75,29 @@ public class MessageSender {
 	private WebServiceTemplate meldingTemplate;
 	private final Jaxb2Marshaller marshaller;
 	private EbmsAktoer tekniskAvsender;
-	private final String uri;
+	private final MeldingsformidlerUri uri;
 	private EbmsAktoer tekniskMottaker;
 	private SdpMeldingSigner signer;
 
-	protected MessageSender(final String uri, final Jaxb2Marshaller marshaller) {
+	protected MessageSender(final MeldingsformidlerUri uri, final Jaxb2Marshaller marshaller) {
 		if (marshaller == null) {
 			throw new AssertionError("marshaller kan ikke være null");
 		}
+
 		this.uri = uri;
 		this.marshaller = marshaller;
 	}
 
 	public TransportKvittering send(final EbmsForsendelse forsendelse) {
 		ForsendelseSender sender = new ForsendelseSender(signer, tekniskAvsender, tekniskMottaker, forsendelse, marshaller);
+
 		LOG.info("Sender forsendelse til : {} ", uri);
-		return meldingTemplate.sendAndReceive(uri, sender, new TransportKvitteringReceiver());
+
+		return meldingTemplate.sendAndReceive(
+				uri.getFull(forsendelse.getAvsender().orgnr).toString(),
+				sender,
+				new TransportKvitteringReceiver()
+		);
 	}
 
 	public EbmsApplikasjonsKvittering hentKvittering(final EbmsPullRequest pullRequest) {
@@ -97,24 +105,36 @@ public class MessageSender {
 	}
 
 	public EbmsApplikasjonsKvittering hentKvittering(final EbmsPullRequest pullRequest, final KanBekreftesSomBehandletKvittering tidligereKvitteringSomSkalBekreftes) {
-		return meldingTemplate.sendAndReceive(uri, new PullRequestSender(pullRequest, marshaller, tidligereKvitteringSomSkalBekreftes), new ApplikasjonsKvitteringReceiver(marshaller));
+		return meldingTemplate.sendAndReceive(
+				uri.baseUri.toString(),
+				new PullRequestSender(pullRequest, marshaller, tidligereKvitteringSomSkalBekreftes),
+				new ApplikasjonsKvitteringReceiver(marshaller)
+		);
 	}
 
 	public void bekreft(final KanBekreftesSomBehandletKvittering kanBekreftesSomBehandletKvittering) {
-		meldingTemplate.sendAndReceive(uri, new BekreftelseSender(kanBekreftesSomBehandletKvittering, marshaller), new EmptyReceiver());
+		meldingTemplate.sendAndReceive(
+				uri.baseUri.toString(),
+				new BekreftelseSender(kanBekreftesSomBehandletKvittering, marshaller),
+				new EmptyReceiver());
 	}
 
 	public void send(final EbmsApplikasjonsKvittering appKvittering) {
-		meldingTemplate.sendAndReceive(uri, new KvitteringSender(signer, tekniskAvsender, tekniskMottaker, appKvittering, marshaller), new EmptyReceiver());
+		meldingTemplate.sendAndReceive(
+				uri.getFull(appKvittering.avsender.orgnr).toString(),
+				new KvitteringSender(signer, tekniskAvsender, tekniskMottaker, appKvittering, marshaller),
+				new EmptyReceiver()
+		);
 	}
 
-	public static Builder create(final String uri, final KeyStoreInfo keystoreInfo, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker) {
+	public static Builder create(final MeldingsformidlerUri uri, final KeyStoreInfo keystoreInfo, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker) {
 		WsSecurityInterceptor wssecMelding = new WsSecurityInterceptor(keystoreInfo, null);
 		wssecMelding.afterPropertiesSet();
+
 		return create(uri, keystoreInfo, wssecMelding, tekniskAvsenderId, tekniskMottaker);
 	}
 
-	public static Builder create(final String uri, final KeyStoreInfo keystoreInfo, final WsSecurityInterceptor wsSecInterceptor, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker) {
+	public static Builder create(final MeldingsformidlerUri uri, final KeyStoreInfo keystoreInfo, final WsSecurityInterceptor wsSecInterceptor, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker) {
 		return new Builder(uri, tekniskAvsenderId, tekniskMottaker, wsSecInterceptor, keystoreInfo);
 	}
 
@@ -122,6 +142,7 @@ public class MessageSender {
 		HashMap<String, Object> messageProperties = new HashMap<String, Object>();
 		// Removed this in order to avoid issues occurring when not using internal saaj-impl
 		//messageProperties.put("saaj.lazy.soap.body", "true");
+
 		return messageProperties;
 	}
 
@@ -139,7 +160,7 @@ public class MessageSender {
 
 		public static final int DEFAULT_MAX_PER_ROUTE = 10;
 
-		private final String endpointUri;
+		private final MeldingsformidlerUri endpointUri;
 		private final EbmsAktoer tekniskAvsenderId;
 		private final EbmsAktoer tekniskMottaker;
 		private final WsSecurityInterceptor wsSecurityInterceptor;
@@ -160,7 +181,7 @@ public class MessageSender {
 		private SoapLog.LogLevel logLevel = LogLevel.NONE;
 		private ClientInterceptorWrapper clientInterceptorWrapper = new DoNothingClientInterceptorWrapper();
 
-		private Builder(final String endpointUri, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker,
+		private Builder(final MeldingsformidlerUri endpointUri, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker,
 						final WsSecurityInterceptor wsSecurityInterceptor, final KeyStoreInfo keystoreInfo) {
 			this.endpointUri = endpointUri;
 			this.tekniskAvsenderId = tekniskAvsenderId;
@@ -358,7 +379,6 @@ public class MessageSender {
 	}
 
 	public static class DoNothingClientInterceptorWrapper implements ClientInterceptorWrapper {
-		@Override
 		public ClientInterceptor wrap(ClientInterceptor clientInterceptor) {
 			return clientInterceptor;
 		}

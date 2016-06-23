@@ -15,5 +15,5 @@
  */
 package no.digipost.api.representations;
 
-public interface DatabehandlerOrganisasjonsnummer extends OrgnrNEW{
+public interface DatabehandlerOrganisasjonsnummer extends Organisasjonsnummer {
 }

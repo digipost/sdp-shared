@@ -22,7 +22,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class OrganisasjonsnummerTest {
 
 	@Test
-	public void fraString_InitializesOrganisasjonsnummer() {
+	public void fra_string_initializes_organisasjonsnummer() {
 		String nummer = "984661185";
 		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(nummer);
 
@@ -30,29 +30,42 @@ public class OrganisasjonsnummerTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void Constructor_ThrowsExceptionIfNotValid() {
+	public void constructor_throws_exception_if_not_valid() {
 		String nummer = "98466118522222";
 		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(nummer);
 	}
 
 	@Test
-	public void medLandkode_ReturnsOrganisasjosnummerWith9908Prefix() {
+	public void med_landkode_returns_organisasjosnummer_with9908_prefix() {
 		String expected = "9908:984661185";
 		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
 
-		String actual = organisasjonsnummer.medLandkode();
+		String actual = organisasjonsnummer.getOrganisasjonsnummerMedLandkode();
 
 		assertThat(actual).isEqualTo(expected);
 	}
 
 	@Test
-	public void utenLandkode_ReturnsOrganisasjosnummerWithoutPrefix() {
+	public void uten_landkode_returns_organisasjosnummer_without_prefix() {
 		String expected = "984661185";
 		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(expected);
 
-		String actual = organisasjonsnummer.utenLandkode();
+		String actual = organisasjonsnummer.getOrganisasjonsnummerUtenLandkode();
 
 		assertThat(actual).isEqualTo(expected);
 	}
+
+	@Test
+	public void forfrem_til_avsender(){
+		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
+		AvsenderOrganisasjonsnummer avsenderOrganisasjonsnummer = organisasjonsnummer.forfremTilAvsender();
+	}
+
+	@Test
+	public void forfrem_til_databehandler(){
+		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
+		DatabehandlerOrganisasjonsnummer databehandlerOrganisasjonsnummer = organisasjonsnummer.forfremTilDatabehandler();
+	}
+
 
 }

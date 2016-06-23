@@ -32,6 +32,7 @@ import org.springframework.ws.transport.http.HttpComponentsConnection;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Optional;
 
 public class EbmsContextAwareWebServiceTemplate extends WebServiceTemplate {
 
@@ -48,7 +49,7 @@ public class EbmsContextAwareWebServiceTemplate extends WebServiceTemplate {
 	protected <T> T doSendAndReceive(final MessageContext messageContext, final WebServiceConnection connection,
 	                                 final WebServiceMessageCallback requestCallback, final WebServiceMessageExtractor<T> responseExtractor) throws IOException {
 		EbmsContext context = EbmsContext.from(messageContext);
-		context.remoteParty = remoteParty.orgnr;
+		context.remoteParty = Optional.of(remoteParty.orgnr);
 		if (requestCallback instanceof EbmsContextAware) {
 			((EbmsContextAware) requestCallback).setContext(context);
 		}

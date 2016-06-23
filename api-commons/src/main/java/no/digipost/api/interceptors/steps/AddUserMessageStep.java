@@ -78,9 +78,9 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 	public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SoapMessage soapMessage) {
 		PartyInfo partyInfo = new PartyInfo(
 				new From().withRole(tekniskAvsender.rolle.urn)
-						.withPartyIds(new PartyId(tekniskAvsender.orgnr.medLandkode(), PMode.PARTY_ID_TYPE)),
+						.withPartyIds(new PartyId(tekniskAvsender.orgnr.getOrganisasjonsnummerMedLandkode(), PMode.PARTY_ID_TYPE)),
 				new To().withRole(mottaker.rolle.urn)
-						.withPartyIds(new PartyId(mottaker.orgnr.medLandkode(), PMode.PARTY_ID_TYPE))
+						.withPartyIds(new PartyId(mottaker.orgnr.getOrganisasjonsnummerMedLandkode(), PMode.PARTY_ID_TYPE))
 		);
 		UserMessage userMessage = new UserMessage()
 				.withMpc(mpc.toString())

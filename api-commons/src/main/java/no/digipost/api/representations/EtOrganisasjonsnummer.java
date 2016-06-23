@@ -78,7 +78,7 @@ public class EtOrganisasjonsnummer implements AvsenderOrganisasjonsnummer, Datab
 		return organisasjonsnummer.hashCode();
 	}
 
-	public boolean oneOf(Organisasjonsnummer ... candidates) {
+	public boolean oneOf(Organisasjonsnummer... candidates) {
 		return ArrayUtils.contains(candidates, this);
 	}
 

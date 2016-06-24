@@ -24,7 +24,7 @@ class EtOrganisasjonsnummer implements AvsenderOrganisasjonsnummer, Databehandle
 
 	private static final String COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY = "9908";
 
-	public static final Pattern ISO6523_PATTERN = Pattern.compile("^([0-9]{4}:)?([0-9]{9})$");
+	public static final Pattern ORGANIZATION_NUMBER_PATTERN = Pattern.compile("^(" + COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY +")?:([0-9]{9})$");
 
 	private String organisasjonsnummer;
 
@@ -33,7 +33,8 @@ class EtOrganisasjonsnummer implements AvsenderOrganisasjonsnummer, Databehandle
 	}
 
 	private String getOrThrowIfInvalid(final String organisasjonsnummer) {
-		Matcher matcher = ISO6523_PATTERN.matcher(organisasjonsnummer);
+		Matcher matcher = ORGANIZATION_NUMBER_PATTERN.matcher(organisasjonsnummer);
+
 		if (!matcher.matches()) {
 			throw new IllegalArgumentException(
 					String.format("Ugyldig organisasjonsnummer. Forventet format er ISO 6523, men fikk følgende nummer: '%s'. " +
@@ -43,11 +44,13 @@ class EtOrganisasjonsnummer implements AvsenderOrganisasjonsnummer, Databehandle
 			);
 		}
 
-		return matcher.group(2);
+		int groupOfOrganizationNumber= matcher.groupCount();
+
+		return matcher.group(groupOfOrganizationNumber);
 	}
 
 	@Override
-	public String getOrganisasjonsnummerUtenLandkode() {
+	public String getOrganisasjonsnummer() {
 		return organisasjonsnummer;
 	}
 
@@ -58,7 +61,7 @@ class EtOrganisasjonsnummer implements AvsenderOrganisasjonsnummer, Databehandle
 
 	@Override
 	public String toString() {
-		return getOrganisasjonsnummerUtenLandkode();
+		return getOrganisasjonsnummer();
 	}
 
 	@Override

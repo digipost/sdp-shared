@@ -33,7 +33,7 @@ public interface Organisasjonsnummer extends MedOrganisasjonsnummer{
 	String getOrganisasjonsnummerMedLandkode();
 
 	@Override
-	String getOrganisasjonsnummerUtenLandkode();
+	String getOrganisasjonsnummer();
 
 
 }

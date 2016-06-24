@@ -22,7 +22,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class OrganisasjonsnummerTest {
 
 	@Test
-	public void fra_string_initializes_organisasjonsnummer() {
+	public void initializes_organisasjonsnummer() {
 		String nummer = "984661185";
 		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(nummer);
 
@@ -32,11 +32,12 @@ public class OrganisasjonsnummerTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void constructor_throws_exception_if_not_valid() {
 		String nummer = "98466118522222";
-		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(nummer);
+
+		Organisasjonsnummer.of(nummer);
 	}
 
 	@Test
-	public void med_landkode_returns_organisasjosnummer_with9908_prefix() {
+	public void with_landkode_returns_organisasjosnummer_with_9908_prefix() {
 		String expected = "9908:984661185";
 		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
 
@@ -45,26 +46,64 @@ public class OrganisasjonsnummerTest {
 		assertThat(actual).isEqualTo(expected);
 	}
 
-	@Test
-	public void uten_landkode_returns_organisasjosnummer_without_prefix() {
-		String expected = "984661185";
-		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(expected);
+	@Test(expected = IllegalArgumentException.class)
+	public void invalid_prefix_with_length_4_throws_exception() {
+		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("0000:984661185");
 
-		String actual = organisasjonsnummer.getOrganisasjonsnummerUtenLandkode();
+		String actual = organisasjonsnummer.getOrganisasjonsnummerMedLandkode();
+	}
+
+	@Test
+	public void with_landkode_returns_organisasjosnummer_without_9908_prefix() {
+		String expected = "9908:984661185";
+		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
+
+		String actual = organisasjonsnummer.getOrganisasjonsnummer();
 
 		assertThat(actual).isEqualTo(expected);
 	}
 
 	@Test
+	public void uten_landkode_returns_organisasjosnummer_with_9908_prefix() {
+		String source = "984661185";
+		String expected = "9908:984661185";
+
+		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(source);
+
+		String actual = organisasjonsnummer.getOrganisasjonsnummerMedLandkode();
+
+		assertThat(actual).isEqualTo(expected);
+	}
+
+	@Test
+	public void uten_landkode_returns_organisasjosnummer_without_9908_prefix() {
+		String expected = "984661185";
+		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(expected);
+
+		String actual = organisasjonsnummer.getOrganisasjonsnummer();
+
+		assertThat(actual).isEqualTo(expected);
+	}
+
+
+
+	@Test
 	public void forfrem_til_avsender(){
 		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
+
 		AvsenderOrganisasjonsnummer avsenderOrganisasjonsnummer = organisasjonsnummer.forfremTilAvsender();
+
+		assertThat(avsenderOrganisasjonsnummer.getOrganisasjonsnummerMedLandkode()).isEqualTo(organisasjonsnummer.getOrganisasjonsnummerMedLandkode());
 	}
 
 	@Test
 	public void forfrem_til_databehandler(){
 		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
+
 		DatabehandlerOrganisasjonsnummer databehandlerOrganisasjonsnummer = organisasjonsnummer.forfremTilDatabehandler();
+
+		assertThat(databehandlerOrganisasjonsnummer.getOrganisasjonsnummerMedLandkode()).isEqualTo(organisasjonsnummer.getOrganisasjonsnummerMedLandkode());
+
 	}
 
 

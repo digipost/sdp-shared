@@ -17,27 +17,7 @@ package no.digipost.api.representations;
 
 public interface MedOrganisasjonsnummer {
 
-	final class BareOrganisasjonsnummer implements MedOrganisasjonsnummer {
-		private final String id;
-
-		private BareOrganisasjonsnummer(String id) {
-			this.id = id;
-		}
-
-		@Override
-		public String getOrganisasjonsnummerUtenLandkode() {
-			return id;
-		}
-
-		@Override
-		public String getOrganisasjonsnummerMedLandkode() {
-			return null;
-		}
-
-
-	}
-
-	String getOrganisasjonsnummerUtenLandkode();
+	String getOrganisasjonsnummer();
 
 	String getOrganisasjonsnummerMedLandkode();
 

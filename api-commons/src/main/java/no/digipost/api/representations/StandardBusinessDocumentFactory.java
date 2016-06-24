@@ -69,8 +69,8 @@ public class StandardBusinessDocumentFactory {
 				.withStandardBusinessDocumentHeader(
 						new StandardBusinessDocumentHeader()
 								.withHeaderVersion(HEADER_VERSION)
-								.withSenders(new Partner().withIdentifier(new PartnerIdentification(avsender.medLandkode(), Organisasjonsnummer.ISO6523_ACTORID)))
-								.withReceivers(new Partner().withIdentifier(new PartnerIdentification(mottaker.medLandkode(), Organisasjonsnummer.ISO6523_ACTORID)))
+								.withSenders(new Partner().withIdentifier(new PartnerIdentification(avsender.getOrganisasjonsnummerMedLandkode(), Organisasjonsnummer.ISO6523_ACTORID)))
+								.withReceivers(new Partner().withIdentifier(new PartnerIdentification(mottaker.getOrganisasjonsnummerMedLandkode(), Organisasjonsnummer.ISO6523_ACTORID)))
 								.withDocumentIdentification(new DocumentIdentification()
 												.withStandard(STANDARD)
 												.withTypeVersion(TYPE_VERSION)

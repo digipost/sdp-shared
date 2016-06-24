@@ -44,7 +44,7 @@ public class MeldingsformidlerUriTest {
 
 		String actual = meldingsformidlerUri.getFull(avsenderOrganisasjonsNummer).toString();
 
-		assertThat(actual, containsString(avsenderOrganisasjonsNummer.medLandkode()));
-		assertThat(actual, containsString(databehandlerOrganisasjonsNummer.medLandkode()));
+		assertThat(actual, containsString(avsenderOrganisasjonsNummer.getOrganisasjonsnummerMedLandkode()));
+		assertThat(actual, containsString(databehandlerOrganisasjonsNummer.getOrganisasjonsnummerMedLandkode()));
 	}
 }

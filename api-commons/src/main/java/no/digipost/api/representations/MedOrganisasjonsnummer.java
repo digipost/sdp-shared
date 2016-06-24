@@ -15,25 +15,10 @@
  */
 package no.digipost.api.representations;
 
-import no.digipost.api.PMode;
+public interface MedOrganisasjonsnummer {
 
-public interface Organisasjonsnummer extends MedOrganisasjonsnummer{
-
-	String ISO6523_ACTORID = PMode.PARTY_ID_TYPE;
-
-	static Organisasjonsnummer of(String organisasjonsnummer){
-		return new EtOrganisasjonsnummer(organisasjonsnummer);
-	}
-
-	DatabehandlerOrganisasjonsnummer forfremTilDatabehandler();
-
-	AvsenderOrganisasjonsnummer forfremTilAvsender();
-
-	@Override
-	String getOrganisasjonsnummerMedLandkode();
-
-	@Override
 	String getOrganisasjonsnummer();
 
+	String getOrganisasjonsnummerMedLandkode();
 
 }

@@ -37,7 +37,7 @@ public class ApplikasjonsKvitteringBuilder {
 	private DateTime kvitteringTidspunkt = DateTime.now();
 
 	public static ApplikasjonsKvitteringBuilder create(final EbmsAktoer avsender, final EbmsAktoer ebmsMottaker, final Organisasjonsnummer sbdhMottaker, final String messageId,
-	                                                   final String conversationId, final String instanceIdentifier, DateTime creationTime) {
+													   final String conversationId, final String instanceIdentifier, DateTime creationTime) {
 		ApplikasjonsKvitteringBuilder builder = new ApplikasjonsKvitteringBuilder();
 		builder.creationTime = creationTime;
 		builder.ebmsMottaker = ebmsMottaker;

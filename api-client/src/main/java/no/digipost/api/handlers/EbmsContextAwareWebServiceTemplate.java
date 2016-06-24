@@ -32,28 +32,29 @@ import org.springframework.ws.transport.http.HttpComponentsConnection;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Optional;
 
 public class EbmsContextAwareWebServiceTemplate extends WebServiceTemplate {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-	private final EbmsAktoer remoteParty;
+	private final EbmsAktoer ebmsAktoerRemoteParty;
 
-	public EbmsContextAwareWebServiceTemplate(final SaajSoapMessageFactory factory, final EbmsAktoer remoteParty) {
+	public EbmsContextAwareWebServiceTemplate(final SaajSoapMessageFactory factory, final EbmsAktoer ebmsAktoerRemoteParty) {
 		super(factory);
-		this.remoteParty = remoteParty;
+		this.ebmsAktoerRemoteParty = ebmsAktoerRemoteParty;
 	}
 
 	@Override
 	protected <T> T doSendAndReceive(final MessageContext messageContext, final WebServiceConnection connection,
 	                                 final WebServiceMessageCallback requestCallback, final WebServiceMessageExtractor<T> responseExtractor) throws IOException {
-		EbmsContext context = EbmsContext.from(messageContext);
-		context.remoteParty = remoteParty.orgnr;
+		EbmsContext ebmsContext = EbmsContext.from(messageContext);
+		ebmsContext.remoteParty = Optional.of(ebmsAktoerRemoteParty.orgnr);
 		if (requestCallback instanceof EbmsContextAware) {
-			((EbmsContextAware) requestCallback).setContext(context);
+			((EbmsContextAware) requestCallback).setContext(ebmsContext);
 		}
 		if (responseExtractor instanceof EbmsContextAware) {
-			((EbmsContextAware) responseExtractor).setContext(context);
+			((EbmsContextAware) responseExtractor).setContext(ebmsContext);
 		}
 		try {
 			return super.doSendAndReceive(messageContext, connection, requestCallback, responseExtractor);

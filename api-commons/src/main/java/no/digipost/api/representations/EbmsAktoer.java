@@ -45,8 +45,6 @@ public class EbmsAktoer {
 	public final Organisasjonsnummer orgnr;
 	public final Rolle rolle;
 
-	public static final EbmsAktoer NULL = new EbmsAktoer(Organisasjonsnummer.NULL, null);
-
 	public EbmsAktoer(final Organisasjonsnummer orgnr, final Rolle rolle) {
 		this.orgnr = orgnr;
 		this.rolle = rolle;

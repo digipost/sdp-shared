@@ -30,8 +30,8 @@ public class MeldingsformidlerUri {
 	public URI getFull(Organisasjonsnummer avsenderOrganisasjonsnummer) {
 		String uriWithOrganisasjonsnummer = String.format("%s/%s/%s",
 				baseUri,
-				databehandlerOrganisasjonsnummer.medLandkode(),
-				avsenderOrganisasjonsnummer.medLandkode()
+				databehandlerOrganisasjonsnummer.getOrganisasjonsnummerMedLandkode(),
+				avsenderOrganisasjonsnummer.getOrganisasjonsnummerMedLandkode()
 		);
 
 		return URI.create(uriWithOrganisasjonsnummer);

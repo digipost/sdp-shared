@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
@@ -44,7 +45,7 @@ public class EbmsContext {
 	public SimpleStandardBusinessDocument sbd = null;
 	public Map<String, String> mpcMap = new HashMap<String, String>();
 	public Messaging incomingMessaging;
-	public Organisasjonsnummer remoteParty;
+	public Optional<Organisasjonsnummer> remoteParty = Optional.empty();
 	public Exception referencesValidationException;
 	public Error warning;
 	public Document domSbd;

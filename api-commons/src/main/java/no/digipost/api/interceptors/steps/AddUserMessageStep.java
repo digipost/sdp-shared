@@ -54,7 +54,7 @@ import java.util.List;
 
 public class AddUserMessageStep implements EbmsProcessingStep {
 
-	private final EbmsAktoer tekniskAvsender;
+	private final EbmsAktoer databehandler;
 	private final EbmsAktoer mottaker;
 	private final Jaxb2Marshaller marshaller;
 	private final Mpc mpc;
@@ -63,12 +63,12 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 	private final String refToMessageId;
 	private final String instanceIdentifier;
 
-	public AddUserMessageStep(final Mpc mpc, final String messageId, final PMode.Action action, final String refToMessageId, final StandardBusinessDocument doc, final EbmsAktoer tekniskAvsender, final EbmsAktoer mottaker, final Jaxb2Marshaller marshaller) {
+	public AddUserMessageStep(final Mpc mpc, final String messageId, final PMode.Action action, final String refToMessageId, final StandardBusinessDocument doc, final EbmsAktoer databehandler, final EbmsAktoer mottaker, final Jaxb2Marshaller marshaller) {
 		this.mpc = mpc;
 		this.messageId = messageId;
 		this.action = action;
 		this.refToMessageId = refToMessageId;
-		this.tekniskAvsender = tekniskAvsender;
+		this.databehandler = databehandler;
 		this.mottaker = mottaker;
 		this.marshaller = marshaller;
 		this.instanceIdentifier = new SimpleStandardBusinessDocument(doc).getInstanceIdentifier();
@@ -77,10 +77,10 @@ public class AddUserMessageStep implements EbmsProcessingStep {
 	@Override
 	public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SoapMessage soapMessage) {
 		PartyInfo partyInfo = new PartyInfo(
-				new From().withRole(tekniskAvsender.rolle.urn)
-						.withPartyIds(new PartyId(tekniskAvsender.orgnr.medLandkode(), PMode.PARTY_ID_TYPE)),
+				new From().withRole(databehandler.rolle.urn)
+						.withPartyIds(new PartyId(databehandler.orgnr.getOrganisasjonsnummerMedLandkode(), PMode.PARTY_ID_TYPE)),
 				new To().withRole(mottaker.rolle.urn)
-						.withPartyIds(new PartyId(mottaker.orgnr.medLandkode(), PMode.PARTY_ID_TYPE))
+						.withPartyIds(new PartyId(mottaker.orgnr.getOrganisasjonsnummerMedLandkode(), PMode.PARTY_ID_TYPE))
 		);
 		UserMessage userMessage = new UserMessage()
 				.withMpc(mpc.toString())

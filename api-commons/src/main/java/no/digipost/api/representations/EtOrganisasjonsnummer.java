@@ -20,7 +20,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EtOrganisasjonsnummer implements AvsenderOrganisasjonsnummer, DatabehandlerOrganisasjonsnummer  {
+class EtOrganisasjonsnummer implements AvsenderOrganisasjonsnummer, DatabehandlerOrganisasjonsnummer  {
 
 	private static final String COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY = "9908";
 

@@ -24,7 +24,7 @@ class EtOrganisasjonsnummer implements AvsenderOrganisasjonsnummer, Databehandle
 
 	private static final String COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY = "9908";
 
-	public static final Pattern ORGANIZATION_NUMBER_PATTERN = Pattern.compile("^(" + COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY +")?:([0-9]{9})$");
+	public static final Pattern ORGANIZATION_NUMBER_PATTERN = Pattern.compile("^(" + COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY +":)?([0-9]{9})$");
 
 	private String organisasjonsnummer;
 

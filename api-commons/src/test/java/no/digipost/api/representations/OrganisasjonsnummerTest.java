@@ -31,19 +31,9 @@ public class OrganisasjonsnummerTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void constructor_throws_exception_if_not_valid() {
-		String nummer = "98466118522222";
+		String organisasjonsnummer = "98466118522222";
 
-		Organisasjonsnummer.of(nummer);
-	}
-
-	@Test
-	public void with_landkode_returns_organisasjosnummer_with_9908_prefix() {
-		String expected = "9908:984661185";
-		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
-
-		String actual = organisasjonsnummer.getOrganisasjonsnummerMedLandkode();
-
-		assertThat(actual).isEqualTo(expected);
+		Organisasjonsnummer.of(organisasjonsnummer);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -54,9 +44,21 @@ public class OrganisasjonsnummerTest {
 	}
 
 	@Test
-	public void with_landkode_returns_organisasjosnummer_without_9908_prefix() {
+	public void with_landkode_returns_return_organisasjosnummer_with_9908_prefix() {
 		String expected = "9908:984661185";
 		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
+
+		String actual = organisasjonsnummer.getOrganisasjonsnummerMedLandkode();
+
+		assertThat(actual).isEqualTo(expected);
+	}
+
+	@Test
+	public void with_landkode_returns_organisasjosnummer_without_9908_prefix() {
+		String source = "9908:984661185";
+		String expected = "984661185";
+
+		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(source);
 
 		String actual = organisasjonsnummer.getOrganisasjonsnummer();
 
@@ -64,7 +66,7 @@ public class OrganisasjonsnummerTest {
 	}
 
 	@Test
-	public void uten_landkode_returns_organisasjosnummer_with_9908_prefix() {
+	public void without_landkode_returns_organisasjosnummer_with_9908_prefix() {
 		String source = "984661185";
 		String expected = "9908:984661185";
 
@@ -76,7 +78,7 @@ public class OrganisasjonsnummerTest {
 	}
 
 	@Test
-	public void uten_landkode_returns_organisasjosnummer_without_9908_prefix() {
+	public void without_landkode_returns_organisasjosnummer_without_9908_prefix() {
 		String expected = "984661185";
 		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(expected);
 

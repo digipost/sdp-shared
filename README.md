@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/digipost/sdp-shared.svg?branch=master)](https://travis-ci.org/digipost/sdp-shared/)
+
 Sikker Digital Post Shared
 ==========================
 

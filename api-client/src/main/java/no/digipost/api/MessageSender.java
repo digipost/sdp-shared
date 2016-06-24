@@ -71,11 +71,10 @@ import static java.util.Arrays.asList;
 public class MessageSender {
 
 	private static final Logger LOG = LoggerFactory.getLogger(MessageSender.class);
-
-	private WebServiceTemplate meldingTemplate;
 	private final Jaxb2Marshaller marshaller;
-	private EbmsAktoer tekniskAvsender;
 	private final MeldingsformidlerUri uri;
+	private WebServiceTemplate meldingTemplate;
+	private EbmsAktoer databehandler;
 	private EbmsAktoer tekniskMottaker;
 	private SdpMeldingSigner signer;
 
@@ -88,8 +87,35 @@ public class MessageSender {
 		this.marshaller = marshaller;
 	}
 
+	public static Builder create(final MeldingsformidlerUri uri, final KeyStoreInfo keystoreInfo, final EbmsAktoer databehandler, final EbmsAktoer tekniskMottaker) {
+		WsSecurityInterceptor wssecMelding = new WsSecurityInterceptor(keystoreInfo, null);
+		wssecMelding.afterPropertiesSet();
+
+		return create(uri, keystoreInfo, wssecMelding, databehandler, tekniskMottaker);
+	}
+
+	public static Builder create(final MeldingsformidlerUri uri, final KeyStoreInfo keystoreInfo, final WsSecurityInterceptor wsSecInterceptor, final EbmsAktoer databehandler, final EbmsAktoer tekniskMottaker) {
+		return new Builder(uri, databehandler, tekniskMottaker, wsSecInterceptor, keystoreInfo);
+	}
+
+	private static HashMap<String, Object> getMessageProperties() {
+		HashMap<String, Object> messageProperties = new HashMap<String, Object>();
+		// Removed this in order to avoid issues occurring when not using internal saaj-impl
+		//messageProperties.put("saaj.lazy.soap.body", "true");
+
+		return messageProperties;
+	}
+
+	private static WebServiceTemplate createTemplate(final SaajSoapMessageFactory factory, final Jaxb2Marshaller marshaller, final EbmsAktoer remoteParty) {
+		EbmsContextAwareWebServiceTemplate template = new EbmsContextAwareWebServiceTemplate(factory, remoteParty);
+		template.setMarshaller(marshaller);
+		template.setUnmarshaller(marshaller);
+		template.setFaultMessageResolver(new MessageSenderFaultMessageResolver(marshaller));
+		return template;
+	}
+
 	public TransportKvittering send(final EbmsForsendelse forsendelse) {
-		ForsendelseSender sender = new ForsendelseSender(signer, tekniskAvsender, tekniskMottaker, forsendelse, marshaller);
+		ForsendelseSender sender = new ForsendelseSender(signer, databehandler, tekniskMottaker, forsendelse, marshaller);
 
 		LOG.info("Sender forsendelse til : {} ", uri);
 
@@ -122,52 +148,36 @@ public class MessageSender {
 	public void send(final EbmsApplikasjonsKvittering appKvittering) {
 		meldingTemplate.sendAndReceive(
 				uri.getFull(appKvittering.avsender.orgnr).toString(),
-				new KvitteringSender(signer, tekniskAvsender, tekniskMottaker, appKvittering, marshaller),
+				new KvitteringSender(signer, databehandler, tekniskMottaker, appKvittering, marshaller),
 				new EmptyReceiver()
 		);
 	}
 
-	public static Builder create(final MeldingsformidlerUri uri, final KeyStoreInfo keystoreInfo, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker) {
-		WsSecurityInterceptor wssecMelding = new WsSecurityInterceptor(keystoreInfo, null);
-		wssecMelding.afterPropertiesSet();
-
-		return create(uri, keystoreInfo, wssecMelding, tekniskAvsenderId, tekniskMottaker);
+	public Jaxb2Marshaller getMarshaller() {
+		return marshaller;
 	}
 
-	public static Builder create(final MeldingsformidlerUri uri, final KeyStoreInfo keystoreInfo, final WsSecurityInterceptor wsSecInterceptor, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker) {
-		return new Builder(uri, tekniskAvsenderId, tekniskMottaker, wsSecInterceptor, keystoreInfo);
+	public WebServiceTemplate getMeldingTemplate() {
+		return meldingTemplate;
 	}
 
-	private static HashMap<String, Object> getMessageProperties() {
-		HashMap<String, Object> messageProperties = new HashMap<String, Object>();
-		// Removed this in order to avoid issues occurring when not using internal saaj-impl
-		//messageProperties.put("saaj.lazy.soap.body", "true");
-
-		return messageProperties;
-	}
-
-	private static WebServiceTemplate createTemplate(final SaajSoapMessageFactory factory, final Jaxb2Marshaller marshaller, final EbmsAktoer remoteParty) {
-		EbmsContextAwareWebServiceTemplate template = new EbmsContextAwareWebServiceTemplate(factory, remoteParty);
-		template.setMarshaller(marshaller);
-		template.setUnmarshaller(marshaller);
-		template.setFaultMessageResolver(new MessageSenderFaultMessageResolver(marshaller));
-		return template;
+	public static interface ClientInterceptorWrapper {
+		ClientInterceptor wrap(ClientInterceptor clientInterceptor);
 	}
 
 	public static class Builder {
 
-		private static Jaxb2Marshaller defaultMarshaller;
-
 		public static final int DEFAULT_MAX_PER_ROUTE = 10;
-
+		private static Jaxb2Marshaller defaultMarshaller;
 		private final MeldingsformidlerUri endpointUri;
-		private final EbmsAktoer tekniskAvsenderId;
+		private final EbmsAktoer databehandler;
 		private final EbmsAktoer tekniskMottaker;
 		private final WsSecurityInterceptor wsSecurityInterceptor;
 		private final KeyStoreInfo keystoreInfo;
-		private Jaxb2Marshaller marshaller;
 		private final List<InsertInterceptor> interceptorBefore = new ArrayList<InsertInterceptor>();
-
+		private final List<HttpRequestInterceptor> httpRequestInterceptors = new ArrayList<HttpRequestInterceptor>();
+		private final List<HttpResponseInterceptor> httpResponseInterceptors = new ArrayList<HttpResponseInterceptor>();
+		private Jaxb2Marshaller marshaller;
 		// Network config
 		private int maxTotal = DEFAULT_MAX_PER_ROUTE;
 		private int defaultMaxPerRoute = DEFAULT_MAX_PER_ROUTE;
@@ -175,19 +185,23 @@ public class MessageSender {
 		private int socketTimeout = 30000;
 		private int connectTimeout = 10000;
 		private int connectionRequestTimeout = 10000;
-		private final List<HttpRequestInterceptor> httpRequestInterceptors = new ArrayList<HttpRequestInterceptor>();
-		private final List<HttpResponseInterceptor> httpResponseInterceptors = new ArrayList<HttpResponseInterceptor>();
-
 		private SoapLog.LogLevel logLevel = LogLevel.NONE;
 		private ClientInterceptorWrapper clientInterceptorWrapper = new DoNothingClientInterceptorWrapper();
 
-		private Builder(final MeldingsformidlerUri endpointUri, final EbmsAktoer tekniskAvsenderId, final EbmsAktoer tekniskMottaker,
+		private Builder(final MeldingsformidlerUri endpointUri, final EbmsAktoer databehandler, final EbmsAktoer tekniskMottaker,
 						final WsSecurityInterceptor wsSecurityInterceptor, final KeyStoreInfo keystoreInfo) {
 			this.endpointUri = endpointUri;
-			this.tekniskAvsenderId = tekniskAvsenderId;
+			this.databehandler = databehandler;
 			this.tekniskMottaker = tekniskMottaker;
 			this.wsSecurityInterceptor = wsSecurityInterceptor;
 			this.keystoreInfo = keystoreInfo;
+		}
+
+		protected static synchronized Jaxb2Marshaller getDefaultMarshaller() {
+			if (defaultMarshaller == null) {
+				defaultMarshaller = Marshalling.getMarshallerSingleton();
+			}
+			return defaultMarshaller;
 		}
 
 		public Builder withMeldingInterceptorBefore(final Class clazz, final ClientInterceptor interceptor) {
@@ -263,7 +277,7 @@ public class MessageSender {
 			HttpComponentsMessageSender httpSender = getHttpComponentsMessageSender();
 
 			MessageSender sender = new MessageSender(endpointUri, marshaller);
-			sender.tekniskAvsender = tekniskAvsenderId;
+			sender.databehandler = databehandler;
 			sender.tekniskMottaker = tekniskMottaker;
 
 			SaajSoapMessageFactory factory;
@@ -354,13 +368,6 @@ public class MessageSender {
 			throw new IllegalArgumentException("Could not find interceptor of class " + insertInterceptor.clazz);
 		}
 
-		protected static synchronized Jaxb2Marshaller getDefaultMarshaller() {
-			if (defaultMarshaller == null) {
-				defaultMarshaller = Marshalling.getMarshallerSingleton();
-			}
-			return defaultMarshaller;
-		}
-
 	}
 
 	public static class InsertInterceptor {
@@ -374,21 +381,9 @@ public class MessageSender {
 		}
 	}
 
-	public static interface ClientInterceptorWrapper {
-		ClientInterceptor wrap(ClientInterceptor clientInterceptor);
-	}
-
 	public static class DoNothingClientInterceptorWrapper implements ClientInterceptorWrapper {
 		public ClientInterceptor wrap(ClientInterceptor clientInterceptor) {
 			return clientInterceptor;
 		}
-	}
-
-	public Jaxb2Marshaller getMarshaller() {
-		return marshaller;
-	}
-
-	public WebServiceTemplate getMeldingTemplate() {
-		return meldingTemplate;
 	}
 }

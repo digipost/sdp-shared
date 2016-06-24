@@ -15,13 +15,6 @@
  */
 package no.digipost.api.handlers;
 
-import java.io.IOException;
-import java.util.UUID;
-
-import javax.activation.DataHandler;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.stream.StreamSource;
-
 import no.digipost.api.SdpMeldingSigner;
 import no.digipost.api.interceptors.steps.AddUserMessageStep;
 import no.digipost.api.representations.EbmsAktoer;
@@ -30,7 +23,6 @@ import no.digipost.api.representations.Mpc;
 import no.digipost.api.xml.Marshalling;
 import no.digipost.api.xml.TransformerUtil;
 import no.digipost.xsd.types.DigitalPostformidling;
-
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
@@ -40,24 +32,38 @@ import org.w3.xmldsig.DigestMethod;
 import org.w3.xmldsig.Reference;
 import org.w3c.dom.Document;
 
+import javax.activation.DataHandler;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.stream.StreamSource;
+import java.io.IOException;
+import java.util.UUID;
+
 public class ForsendelseSender extends EbmsContextAware implements WebServiceMessageCallback {
 
 	private final StandardBusinessDocument doc;
 	private final EbmsForsendelse forsendelse;
 	private final Jaxb2Marshaller marshaller;
-	private final EbmsAktoer tekniskAvsender;
+	private final EbmsAktoer databehandler;
 	private final EbmsAktoer tekniskMottaker;
 	private final DigitalPostformidling digitalPostformidling;
 	private final SdpMeldingSigner signer;
 
-	public ForsendelseSender(final SdpMeldingSigner signer, final EbmsAktoer tekniskAvsender, final EbmsAktoer tekniskMottaker, final EbmsForsendelse forsendelse, final Jaxb2Marshaller marshaller) {
+	public ForsendelseSender(final SdpMeldingSigner signer, final EbmsAktoer databehandler, final EbmsAktoer tekniskMottaker, final EbmsForsendelse forsendelse, final Jaxb2Marshaller marshaller) {
 		this.signer = signer;
-		this.tekniskAvsender = tekniskAvsender;
+		this.databehandler = databehandler;
 		this.tekniskMottaker = tekniskMottaker;
 		doc = forsendelse.doc;
 		this.forsendelse = forsendelse;
 		this.marshaller = marshaller;
 		digitalPostformidling = (DigitalPostformidling) doc.getAny();
+	}
+
+	public static void lagFingeravtrykk(final EbmsForsendelse forsendelse, final DigitalPostformidling digitalPostformidling) throws IOException {
+		byte[] hash = forsendelse.getDokumentpakke().getSHA256();
+		digitalPostformidling.setDokumentpakkefingeravtrykk(new Reference()
+				.withDigestMethod(new DigestMethod().withAlgorithm(javax.xml.crypto.dsig.DigestMethod.SHA256))
+				.withDigestValue(hash)
+		);
 	}
 
 	@Override
@@ -73,7 +79,7 @@ public class ForsendelseSender extends EbmsContextAware implements WebServiceMes
 		} else {
 			Marshalling.marshal(marshaller, soapMessage.getEnvelope().getBody(), doc);
 		}
-		ebmsContext.addRequestStep(new AddUserMessageStep(mpc, forsendelse.messageId, forsendelse.action, null, doc, tekniskAvsender, tekniskMottaker, marshaller));
+		ebmsContext.addRequestStep(new AddUserMessageStep(mpc, forsendelse.messageId, forsendelse.action, null, doc, databehandler, tekniskMottaker, marshaller));
 	}
 
 	private void attachFile(final SoapMessage soapMessage) throws IOException {
@@ -82,14 +88,6 @@ public class ForsendelseSender extends EbmsContextAware implements WebServiceMes
 		}
 		DataHandler handler = new DataHandler(forsendelse.getDokumentpakke());
 		soapMessage.addAttachment(generateContentId(), handler);
-	}
-
-	public static void lagFingeravtrykk(final EbmsForsendelse forsendelse, final DigitalPostformidling digitalPostformidling) throws IOException {
-		byte[] hash = forsendelse.getDokumentpakke().getSHA256();
-		digitalPostformidling.setDokumentpakkefingeravtrykk(new Reference()
-						.withDigestMethod(new DigestMethod().withAlgorithm(javax.xml.crypto.dsig.DigestMethod.SHA256))
-						.withDigestValue(hash)
-		);
 	}
 
 	private String generateContentId() {

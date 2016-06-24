@@ -38,13 +38,13 @@ public class KvitteringSender extends EbmsContextAware implements WebServiceMess
 
 	private final EbmsApplikasjonsKvittering appKvittering;
 	private final Jaxb2Marshaller marshaller;
-	private final EbmsAktoer tekniskAvsender;
+	private final EbmsAktoer databehandler;
 	private final EbmsAktoer tekniskMottaker;
 	private final SdpMeldingSigner signer;
 
-	public KvitteringSender(final SdpMeldingSigner signer, final EbmsAktoer tekniskAvsender, final EbmsAktoer tekniskMottaker, final EbmsApplikasjonsKvittering appKvittering, final Jaxb2Marshaller marshaller) {
+	public KvitteringSender(final SdpMeldingSigner signer, final EbmsAktoer databehandler, final EbmsAktoer tekniskMottaker, final EbmsApplikasjonsKvittering appKvittering, final Jaxb2Marshaller marshaller) {
 		this.signer = signer;
-		this.tekniskAvsender = tekniskAvsender;
+		this.databehandler = databehandler;
 		this.tekniskMottaker = tekniskMottaker;
 		this.appKvittering = appKvittering;
 		this.marshaller = marshaller;
@@ -64,7 +64,7 @@ public class KvitteringSender extends EbmsContextAware implements WebServiceMess
 		}
 
 		Mpc mpc = new Mpc(appKvittering.prioritet, appKvittering.mpcId);
-		ebmsContext.addRequestStep(new AddUserMessageStep(mpc, appKvittering.messageId, appKvittering.action, null, appKvittering.sbd, tekniskAvsender, tekniskMottaker
+		ebmsContext.addRequestStep(new AddUserMessageStep(mpc, appKvittering.messageId, appKvittering.action, null, appKvittering.sbd, databehandler, tekniskMottaker
 				, marshaller));
 	}
 

@@ -45,7 +45,7 @@ public class EbmsContext {
 	public SimpleStandardBusinessDocument sbd = null;
 	public Map<String, String> mpcMap = new HashMap<String, String>();
 	public Messaging incomingMessaging;
-	public Optional<Organisasjonsnummer> remoteParty;
+	public Optional<Organisasjonsnummer> remoteParty = Optional.empty();
 	public Exception referencesValidationException;
 	public Error warning;
 	public Document domSbd;

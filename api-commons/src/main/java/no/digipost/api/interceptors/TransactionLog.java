@@ -143,11 +143,8 @@ public class TransactionLog {
 
 	private String getOrgNr(final EbmsContext context) {
 		StringBuilder builder = new StringBuilder();
-		if (context.remoteParty != null && context.remoteParty.isPresent()) {
-			builder.append(context.remoteParty.toString());
-		} else {
-			builder.append("-");
-		}
+		builder.append(context.remoteParty.isPresent() ? context.remoteParty.toString() : "-");
+
 		if (context.sbd != null) {
 			builder.append(" ");
 			builder.append(context.sbd.getSender());

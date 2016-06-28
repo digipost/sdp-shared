@@ -17,7 +17,6 @@ This software includes third party software subject to the following licenses:
   Apache XML Security for Java under The Apache Software License, Version 2.0
   Bouncy Castle Provider under Bouncy Castle Licence
   Byte Buddy (without dependencies) under The Apache Software License, Version 2.0
-  Commons IO under The Apache Software License, Version 2.0
   ehcache under The Apache Software License, Version 2.0
   Hamcrest Core under New BSD License
   Hamcrest library under New BSD License

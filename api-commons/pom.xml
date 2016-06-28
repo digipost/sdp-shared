@@ -66,11 +66,6 @@
         </dependency>
 
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>mailapi</artifactId>
             <scope>runtime</scope>
@@ -167,7 +162,6 @@
                                         <include>aopalliance:aopalliance</include>
                                         <include>com.sun.xml.wsit:wsit-rt</include>
                                         <include>commons-codec:commons-codec</include>
-                                        <include>commons-io:commons-io</include>
                                         <include>javax.xml.stream:stax-api</include>
                                         <include>jaxen:jaxen</include>
                                         <include>joda-time:joda-time</include>

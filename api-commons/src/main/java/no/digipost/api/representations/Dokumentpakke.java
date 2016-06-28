@@ -16,18 +16,13 @@
 package no.digipost.api.representations;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.security.DigestOutputStream;
-import java.security.MessageDigest;
+import org.bouncycastle.jcajce.provider.digest.SHA256;
 
 import javax.activation.DataSource;
 
-import org.apache.commons.io.IOUtils;
-import org.bouncycastle.jcajce.provider.digest.SHA256;
+import java.io.*;
+import java.security.DigestOutputStream;
+import java.security.MessageDigest;
 
 public class Dokumentpakke implements DataSource {
 
@@ -37,12 +32,12 @@ public class Dokumentpakke implements DataSource {
 
     public Dokumentpakke(final InputStream asicStream) {
         this.asicStream = asicStream;
-        asicBytes = null;
+        this.asicBytes = null;
     }
 
     public Dokumentpakke(final byte[] asicBytes) {
         this.asicBytes = asicBytes;
-        asicStream = new ByteArrayInputStream(asicBytes);
+        this.asicStream = new ByteArrayInputStream(asicBytes);
     }
 
     public byte[] getSHA256() throws IOException {
@@ -51,19 +46,15 @@ public class Dokumentpakke implements DataSource {
 			return digest.digest(asicBytes);
 		}
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DigestOutputStream digestStream = null;
-		try{
-            digestStream = new DigestOutputStream(baos, digest);
-            IOUtils.copy(asicStream, digestStream);
-		} finally {
-			IOUtils.closeQuietly(digestStream);
+		try (InputStream asicToRead = asicStream; DigestOutputStream digestStream = new DigestOutputStream(baos, digest)) {
+            copy(asicToRead, digestStream);
         }
 		asicBytes = baos.toByteArray();
 		return digest.digest();
     }
 
 	protected MessageDigest getDigest() {
-		return new  SHA256.Digest();
+		return new SHA256.Digest();
 	}
 
 
@@ -89,4 +80,17 @@ public class Dokumentpakke implements DataSource {
 	public OutputStream getOutputStream() throws IOException {
 		throw new UnsupportedOperationException("Not supported by handler");
 	}
+
+
+    /**
+     * Based on the {@code private} {@link java.nio.file.Files#copy(InputStream, OutputStream)}. This
+     * implementation is included here to avoid depending on Apache Commons IO just for this simple case.
+     */
+    private static void copy(InputStream source, OutputStream sink) throws IOException {
+        byte[] buf = new byte[8192];
+        int n;
+        while ((n = source.read(buf)) > 0) {
+            sink.write(buf, 0, n);
+        }
+    }
 }

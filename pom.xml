@@ -5,8 +5,8 @@
     <artifactId>sdp-shared</artifactId>
     <version>1.2.0.DEPUPGRADES-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>${project.artifactId}</name>
-    <description>Shared dependencies for Sikker Digital Post</description>
+    <name>SDP Shared</name>
+    <description>Delt kode for Sikker Digital Post</description>
 
     <parent>
         <groupId>no.digipost</groupId>

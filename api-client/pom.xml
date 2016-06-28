@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>sdp-api-client</artifactId>
-    <name>${project.artifactId}</name>
-    <description>${project.artifactId}</description>
+    <name>SDP Shared - API Client</name>
+    <description>Klientfunksjonaltet for Sikker Digital Post</description>
 
     <parent>
         <groupId>no.digipost</groupId>

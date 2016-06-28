@@ -39,9 +39,9 @@ This software includes third party software subject to the following licenses:
   OpenSAML-J under Apache 2
   OpenWS under Apache 2
   saaj-impl under Dual license consisting of the CDDL v1.1 and GPL v2
-  sdp-api-client under The Apache Software License, Version 2.0
-  sdp-api-commons under The Apache Software License, Version 2.0
-  sdp-xsd under The Apache Software License, Version 2.0
+  SDP Shared - API Client under The Apache Software License, Version 2.0
+  SDP Shared - API Commons under The Apache Software License, Version 2.0
+  SDP Shared - XSD & JAXB under The Apache Software License, Version 2.0
   SLF4J API Module under MIT License
   SLF4J Simple Binding under MIT License
   Spring AOP under The Apache Software License, Version 2.0

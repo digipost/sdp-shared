@@ -33,8 +33,8 @@ This software includes third party software subject to the following licenses:
   Objenesis under Apache 2
   OpenSAML-J under Apache 2
   OpenWS under Apache 2
-  sdp-api-commons under The Apache Software License, Version 2.0
-  sdp-xsd under The Apache Software License, Version 2.0
+  SDP Shared - API Commons under The Apache Software License, Version 2.0
+  SDP Shared - XSD & JAXB under The Apache Software License, Version 2.0
   SLF4J API Module under MIT License
   SLF4J Simple Binding under MIT License
   Spring AOP under The Apache Software License, Version 2.0

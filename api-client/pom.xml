@@ -215,7 +215,7 @@
                                         <include>org.opensaml:opensaml:2.6.1</include>
                                         <include>org.opensaml:openws:1.5.1</include>
                                         <include>org.opensaml:xmltooling:1.4.1</include>
-                                        <include>org.slf4j:slf4j-api:1.7.6</include>
+                                        <include>org.slf4j:slf4j-api</include>
                                         <include>org.springframework:spring-aop:3.2.4.RELEASE</include>
                                         <include>org.springframework:spring-beans:${spring.version}</include>
                                         <include>org.springframework:spring-core:${spring.version}</include>

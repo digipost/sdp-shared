@@ -21,11 +21,7 @@ import org.apache.wss4j.common.ConfigurationConstants;
 import org.apache.wss4j.common.crypto.AlgorithmSuite;
 import org.apache.wss4j.common.crypto.Crypto;
 import org.apache.wss4j.common.ext.WSSecurityException;
-import org.apache.wss4j.dom.WSConstants;
-import org.apache.wss4j.dom.WSDataRef;
-import org.apache.wss4j.dom.WSSConfig;
-import org.apache.wss4j.dom.WSSecurityEngine;
-import org.apache.wss4j.dom.WSSecurityEngineResult;
+import org.apache.wss4j.dom.*;
 import org.apache.wss4j.dom.handler.RequestData;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
 import org.apache.wss4j.dom.handler.WSHandlerResult;
@@ -66,13 +62,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static no.digipost.api.xml.Constants.HEADER_QNAME;
-import static no.digipost.api.xml.Constants.MESSAGING_QNAME;
-import static no.digipost.api.xml.Constants.WSSEC_HEADER_QNAME;
-import static no.digipost.api.xml.Constants.WSU_TIMESTAMP_QNAME;
+import static no.digipost.api.xml.Constants.*;
 
 
 public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
+
+    private static final Logger logger = LoggerFactory.getLogger(Wss4jInterceptor.class);
 
 	public static final Logger LOG = LoggerFactory.getLogger(Wss4jInterceptor.class);
 
@@ -244,8 +239,8 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 		if(this.exceptionResolver != null) {
 			this.exceptionResolver.resolveException(messageContext, (Object)null, ex);
 		} else {
-			if(this.logger.isDebugEnabled()) {
-				this.logger.debug("No exception resolver present, creating basic soap fault");
+			if(logger.isDebugEnabled()) {
+				logger.debug("No exception resolver present, creating basic soap fault");
 			}
 
 			SoapBody response = ((SoapMessage)messageContext.getResponse()).getSoapBody();
@@ -413,7 +408,8 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 		}
 		for (WSSecurityEngineResult r : results) {
 			if (r.containsKey("data-ref-uris")) {
-				List<WSDataRef> refs = (List<WSDataRef>) r.get("data-ref-uris");
+				@SuppressWarnings("unchecked")
+                List<WSDataRef> refs = (List<WSDataRef>) r.get("data-ref-uris");
 				for (WSDataRef ref : refs) {
 					if (ref.getName().equals(qnamePath[qnamePath.length - 1])) {
 						if (ref.getXpath().equals(path)) {

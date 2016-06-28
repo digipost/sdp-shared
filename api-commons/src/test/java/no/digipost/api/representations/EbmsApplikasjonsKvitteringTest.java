@@ -15,14 +15,17 @@
  */
 package no.digipost.api.representations;
 
-import org.fest.assertions.core.Condition;
+import org.hamcrest.CustomTypeSafeMatcher;
+import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.w3.xmldsig.Reference;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 public class EbmsApplikasjonsKvitteringTest {
 
@@ -30,7 +33,7 @@ public class EbmsApplikasjonsKvitteringTest {
 	public void testGetMeldingsId() throws Exception {
 		EbmsApplikasjonsKvittering ebmsApplikasjonskvittering = getEbmsApplikasjonskvittering();
 
-		assertThat(ebmsApplikasjonskvittering.getMeldingsId()).isEqualTo(ebmsApplikasjonskvittering.messageId);
+		assertThat(ebmsApplikasjonskvittering.getMeldingsId(), is(ebmsApplikasjonskvittering.messageId));
 
 	}
 
@@ -38,15 +41,15 @@ public class EbmsApplikasjonsKvitteringTest {
 	public void testGetReferanseTilMeldingSomKvitteres() throws Exception {
 		KvitteringsReferanse referanseTilMeldingSomKvitteres = getEbmsApplikasjonskvittering().getReferanseTilMeldingSomKvitteres();
 
-		assertThat(referanseTilMeldingSomKvitteres.getMarshalled()).has(lengthGreaterThan(500));
+		assertThat(referanseTilMeldingSomKvitteres.getMarshalled(), stringLength(greaterThan(500)));
 	}
 
-	private Condition<String> lengthGreaterThan(final int length) {
-		return new Condition<String>() {
-			@Override
-			public boolean matches(String s) {
-				return s.length() > length;
-			}
+	private Matcher<String> stringLength(Matcher<? super Integer> lengthMatcher) {
+		return new CustomTypeSafeMatcher<String>("String with length " + lengthMatcher) {
+            @Override
+            protected boolean matchesSafely(String s) {
+                return lengthMatcher.matches(s.length());
+            }
 		};
 	}
 

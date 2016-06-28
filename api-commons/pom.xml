@@ -135,13 +135,6 @@
 			<artifactId>hamcrest-library</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.easytesting</groupId>
-            <artifactId>fest-assert-core</artifactId>
-            <version>${org.easytesting.fest.assert.core.version}</version>
-            <scope>test</scope>
-        </dependency>
-
 
     </dependencies>
 

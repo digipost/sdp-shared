@@ -20,7 +20,8 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.security.KeyStore;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 public class KeyStoreInfoTest {
 	static final String alias = "avsender";
@@ -31,10 +32,10 @@ public class KeyStoreInfoTest {
 
 		KeyStore keystore = getSelfsignedKeyStore();
 
-		KeyStoreInfo keyStoreInfo = new KeyStoreInfo(keystore,alias,password);
+		KeyStoreInfo keyStoreInfo = new KeyStoreInfo(keystore, alias, password);
 
-		assertThat(keystore).isEqualTo(keyStoreInfo.keystore);
-		assertThat(keystore).isEqualTo(keyStoreInfo.trustStore);
+		assertThat(keystore, sameInstance(keyStoreInfo.keystore));
+		assertThat(keystore, sameInstance(keyStoreInfo.trustStore));
 	}
 
 	@Test
@@ -42,11 +43,11 @@ public class KeyStoreInfoTest {
 		KeyStore keyStore = getSelfsignedKeyStore();
 		KeyStore trustStore = getSelfsignedKeyStore();
 
-		KeyStoreInfo keyStoreInfo = new KeyStoreInfo(keyStore,trustStore,alias,password);
+		KeyStoreInfo keyStoreInfo = new KeyStoreInfo(keyStore, trustStore, alias, password);
 
-		assertThat(keyStoreInfo.keystore).isEqualTo(keyStore);
-		assertThat(keyStoreInfo.trustStore).isEqualTo(trustStore);
-		assertThat(keyStoreInfo.keystore).isNotEqualTo(trustStore);
+		assertThat(keyStoreInfo.keystore, sameInstance(keyStore));
+		assertThat(keyStoreInfo.trustStore, sameInstance(trustStore));
+		assertThat(keyStoreInfo.keystore, not(equalTo(trustStore)));
 	}
 
 
@@ -54,21 +55,21 @@ public class KeyStoreInfoTest {
 	public void testGetPrivateKey() throws Exception {
 		KeyStoreInfo keyStoreInfo = getKeyStoreInfo();
 
-		assertThat(keyStoreInfo.getPrivateKey()).isNotNull();
+		assertThat(keyStoreInfo.getPrivateKey(), notNullValue());
 	}
 
 	@Test
 	public void testGetCertificate() throws Exception {
 		KeyStoreInfo keyStoreInfo = getKeyStoreInfo();
 
-		assertThat(keyStoreInfo.getCertificate()).isNotNull();
+		assertThat(keyStoreInfo.getCertificate(), notNullValue());
 	}
 
 	@Test
 	public void testGetCertificateChain() throws Exception {
 		KeyStoreInfo keyStoreInfo = getKeyStoreInfo();
 
-		assertThat(keyStoreInfo.getCertificateChain()).isNotNull().hasSize(1);
+		assertThat(keyStoreInfo.getCertificateChain(), arrayWithSize(1));
 	}
 
 	private KeyStoreInfo getKeyStoreInfo() {

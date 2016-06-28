@@ -17,7 +17,8 @@ package no.digipost.api.representations;
 
 import org.junit.Test;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 public class OrganisasjonsnummerTest {
 
@@ -26,7 +27,7 @@ public class OrganisasjonsnummerTest {
 		String nummer = "984661185";
 		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(nummer);
 
-		assertThat(organisasjonsnummer.toString()).isEqualTo(nummer);
+		assertThat(organisasjonsnummer.toString(), is(nummer));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -46,7 +47,7 @@ public class OrganisasjonsnummerTest {
 
 		String actual = organisasjonsnummer.getOrganisasjonsnummerMedLandkode();
 
-		assertThat(actual).isEqualTo(expected);
+		assertThat(actual, is(expected));
 	}
 
 	@Test
@@ -58,7 +59,7 @@ public class OrganisasjonsnummerTest {
 
 		String actual = organisasjonsnummer.getOrganisasjonsnummer();
 
-		assertThat(actual).isEqualTo(expected);
+		assertThat(actual, is(expected));
 	}
 
 	@Test
@@ -70,7 +71,7 @@ public class OrganisasjonsnummerTest {
 
 		String actual = organisasjonsnummer.getOrganisasjonsnummerMedLandkode();
 
-		assertThat(actual).isEqualTo(expected);
+		assertThat(actual, is(expected));
 	}
 
 	@Test
@@ -80,7 +81,7 @@ public class OrganisasjonsnummerTest {
 
 		String actual = organisasjonsnummer.getOrganisasjonsnummer();
 
-		assertThat(actual).isEqualTo(expected);
+		assertThat(actual, is(expected));
 	}
 
 
@@ -91,7 +92,7 @@ public class OrganisasjonsnummerTest {
 
 		AvsenderOrganisasjonsnummer avsenderOrganisasjonsnummer = organisasjonsnummer.forfremTilAvsender();
 
-		assertThat(avsenderOrganisasjonsnummer.getOrganisasjonsnummerMedLandkode()).isEqualTo(organisasjonsnummer.getOrganisasjonsnummerMedLandkode());
+		assertThat(avsenderOrganisasjonsnummer.getOrganisasjonsnummerMedLandkode(), is(organisasjonsnummer.getOrganisasjonsnummerMedLandkode()));
 	}
 
 	@Test
@@ -100,7 +101,7 @@ public class OrganisasjonsnummerTest {
 
 		DatabehandlerOrganisasjonsnummer databehandlerOrganisasjonsnummer = organisasjonsnummer.forfremTilDatabehandler();
 
-		assertThat(databehandlerOrganisasjonsnummer.getOrganisasjonsnummerMedLandkode()).isEqualTo(organisasjonsnummer.getOrganisasjonsnummerMedLandkode());
+		assertThat(databehandlerOrganisasjonsnummer.getOrganisasjonsnummerMedLandkode(), is(organisasjonsnummer.getOrganisasjonsnummerMedLandkode()));
 	}
 
 

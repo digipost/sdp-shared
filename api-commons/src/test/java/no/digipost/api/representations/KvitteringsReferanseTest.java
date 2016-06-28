@@ -18,7 +18,9 @@ package no.digipost.api.representations;
 import org.junit.Test;
 import org.w3.xmldsig.Reference;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 public class KvitteringsReferanseTest {
 
@@ -28,7 +30,7 @@ public class KvitteringsReferanseTest {
 
 		KvitteringsReferanse kvitteringsReferanse = KvitteringsReferanse.builder(referenceToOriginalMessage).build();
 
-		assertThat(kvitteringsReferanse.getMarshalled()).isNotNull();
+		assertThat(kvitteringsReferanse.getMarshalled(), notNullValue());
 	}
 
 	@Test
@@ -37,7 +39,7 @@ public class KvitteringsReferanseTest {
 
 		KvitteringsReferanse kvitteringsReferanse = KvitteringsReferanse.builder(marshalledReferenceToOriginalMessage).build();
 
-		assertThat(kvitteringsReferanse.getMarshalled()).isEqualTo(marshalledReferenceToOriginalMessage);
+		assertThat(kvitteringsReferanse.getMarshalled(), is(marshalledReferenceToOriginalMessage));
 	}
 
 	@Test
@@ -46,6 +48,6 @@ public class KvitteringsReferanseTest {
 
 		KvitteringsReferanse kvitteringsReferanse = KvitteringsReferanse.builder(referenceToOriginalMessage).build();
 
-		assertThat(kvitteringsReferanse.getUnmarshalled()).isEqualTo(referenceToOriginalMessage);
+		assertThat(kvitteringsReferanse.getUnmarshalled(), is(referenceToOriginalMessage));
 	}
 }

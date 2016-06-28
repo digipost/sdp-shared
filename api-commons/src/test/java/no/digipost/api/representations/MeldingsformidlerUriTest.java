@@ -18,8 +18,9 @@ package no.digipost.api.representations;
 import org.junit.Test;
 
 import java.net.URI;
-import static org.fest.assertions.api.Assertions.assertThat;
+
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 
@@ -32,7 +33,7 @@ public class MeldingsformidlerUriTest {
 
 		MeldingsformidlerUri meldingsformidlerUri = new MeldingsformidlerUri(baseUri, databehandlerOrganisasjonsNummer);
 
-		assertThat(meldingsformidlerUri.baseUri).isEqualTo(baseUri);
+		assertThat(meldingsformidlerUri.baseUri, is(baseUri));
 	}
 
 	@Test

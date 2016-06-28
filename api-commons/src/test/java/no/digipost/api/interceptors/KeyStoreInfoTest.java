@@ -15,13 +15,11 @@
  */
 package no.digipost.api.interceptors;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
 import java.security.KeyStore;
 
-import static org.junit.Assert.*;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class KeyStoreInfoTest {

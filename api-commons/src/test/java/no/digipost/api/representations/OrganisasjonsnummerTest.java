@@ -31,16 +31,12 @@ public class OrganisasjonsnummerTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void constructor_throws_exception_if_not_valid() {
-		String organisasjonsnummer = "98466118522222";
-
-		Organisasjonsnummer.of(organisasjonsnummer);
+		Organisasjonsnummer.of("98466118522222");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void invalid_prefix_with_length_4_throws_exception() {
-		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("0000:984661185");
-
-		String actual = organisasjonsnummer.getOrganisasjonsnummerMedLandkode();
+		Organisasjonsnummer.of("0000:984661185");
 	}
 
 	@Test
@@ -105,7 +101,6 @@ public class OrganisasjonsnummerTest {
 		DatabehandlerOrganisasjonsnummer databehandlerOrganisasjonsnummer = organisasjonsnummer.forfremTilDatabehandler();
 
 		assertThat(databehandlerOrganisasjonsnummer.getOrganisasjonsnummerMedLandkode()).isEqualTo(organisasjonsnummer.getOrganisasjonsnummerMedLandkode());
-
 	}
 
 

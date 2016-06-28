@@ -21,11 +21,8 @@ import org.etsi.uri._2918.v1_2.XAdESSignatures;
 import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.NonRepudiationInformation;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.soap.SoapBody;
-import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapHeaderElement;
-import org.springframework.ws.soap.SoapMessage;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -40,12 +37,10 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.Result;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
+
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import static no.digipost.api.xml.Constants.MESSAGING_QNAME;
 
 public class Marshalling {
 

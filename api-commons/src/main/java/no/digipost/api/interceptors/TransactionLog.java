@@ -20,7 +20,6 @@ import no.digipost.api.config.TransaksjonsLogg;
 import no.digipost.api.config.TransaksjonsLogg.Retning;
 import no.digipost.api.config.TransaksjonsLogg.Type;
 import no.digipost.api.representations.EbmsContext;
-import no.digipost.api.representations.Organisasjonsnummer;
 import no.digipost.api.representations.SimpleStandardBusinessDocument;
 import no.digipost.api.representations.SimpleUserMessage;
 import no.digipost.api.xml.Constants;
@@ -89,7 +88,7 @@ public class TransactionLog {
 	public void handleFault(final Retning retning, final EbmsContext context, final SoapMessage soapMessage, final String endpoint) {
 		SoapBody soapBody = soapMessage.getSoapBody();
 		SoapFault soapFault = soapBody.getFault();
-		logg.soapfault(endpoint, getOrgNr(context), retning, soapFault);
+		logg.soapfault(endpoint, getOrgNr(context), soapFault);
 
 		if (soapMessage.getSoapHeader().examineHeaderElements(Constants.MESSAGING_QNAME).hasNext()) {
 			Messaging messaging = MessagingMarshalling.getMessaging(jaxb2Marshaller, soapMessage);

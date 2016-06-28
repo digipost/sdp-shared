@@ -15,8 +15,6 @@
  */
 package no.digipost.api.representations;
 
-import no.digipost.api.PMode;
-
 import java.util.UUID;
 
 public abstract class EbmsMessage {

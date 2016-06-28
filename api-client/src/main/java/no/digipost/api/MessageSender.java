@@ -16,30 +16,10 @@
 package no.digipost.api;
 
 import no.digipost.api.exceptions.MessageSenderFaultMessageResolver;
-import no.digipost.api.handlers.ApplikasjonsKvitteringReceiver;
-import no.digipost.api.handlers.BekreftelseSender;
-import no.digipost.api.handlers.EbmsContextAwareWebServiceTemplate;
-import no.digipost.api.handlers.EmptyReceiver;
-import no.digipost.api.handlers.ForsendelseSender;
-import no.digipost.api.handlers.KvitteringSender;
-import no.digipost.api.handlers.PullRequestSender;
-import no.digipost.api.handlers.TransportKvitteringReceiver;
-import no.digipost.api.interceptors.EbmsClientInterceptor;
-import no.digipost.api.interceptors.EbmsReferenceValidatorInterceptor;
-import no.digipost.api.interceptors.KeyStoreInfo;
-import no.digipost.api.interceptors.RemoveContentLengthInterceptor;
-import no.digipost.api.interceptors.SoapLog;
+import no.digipost.api.handlers.*;
+import no.digipost.api.interceptors.*;
 import no.digipost.api.interceptors.SoapLog.LogLevel;
-import no.digipost.api.interceptors.SoapLogClientInterceptor;
-import no.digipost.api.interceptors.TransactionLogClientInterceptor;
-import no.digipost.api.interceptors.WsSecurityInterceptor;
-import no.digipost.api.representations.EbmsAktoer;
-import no.digipost.api.representations.EbmsApplikasjonsKvittering;
-import no.digipost.api.representations.EbmsForsendelse;
-import no.digipost.api.representations.EbmsPullRequest;
-import no.digipost.api.representations.KanBekreftesSomBehandletKvittering;
-import no.digipost.api.representations.MeldingsformidlerUri;
-import no.digipost.api.representations.TransportKvittering;
+import no.digipost.api.representations.*;
 import no.digipost.api.xml.Marshalling;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequestInterceptor;
@@ -62,6 +42,7 @@ import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -204,7 +185,7 @@ public class MessageSender {
 			return defaultMarshaller;
 		}
 
-		public Builder withMeldingInterceptorBefore(final Class clazz, final ClientInterceptor interceptor) {
+		public Builder withMeldingInterceptorBefore(final Class<?> clazz, final ClientInterceptor interceptor) {
 			interceptorBefore.add(new InsertInterceptor(clazz, interceptor));
 			return this;
 		}
@@ -372,17 +353,18 @@ public class MessageSender {
 
 	public static class InsertInterceptor {
 
-		private final Class clazz;
+		private final Class<?> clazz;
 		private final ClientInterceptor interceptor;
 
-		public InsertInterceptor(final Class clazz, final ClientInterceptor interceptor) {
+		public InsertInterceptor(final Class<?> clazz, final ClientInterceptor interceptor) {
 			this.clazz = clazz;
 			this.interceptor = interceptor;
 		}
 	}
 
 	public static class DoNothingClientInterceptorWrapper implements ClientInterceptorWrapper {
-		public ClientInterceptor wrap(ClientInterceptor clientInterceptor) {
+		@Override
+        public ClientInterceptor wrap(ClientInterceptor clientInterceptor) {
 			return clientInterceptor;
 		}
 	}

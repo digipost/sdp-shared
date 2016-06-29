@@ -27,12 +27,12 @@
 
         <config.profiler>inmemhsql</config.profiler>
         <org.slf4j.version>1.7.21</org.slf4j.version>
-        <spring.version>4.2.1.RELEASE</spring.version>
-        <spring.ws.version>2.2.0.RELEASE</spring.ws.version>
-        <spring.security.version>4.0.2.RELEASE</spring.security.version>
+        <spring.version>4.3.0.RELEASE</spring.version>
+        <spring.ws.version>2.3.0.RELEASE</spring.ws.version>
+        <spring.security.version>4.1.0.RELEASE</spring.security.version>
 
         <!-- WSS4J 2.1.x requires Java 7. We need to stay on 2.0.x as long as we need to be Java 6 compatible -->
-        <wss4j.version>2.0.5</wss4j.version>
+        <wss4j.version>2.1.6</wss4j.version>
 
     </properties>
 
@@ -101,14 +101,22 @@
 			<dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>2.0.31-beta</version>
+                <version>2.0.76-beta</version>
                 <scope>test</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk15on</artifactId>
-                <version>1.52</version>
+                <version>1.54</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${spring.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
             <dependency>
@@ -122,21 +130,7 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-oxm</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-beans</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
+
 
             <!-- Spring WS -->
             <dependency>
@@ -234,7 +228,7 @@
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
-                <version>4.3.5</version>
+                <version>4.5.2</version>
                 <exclusions>
                     <exclusion>
                         <groupId>commons-logging</groupId>
@@ -245,7 +239,7 @@
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpcore</artifactId>
-                <version>4.3.2</version>
+                <version>4.4.5</version>
             </dependency>
 
             <dependency>
@@ -258,6 +252,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>3.4</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.10</version>
             </dependency>
 
         </dependencies>
@@ -350,6 +349,48 @@
                 <plugin>
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>1.4.1</version>
+                    <configuration>
+                        <rules>
+                            <bannedDependencies>
+                                <excludes>
+                                    <exclude>*:*:*:jar:compile</exclude>
+                                </excludes>
+                                <includes>
+                                    <include>no.digipost:sdp-api-commons</include>
+                                    <include>no.digipost:sdp-xsd</include>
+                                    <include>aopalliance:aopalliance</include>
+                                    <include>com.sun.xml.wsit:wsit-rt</include>
+                                    <include>commons-codec:commons-codec</include>
+                                    <include>javax.xml.stream:stax-api</include>
+                                    <include>jaxen:jaxen</include>
+                                    <include>joda-time:joda-time</include>
+                                    <include>no.digipost:sdp-xsd</include>
+                                    <include>org.apache.commons:commons-lang3</include>
+                                    <include>org.apache.geronimo.specs:geronimo-javamail_1.4_spec</include>
+                                    <include>org.apache.httpcomponents:*</include>
+                                    <include>org.apache.santuario:xmlsec</include>
+                                    <include>org.apache.wss4j:wss4j-ws-security-common</include>
+                                    <include>org.apache.wss4j:wss4j-ws-security-dom</include>
+                                    <include>org.bouncycastle:bcprov-jdk15on</include>
+                                    <include>org.codehaus.woodstox:stax2-api</include>
+                                    <include>org.codehaus.woodstox:woodstox-core-asl</include>
+                                    <include>org.jasypt:jasypt</include>
+                                    <include>org.jvnet.jaxb2_commons:jaxb2-basics-runtime</include>
+                                    <include>org.opensaml:*</include>
+                                    <include>org.cryptacular:cryptacular</include>
+                                    <include>com.google.guava:guava</include>
+                                    <include>net.shibboleth.utilities:java-support</include>
+                                    <include>org.slf4j:*</include>
+                                    <include>org.springframework:*</include>
+                                    <include>org.springframework.security:*</include>
+                                    <include>org.springframework.ws:*</include>
+                                    <include>wsdl4j:wsdl4j</include>
+                                </includes>
+                                <searchTransitive>true</searchTransitive>
+                                <message>Maven-avhengigheter har forandret seg. Sjekk at alle lisenser er OK før distribusjon. Husk også å oppdatere fila «NOTICE».</message>
+                            </bannedDependencies>
+                        </rules>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>
@@ -393,7 +434,18 @@
                     </execution>
                 </executions>
             </plugin>
-
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <phase>test</phase>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

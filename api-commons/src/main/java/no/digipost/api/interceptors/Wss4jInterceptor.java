@@ -21,7 +21,11 @@ import org.apache.wss4j.common.ConfigurationConstants;
 import org.apache.wss4j.common.crypto.AlgorithmSuite;
 import org.apache.wss4j.common.crypto.Crypto;
 import org.apache.wss4j.common.ext.WSSecurityException;
-import org.apache.wss4j.dom.*;
+import org.apache.wss4j.dom.WSConstants;
+import org.apache.wss4j.dom.WSDataRef;
+import org.apache.wss4j.dom.engine.WSSConfig;
+import org.apache.wss4j.dom.engine.WSSecurityEngine;
+import org.apache.wss4j.dom.engine.WSSecurityEngineResult;
 import org.apache.wss4j.dom.handler.RequestData;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
 import org.apache.wss4j.dom.handler.WSHandlerResult;
@@ -33,7 +37,6 @@ import org.apache.wss4j.dom.validate.TimestampValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.server.EndpointExceptionResolver;
@@ -44,8 +47,8 @@ import org.springframework.ws.soap.security.WsSecurityFaultException;
 import org.springframework.ws.soap.security.WsSecuritySecurementException;
 import org.springframework.ws.soap.security.WsSecurityValidationException;
 import org.springframework.ws.soap.security.callback.CleanupCallback;
-import org.springframework.ws.soap.security.wss4j.Wss4jSecuritySecurementException;
-import org.springframework.ws.soap.security.wss4j.Wss4jSecurityValidationException;
+import org.springframework.ws.soap.security.wss4j2.Wss4jSecuritySecurementException;
+import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityValidationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -62,6 +65,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static java.util.Collections.emptyList;
 import static no.digipost.api.xml.Constants.*;
 
 
@@ -88,8 +92,6 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 	private String validationActions;
 
 	private List<Integer> validationActionsVector;
-
-	private String validationActor;
 
 	private Crypto validationSignatureCrypto;
 
@@ -305,7 +307,7 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 			requestData.setUsername(securementUsername);
 		}
 		requestData.setAppendSignatureAfterTimestamp(true);
-		requestData.setTimeToLive(securementTimeToLive);
+		requestData.setTimeStampTTL(securementTimeToLive);
 
 		requestData.setWssConfig(wssConfig);
 		return requestData;
@@ -343,28 +345,26 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 			requestData.setEnableTimestampReplayCache(false);
 
 
-			List<WSSecurityEngineResult> results = securityEngine
-					.processSecurityHeader(envelopeAsDocument, validationActor, requestData);
+			WSHandlerResult handlerResult = securityEngine.processSecurityHeader(envelopeAsDocument, requestData);
 
 			// Results verification
-			if (CollectionUtils.isEmpty(results)) {
+			if (handlerResult == null) {
 				throw new Wss4jSecurityValidationException("No WS-Security header found");
 			}
+			updateMessageContextWithCertificate(messageContext, handlerResult);
 
-			updateMessageContextWithCertificate(messageContext, results);
+			checkResults(handlerResult.getResults(), validationActionsVector);
 
-			checkResults(results, validationActionsVector);
-
-			validateEbmsMessagingIsSigned(envelopeAsDocument, results);
-			validateTimestampIsSigned(envelopeAsDocument, results);
+			validateEbmsMessagingIsSigned(envelopeAsDocument, handlerResult.getResults());
+			validateTimestampIsSigned(envelopeAsDocument, handlerResult.getResults());
 
 			// puts the results in the context
 			// useful for Signature Confirmation
-			updateContextWithResults(messageContext, results);
+			updateContextWithResults(messageContext, handlerResult);
 
-			verifyCertificateTrust(results);
+			verifyCertificateTrust(handlerResult);
 
-			verifyTimestamp(results);
+			verifyTimestamp(handlerResult);
 		} catch (WSSecurityException ex) {
 			throw new Wss4jSecurityValidationException(ex.getMessage(), ex);
 		}
@@ -374,13 +374,17 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 		soapMessage.getEnvelope().getHeader().removeHeaderElement(WS_SECURITY_NAME);
 	}
 
-	private void updateMessageContextWithCertificate(final MessageContext messageContext, final List<WSSecurityEngineResult> results) {
-		WSSecurityEngineResult signResult = WSSecurityUtil.fetchActionResult(results, WSConstants.SIGN);
-		if (signResult != null) {
-			X509Certificate cert = (X509Certificate) signResult.get(WSSecurityEngineResult.TAG_X509_CERTIFICATE);
-			if (cert != null) {
-				messageContext.setProperty(INCOMING_CERTIFICATE, cert);
-			}
+	private void updateMessageContextWithCertificate(MessageContext messageContext, WSHandlerResult result) {
+		List<WSSecurityEngineResult> signResults = result.getActionResults().getOrDefault(WSConstants.SIGN, emptyList());
+		if (signResults.isEmpty()) {
+		    throw new Wss4jSecurityValidationException("No action results for 'Perform Signature' found");
+		} else if (signResults.size() > 1) {
+		    throw new Wss4jSecurityValidationException("Multiple action results for 'Perform Signature' found. Expected only 1.");
+		}
+		WSSecurityEngineResult signResult = signResults.get(0);
+		X509Certificate cert = (X509Certificate) signResult.get(WSSecurityEngineResult.TAG_X509_CERTIFICATE);
+		if (cert != null) {
+			messageContext.setProperty(INCOMING_CERTIFICATE, cert);
 		}
 	}
 
@@ -432,8 +436,7 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 	 * @param validationActions the decoded validation actions
 	 * @throws Wss4jSecurityValidationException if the results are deemed invalid
 	 */
-	protected void checkResults(final List<WSSecurityEngineResult> results, final List<Integer> validationActions)
-			throws Wss4jSecurityValidationException {
+	protected void checkResults(final List<WSSecurityEngineResult> results, final List<Integer> validationActions) throws Wss4jSecurityValidationException {
 		if (!handler.checkReceiverResultsAnyOrder(results, validationActions)) {
 			throw new Wss4jSecurityValidationException("Security processing failed (actions mismatch)");
 		}
@@ -444,26 +447,31 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 	 * Confirmation require this.
 	 */
 	@SuppressWarnings("unchecked")
-	private void updateContextWithResults(final MessageContext messageContext, final List<WSSecurityEngineResult> results) {
+	private void updateContextWithResults(final MessageContext messageContext, final WSHandlerResult result) {
 		List<WSHandlerResult> handlerResults;
 		if ((handlerResults = (List<WSHandlerResult>) messageContext.getProperty(WSHandlerConstants.RECV_RESULTS)) == null) {
 			handlerResults = new ArrayList<WSHandlerResult>();
 			messageContext.setProperty(WSHandlerConstants.RECV_RESULTS, handlerResults);
 		}
-		WSHandlerResult rResult = new WSHandlerResult(validationActor, results);
-		handlerResults.add(0, rResult);
+		handlerResults.add(0, result);
 		messageContext.setProperty(WSHandlerConstants.RECV_RESULTS, handlerResults);
 	}
 
 	/**
 	 * Verifies the trust of a certificate.
 	 */
-	protected void verifyCertificateTrust(final List<WSSecurityEngineResult> results) throws WSSecurityException {
-		WSSecurityEngineResult actionResult = WSSecurityUtil.fetchActionResult(results, WSConstants.SIGN);
+	protected void verifyCertificateTrust(WSHandlerResult result) throws WSSecurityException {
+		List<WSSecurityEngineResult> signResults = result.getActionResults().getOrDefault(WSConstants.SIGN, emptyList());
+	    if (signResults.isEmpty()) {
+            throw new Wss4jSecurityValidationException("No action results for 'Perform Signature' found");
+        } else if (signResults.size() > 1) {
+            throw new Wss4jSecurityValidationException("Multiple action results for 'Perform Signature' found. Expected only 1.");
+        }
+        WSSecurityEngineResult signResult = signResults.get(0);
 
-		if (actionResult != null) {
+		if (signResult != null) {
 			X509Certificate returnCert =
-					(X509Certificate) actionResult.get(WSSecurityEngineResult.TAG_X509_CERTIFICATE);
+					(X509Certificate) signResult.get(WSSecurityEngineResult.TAG_X509_CERTIFICATE);
 			Credential credential = new Credential();
 			credential.setCertificates(new X509Certificate[]{returnCert});
 
@@ -480,8 +488,14 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 	/**
 	 * Verifies the timestamp.
 	 */
-	protected void verifyTimestamp(final List<WSSecurityEngineResult> results) throws WSSecurityException {
-		WSSecurityEngineResult actionResult = WSSecurityUtil.fetchActionResult(results, WSConstants.TS);
+	protected void verifyTimestamp(WSHandlerResult result) throws WSSecurityException {
+		List<WSSecurityEngineResult> insertTimestampResults = result.getActionResults().getOrDefault(WSConstants.TS, emptyList());
+		if (insertTimestampResults.isEmpty()) {
+            throw new Wss4jSecurityValidationException("No action results for 'Insert timestamp' found");
+        } else if (insertTimestampResults.size() > 1) {
+            throw new Wss4jSecurityValidationException("Multiple action results for 'Insert timestamp' found. Expected only 1.");
+        }
+        WSSecurityEngineResult actionResult = insertTimestampResults.get(0);
 
 		if (actionResult != null) {
 			Timestamp timestamp = (Timestamp) actionResult.get(WSSecurityEngineResult.TAG_TIMESTAMP);
@@ -490,10 +504,9 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 				credential.setTimestamp(timestamp);
 
 				RequestData requestData = new RequestData();
-				WSSConfig config = WSSConfig.getNewInstance();
-				config.setTimeStampTTL(validationTimeToLive);
-				config.setTimeStampStrict(timestampStrict);
-				requestData.setWssConfig(config);
+				requestData.setWssConfig(WSSConfig.getNewInstance());
+				requestData.setTimeStampTTL(validationTimeToLive);
+				requestData.setTimeStampStrict(timestampStrict);
 
 				TimestampValidator validator = new TimestampValidator();
 				validator.validate(credential, requestData);

@@ -123,35 +123,6 @@
                     <basedir>${project.basedir}/src/main/java</basedir>
                 </configuration>
             </plugin>
-            <plugin>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>test</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <phase>test</phase>
-                        <configuration>
-                            <rules>
-                                <bannedDependencies>
-                                    <excludes>
-                                        <exclude>*:*:*:jar:compile</exclude>
-                                    </excludes>
-                                    <includes>
-                                        <include>joda-time:joda-time:*</include>
-                                        <include>org.jvnet.jaxb2_commons:jaxb2-basics-runtime:*</include>
-                                    </includes>
-                                    <searchTransitive>true</searchTransitive>
-                                    <message>Maven-avhengigheter har forandret seg. Sjekk at alle lisenser er OK før
-                                        distribusjon. Husk også å oppdatere fila «NOTICE».
-                                    </message>
-                                </bannedDependencies>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
 		</plugins>
 	</build>
 

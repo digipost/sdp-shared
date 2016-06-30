@@ -29,7 +29,7 @@ public class MeldingsformidlerUri {
 
 	public URI getFull(Organisasjonsnummer avsenderOrganisasjonsnummer) {
 		String uriWithOrganisasjonsnummer = String.format("%s/%s/%s",
-				baseUri,
+				baseUri.toString().replaceFirst("/$", ""),
 				databehandlerOrganisasjonsnummer.getOrganisasjonsnummerMedLandkode(),
 				avsenderOrganisasjonsnummer.getOrganisasjonsnummerMedLandkode()
 		);

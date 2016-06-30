@@ -18,34 +18,33 @@ package no.digipost.api.representations;
 import org.junit.Test;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Stream;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.Matchers.is;
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 
 public class MeldingsformidlerUriTest {
 
-	@Test
-	public void Constructor_InitializesWithBaseUri() {
-		URI baseUri = URI.create("http://baseuri.no");
-		Organisasjonsnummer databehandlerOrganisasjonsNummer = Organisasjonsnummer.of("984661185");
+    private final DatabehandlerOrganisasjonsnummer databehandler = Organisasjonsnummer.of("984661185").forfremTilDatabehandler();
+    private final AvsenderOrganisasjonsnummer avsender = Organisasjonsnummer.of("988015814").forfremTilAvsender();
 
-		MeldingsformidlerUri meldingsformidlerUri = new MeldingsformidlerUri(baseUri, databehandlerOrganisasjonsNummer);
+	@Test
+	public void containsBaseUri() {
+		URI baseUri = URI.create("http://mf.example.com/ebms");
+		MeldingsformidlerUri meldingsformidlerUri = new MeldingsformidlerUri(baseUri, databehandler);
 
 		assertThat(meldingsformidlerUri.baseUri, is(baseUri));
 	}
 
 	@Test
-	public void getFull_AppendsAvsenderAndDatabehandlerOganisasjonsnummerToBaseUri() {
-		URI baseUri = URI.create("http://baseuri.no");
-		Organisasjonsnummer databehandlerOrganisasjonsNummer = Organisasjonsnummer.of("984661185");
-		Organisasjonsnummer avsenderOrganisasjonsNummer = Organisasjonsnummer.of("988015814");
-		MeldingsformidlerUri meldingsformidlerUri = new MeldingsformidlerUri(baseUri, databehandlerOrganisasjonsNummer);
+	public void appendsAvsenderAndDatabehandlerOganisasjonsnummerToBaseUri() {
+	    List<String> identicalMfUris = Stream.of("http://mf.example.com/ebms", "http://mf.example.com/ebms/").map(URI::create)
+	            .map(baseUri -> new MeldingsformidlerUri(baseUri, databehandler).getFull(avsender).toString()).collect(toList());
 
-		String actual = meldingsformidlerUri.getFull(avsenderOrganisasjonsNummer).toString();
-
-		assertThat(actual, containsString(avsenderOrganisasjonsNummer.getOrganisasjonsnummerMedLandkode()));
-		assertThat(actual, containsString(databehandlerOrganisasjonsNummer.getOrganisasjonsnummerMedLandkode()));
+	    assertThat(identicalMfUris, everyItem(is("http://mf.example.com/ebms/" + databehandler.getOrganisasjonsnummerMedLandkode() + "/" + avsender.getOrganisasjonsnummerMedLandkode())));
+	    assertThat(identicalMfUris, hasSize(2));
 	}
 }

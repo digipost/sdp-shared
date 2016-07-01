@@ -103,7 +103,7 @@ public interface MessageSender {
         private int connectTimeout = 10000;
         private int connectionRequestTimeout = 10000;
         private SoapLog.LogLevel logLevel = LogLevel.NONE;
-        private ClientInterceptorWrapper clientInterceptorWrapper = new DoNothingClientInterceptorWrapper();
+        private ClientInterceptorWrapper clientInterceptorWrapper = interceptor -> interceptor;
 
 
         private Builder(EbmsEndpointUriBuilder uri, EbmsAktoer databehandler, EbmsAktoer tekniskMottaker,
@@ -325,15 +325,9 @@ public interface MessageSender {
         }
     }
 
+    @FunctionalInterface
     public static interface ClientInterceptorWrapper {
         ClientInterceptor wrap(ClientInterceptor clientInterceptor);
-    }
-
-    public static class DoNothingClientInterceptorWrapper implements ClientInterceptorWrapper {
-        @Override
-        public ClientInterceptor wrap(ClientInterceptor clientInterceptor) {
-            return clientInterceptor;
-        }
     }
 
 

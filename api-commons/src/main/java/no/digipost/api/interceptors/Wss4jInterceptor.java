@@ -260,8 +260,13 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
 	}
 
 	@Override
-	protected void secureMessage(final SoapMessage soapMessage, final MessageContext messageContext)
-			throws WsSecuritySecurementException {
+	protected boolean handleSecurementException(WsSecuritySecurementException ex, MessageContext messageContext) {
+	    logFault.log(ex);
+	    throw ex;
+	}
+
+	@Override
+	protected void secureMessage(final SoapMessage soapMessage, final MessageContext messageContext) throws WsSecuritySecurementException {
 		boolean noSecurity = securementActionsVector.isEmpty() || securementActionsVector.contains(0);
 		if (noSecurity && !enableSignatureConfirmation) {
 			return;

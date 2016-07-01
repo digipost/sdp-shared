@@ -20,6 +20,7 @@ import no.digipost.api.config.TransaksjonsLogg;
 import no.digipost.api.config.TransaksjonsLogg.Retning;
 import no.digipost.api.config.TransaksjonsLogg.Type;
 import no.digipost.api.representations.EbmsContext;
+import no.digipost.api.representations.Organisasjonsnummer;
 import no.digipost.api.representations.SimpleStandardBusinessDocument;
 import no.digipost.api.representations.SimpleUserMessage;
 import no.digipost.api.xml.Constants;
@@ -142,7 +143,7 @@ public class TransactionLog {
 
 	private String getOrgNr(final EbmsContext context) {
 		StringBuilder builder = new StringBuilder();
-		builder.append(context.remoteParty.isPresent() ? context.remoteParty.toString() : "-");
+		builder.append(context.remoteParty.map(Organisasjonsnummer::getOrganisasjonsnummer).orElse("-"));
 
 		if (context.sbd != null) {
 			builder.append(" ");

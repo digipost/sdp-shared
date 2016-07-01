@@ -23,6 +23,7 @@ This software includes third party software subject to the following licenses:
   Extended StAX API under Dual license consisting of the CDDL v1.1 and GPL v2
   Guava: Google Core Libraries for Java under The Apache Software License, Version 2.0
   Hamcrest Core under New BSD License
+  Hamcrest library under New BSD License
   JASYPT: Java Simplified Encryption under The Apache Software License, Version 2.0
   java-support under The Apache Software License, Version 2.0
   JavaMail 1.4 under The Apache Software License, Version 2.0

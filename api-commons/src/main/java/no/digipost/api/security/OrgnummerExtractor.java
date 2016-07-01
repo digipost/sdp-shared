@@ -15,15 +15,16 @@
  */
 package no.digipost.api.security;
 
-import static java.util.regex.Pattern.CASE_INSENSITIVE;
+import no.digipost.api.representations.Organisasjonsnummer;
 
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import no.digipost.api.representations.Organisasjonsnummer;
+import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
 public class OrgnummerExtractor {
 
@@ -31,24 +32,22 @@ public class OrgnummerExtractor {
 	private static final Pattern BUYPASS_PATTERN = Pattern.compile("SERIALNUMBER=([0-9]{9})", CASE_INSENSITIVE);
 	public static final Collection<Pattern> PATTERNS = Arrays.asList(CN_PATTERN, BUYPASS_PATTERN, Pattern.compile(".*"));
 
-	public Organisasjonsnummer tryParse(final X509Certificate cert) {
+	public Optional<Organisasjonsnummer> tryParse(final X509Certificate cert) {
 		String dn = cert.getSubjectDN().getName();
 		Matcher matcher = BUYPASS_PATTERN.matcher(dn);
 		if (matcher.find()) {
-			return Organisasjonsnummer.of(matcher.group(1));
+			return Organisasjonsnummer.hvisGyldig(matcher.group(1));
 		}
 		matcher = CN_PATTERN.matcher(dn);
 		if (matcher.find()) {
-			return Organisasjonsnummer.of(matcher.group(1));
+			return Organisasjonsnummer.hvisGyldig(matcher.group(1));
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	public Organisasjonsnummer from(final X509Certificate cert) {
-		Organisasjonsnummer orgnr = tryParse(cert);
-		if (orgnr != null) {
-			return orgnr;
-		}
-		throw new IllegalArgumentException("Fant ikke organisasjonsnummer i [" + cert.getSubjectDN().getName() + "], issuer=[" + cert.getIssuerDN().getName() + "]");
+		return tryParse(cert).orElseThrow(() -> new IllegalArgumentException(
+		        "Fant ikke organisasjonsnummer i [" + cert.getSubjectDN().getName() + "], " +
+                "issuer=[" + cert.getIssuerDN().getName() + "]"));
 	}
 }

@@ -89,7 +89,7 @@ public class TransactionLog {
 	public void handleFault(final Retning retning, final EbmsContext context, final SoapMessage soapMessage, final String endpoint) {
 		SoapBody soapBody = soapMessage.getSoapBody();
 		SoapFault soapFault = soapBody.getFault();
-		logg.soapfault(endpoint, getOrgNr(context), retning, soapFault);
+		logg.soapfault(endpoint, getOrgNr(context), soapFault);
 
 		if (soapMessage.getSoapHeader().examineHeaderElements(Constants.MESSAGING_QNAME).hasNext()) {
 			Messaging messaging = MessagingMarshalling.getMessaging(jaxb2Marshaller, soapMessage);
@@ -143,7 +143,7 @@ public class TransactionLog {
 
 	private String getOrgNr(final EbmsContext context) {
 		StringBuilder builder = new StringBuilder();
-		builder.append(context.remoteParty.isPresent() ? context.remoteParty.toString() : "-");
+		builder.append(context.remoteParty.map(Organisasjonsnummer::getOrganisasjonsnummer).orElse("-"));
 
 		if (context.sbd != null) {
 			builder.append(" ");

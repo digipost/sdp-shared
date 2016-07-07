@@ -49,7 +49,7 @@ public class TransaksjonsLogg {
 				endpoint, toLoggable(orgnr), retning, type, toLoggable(mpc), toLoggable(conversationId), toLoggable(instanceIdentifier), messageId, ref, extra);
 	}
 
-	public void soapfault(final String endpoint, final String orgnr, final Retning retning, final SoapFault soapFault) {
+	public void soapfault(final String endpoint, final String orgnr, final SoapFault soapFault) {
 		LOG.warn("[{}] [{}] {} fault:[{}]", endpoint, toLoggable(orgnr), SOAPFAULT, soapFault.getFaultStringOrReason());
 	}
 

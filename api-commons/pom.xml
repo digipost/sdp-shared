@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>sdp-api-commons</artifactId>
-    <name>${project.artifactId}</name>
-    <description>${project.artifactId}</description>
+    <name>SDP Shared - API Commons</name>
+    <description>Felles kode for API-relatert funksjonalitet</description>
 
     <parent>
         <groupId>no.digipost</groupId>
         <artifactId>sdp-shared</artifactId>
-        <version>1.2.0-SNAPSHOT</version>
+        <version>1.2.0.DEPUPGRADES-SNAPSHOT</version>
     </parent>
 
     <dependencies>
@@ -66,11 +66,6 @@
         </dependency>
 
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>mailapi</artifactId>
             <scope>runtime</scope>
@@ -102,7 +97,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <scope>compile</scope>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -136,12 +131,10 @@
 			<scope>test</scope>
 		</dependency>
         <dependency>
-            <groupId>org.easytesting</groupId>
-            <artifactId>fest-assert-core</artifactId>
-            <version>${org.easytesting.fest.assert.core.version}</version>
+            <groupId>nl.jqno.equalsverifier</groupId>
+            <artifactId>equalsverifier</artifactId>
             <scope>test</scope>
         </dependency>
-
 
     </dependencies>
 
@@ -154,79 +147,6 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>test</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <phase>test</phase>
-                        <configuration>
-                            <rules>
-                                <bannedDependencies>
-                                    <excludes>
-                                        <exclude>*:*:*:jar:compile</exclude>
-                                    </excludes>
-                                    <includes>
-                                        <include>aopalliance:aopalliance</include>
-                                        <include>com.sun.xml.wsit:wsit-rt</include>
-                                        <include>commons-codec:commons-codec</include>
-                                        <include>commons-io:commons-io</include>
-                                        <include>javax.xml.stream:stax-api</include>
-                                        <include>jaxen:jaxen</include>
-                                        <include>joda-time:joda-time</include>
-                                        <include>no.digipost:sdp-xsd</include>
-                                        <include>org.apache.commons:commons-lang3</include>
-                                        <include>org.apache.geronimo.specs:geronimo-javamail_1.4_spec</include>
-                                        <include>org.apache.httpcomponents:httpcore</include>
-                                        <include>org.apache.santuario:xmlsec</include>
-                                        <include>org.apache.wss4j:wss4j-ws-security-common</include>
-                                        <include>org.apache.wss4j:wss4j-ws-security-dom</include>
-                                        <include>org.bouncycastle:bcprov-jdk15on</include>
-                                        <include>org.codehaus.woodstox:stax2-api</include>
-                                        <include>org.codehaus.woodstox:woodstox-core-asl</include>
-                                        <include>org.jasypt:jasypt</include>
-                                        <include>org.jvnet.jaxb2_commons:jaxb2-basics-runtime</include>
-                                        <include>org.opensaml:opensaml</include>
-                                        <include>org.opensaml:openws</include>
-                                        <include>org.opensaml:xmltooling</include>
-                                        <include>org.slf4j:jcl-over-slf4j</include>
-                                        <include>org.slf4j:slf4j-api</include>
-                                        <include>org.springframework:spring-aop</include>
-                                        <include>org.springframework:spring-beans</include>
-                                        <include>org.springframework:spring-context</include>
-                                        <include>org.springframework:spring-core</include>
-                                        <include>org.springframework:spring-expression</include>
-                                        <include>org.springframework:spring-oxm</include>
-                                        <include>org.springframework:spring-tx</include>
-                                        <include>org.springframework:spring-web</include>
-                                        <include>org.springframework:spring-webmvc</include>
-                                        <include>org.springframework.security:spring-security-core</include>
-                                        <include>org.springframework.ws:spring-ws-core</include>
-                                        <include>org.springframework.ws:spring-ws-security</include>
-                                        <include>org.springframework.ws:spring-xml</include>
-                                        <include>wsdl4j:wsdl4j</include>
-                                    </includes>
-                                    <searchTransitive>true</searchTransitive>
-                                    <message>Maven-avhengigheter har forandret seg. Sjekk at alle lisenser er OK før
-                                        distribusjon. Husk også å oppdatere fila «NOTICE».
-                                    </message>
-                                </bannedDependencies>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
             </plugin>
         </plugins>
     </build>

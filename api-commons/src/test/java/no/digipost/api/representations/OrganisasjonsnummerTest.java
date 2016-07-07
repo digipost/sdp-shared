@@ -15,9 +15,13 @@
  */
 package no.digipost.api.representations;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import java.util.Optional;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
 
 public class OrganisasjonsnummerTest {
 
@@ -26,21 +30,17 @@ public class OrganisasjonsnummerTest {
 		String nummer = "984661185";
 		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(nummer);
 
-		assertThat(organisasjonsnummer.toString()).isEqualTo(nummer);
+		assertThat(organisasjonsnummer.toString(), is(nummer));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void constructor_throws_exception_if_not_valid() {
-		String organisasjonsnummer = "98466118522222";
-
-		Organisasjonsnummer.of(organisasjonsnummer);
+		Organisasjonsnummer.of("98466118522222");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void invalid_prefix_with_length_4_throws_exception() {
-		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("0000:984661185");
-
-		String actual = organisasjonsnummer.getOrganisasjonsnummerMedLandkode();
+		Organisasjonsnummer.of("0000:984661185");
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class OrganisasjonsnummerTest {
 
 		String actual = organisasjonsnummer.getOrganisasjonsnummerMedLandkode();
 
-		assertThat(actual).isEqualTo(expected);
+		assertThat(actual, is(expected));
 	}
 
 	@Test
@@ -60,9 +60,7 @@ public class OrganisasjonsnummerTest {
 
 		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(source);
 
-		String actual = organisasjonsnummer.getOrganisasjonsnummer();
-
-		assertThat(actual).isEqualTo(expected);
+		assertThat(organisasjonsnummer.getOrganisasjonsnummer(), is(expected));
 	}
 
 	@Test
@@ -74,7 +72,7 @@ public class OrganisasjonsnummerTest {
 
 		String actual = organisasjonsnummer.getOrganisasjonsnummerMedLandkode();
 
-		assertThat(actual).isEqualTo(expected);
+		assertThat(actual, is(expected));
 	}
 
 	@Test
@@ -84,29 +82,42 @@ public class OrganisasjonsnummerTest {
 
 		String actual = organisasjonsnummer.getOrganisasjonsnummer();
 
-		assertThat(actual).isEqualTo(expected);
-	}
-
-
-
-	@Test
-	public void forfrem_til_avsender(){
-		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
-
-		AvsenderOrganisasjonsnummer avsenderOrganisasjonsnummer = organisasjonsnummer.forfremTilAvsender();
-
-		assertThat(avsenderOrganisasjonsnummer.getOrganisasjonsnummerMedLandkode()).isEqualTo(organisasjonsnummer.getOrganisasjonsnummerMedLandkode());
+		assertThat(actual, is(expected));
+		assertThat(Organisasjonsnummer.hvisGyldig(expected).get(), is(organisasjonsnummer));
 	}
 
 	@Test
-	public void forfrem_til_databehandler(){
-		Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
+    public void determine_if_is_one_of_multiple_organisasjonsnr() {
+	    String orgnr = "984661185";
+        Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(orgnr);
+        assertTrue(organisasjonsnummer.erEnAv(Organisasjonsnummer.of("123456789"), Organisasjonsnummer.of(orgnr)));
+        assertFalse(organisasjonsnummer.erEnAv(Organisasjonsnummer.of("123456789"), Organisasjonsnummer.of("987654321")));
+    }
 
-		DatabehandlerOrganisasjonsnummer databehandlerOrganisasjonsnummer = organisasjonsnummer.forfremTilDatabehandler();
+	@Test
+    public void evaluates_string_with_or_without_authoroty_part_as_same() {
+        Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
+        assertTrue(organisasjonsnummer.er(organisasjonsnummer.getOrganisasjonsnummer()));
+        assertTrue(organisasjonsnummer.er(organisasjonsnummer.getOrganisasjonsnummerMedLandkode()));
+    }
 
-		assertThat(databehandlerOrganisasjonsnummer.getOrganisasjonsnummerMedLandkode()).isEqualTo(organisasjonsnummer.getOrganisasjonsnummerMedLandkode());
-
+	@Test
+	public void evaluates_other_strings_as_not_same() {
+	    Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
+	    assertFalse(organisasjonsnummer.er("xyz"));
+	    assertFalse(organisasjonsnummer.er("991825827"));
 	}
 
+	@Test
+    public void correct_equals_and_hashcode() {
+        EqualsVerifier.forClass(Organisasjonsnummer.class).verify();
+    }
+
+	@Test
+    public void invalid_orgnr_yields_empty_optional() {
+	    String invalid = "abc";
+        assertThat(Organisasjonsnummer.hvisGyldig(invalid), is(Optional.empty()));
+        assertFalse(Organisasjonsnummer.erGyldig(invalid));
+    }
 
 }

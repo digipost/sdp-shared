@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>no.digipost</groupId>
 		<artifactId>sdp-shared</artifactId>
-		<version>1.2.0.DEPUPGRADES-SNAPSHOT</version>
+		<version>1.2.0</version>
 	</parent>
 
 

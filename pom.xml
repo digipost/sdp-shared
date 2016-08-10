@@ -31,7 +31,6 @@
         <spring.ws.version>2.3.0.RELEASE</spring.ws.version>
         <spring.security.version>4.1.0.RELEASE</spring.security.version>
 
-        <!-- WSS4J 2.1.x requires Java 7. We need to stay on 2.0.x as long as we need to be Java 6 compatible -->
         <wss4j.version>2.1.6</wss4j.version>
 
     </properties>

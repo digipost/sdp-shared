@@ -1,4 +1,3 @@
-
 package no.digipost.api.representations;
 
 import no.digipost.api.PMode;

@@ -14,37 +14,37 @@ import static org.junit.Assert.assertThat;
 
 public class EbmsApplikasjonsKvitteringTest {
 
-	@Test
-	public void testGetMeldingsId() throws Exception {
-		EbmsApplikasjonsKvittering ebmsApplikasjonskvittering = getEbmsApplikasjonskvittering();
+    @Test
+    public void testGetMeldingsId() throws Exception {
+        EbmsApplikasjonsKvittering ebmsApplikasjonskvittering = getEbmsApplikasjonskvittering();
 
-		assertThat(ebmsApplikasjonskvittering.getMeldingsId(), is(ebmsApplikasjonskvittering.messageId));
+        assertThat(ebmsApplikasjonskvittering.getMeldingsId(), is(ebmsApplikasjonskvittering.messageId));
 
-	}
+    }
 
-	@Test
-	public void testGetReferanseTilMeldingSomKvitteres() throws Exception {
-		KvitteringsReferanse referanseTilMeldingSomKvitteres = getEbmsApplikasjonskvittering().getReferanseTilMeldingSomKvitteres();
+    @Test
+    public void testGetReferanseTilMeldingSomKvitteres() throws Exception {
+        KvitteringsReferanse referanseTilMeldingSomKvitteres = getEbmsApplikasjonskvittering().getReferanseTilMeldingSomKvitteres();
 
-		assertThat(referanseTilMeldingSomKvitteres.getMarshalled(), stringLength(greaterThan(500)));
-	}
+        assertThat(referanseTilMeldingSomKvitteres.getMarshalled(), stringLength(greaterThan(500)));
+    }
 
-	private Matcher<String> stringLength(Matcher<? super Integer> lengthMatcher) {
-		return new CustomTypeSafeMatcher<String>("String with length " + lengthMatcher) {
+    private Matcher<String> stringLength(Matcher<? super Integer> lengthMatcher) {
+        return new CustomTypeSafeMatcher<String>("String with length " + lengthMatcher) {
             @Override
             protected boolean matchesSafely(String s) {
                 return lengthMatcher.matches(s.length());
             }
-		};
-	}
+        };
+    }
 
-	private EbmsApplikasjonsKvittering getEbmsApplikasjonskvittering() {
-		List<Reference> references = new ArrayList<Reference>();
-		references.add(ObjectMother.getReference());
+    private EbmsApplikasjonsKvittering getEbmsApplikasjonskvittering() {
+        List<Reference> references = new ArrayList<Reference>();
+        references.add(ObjectMother.getReference());
 
-		return EbmsApplikasjonsKvittering.create(EbmsAktoer.avsender("984661185"), EbmsAktoer.avsender("988015814"), null)
-				.withReferences(references)
-				.build();
-	}
+        return EbmsApplikasjonsKvittering.create(EbmsAktoer.avsender("984661185"), EbmsAktoer.avsender("988015814"), null)
+                .withReferences(references)
+                .build();
+    }
 
 }

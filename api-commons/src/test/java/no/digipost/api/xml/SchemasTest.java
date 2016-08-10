@@ -1,4 +1,3 @@
-
 package no.digipost.api.xml;
 
 import org.junit.Test;
@@ -11,14 +10,14 @@ import static org.junit.Assert.assertTrue;
 
 public class SchemasTest {
 
-	@Test
+    @Test
     public void allSchemasExist() throws Exception {
-		for (Field field : Schemas.class.getFields()) {
-			if (isStatic(field.getModifiers()) && Resource.class.isAssignableFrom(field.getType())) {
-				Resource resource = (Resource) field.get(Schemas.class);
-				assertTrue(resource + " must exist! (declared in " + Schemas.class.getName() + "." + field.getName() + ")", resource.exists());
-			}
-		}
+        for (Field field : Schemas.class.getFields()) {
+            if (isStatic(field.getModifiers()) && Resource.class.isAssignableFrom(field.getType())) {
+                Resource resource = (Resource) field.get(Schemas.class);
+                assertTrue(resource + " must exist! (declared in " + Schemas.class.getName() + "." + field.getName() + ")", resource.exists());
+            }
+        }
     }
 
 }

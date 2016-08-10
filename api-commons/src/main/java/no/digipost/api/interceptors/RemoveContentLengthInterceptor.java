@@ -1,4 +1,3 @@
-
 package no.digipost.api.interceptors;
 
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -15,15 +14,15 @@ import java.io.IOException;
  */
 public class RemoveContentLengthInterceptor implements HttpRequestInterceptor {
 
-	@Override
-	public void process(final HttpRequest request, final HttpContext context) throws HttpException, IOException {
-		if (request instanceof HttpEntityEnclosingRequest) {
-			if (request.containsHeader(HTTP.TRANSFER_ENCODING)) {
-				request.removeHeaders(HTTP.TRANSFER_ENCODING);
-			}
-			if (request.containsHeader(HTTP.CONTENT_LEN)) {
-				request.removeHeaders(HTTP.CONTENT_LEN);
-			}
-		}
-	}
+    @Override
+    public void process(final HttpRequest request, final HttpContext context) throws HttpException, IOException {
+        if (request instanceof HttpEntityEnclosingRequest) {
+            if (request.containsHeader(HTTP.TRANSFER_ENCODING)) {
+                request.removeHeaders(HTTP.TRANSFER_ENCODING);
+            }
+            if (request.containsHeader(HTTP.CONTENT_LEN)) {
+                request.removeHeaders(HTTP.CONTENT_LEN);
+            }
+        }
+    }
 }

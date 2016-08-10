@@ -1,4 +1,3 @@
-
 package no.digipost.api.interceptors;
 
 import org.apache.wss4j.common.crypto.Crypto;
@@ -16,7 +15,9 @@ import java.util.Properties;
 
 public class Wss4jHandler extends WSHandler {
 
-    /** Keys are constants from {@link WSHandlerConstants}; values are strings. */
+    /**
+     * Keys are constants from {@link WSHandlerConstants}; values are strings.
+     */
     private final Properties options = new Properties();
 
     private String securementPassword;
@@ -93,8 +94,8 @@ public class Wss4jHandler extends WSHandler {
 
     @Override
     protected void doSenderAction(final Document doc, final RequestData reqData, final List<HandlerAction> actions, final boolean isRequest)
-    		throws WSSecurityException {
-    	super.doSenderAction(doc, reqData, actions, isRequest);
+            throws WSSecurityException {
+        super.doSenderAction(doc, reqData, actions, isRequest);
     }
 
 }

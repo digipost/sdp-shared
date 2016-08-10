@@ -14,7 +14,7 @@
     </appender>
 
     <logger name="mf.logger.translog" level="INFO" additivity="false">
-        <appender-ref ref="TRANSLOG_FILE" />
+        <appender-ref ref="TRANSLOG_FILE"/>
     </logger>
 
 </included>

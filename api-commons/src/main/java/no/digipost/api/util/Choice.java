@@ -1,4 +1,3 @@
-
 package no.digipost.api.util;
 
 /**
@@ -8,23 +7,23 @@ package no.digipost.api.util;
  */
 public final class Choice<T> {
 
-	public static <T> T choice(T first, T second) {
-		return choice(first, second, Converters.<T>nop());
+    private Choice() {
     }
 
-	public static <T, S> T choice(T first, S second, Converter<? super S, ? extends T> secondChoiceConverter) {
-		if (first != null && second != null) {
-			throw new IllegalArgumentException("Can only specify one of the arguments, not both. Got first arg:" + first + ", second: " + second);
-		} else if (first != null) {
-			return first;
-		} else if (second != null) {
-			return secondChoiceConverter.apply(second);
-		} else {
-			return null;
-		}
+    public static <T> T choice(T first, T second) {
+        return choice(first, second, Converters.<T>nop());
     }
 
-	private Choice() {
-	}
+    public static <T, S> T choice(T first, S second, Converter<? super S, ? extends T> secondChoiceConverter) {
+        if (first != null && second != null) {
+            throw new IllegalArgumentException("Can only specify one of the arguments, not both. Got first arg:" + first + ", second: " + second);
+        } else if (first != null) {
+            return first;
+        } else if (second != null) {
+            return secondChoiceConverter.apply(second);
+        } else {
+            return null;
+        }
+    }
 
 }

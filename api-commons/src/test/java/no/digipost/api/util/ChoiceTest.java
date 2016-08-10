@@ -1,4 +1,3 @@
-
 package no.digipost.api.util;
 
 import org.joda.time.DateTime;
@@ -15,36 +14,36 @@ import static org.junit.Assert.assertThat;
 
 public class ChoiceTest {
 
-	@Rule
-	public final ExpectedException expectedException = ExpectedException.none();
+    @Rule
+    public final ExpectedException expectedException = ExpectedException.none();
 
-	@Test
-	public void throwsExceptionIfBothAreNonNull() {
-		expectedException.expect(IllegalArgumentException.class);
-		choice(DateTime.now(), LocalDate.now());
-	}
-
-
-	@Test
-	public void bothNullsYieldsDateTimeAsNull() {
-		assertThat(choice(null, null), nullValue());
-	}
+    @Test
+    public void throwsExceptionIfBothAreNonNull() {
+        expectedException.expect(IllegalArgumentException.class);
+        choice(DateTime.now(), LocalDate.now());
+    }
 
 
-	@Test
-	public void firstInstancePresent() {
-		assertThat(choice("a", null), is("a"));
-	}
-
-	@Test
-	public void secondInstancePresent() {
-		assertThat(choice(null, "a"), is("a"));
-	}
+    @Test
+    public void bothNullsYieldsDateTimeAsNull() {
+        assertThat(choice(null, null), nullValue());
+    }
 
 
-	@Test
-	public void convertSecondInstance() {
-		LocalDate today = LocalDate.now();
-		assertThat(choice((DateTime) null, today, toDateTimeAtStartOfDay), is(today.toDateTimeAtStartOfDay()));
-	}
+    @Test
+    public void firstInstancePresent() {
+        assertThat(choice("a", null), is("a"));
+    }
+
+    @Test
+    public void secondInstancePresent() {
+        assertThat(choice(null, "a"), is("a"));
+    }
+
+
+    @Test
+    public void convertSecondInstance() {
+        LocalDate today = LocalDate.now();
+        assertThat(choice((DateTime) null, today, toDateTimeAtStartOfDay), is(today.toDateTimeAtStartOfDay()));
+    }
 }

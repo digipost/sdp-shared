@@ -1,4 +1,3 @@
-
 package no.digipost.api.interceptors;
 
 import no.digipost.api.config.TransaksjonsLogg;
@@ -15,49 +14,49 @@ import static no.digipost.api.config.TransaksjonsLogg.Retning.INNKOMMENDE;
 
 public class TransactionLogClientInterceptor implements ClientInterceptor {
 
-	private static final Logger LOG = LoggerFactory.getLogger(TransactionLogClientInterceptor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TransactionLogClientInterceptor.class);
 
-	private TransactionLog transactionLog;
+    private TransactionLog transactionLog;
 
-	public TransactionLogClientInterceptor(final Jaxb2Marshaller jaxb2Marshaller) {
-		this.transactionLog = new TransactionLog(jaxb2Marshaller);
-	}
+    public TransactionLogClientInterceptor(final Jaxb2Marshaller jaxb2Marshaller) {
+        this.transactionLog = new TransactionLog(jaxb2Marshaller);
+    }
 
-	@Override
-	public boolean handleRequest(final MessageContext messageContext) throws WebServiceClientException {
-		try {
-			transactionLog.handleOutgoing(EbmsContext.from(messageContext), (SoapMessage) messageContext.getRequest(), "sender");
-		} catch (Exception ex) {
-			LOG.warn("Feil under klienttransaksjonslogging i handleRequest", ex);
-		}
-		return true;
-	}
+    @Override
+    public boolean handleRequest(final MessageContext messageContext) throws WebServiceClientException {
+        try {
+            transactionLog.handleOutgoing(EbmsContext.from(messageContext), (SoapMessage) messageContext.getRequest(), "sender");
+        } catch (Exception ex) {
+            LOG.warn("Feil under klienttransaksjonslogging i handleRequest", ex);
+        }
+        return true;
+    }
 
-	@Override
-	public boolean handleResponse(final MessageContext messageContext) throws WebServiceClientException {
-		try {
-			transactionLog.handleIncoming(EbmsContext.from(messageContext), (SoapMessage) messageContext.getResponse(), "sender");
-		} catch (Exception ex) {
-			LOG.warn("Feil under klienttransaksjonslogging i handleResponse", ex);
-		}
-		return true;
-	}
+    @Override
+    public boolean handleResponse(final MessageContext messageContext) throws WebServiceClientException {
+        try {
+            transactionLog.handleIncoming(EbmsContext.from(messageContext), (SoapMessage) messageContext.getResponse(), "sender");
+        } catch (Exception ex) {
+            LOG.warn("Feil under klienttransaksjonslogging i handleResponse", ex);
+        }
+        return true;
+    }
 
-	@Override
-	public boolean handleFault(final MessageContext messageContext) throws WebServiceClientException {
-		try {
-			transactionLog.handleFault(INNKOMMENDE, EbmsContext.from(messageContext), (SoapMessage) messageContext.getResponse(), "sender");
-		} catch (Exception ex) {
-			LOG.warn("Feil under klienttransaksjonslogging i handleFault", ex);
-		}
-		return true;
-	}
+    @Override
+    public boolean handleFault(final MessageContext messageContext) throws WebServiceClientException {
+        try {
+            transactionLog.handleFault(INNKOMMENDE, EbmsContext.from(messageContext), (SoapMessage) messageContext.getResponse(), "sender");
+        } catch (Exception ex) {
+            LOG.warn("Feil under klienttransaksjonslogging i handleFault", ex);
+        }
+        return true;
+    }
 
-	@Override
-	public void afterCompletion(final MessageContext messageContext, final Exception ex) throws WebServiceClientException {
-	}
+    @Override
+    public void afterCompletion(final MessageContext messageContext, final Exception ex) throws WebServiceClientException {
+    }
 
-	public void setTransaksjonslogg(TransaksjonsLogg transaksjonslogg) {
-		this.transactionLog.setTransaksjonslogg(transaksjonslogg);
-	}
+    public void setTransaksjonslogg(TransaksjonsLogg transaksjonslogg) {
+        this.transactionLog.setTransaksjonslogg(transaksjonslogg);
+    }
 }

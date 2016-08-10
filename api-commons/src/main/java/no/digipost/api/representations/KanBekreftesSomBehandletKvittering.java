@@ -1,10 +1,9 @@
-
 package no.digipost.api.representations;
 
 public interface KanBekreftesSomBehandletKvittering {
 
-	String getMeldingsId();
+    String getMeldingsId();
 
-	KvitteringsReferanse getReferanseTilMeldingSomKvitteres();
+    KvitteringsReferanse getReferanseTilMeldingSomKvitteres();
 
 }

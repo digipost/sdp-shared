@@ -1,10 +1,9 @@
-
 package no.digipost.api.interceptors.steps;
 
 import no.digipost.api.representations.EbmsContext;
+import no.digipost.api.representations.EbmsProcessingStep;
 import no.digipost.api.xml.Constants;
 import no.digipost.api.xml.Marshalling;
-import no.digipost.api.representations.EbmsProcessingStep;
 import org.joda.time.DateTime;
 import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.MessagePartNRInformation;
 import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.NonRepudiationInformation;
@@ -23,33 +22,33 @@ import java.util.UUID;
 
 public class AddReferencesStep implements EbmsProcessingStep {
 
-	public final Collection<Reference> references;
-	private final Jaxb2Marshaller jaxb2Marshaller;
-	private final String messageId;
+    public final Collection<Reference> references;
+    private final Jaxb2Marshaller jaxb2Marshaller;
+    private final String messageId;
 
-	public AddReferencesStep(final Jaxb2Marshaller jaxb2Marshaller, final String messageId, final Collection<Reference> references) {
-		this.jaxb2Marshaller = jaxb2Marshaller;
-		this.messageId = messageId;
-		this.references = references == null ? new ArrayList<Reference>() : references;
-	}
+    public AddReferencesStep(final Jaxb2Marshaller jaxb2Marshaller, final String messageId, final Collection<Reference> references) {
+        this.jaxb2Marshaller = jaxb2Marshaller;
+        this.messageId = messageId;
+        this.references = references == null ? new ArrayList<Reference>() : references;
+    }
 
-	@Override
-	public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SoapMessage soapMessage) {
-		List<MessagePartNRInformation> nrInfos = new ArrayList<MessagePartNRInformation>();
-		for (Reference ref : references) {
-			nrInfos.add(new MessagePartNRInformation().withReference(ref));
-		}
+    @Override
+    public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SoapMessage soapMessage) {
+        List<MessagePartNRInformation> nrInfos = new ArrayList<MessagePartNRInformation>();
+        for (Reference ref : references) {
+            nrInfos.add(new MessagePartNRInformation().withReference(ref));
+        }
 
-		Receipt receipt = new Receipt()
-				.withAnies(new NonRepudiationInformation()
-						.withMessagePartNRInformations(nrInfos));
-		SignalMessage signalMessage = new SignalMessage()
-				.withMessageInfo(new MessageInfo(
-						DateTime.now(),
-						UUID.randomUUID().toString(),
-						messageId))
-				.withReceipt(receipt);
-		Marshalling.marshal(jaxb2Marshaller, ebmsMessaging, Constants.SIGNAL_MESSAGE_QNAME, signalMessage);
-	}
+        Receipt receipt = new Receipt()
+                .withAnies(new NonRepudiationInformation()
+                        .withMessagePartNRInformations(nrInfos));
+        SignalMessage signalMessage = new SignalMessage()
+                .withMessageInfo(new MessageInfo(
+                        DateTime.now(),
+                        UUID.randomUUID().toString(),
+                        messageId))
+                .withReceipt(receipt);
+        Marshalling.marshal(jaxb2Marshaller, ebmsMessaging, Constants.SIGNAL_MESSAGE_QNAME, signalMessage);
+    }
 
 }

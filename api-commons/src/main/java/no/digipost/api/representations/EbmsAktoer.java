@@ -1,4 +1,3 @@
-
 package no.digipost.api.representations;
 
 import no.digipost.api.PMode;
@@ -7,73 +6,72 @@ import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.To;
 
 public class EbmsAktoer {
 
-	public enum Rolle {
-		AVSENDER(PMode.ROLE_AVSENDER),
-		MELDINGSFORMIDLER(PMode.ROLE_MELDINGSFORMIDLER),
-		POSTKASSE(PMode.ROLE_POSTKASSE);
+    public final Organisasjonsnummer orgnr;
+    public final Rolle rolle;
+    public EbmsAktoer(final Organisasjonsnummer orgnr, final Rolle rolle) {
+        this.orgnr = orgnr;
+        this.rolle = rolle;
+    }
 
-		public final String urn;
+    public static EbmsAktoer meldingsformidler(final String orgnr) {
+        return meldingsformidler(Organisasjonsnummer.of(orgnr));
+    }
 
-		private Rolle(final String urn) {
-			this.urn = urn;
-		}
+    public static EbmsAktoer meldingsformidler(final Organisasjonsnummer orgnr) {
+        return new EbmsAktoer(orgnr, Rolle.MELDINGSFORMIDLER);
+    }
 
-		public static Rolle parse(final String urn) {
-			for (Rolle r : Rolle.values()) {
-				if (r.urn.equals(urn)) {
-					return r;
-				}
-			}
-			throw new IllegalArgumentException("Invalid role:" + urn);
-		}
-	}
+    public static EbmsAktoer avsender(final String orgnr) {
+        return avsender(Organisasjonsnummer.of(orgnr));
+    }
 
-	public final Organisasjonsnummer orgnr;
-	public final Rolle rolle;
+    public static EbmsAktoer avsender(final Organisasjonsnummer orgnr) {
+        return new EbmsAktoer(orgnr, Rolle.AVSENDER);
+    }
 
-	public EbmsAktoer(final Organisasjonsnummer orgnr, final Rolle rolle) {
-		this.orgnr = orgnr;
-		this.rolle = rolle;
-	}
+    public static EbmsAktoer postkasse(final String orgnr) {
+        return postkasse(Organisasjonsnummer.of(orgnr));
+    }
 
-	public static EbmsAktoer meldingsformidler(final String orgnr) {
-		return meldingsformidler(Organisasjonsnummer.of(orgnr));
-	}
+    public static EbmsAktoer postkasse(final Organisasjonsnummer orgnr) {
+        return new EbmsAktoer(orgnr, Rolle.POSTKASSE);
+    }
 
-	public static EbmsAktoer meldingsformidler(final Organisasjonsnummer orgnr) {
-		return new EbmsAktoer(orgnr, Rolle.MELDINGSFORMIDLER);
-	}
+    public static EbmsAktoer from(final From from) {
+        String id = from.getPartyIds().get(0).getValue();
+        return create(id, from.getRole());
+    }
 
-	public static EbmsAktoer avsender(final String orgnr) {
-		return avsender(Organisasjonsnummer.of(orgnr));
-	}
+    public static EbmsAktoer from(final To to) {
+        String id = to.getPartyIds().get(0).getValue();
+        return create(id, to.getRole());
+    }
 
-	public static EbmsAktoer avsender(final Organisasjonsnummer orgnr) {
-		return new EbmsAktoer(orgnr, Rolle.AVSENDER);
-	}
+    private static EbmsAktoer create(final String id, final String role) {
+        Rolle rolle = Rolle.parse(role);
+        Organisasjonsnummer nummer = Organisasjonsnummer.of(id);
+        return new EbmsAktoer(nummer, rolle);
+    }
 
-	public static EbmsAktoer postkasse(final String orgnr) {
-		return postkasse(Organisasjonsnummer.of(orgnr));
-	}
+    public enum Rolle {
+        AVSENDER(PMode.ROLE_AVSENDER),
+        MELDINGSFORMIDLER(PMode.ROLE_MELDINGSFORMIDLER),
+        POSTKASSE(PMode.ROLE_POSTKASSE);
 
-	public static EbmsAktoer postkasse(final Organisasjonsnummer orgnr) {
-		return new EbmsAktoer(orgnr, Rolle.POSTKASSE);
-	}
+        public final String urn;
 
-	public static EbmsAktoer from(final From from) {
-		String id = from.getPartyIds().get(0).getValue();
-		return create(id, from.getRole());
-	}
+        private Rolle(final String urn) {
+            this.urn = urn;
+        }
 
-	public static EbmsAktoer from(final To to) {
-		String id = to.getPartyIds().get(0).getValue();
-		return create(id, to.getRole());
-	}
-
-	private static EbmsAktoer create(final String id, final String role) {
-		Rolle rolle = Rolle.parse(role);
-		Organisasjonsnummer nummer = Organisasjonsnummer.of(id);
-		return new EbmsAktoer(nummer, rolle);
-	}
+        public static Rolle parse(final String urn) {
+            for (Rolle r : Rolle.values()) {
+                if (r.urn.equals(urn)) {
+                    return r;
+                }
+            }
+            throw new IllegalArgumentException("Invalid role:" + urn);
+        }
+    }
 
 }

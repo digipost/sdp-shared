@@ -1,4 +1,3 @@
-
 package no.digipost.api;
 
 import no.digipost.api.representations.EbmsAktoer;
@@ -10,27 +9,29 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 
 public class EbmsEndpointUriBuilderTest {
 
-	@Test
-	public void meldingsformidlerUriLeggerTilDatabehandlerOgAvsenderOrgnrTilBaseUri() {
-	    Organisasjonsnummer databehandler = Organisasjonsnummer.of("984661185");
-	    Organisasjonsnummer avsender = Organisasjonsnummer.of("988015814");
-	    List<String> identicalMfUris = Stream.of("http://mf.example.com/ebms", "http://mf.example.com/ebms/")
-	            .map(EbmsEndpointUriBuilder::meldingsformidlerUri)
-	            .map(builder -> builder.build(EbmsAktoer.avsender(databehandler), EbmsAktoer.avsender(avsender)))
-	            .map(Object::toString)
-	            .collect(toList());
+    @Test
+    public void meldingsformidlerUriLeggerTilDatabehandlerOgAvsenderOrgnrTilBaseUri() {
+        Organisasjonsnummer databehandler = Organisasjonsnummer.of("984661185");
+        Organisasjonsnummer avsender = Organisasjonsnummer.of("988015814");
+        List<String> identicalMfUris = Stream.of("http://mf.example.com/ebms", "http://mf.example.com/ebms/")
+                .map(EbmsEndpointUriBuilder::meldingsformidlerUri)
+                .map(builder -> builder.build(EbmsAktoer.avsender(databehandler), EbmsAktoer.avsender(avsender)))
+                .map(Object::toString)
+                .collect(toList());
 
-	    assertThat(identicalMfUris, everyItem(is("http://mf.example.com/ebms/" + databehandler.getOrganisasjonsnummerMedLandkode() + "/" + avsender.getOrganisasjonsnummerMedLandkode())));
-	    assertThat(identicalMfUris, hasSize(2));
-	}
+        assertThat(identicalMfUris, everyItem(is("http://mf.example.com/ebms/" + databehandler.getOrganisasjonsnummerMedLandkode() + "/" + avsender.getOrganisasjonsnummerMedLandkode())));
+        assertThat(identicalMfUris, hasSize(2));
+    }
 
-	@Test
+    @Test
     public void statiskUriVilAlltidReturnereUrienDenErInitialisertMed() {
         Organisasjonsnummer databehandler = Organisasjonsnummer.of("984661185");
         Organisasjonsnummer avsender = Organisasjonsnummer.of("988015814");

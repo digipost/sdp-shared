@@ -1,4 +1,3 @@
-
 package no.digipost.api.handlers;
 
 import no.digipost.api.exceptions.MessageSenderIOException;
@@ -16,25 +15,25 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class EbmsContextAwareWebServiceTemplateTest {
 
-	@Mock
-	private WebServiceMessage requestMock;
+    @Mock
+    private WebServiceMessage requestMock;
 
-	@Mock
-	private HttpComponentsConnection connectionMock;
+    @Mock
+    private HttpComponentsConnection connectionMock;
 
-	@Mock
-	private HttpResponse mockResponse;
+    @Mock
+    private HttpResponse mockResponse;
 
-	@Before
-	public void setUp() {
-		initMocks(this);
-	}
+    @Before
+    public void setUp() {
+        initMocks(this);
+    }
 
-	@Test(expected = MessageSenderIOException.class)
-	public void skal_ikke_feile_selv_om_entity_mangler() throws IOException {
-		EbmsContextAwareWebServiceTemplate template = new EbmsContextAwareWebServiceTemplate(null, null);
-		when(connectionMock.getHttpResponse()).thenReturn(mockResponse);
-		template.handleError(connectionMock, requestMock);
-	}
+    @Test(expected = MessageSenderIOException.class)
+    public void skal_ikke_feile_selv_om_entity_mangler() throws IOException {
+        EbmsContextAwareWebServiceTemplate template = new EbmsContextAwareWebServiceTemplate(null, null);
+        when(connectionMock.getHttpResponse()).thenReturn(mockResponse);
+        template.handleError(connectionMock, requestMock);
+    }
 
 }

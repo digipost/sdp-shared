@@ -31,8 +31,6 @@ public interface EbmsEndpointUriBuilder {
     URI build(EbmsAktoer tekniskAvsender, EbmsAktoer avsender);
 
 
-
-
     final class StatiskUri implements EbmsEndpointUriBuilder {
 
         private URI uri;

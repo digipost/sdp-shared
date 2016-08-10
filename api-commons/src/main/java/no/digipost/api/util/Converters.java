@@ -1,18 +1,3 @@
-/**
- * Copyright (C) Posten Norge AS
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package no.digipost.api.util;
 
 import org.joda.time.DateTime;
@@ -21,35 +6,35 @@ import org.joda.time.LocalDate;
 
 public final class Converters {
 
-	@SuppressWarnings("rawtypes")
-    private static final Converter NOP = new Converter() {
-		@Override
-        public Object apply(Object value) {
-			return value;
+    public static final Converter<LocalDate, DateTime> toDateTimeAtStartOfDay = new Converter<LocalDate, DateTime>() {
+        @Override
+        public DateTime apply(LocalDate date) {
+            return date.toDateTimeAtStartOfDay();
         }
-	};
+    };
+    @SuppressWarnings("rawtypes")
+    private static final Converter NOP = new Converter() {
+        @Override
+        public Object apply(Object value) {
+            return value;
+        }
+    };
 
-	@SuppressWarnings("unchecked")
+    private Converters() {
+    }
+
+    @SuppressWarnings("unchecked")
     public static <T> Converter<T, T> nop() {
-		return NOP;
-	}
+        return NOP;
+    }
 
-	public static final Converter<LocalDate, DateTime> toDateTimeAfterStartOfDay(final Duration duration) {
-		return new Converter<LocalDate, DateTime>() {
-        	@Override
-        	public DateTime apply(LocalDate date) {
-        		return date.toDateTimeAtStartOfDay().plus(duration);
-        	}
-    	};
-	}
-
-	public static final Converter<LocalDate, DateTime> toDateTimeAtStartOfDay = new Converter<LocalDate, DateTime>() {
-    	@Override
-    	public DateTime apply(LocalDate date) {
-    		return date.toDateTimeAtStartOfDay();
-    	}
-	};
-
-	private Converters() {}
+    public static final Converter<LocalDate, DateTime> toDateTimeAfterStartOfDay(final Duration duration) {
+        return new Converter<LocalDate, DateTime>() {
+            @Override
+            public DateTime apply(LocalDate date) {
+                return date.toDateTimeAtStartOfDay().plus(duration);
+            }
+        };
+    }
 
 }

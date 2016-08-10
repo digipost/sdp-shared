@@ -1,18 +1,3 @@
-/**
- * Copyright (C) Posten Norge AS
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package no.digipost.api.exceptions;
 
 import no.digipost.api.xml.Marshalling;
@@ -37,49 +22,49 @@ import static no.digipost.api.xml.Constants.MESSAGING_QNAME;
 
 public class MessageSenderFaultMessageResolver implements FaultMessageResolver {
 
-	private static final Logger LOG = LoggerFactory.getLogger(MessageSenderFaultMessageResolver.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MessageSenderFaultMessageResolver.class);
 
-	private Jaxb2Marshaller marshaller;
+    private Jaxb2Marshaller marshaller;
 
-	public MessageSenderFaultMessageResolver(Jaxb2Marshaller marshaller) {
-		this.marshaller = marshaller;
-	}
+    public MessageSenderFaultMessageResolver(Jaxb2Marshaller marshaller) {
+        this.marshaller = marshaller;
+    }
 
-	@Override
-	public void resolveFault(WebServiceMessage message) throws IOException {
+    @Override
+    public void resolveFault(WebServiceMessage message) throws IOException {
 
-		SoapMessage soapMessage = (SoapMessage) message;
+        SoapMessage soapMessage = (SoapMessage) message;
 
-		Iterator<SoapHeaderElement> soapHeaderElementIterator = soapMessage.getSoapHeader().examineHeaderElements(MESSAGING_QNAME);
-		if (!soapHeaderElementIterator.hasNext()) {
-			// SOAP fault without ebMS header.
-			throw new MessageSenderSoapFaultException(soapMessage);
-		}
+        Iterator<SoapHeaderElement> soapHeaderElementIterator = soapMessage.getSoapHeader().examineHeaderElements(MESSAGING_QNAME);
+        if (!soapHeaderElementIterator.hasNext()) {
+            // SOAP fault without ebMS header.
+            throw new MessageSenderSoapFaultException(soapMessage);
+        }
 
-		Messaging messaging = Marshalling.unmarshal(marshaller, soapHeaderElementIterator.next(), Messaging.class);
-		List<Error> errors = new ArrayList<Error>();
-		for (SignalMessage signalMessage : messaging.getSignalMessages()) {
-			errors.addAll(signalMessage.getErrors());
-		}
+        Messaging messaging = Marshalling.unmarshal(marshaller, soapHeaderElementIterator.next(), Messaging.class);
+        List<Error> errors = new ArrayList<Error>();
+        for (SignalMessage signalMessage : messaging.getSignalMessages()) {
+            errors.addAll(signalMessage.getErrors());
+        }
 
-		if (errors.isEmpty()) {
-			LOG.warn("Got no ebMS error in SOAP fault response that contains ebMS Messaging header.");
-			throw new MessageSenderSoapFaultException(soapMessage);
-		}
+        if (errors.isEmpty()) {
+            LOG.warn("Got no ebMS error in SOAP fault response that contains ebMS Messaging header.");
+            throw new MessageSenderSoapFaultException(soapMessage);
+        }
 
-		if (errors.size() > 1) {
-			LOG.warn("Got more than one ebMS error in response. Throwing exception with the first one.");
-		}
+        if (errors.size() > 1) {
+            LOG.warn("Got more than one ebMS error in response. Throwing exception with the first one.");
+        }
 
-		Error error = errors.get(0);
+        Error error = errors.get(0);
 
-		if (isOtherError(error)) {
-			throw new MessageSenderOtherEbmsErrorException(soapMessage, error);
-		} else {
-			throw new MessageSenderEbmsErrorException(soapMessage, error);
-		}
+        if (isOtherError(error)) {
+            throw new MessageSenderOtherEbmsErrorException(soapMessage, error);
+        } else {
+            throw new MessageSenderEbmsErrorException(soapMessage, error);
+        }
 
-	}
+    }
 
 
 }

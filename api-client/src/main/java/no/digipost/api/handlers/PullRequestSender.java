@@ -1,18 +1,3 @@
-/**
- * Copyright (C) Posten Norge AS
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package no.digipost.api.handlers;
 
 import no.digipost.api.interceptors.steps.AddReferencesStep;
@@ -39,38 +24,38 @@ import java.util.List;
 
 public class PullRequestSender extends EbmsContextAware implements WebServiceMessageCallback {
 
-	private final EbmsPullRequest pullRequest;
-	private final Jaxb2Marshaller marshaller;
-	private final KanBekreftesSomBehandletKvittering tidligereKvitteringSomSkalBekreftes;
+    private final EbmsPullRequest pullRequest;
+    private final Jaxb2Marshaller marshaller;
+    private final KanBekreftesSomBehandletKvittering tidligereKvitteringSomSkalBekreftes;
 
-	public PullRequestSender(final EbmsPullRequest pullRequest, final Jaxb2Marshaller marshaller, final KanBekreftesSomBehandletKvittering tidligereKvitteringSomSkalBekreftes) {
-		this.pullRequest = pullRequest;
-		this.marshaller = marshaller;
-		this.tidligereKvitteringSomSkalBekreftes = tidligereKvitteringSomSkalBekreftes;
-	}
+    public PullRequestSender(final EbmsPullRequest pullRequest, final Jaxb2Marshaller marshaller, final KanBekreftesSomBehandletKvittering tidligereKvitteringSomSkalBekreftes) {
+        this.pullRequest = pullRequest;
+        this.marshaller = marshaller;
+        this.tidligereKvitteringSomSkalBekreftes = tidligereKvitteringSomSkalBekreftes;
+    }
 
-	@Override
-	public void doWithMessage(final WebServiceMessage message) throws IOException, TransformerException {
-		if (tidligereKvitteringSomSkalBekreftes != null) {
-			List<Reference> referenceToMessageToBeConfirmed = new ArrayList<Reference>();
-			referenceToMessageToBeConfirmed.add(tidligereKvitteringSomSkalBekreftes.getReferanseTilMeldingSomKvitteres().getUnmarshalled());
+    @Override
+    public void doWithMessage(final WebServiceMessage message) throws IOException, TransformerException {
+        if (tidligereKvitteringSomSkalBekreftes != null) {
+            List<Reference> referenceToMessageToBeConfirmed = new ArrayList<Reference>();
+            referenceToMessageToBeConfirmed.add(tidligereKvitteringSomSkalBekreftes.getReferanseTilMeldingSomKvitteres().getUnmarshalled());
 
-			ebmsContext.addRequestStep(new AddReferencesStep(marshaller, tidligereKvitteringSomSkalBekreftes.getMeldingsId(), referenceToMessageToBeConfirmed));
-		}
+            ebmsContext.addRequestStep(new AddReferencesStep(marshaller, tidligereKvitteringSomSkalBekreftes.getMeldingsId(), referenceToMessageToBeConfirmed));
+        }
 
-		ebmsContext.addRequestStep(new EbmsProcessingStep() {
+        ebmsContext.addRequestStep(new EbmsProcessingStep() {
 
-			@Override
-			public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SoapMessage soapMessage) {
-				Mpc mpc = new Mpc(pullRequest.prioritet, pullRequest.mpcId);
-				SignalMessage signalMessage = new SignalMessage()
-						.withMessageInfo(pullRequest.createMessageInfo())
-						.withPullRequest(new PullRequest().withMpc(mpc.toString())
-						);
-				Marshalling.marshal(marshaller, ebmsMessaging, Constants.SIGNAL_MESSAGE_QNAME, signalMessage);
-			}
+            @Override
+            public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SoapMessage soapMessage) {
+                Mpc mpc = new Mpc(pullRequest.prioritet, pullRequest.mpcId);
+                SignalMessage signalMessage = new SignalMessage()
+                        .withMessageInfo(pullRequest.createMessageInfo())
+                        .withPullRequest(new PullRequest().withMpc(mpc.toString())
+                        );
+                Marshalling.marshal(marshaller, ebmsMessaging, Constants.SIGNAL_MESSAGE_QNAME, signalMessage);
+            }
 
-		});
-	}
+        });
+    }
 
 }

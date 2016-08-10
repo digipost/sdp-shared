@@ -1,17 +1,26 @@
 target
 .project
-.settings
+
+#Eclipse settings
+.settings/*
+
+#Idea settings
+.idea/*
+
+
 .classpath
 *.iml
 .vagrant
 .metadata
 .DS_Store
 .sonatype
-.idea/*
-!.idea/codeStyleSettings.xml
 
 .gradle/
 *.gradle
 build/
 gradle/
 gradlew
+
+# ... except these
+!.idea/codeStyleSettings.xml
+!.settings/org.eclipse.jdt.ui.prefs

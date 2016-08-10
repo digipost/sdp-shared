@@ -1,18 +1,3 @@
-/**
- * Copyright (C) Posten Norge AS
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package no.digipost.api.handlers;
 
 import no.digipost.api.exceptions.MessageSenderIOException;
@@ -36,47 +21,47 @@ import java.util.Optional;
 
 public class EbmsContextAwareWebServiceTemplate extends WebServiceTemplate {
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-	private final EbmsAktoer ebmsAktoerRemoteParty;
+    private final EbmsAktoer ebmsAktoerRemoteParty;
 
-	public EbmsContextAwareWebServiceTemplate(final SaajSoapMessageFactory factory, final EbmsAktoer ebmsAktoerRemoteParty) {
-		super(factory);
-		this.ebmsAktoerRemoteParty = ebmsAktoerRemoteParty;
-	}
+    public EbmsContextAwareWebServiceTemplate(final SaajSoapMessageFactory factory, final EbmsAktoer ebmsAktoerRemoteParty) {
+        super(factory);
+        this.ebmsAktoerRemoteParty = ebmsAktoerRemoteParty;
+    }
 
-	@Override
-	protected <T> T doSendAndReceive(final MessageContext messageContext, final WebServiceConnection connection,
-	                                 final WebServiceMessageCallback requestCallback, final WebServiceMessageExtractor<T> responseExtractor) throws IOException {
-		EbmsContext ebmsContext = EbmsContext.from(messageContext);
-		ebmsContext.remoteParty = Optional.of(ebmsAktoerRemoteParty.orgnr);
-		if (requestCallback instanceof EbmsContextAware) {
-			((EbmsContextAware) requestCallback).setContext(ebmsContext);
-		}
-		if (responseExtractor instanceof EbmsContextAware) {
-			((EbmsContextAware) responseExtractor).setContext(ebmsContext);
-		}
-		try {
-			return super.doSendAndReceive(messageContext, connection, requestCallback, responseExtractor);
-		} catch (IOException e) {
-			throw new MessageSenderIOException(e.getMessage(), e);
-		}
-	}
+    @Override
+    protected <T> T doSendAndReceive(final MessageContext messageContext, final WebServiceConnection connection,
+                                     final WebServiceMessageCallback requestCallback, final WebServiceMessageExtractor<T> responseExtractor) throws IOException {
+        EbmsContext ebmsContext = EbmsContext.from(messageContext);
+        ebmsContext.remoteParty = Optional.of(ebmsAktoerRemoteParty.orgnr);
+        if (requestCallback instanceof EbmsContextAware) {
+            ((EbmsContextAware) requestCallback).setContext(ebmsContext);
+        }
+        if (responseExtractor instanceof EbmsContextAware) {
+            ((EbmsContextAware) responseExtractor).setContext(ebmsContext);
+        }
+        try {
+            return super.doSendAndReceive(messageContext, connection, requestCallback, responseExtractor);
+        } catch (IOException e) {
+            throw new MessageSenderIOException(e.getMessage(), e);
+        }
+    }
 
-	@Override
-	protected Object handleError(WebServiceConnection connection, WebServiceMessage request) throws IOException {
-		if (connection instanceof HttpComponentsConnection) {
-			HttpComponentsConnection componentsConnection = (HttpComponentsConnection) connection;
-			HttpEntity entity = componentsConnection.getHttpResponse().getEntity();
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			if (entity != null) {
-				entity.writeTo(baos);
-				log.warn("Received erroneous response from server: " + baos.toString());
-			} else {
-				log.warn("Received erroneous response (no body)");
-			}
-		}
-		throw new MessageSenderIOException(connection.getErrorMessage(), null);
-	}
+    @Override
+    protected Object handleError(WebServiceConnection connection, WebServiceMessage request) throws IOException {
+        if (connection instanceof HttpComponentsConnection) {
+            HttpComponentsConnection componentsConnection = (HttpComponentsConnection) connection;
+            HttpEntity entity = componentsConnection.getHttpResponse().getEntity();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            if (entity != null) {
+                entity.writeTo(baos);
+                log.warn("Received erroneous response from server: " + baos.toString());
+            } else {
+                log.warn("Received erroneous response (no body)");
+            }
+        }
+        throw new MessageSenderIOException(connection.getErrorMessage(), null);
+    }
 
 }

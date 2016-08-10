@@ -1,26 +1,30 @@
-/**
- * Copyright (C) Posten Norge AS
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package no.digipost.api;
 
 
 import no.digipost.api.exceptions.MessageSenderFaultMessageResolver;
-import no.digipost.api.handlers.*;
-import no.digipost.api.interceptors.*;
+import no.digipost.api.handlers.ApplikasjonsKvitteringReceiver;
+import no.digipost.api.handlers.BekreftelseSender;
+import no.digipost.api.handlers.EbmsContextAwareWebServiceTemplate;
+import no.digipost.api.handlers.EmptyReceiver;
+import no.digipost.api.handlers.ForsendelseSender;
+import no.digipost.api.handlers.KvitteringSender;
+import no.digipost.api.handlers.PullRequestSender;
+import no.digipost.api.handlers.TransportKvitteringReceiver;
+import no.digipost.api.interceptors.EbmsClientInterceptor;
+import no.digipost.api.interceptors.EbmsReferenceValidatorInterceptor;
+import no.digipost.api.interceptors.KeyStoreInfo;
+import no.digipost.api.interceptors.RemoveContentLengthInterceptor;
+import no.digipost.api.interceptors.SoapLog;
 import no.digipost.api.interceptors.SoapLog.LogLevel;
-import no.digipost.api.representations.*;
+import no.digipost.api.interceptors.SoapLogClientInterceptor;
+import no.digipost.api.interceptors.TransactionLogClientInterceptor;
+import no.digipost.api.interceptors.WsSecurityInterceptor;
+import no.digipost.api.representations.EbmsAktoer;
+import no.digipost.api.representations.EbmsApplikasjonsKvittering;
+import no.digipost.api.representations.EbmsForsendelse;
+import no.digipost.api.representations.EbmsPullRequest;
+import no.digipost.api.representations.KanBekreftesSomBehandletKvittering;
+import no.digipost.api.representations.TransportKvittering;
 import no.digipost.api.xml.Marshalling;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequestInterceptor;
@@ -43,7 +47,6 @@ import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +55,19 @@ import static java.util.Arrays.asList;
 
 
 public interface MessageSender {
+
+    public static Builder create(EbmsEndpointUriBuilder uri, KeyStoreInfo keystoreInfo, EbmsAktoer databehandler,
+                                 EbmsAktoer tekniskMottaker) {
+        WsSecurityInterceptor wssecMelding = new WsSecurityInterceptor(keystoreInfo, null);
+        wssecMelding.afterPropertiesSet();
+
+        return create(uri, keystoreInfo, wssecMelding, databehandler, tekniskMottaker);
+    }
+
+    public static Builder create(EbmsEndpointUriBuilder uri, KeyStoreInfo keystoreInfo, WsSecurityInterceptor wsSecInterceptor,
+                                 EbmsAktoer databehandler, EbmsAktoer tekniskMottaker) {
+        return new Builder(uri, databehandler, tekniskMottaker, wsSecInterceptor, keystoreInfo);
+    }
 
     TransportKvittering send(EbmsForsendelse forsendelse);
 
@@ -69,17 +85,9 @@ public interface MessageSender {
 
     Jaxb2Marshaller getMarshaller();
 
-    public static Builder create(EbmsEndpointUriBuilder uri, KeyStoreInfo keystoreInfo, EbmsAktoer databehandler,
-            EbmsAktoer tekniskMottaker) {
-        WsSecurityInterceptor wssecMelding = new WsSecurityInterceptor(keystoreInfo, null);
-        wssecMelding.afterPropertiesSet();
-
-        return create(uri, keystoreInfo, wssecMelding, databehandler, tekniskMottaker);
-    }
-
-    public static Builder create(EbmsEndpointUriBuilder uri, KeyStoreInfo keystoreInfo, WsSecurityInterceptor wsSecInterceptor,
-            EbmsAktoer databehandler, EbmsAktoer tekniskMottaker) {
-        return new Builder(uri, databehandler, tekniskMottaker, wsSecInterceptor, keystoreInfo);
+    @FunctionalInterface
+    public static interface ClientInterceptorWrapper {
+        ClientInterceptor wrap(ClientInterceptor clientInterceptor);
     }
 
     public static class Builder {
@@ -107,7 +115,7 @@ public interface MessageSender {
 
 
         private Builder(EbmsEndpointUriBuilder uri, EbmsAktoer databehandler, EbmsAktoer tekniskMottaker,
-                WsSecurityInterceptor wsSecurityInterceptor, KeyStoreInfo keystoreInfo) {
+                        WsSecurityInterceptor wsSecurityInterceptor, KeyStoreInfo keystoreInfo) {
             this.endpointUri = uri;
             this.databehandler = databehandler;
             this.tekniskMottaker = tekniskMottaker;
@@ -123,84 +131,101 @@ public interface MessageSender {
             return defaultMarshaller;
         }
 
+        private static void insertInterceptor(final List<ClientInterceptor> meldingInterceptors,
+                                              final InsertInterceptor insertInterceptor) {
+            for (ClientInterceptor c : meldingInterceptors) {
+                if (insertInterceptor.clazz.isAssignableFrom(c.getClass())) {
+                    meldingInterceptors.add(meldingInterceptors.indexOf(c), insertInterceptor.interceptor);
+                    return;
+                }
+            }
+            throw new IllegalArgumentException("Could not find interceptor of class " + insertInterceptor.clazz);
+        }
+
+        private static HashMap<String, Object> getMessageProperties() {
+            HashMap<String, Object> messageProperties = new HashMap<String, Object>();
+            // Removed this in order to avoid issues occurring when not using
+            // internal saaj-impl
+            // messageProperties.put("saaj.lazy.soap.body", "true");
+
+            return messageProperties;
+        }
+
+        private static WebServiceTemplate createTemplate(SaajSoapMessageFactory factory, Jaxb2Marshaller marshaller, EbmsAktoer remoteParty,
+                                                         HttpComponentsMessageSender httpSender, ClientInterceptor[] interceptors) {
+            EbmsContextAwareWebServiceTemplate template = new EbmsContextAwareWebServiceTemplate(factory, remoteParty);
+            template.setMarshaller(marshaller);
+            template.setUnmarshaller(marshaller);
+            template.setFaultMessageResolver(new MessageSenderFaultMessageResolver(marshaller));
+            template.setMessageSender(httpSender);
+            template.setInterceptors(interceptors);
+            return template;
+        }
 
         public Builder withMeldingInterceptorBefore(final Class<?> clazz, final ClientInterceptor interceptor) {
             interceptorBefore.add(new InsertInterceptor(clazz, interceptor));
             return this;
         }
 
-
         public Builder withMarshaller(final Jaxb2Marshaller marshaller) {
             this.marshaller = marshaller;
             return this;
         }
-
 
         public Builder withMaxTotal(final int maxTotal) {
             this.maxTotal = maxTotal;
             return this;
         }
 
-
         public Builder withDefaultMaxPerRoute(final int defaultMaxPerRoute) {
             this.defaultMaxPerRoute = defaultMaxPerRoute;
             return this;
         }
-
 
         public Builder withSocketTimeout(final int socketTimeout) {
             this.socketTimeout = socketTimeout;
             return this;
         }
 
-
         public Builder withConnectTimeout(final int connectTimeout) {
             this.connectTimeout = connectTimeout;
             return this;
         }
-
 
         public Builder withConnectionRequestTimeout(final int connectionRequestTimeout) {
             this.connectionRequestTimeout = connectionRequestTimeout;
             return this;
         }
 
-
         public Builder withHttpProxy(final String proxyHost, final int proxyPort) {
             httpHost = new HttpHost(proxyHost, proxyPort, "https");
             return this;
         }
-
 
         public Builder withHttpProxy(final String proxyHost, final int proxyPort, final String scheme) {
             httpHost = new HttpHost(proxyHost, proxyPort, scheme);
             return this;
         }
 
-
         public Builder withHttpRequestInterceptors(final HttpRequestInterceptor... httpRequestInterceptors) {
             this.httpRequestInterceptors.addAll(asList(httpRequestInterceptors));
             return this;
         }
-
 
         public Builder withHttpResponseInterceptors(final HttpResponseInterceptor... httpResponseInterceptors) {
             this.httpResponseInterceptors.addAll(asList(httpResponseInterceptors));
             return this;
         }
 
-
         public Builder withClientInterceptorWrapper(final ClientInterceptorWrapper clientInterceptorWrapper) {
             this.clientInterceptorWrapper = clientInterceptorWrapper;
             return this;
         }
 
-
         public Builder withMessageLogLevel(final LogLevel logLevel) {
             this.logLevel = logLevel;
             return this;
         }
-
 
         public MessageSender build() {
             if (marshaller == null) {
@@ -244,7 +269,6 @@ public interface MessageSender {
             return sender;
         }
 
-
         private HttpComponentsMessageSender getHttpComponentsMessageSender() {
             PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
             connectionManager.setMaxTotal(maxTotal);
@@ -277,40 +301,6 @@ public interface MessageSender {
             return new HttpComponentsMessageSender(client);
         }
 
-
-        private static void insertInterceptor(final List<ClientInterceptor> meldingInterceptors,
-                final InsertInterceptor insertInterceptor) {
-            for (ClientInterceptor c : meldingInterceptors) {
-                if (insertInterceptor.clazz.isAssignableFrom(c.getClass())) {
-                    meldingInterceptors.add(meldingInterceptors.indexOf(c), insertInterceptor.interceptor);
-                    return;
-                }
-            }
-            throw new IllegalArgumentException("Could not find interceptor of class " + insertInterceptor.clazz);
-        }
-
-
-        private static HashMap<String, Object> getMessageProperties() {
-            HashMap<String, Object> messageProperties = new HashMap<String, Object>();
-            // Removed this in order to avoid issues occurring when not using
-            // internal saaj-impl
-            // messageProperties.put("saaj.lazy.soap.body", "true");
-
-            return messageProperties;
-        }
-
-
-        private static WebServiceTemplate createTemplate(SaajSoapMessageFactory factory, Jaxb2Marshaller marshaller, EbmsAktoer remoteParty,
-                HttpComponentsMessageSender httpSender, ClientInterceptor[] interceptors) {
-            EbmsContextAwareWebServiceTemplate template = new EbmsContextAwareWebServiceTemplate(factory, remoteParty);
-            template.setMarshaller(marshaller);
-            template.setUnmarshaller(marshaller);
-            template.setFaultMessageResolver(new MessageSenderFaultMessageResolver(marshaller));
-            template.setMessageSender(httpSender);
-            template.setInterceptors(interceptors);
-            return template;
-        }
-
     }
 
     public static class InsertInterceptor {
@@ -325,14 +315,6 @@ public interface MessageSender {
         }
     }
 
-    @FunctionalInterface
-    public static interface ClientInterceptorWrapper {
-        ClientInterceptor wrap(ClientInterceptor clientInterceptor);
-    }
-
-
-
-
     static class DefaultMessageSender implements MessageSender {
 
         private static final Logger LOG = LoggerFactory.getLogger(DefaultMessageSender.class);
@@ -345,7 +327,9 @@ public interface MessageSender {
 
 
         protected DefaultMessageSender(final EbmsEndpointUriBuilder uri, final Jaxb2Marshaller marshaller) {
-            if (marshaller == null) { throw new AssertionError("marshaller kan ikke være null"); }
+            if (marshaller == null) {
+                throw new AssertionError("marshaller kan ikke være null");
+            }
 
             this.uri = uri;
             this.marshaller = marshaller;
@@ -362,7 +346,7 @@ public interface MessageSender {
 
         @Override
         public EbmsApplikasjonsKvittering hentKvittering(final EbmsPullRequest pullRequest,
-                final KanBekreftesSomBehandletKvittering tidligereKvitteringSomSkalBekreftes) {
+                                                         final KanBekreftesSomBehandletKvittering tidligereKvitteringSomSkalBekreftes) {
             return meldingTemplate.sendAndReceive(uri.getBaseUri().toString(),
                     new PullRequestSender(pullRequest, marshaller, tidligereKvitteringSomSkalBekreftes),
                     new ApplikasjonsKvitteringReceiver(marshaller));

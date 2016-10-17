@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>sdp-shared</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.2.1</version>
     <packaging>pom</packaging>
     <name>SDP Shared</name>
     <description>Delt kode for Sikker Digital Post</description>
@@ -13,7 +12,7 @@
         <groupId>no.digipost</groupId>
         <artifactId>digipost-open-super-pom</artifactId>
         <version>1</version>
-        <relativePath/>
+        <relativePath />
     </parent>
 
     <modules>
@@ -39,7 +38,7 @@
     <scm>
         <connection>scm:git:git@github.com:digipost/sdp-shared.git</connection>
         <developerConnection>scm:git:git@github.com:digipost/sdp-shared.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>1.2.1</tag>
     </scm>
 
     <dependencyManagement>

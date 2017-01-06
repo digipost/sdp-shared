@@ -26,7 +26,7 @@ This software includes third party software subject to the following licenses:
   JASYPT: Java Simplified Encryption under The Apache Software License, Version 2.0
   java-support under The Apache Software License, Version 2.0
   JavaMail 1.4 under The Apache Software License, Version 2.0
-  JavaMail API (no providers) under CDDL/GPLv2+CE
+  JavaMail API under CDDL/GPLv2+CE
   JAXB2 Basics - Runtime under BSD-Style License
   jaxen under The BSD 3-Clause License
   JCL 1.1.1 implemented over SLF4J under MIT License

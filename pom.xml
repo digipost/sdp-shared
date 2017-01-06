@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>sdp-shared</artifactId>
-    <version>1.2.2-SNAPSHOT</version>
+    <version>1.2.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>SDP Shared</name>
     <description>Delt kode for Sikker Digital Post</description>
@@ -209,6 +209,10 @@
                         <groupId>commons-logging</groupId>
                         <artifactId>commons-logging</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>javax.xml.stream</groupId>
+                        <artifactId>stax-api</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
 
@@ -220,8 +224,8 @@
 
             <dependency>
                 <groupId>com.sun.mail</groupId>
-                <artifactId>mailapi</artifactId>
-                <version>1.5.4</version>
+                <artifactId>javax.mail</artifactId>
+                <version>1.5.6</version>
                 <exclusions>
                     <exclusion>
                         <groupId>javax.activation</groupId>

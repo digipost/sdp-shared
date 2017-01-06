@@ -8,7 +8,7 @@
     <parent>
         <groupId>no.digipost</groupId>
         <artifactId>sdp-shared</artifactId>
-        <version>1.2.2-SNAPSHOT</version>
+        <version>1.2.3-SNAPSHOT</version>
     </parent>
 
     <dependencies>
@@ -34,20 +34,6 @@
         </dependency>
 
 
-        <!-- spring-ws depends on Sun Java Streaming XML Parser -->
-        <dependency>
-            <groupId>com.sun.xml.stream</groupId>
-            <artifactId>sjsxp</artifactId>
-            <version>1.0.2</version>
-            <scope>runtime</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>stax-api</artifactId>
-                    <groupId>javax.xml.stream</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
         <!-- SAAJ API-->
         <dependency>
             <groupId>javax.xml.soap</groupId>
@@ -67,19 +53,17 @@
                     <groupId>javax.activation</groupId>
                     <artifactId>activation</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>javax.xml.stream</groupId>
+                    <artifactId>stax-api</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
         <dependency>
             <groupId>com.sun.mail</groupId>
-            <artifactId>mailapi</artifactId>
+            <artifactId>javax.mail</artifactId>
             <scope>runtime</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.activation</groupId>
-                    <artifactId>activation</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>

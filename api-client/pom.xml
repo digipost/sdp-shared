@@ -34,20 +34,6 @@
         </dependency>
 
 
-        <!-- spring-ws depends on Sun Java Streaming XML Parser -->
-        <dependency>
-            <groupId>com.sun.xml.stream</groupId>
-            <artifactId>sjsxp</artifactId>
-            <version>1.0.2</version>
-            <scope>runtime</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>stax-api</artifactId>
-                    <groupId>javax.xml.stream</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
         <!-- SAAJ API-->
         <dependency>
             <groupId>javax.xml.soap</groupId>
@@ -66,6 +52,10 @@
                 <exclusion>
                     <groupId>javax.activation</groupId>
                     <artifactId>activation</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.xml.stream</groupId>
+                    <artifactId>stax-api</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

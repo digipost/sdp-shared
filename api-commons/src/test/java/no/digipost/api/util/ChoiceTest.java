@@ -9,7 +9,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import static no.digipost.api.util.Choice.choice;
-import static no.digipost.api.util.Converters.toDateTimeAtStartOfDay;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
@@ -46,6 +45,6 @@ public class ChoiceTest {
     @Test
     public void convertSecondInstance() {
         LocalDate today = LocalDate.now();
-        assertThat(choice((ZonedDateTime) null, today, toDateTimeAtStartOfDay), is(today.atStartOfDay(ZoneId.systemDefault())));
+        assertThat(choice((ZonedDateTime) null, today, date -> date.atStartOfDay(ZoneId.systemDefault())), is(today.atTime(0, 0, 0).atZone(ZoneId.systemDefault())));
     }
 }

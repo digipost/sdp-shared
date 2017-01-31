@@ -19,9 +19,9 @@ import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static no.digipost.api.util.Choice.choice;
-import static no.digipost.api.util.Converters.toDateTimeAfterStartOfDay;
 import static org.apache.commons.lang3.StringUtils.join;
 
 public class SimpleStandardBusinessDocument {
@@ -192,23 +192,16 @@ public class SimpleStandardBusinessDocument {
 
         public ZonedDateTime getLeveringstidspunkt() {
             SDPDigitalPostInfo postinfo = getDigitalPostInfo();
-            ZonedDateTime virkningstidspunkt = postinfo != null ? choice(postinfo.getVirkningstidspunkt(), postinfo.getVirkningsdato(), toDateTimeAfterStartOfDay(defaultTidEtterMidnatt)) : null;
-            ZonedDateTime leveringstidspunkt = null;
-
-            if (virkningstidspunkt != null) {
-                leveringstidspunkt = virkningstidspunkt;
-            }
+            Optional<ZonedDateTime> leveringstidspunkt = Optional.ofNullable(postinfo)
+                    .map(info -> choice(postinfo.getVirkningstidspunkt(), postinfo.getVirkningsdato(), virkningsdato -> virkningsdato.atStartOfDay(ZoneId.systemDefault()).plus(defaultTidEtterMidnatt)));
 
             if (type == Type.FLYTTET) {
                 ZonedDateTime mottakstidspunkt = getFlyttetDigitalPost().getMottaksdato().atStartOfDay(ZoneId.systemDefault()).plus(defaultTidEtterMidnatt);
-                if (leveringstidspunkt == null) {
-                    leveringstidspunkt = mottakstidspunkt;
-                } else if (mottakstidspunkt.isAfter(leveringstidspunkt)) {
-                    leveringstidspunkt = mottakstidspunkt;
-                }
+                return leveringstidspunkt.map(levering -> mottakstidspunkt.isAfter(levering) ? mottakstidspunkt : levering).orElse(mottakstidspunkt);
+            } else {
+                return leveringstidspunkt.orElse(null);
             }
 
-            return leveringstidspunkt;
         }
 
         public boolean erAlleredeAapnet() {

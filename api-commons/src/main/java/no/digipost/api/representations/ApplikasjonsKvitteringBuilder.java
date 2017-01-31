@@ -11,12 +11,13 @@ import no.difi.begrep.sdp.schema_v10.SDPReturpost;
 import no.difi.begrep.sdp.schema_v10.SDPVarslingfeilet;
 import no.difi.begrep.sdp.schema_v10.SDPVarslingskanal;
 import no.digipost.api.PMode;
-import org.joda.time.DateTime;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
+
+import java.time.ZonedDateTime;
 
 public class ApplikasjonsKvitteringBuilder {
 
-    private DateTime creationTime;
+    private ZonedDateTime creationTime;
     private EbmsAktoer avsender;
     private String instanceIdentifier;
     private String messageId;
@@ -27,10 +28,10 @@ public class ApplikasjonsKvitteringBuilder {
     private PMode.Action action = PMode.Action.KVITTERING;
 
     private SDPMelding kvittering = null;
-    private DateTime kvitteringTidspunkt = DateTime.now();
+    private ZonedDateTime kvitteringTidspunkt = ZonedDateTime.now();
 
     public static ApplikasjonsKvitteringBuilder create(final EbmsAktoer avsender, final EbmsAktoer ebmsMottaker, final Organisasjonsnummer sbdhMottaker, final String messageId,
-                                                       final String conversationId, final String instanceIdentifier, DateTime creationTime) {
+                                                       final String conversationId, final String instanceIdentifier, ZonedDateTime creationTime) {
         ApplikasjonsKvitteringBuilder builder = new ApplikasjonsKvitteringBuilder();
         builder.creationTime = creationTime;
         builder.ebmsMottaker = ebmsMottaker;
@@ -97,7 +98,7 @@ public class ApplikasjonsKvitteringBuilder {
         return this;
     }
 
-    public ApplikasjonsKvitteringBuilder medTidspunkt(final DateTime kvitteringTidspunkt) {
+    public ApplikasjonsKvitteringBuilder medTidspunkt(ZonedDateTime kvitteringTidspunkt) {
         if (kvitteringTidspunkt != null) {
             this.kvitteringTidspunkt = kvitteringTidspunkt;
         }

@@ -1,8 +1,9 @@
 package no.digipost.api.representations;
 
 import no.digipost.api.PMode;
-import org.joda.time.DateTime;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.UserMessage;
+
+import java.time.ZonedDateTime;
 
 public class SimpleUserMessage {
 
@@ -28,7 +29,7 @@ public class SimpleUserMessage {
         return message.getMessageInfo().getRefToMessageId();
     }
 
-    public DateTime getTimestamp() {
+    public ZonedDateTime getTimestamp() {
         return message.getMessageInfo().getTimestamp();
     }
 

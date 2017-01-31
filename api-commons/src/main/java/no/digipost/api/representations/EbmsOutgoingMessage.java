@@ -1,8 +1,9 @@
 package no.digipost.api.representations;
 
 import no.digipost.api.PMode;
-import org.joda.time.DateTime;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.MessageInfo;
+
+import java.time.ZonedDateTime;
 
 public class EbmsOutgoingMessage extends EbmsMessage {
 
@@ -27,7 +28,7 @@ public class EbmsOutgoingMessage extends EbmsMessage {
         MessageInfo messageInfo = new MessageInfo()
                 .withMessageId(messageId)
                 .withRefToMessageId(refToMessageId)
-                .withTimestamp(DateTime.now());
+                .withTimestamp(ZonedDateTime.now());
         return messageInfo;
     }
 

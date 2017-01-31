@@ -3,10 +3,10 @@ package no.digipost.api.representations;
 import no.difi.begrep.sdp.schema_v10.SDPMelding;
 import no.digipost.api.PMode;
 import no.digipost.xsd.types.DigitalPostformidling;
-import org.joda.time.DateTime;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
 import java.io.InputStream;
+import java.time.ZonedDateTime;
 
 public class EbmsForsendelse extends EbmsOutgoingMessage {
     public final String conversationId;
@@ -87,7 +87,7 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
         private EbmsAktoer avsender;
         private String conversationId = newId();
         private String instanceIdentifier = newId();
-        private DateTime creationTime = DateTime.now();
+        private ZonedDateTime creationTime = ZonedDateTime.now();
         private StandardBusinessDocument doc;
         private SDPMelding digitalPost;
         private String messageId = newId();

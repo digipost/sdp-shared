@@ -8,7 +8,6 @@ import no.digipost.api.representations.Mpc;
 import no.digipost.api.representations.SimpleStandardBusinessDocument;
 import no.digipost.api.xml.Constants;
 import no.digipost.api.xml.Marshalling;
-import org.joda.time.DateTime;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.AgreementRef;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.CollaborationInfo;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.From;
@@ -28,6 +27,7 @@ import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -105,7 +105,7 @@ public class AddUserMessageStep implements EbmsProcessingStep {
         return new MessageInfo()
                 .withMessageId(messageId)
                 .withRefToMessageId(refToMessageId)
-                .withTimestamp(DateTime.now());
+                .withTimestamp(ZonedDateTime.now());
     }
 
 }

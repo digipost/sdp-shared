@@ -11,12 +11,13 @@ import no.difi.begrep.sdp.schema_v10.SDPMelding;
 import no.difi.begrep.sdp.schema_v10.SDPMottaker;
 import no.difi.begrep.sdp.schema_v10.SDPVarslingfeilet;
 import no.digipost.xsd.types.DigitalPostformidling;
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3.xmldsig.Reference;
 
+import java.time.Duration;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static no.digipost.api.util.Choice.choice;
@@ -74,7 +75,7 @@ public class SimpleStandardBusinessDocument {
         return null;
     }
 
-    public DateTime getCreationDateAndTime() {
+    public ZonedDateTime getCreationDateAndTime() {
         if (doc.getStandardBusinessDocumentHeader() == null || doc.getStandardBusinessDocumentHeader().getDocumentIdentification() == null) {
             return null;
         }
@@ -143,7 +144,7 @@ public class SimpleStandardBusinessDocument {
 
     public static class SimpleDigitalPostformidling {
 
-        public static final Duration defaultTidEtterMidnatt = Duration.standardHours(8);
+        public static final Duration defaultTidEtterMidnatt = Duration.ofHours(8);
         public final Type type;
         private final DigitalPostformidling digitalPostformidling;
 
@@ -189,17 +190,17 @@ public class SimpleStandardBusinessDocument {
             return ((SDPDigitalPost) digitalPostformidling).getFysiskPostInfo();
         }
 
-        public DateTime getLeveringstidspunkt() {
+        public ZonedDateTime getLeveringstidspunkt() {
             SDPDigitalPostInfo postinfo = getDigitalPostInfo();
-            DateTime virkningstidspunkt = postinfo != null ? choice(postinfo.getVirkningstidspunkt(), postinfo.getVirkningsdato(), toDateTimeAfterStartOfDay(defaultTidEtterMidnatt)) : null;
-            DateTime leveringstidspunkt = null;
+            ZonedDateTime virkningstidspunkt = postinfo != null ? choice(postinfo.getVirkningstidspunkt(), postinfo.getVirkningsdato(), toDateTimeAfterStartOfDay(defaultTidEtterMidnatt)) : null;
+            ZonedDateTime leveringstidspunkt = null;
 
             if (virkningstidspunkt != null) {
                 leveringstidspunkt = virkningstidspunkt;
             }
 
             if (type == Type.FLYTTET) {
-                DateTime mottakstidspunkt = getFlyttetDigitalPost().getMottaksdato().toDateTimeAtStartOfDay().plus(defaultTidEtterMidnatt);
+                ZonedDateTime mottakstidspunkt = getFlyttetDigitalPost().getMottaksdato().atStartOfDay(ZoneId.systemDefault()).plus(defaultTidEtterMidnatt);
                 if (leveringstidspunkt == null) {
                     leveringstidspunkt = mottakstidspunkt;
                 } else if (mottakstidspunkt.isAfter(leveringstidspunkt)) {

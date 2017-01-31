@@ -1,40 +1,26 @@
 package no.digipost.api.util;
 
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
-import org.joda.time.LocalDate;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public final class Converters {
 
-    public static final Converter<LocalDate, DateTime> toDateTimeAtStartOfDay = new Converter<LocalDate, DateTime>() {
-        @Override
-        public DateTime apply(LocalDate date) {
-            return date.toDateTimeAtStartOfDay();
-        }
-    };
-    @SuppressWarnings("rawtypes")
-    private static final Converter NOP = new Converter() {
-        @Override
-        public Object apply(Object value) {
-            return value;
-        }
-    };
+    public static final Converter<LocalDate, ZonedDateTime> toDateTimeAtStartOfDay = date -> date.atStartOfDay(ZoneId.systemDefault());
 
-    private Converters() {
-    }
+    @SuppressWarnings("rawtypes")
+    private static final Converter NOP = value -> value;
 
     @SuppressWarnings("unchecked")
     public static <T> Converter<T, T> nop() {
         return NOP;
     }
 
-    public static final Converter<LocalDate, DateTime> toDateTimeAfterStartOfDay(final Duration duration) {
-        return new Converter<LocalDate, DateTime>() {
-            @Override
-            public DateTime apply(LocalDate date) {
-                return date.toDateTimeAtStartOfDay().plus(duration);
-            }
-        };
+    public static final Converter<LocalDate, ZonedDateTime> toDateTimeAfterStartOfDay(Duration duration) {
+        return date -> date.atStartOfDay(ZoneId.systemDefault()).plus(duration);
     }
+
+    private Converters() { }
 
 }

@@ -8,7 +8,9 @@ Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0.html
 
 This software includes third party software subject to the following licenses:
 
+  Hamcrest Core under New BSD License
+  Hamcrest library under New BSD License
   JAXB2 Basics - Runtime under BSD-Style License
-  Joda-Time under Apache 2
+  JUnit under Eclipse Public License 1.0
   SDP Shared - XSD & JAXB under The Apache Software License, Version 2.0
 

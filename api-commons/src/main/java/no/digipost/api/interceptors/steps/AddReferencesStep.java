@@ -4,7 +4,6 @@ import no.digipost.api.representations.EbmsContext;
 import no.digipost.api.representations.EbmsProcessingStep;
 import no.digipost.api.xml.Constants;
 import no.digipost.api.xml.Marshalling;
-import org.joda.time.DateTime;
 import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.MessagePartNRInformation;
 import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.NonRepudiationInformation;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.MessageInfo;
@@ -15,6 +14,7 @@ import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
 import org.w3.xmldsig.Reference;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -44,7 +44,7 @@ public class AddReferencesStep implements EbmsProcessingStep {
                         .withMessagePartNRInformations(nrInfos));
         SignalMessage signalMessage = new SignalMessage()
                 .withMessageInfo(new MessageInfo(
-                        DateTime.now(),
+                        ZonedDateTime.now(),
                         UUID.randomUUID().toString(),
                         messageId))
                 .withReceipt(receipt);

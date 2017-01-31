@@ -1,7 +1,6 @@
 package no.digipost.api.xml;
 
 import no.difi.begrep.sdp.schema_v10.SDPFeil;
-import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.oxm.MarshallingFailureException;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -23,10 +22,11 @@ import org.w3.xmldsig.Transform;
 import org.w3.xmldsig.Transforms;
 
 import javax.xml.transform.stream.StreamResult;
+
 import java.io.StringWriter;
+import java.time.ZonedDateTime;
 
 import static no.difi.begrep.sdp.schema_v10.SDPFeiltype.KLIENT;
-import static org.joda.time.DateTime.now;
 
 public class MarshallingTest {
 
@@ -66,7 +66,7 @@ public class MarshallingTest {
                                 new SignatureValue()))
                 .withDetaljer("Detaljer")
                 .withFeiltype(KLIENT)
-                .withTidspunkt(now());
+                .withTidspunkt(ZonedDateTime.now());
 
         jaxb2Marshaller.marshal(createValidStandardBusinessDocument(sdpFeil), result);
 
@@ -96,7 +96,7 @@ public class MarshallingTest {
                                                 .withTypeVersion("typeVersion")
                                                 .withInstanceIdentifier("instanceIdentifier")
                                                 .withType("type")
-                                                .withCreationDateAndTime(new DateTime())
+                                                .withCreationDateAndTime(ZonedDateTime.now())
                                 )
                                 .withBusinessScope(new BusinessScope()
                                         .withScopes(new Scope()

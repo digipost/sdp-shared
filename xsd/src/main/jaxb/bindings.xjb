@@ -9,9 +9,9 @@
 
 	<globalBindings>
 		<xjc:simple/>
-		<xjc:javaType adapter="no.digipost.xsd.jaxb.XSDateTimeAdapter" name="org.joda.time.DateTime"
+		<xjc:javaType adapter="no.digipost.xsd.jaxb.XSDateTimeAdapter" name="java.time.ZonedDateTime"
 		              xmlType="xs:dateTime"/>
-		<xjc:javaType adapter="no.digipost.xsd.jaxb.XSDateAdapter" name="org.joda.time.LocalDate"
+		<xjc:javaType adapter="no.digipost.xsd.jaxb.XSDateAdapter" name="java.time.LocalDate"
 		              xmlType="xs:date"/>
 	</globalBindings>
 

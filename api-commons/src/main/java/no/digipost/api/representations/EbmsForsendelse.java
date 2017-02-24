@@ -6,6 +6,7 @@ import no.digipost.xsd.types.DigitalPostformidling;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
 import java.io.InputStream;
+import java.time.Clock;
 import java.time.ZonedDateTime;
 
 public class EbmsForsendelse extends EbmsOutgoingMessage {
@@ -60,7 +61,11 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
         return create(avsender, mottaker, new SimpleStandardBusinessDocument(sbd).getReceiver(), sbd, dokumentpakke).build();
     }
 
-    public static Builder builderFrom(final EbmsAktoer avsender, final EbmsAktoer mottaker, final StandardBusinessDocument sbd, final Dokumentpakke dokumentpakke) {
+    public static EbmsForsendelse from(EbmsAktoer avsender, EbmsAktoer mottaker, StandardBusinessDocument sbd, Dokumentpakke dokumentpakke, Clock clock) {
+        return create(avsender, mottaker, new SimpleStandardBusinessDocument(sbd).getReceiver(), sbd, dokumentpakke).build(clock);
+    }
+
+    public static Builder builderFrom(EbmsAktoer avsender, EbmsAktoer mottaker, StandardBusinessDocument sbd, Dokumentpakke dokumentpakke) {
         return create(avsender, mottaker, new SimpleStandardBusinessDocument(sbd).getReceiver(), sbd, dokumentpakke);
     }
 
@@ -88,7 +93,6 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
         private EbmsAktoer avsender;
         private String conversationId = newId();
         private String instanceIdentifier = newId();
-        private ZonedDateTime creationTime = ZonedDateTime.now();
         private StandardBusinessDocument doc;
         private SDPMelding digitalPost;
         private String messageId = newId();
@@ -129,10 +133,21 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
             return this;
         }
 
+        /**
+         * Bygger en ny {@link EbmsForsendelse} med opprettelsestidspunkt satt til nå iflg. systemklokken og default tidssone.
+         * Dersom man ønsker å kontrollere tidspunkter (f.eks. ifm. tester) anbefales det å bruke {@link #build(Clock)},
+         * hvor man sender inn den klokkeinstansen man bruker for kjørende runtime.
+         */
         public EbmsForsendelse build() {
+            return build(Clock.systemDefaultZone());
+        }
+
+        /**
+         * Bygger en ny {@link EbmsForsendelse} med opprettelsestidspunkt satt til nå iflg. gitt {@link Clock}-instans.
+         */
+        public EbmsForsendelse build(Clock clock) {
             if (doc == null) {
-                doc = StandardBusinessDocumentFactory
-                        .create(avsender.orgnr, sbdhMottaker, instanceIdentifier, creationTime, conversationId, digitalPost);
+                doc = StandardBusinessDocumentFactory.create(avsender.orgnr, sbdhMottaker, instanceIdentifier, ZonedDateTime.now(clock), conversationId, digitalPost);
             }
             return new EbmsForsendelse(messageId, action, mottaker, avsender, mpcId, sbdhMottaker, prioritet, conversationId, instanceIdentifier, doc, dokumentpakke, sbdStream);
         }

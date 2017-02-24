@@ -320,6 +320,25 @@
                     </executions>
                 </plugin>
                 <plugin>
+                    <groupId>com.github.siom79.japicmp</groupId>
+                    <artifactId>japicmp-maven-plugin</artifactId>
+                    <version>0.9.4</version>
+                    <configuration>
+                        <newVersion>
+                            <file><path>${project.build.directory}/${project.build.finalName}.${project.packaging}</path></file>
+                        </newVersion>
+                        <parameter>
+                            <onlyModified>true</onlyModified>
+                            <onlyBinaryIncompatible>true</onlyBinaryIncompatible>
+                            <includes>
+                                <include>no.digipost.api</include>
+                                <include>no.digipost.xsd</include>
+                                <include>no.difi.begrep.sdp</include>
+                            </includes>
+                        </parameter>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <groupId>com.mycila</groupId>
                     <artifactId>license-maven-plugin</artifactId>
                     <version>3.0</version>

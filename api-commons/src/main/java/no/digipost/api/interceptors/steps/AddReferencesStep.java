@@ -26,14 +26,14 @@ public class AddReferencesStep implements EbmsProcessingStep {
     private final Jaxb2Marshaller jaxb2Marshaller;
     private final String messageId;
 
-    public AddReferencesStep(final Jaxb2Marshaller jaxb2Marshaller, final String messageId, final Collection<Reference> references) {
+    public AddReferencesStep(Jaxb2Marshaller jaxb2Marshaller, String messageId, Collection<Reference> references) {
         this.jaxb2Marshaller = jaxb2Marshaller;
         this.messageId = messageId;
-        this.references = references == null ? new ArrayList<Reference>() : references;
+        this.references = references == null ? new ArrayList<>() : references;
     }
 
     @Override
-    public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SoapMessage soapMessage) {
+    public void apply(EbmsContext ebmsContext, SoapHeaderElement ebmsMessaging, SoapMessage soapMessage) {
         List<MessagePartNRInformation> nrInfos = new ArrayList<MessagePartNRInformation>();
         for (Reference ref : references) {
             nrInfos.add(new MessagePartNRInformation().withReference(ref));

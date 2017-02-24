@@ -18,7 +18,8 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
     private final EbmsAktoer ebmsAvsender;
     private final Organisasjonsnummer sbdhMottaker;
 
-    private EbmsForsendelse(final String messageId, PMode.Action action, final EbmsAktoer ebmsMottaker, final EbmsAktoer ebmsAvsender, final String mpcId, final Organisasjonsnummer sbdhMottaker, final Prioritet prioritet, final String conversationId, final String instanceIdentifier, final StandardBusinessDocument doc, final Dokumentpakke dokumentpakke, final InputStream sbdStream) {
+    private EbmsForsendelse(String messageId, PMode.Action action, EbmsAktoer ebmsMottaker, EbmsAktoer ebmsAvsender, String mpcId, Organisasjonsnummer sbdhMottaker, Prioritet prioritet,
+                            String conversationId, String instanceIdentifier, StandardBusinessDocument doc, Dokumentpakke dokumentpakke, InputStream sbdStream) {
         super(ebmsMottaker, messageId, null, action, prioritet, mpcId);
         this.ebmsMottaker = ebmsMottaker;
         this.ebmsAvsender = ebmsAvsender;
@@ -30,8 +31,8 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
         this.sbdStream = sbdStream;
     }
 
-    public static <P extends SDPMelding & DigitalPostformidling> Builder create(final EbmsAktoer avsender, final EbmsAktoer mottaker, final Organisasjonsnummer sbdhMottaker,
-                                                                                final P digitalPostformidling, final Dokumentpakke dokumentpakke) {
+    public static <P extends SDPMelding & DigitalPostformidling> Builder create(EbmsAktoer avsender, EbmsAktoer mottaker, Organisasjonsnummer sbdhMottaker,
+                                                                                P digitalPostformidling, Dokumentpakke dokumentpakke) {
         Builder builder = new Builder();
         builder.avsender = avsender;
         builder.mottaker = mottaker;
@@ -41,7 +42,7 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
         return builder;
     }
 
-    public static Builder create(final EbmsAktoer avsender, final EbmsAktoer mottaker, final Organisasjonsnummer sbdhMottaker, final StandardBusinessDocument sbd, final Dokumentpakke dokumentpakke) {
+    public static Builder create(EbmsAktoer avsender, EbmsAktoer mottaker, Organisasjonsnummer sbdhMottaker, StandardBusinessDocument sbd, Dokumentpakke dokumentpakke) {
         SimpleStandardBusinessDocument sdoc = new SimpleStandardBusinessDocument(sbd);
         Builder builder = new Builder();
         builder.dokumentpakke = dokumentpakke;
@@ -55,7 +56,7 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
         return builder;
     }
 
-    public static EbmsForsendelse from(final EbmsAktoer avsender, final EbmsAktoer mottaker, final StandardBusinessDocument sbd, final Dokumentpakke dokumentpakke) {
+    public static EbmsForsendelse from(EbmsAktoer avsender, EbmsAktoer mottaker, StandardBusinessDocument sbd, Dokumentpakke dokumentpakke) {
         return create(avsender, mottaker, new SimpleStandardBusinessDocument(sbd).getReceiver(), sbd, dokumentpakke).build();
     }
 

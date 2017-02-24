@@ -25,6 +25,12 @@
 		</schemaBindings>
 	</bindings>
 
+    <bindings schemaLocation="../difi-begrepskatalog/xsd/sdp-manifest.xsd">
+        <bindings node="//xs:complexType[@name='Manifest']">
+            <inheritance:implements>no.digipost.xsd.types.HarHoveddokumentOgVedlegg&lt;no.difi.begrep.sdp.schema_v10.SDPDokument&gt;</inheritance:implements>
+        </bindings>
+    </bindings>
+
 	<bindings schemaLocation="../difi-begrepskatalog/xsd/sdp-melding.xsd">
 		<bindings node="//xs:complexType[@name='DigitalPost']">
 			<inheritance:implements>no.digipost.xsd.types.DigitalPostformidling</inheritance:implements>
@@ -38,6 +44,9 @@
 		<bindings node="//xs:complexType[@name='SmsVarselTekst']">
 			<inheritance:implements>no.digipost.xsd.types.TekstMedSpraak</inheritance:implements>
 		</bindings>
+        <bindings node="//xs:complexType[@name='DigitalPostInfo']">
+            <inheritance:implements>no.digipost.xsd.types.HarVarsler</inheritance:implements>
+        </bindings>
 		<bindings node="//xs:complexType[@name='EpostVarsel']">
 			<inheritance:implements>no.digipost.xsd.types.Varsel</inheritance:implements>
 		</bindings>

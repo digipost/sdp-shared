@@ -16,7 +16,7 @@
 		<dependency>
 			<groupId>org.jvnet.jaxb2_commons</groupId>
 			<artifactId>jaxb2-basics-runtime</artifactId>
-			<version>0.9.4</version>
+			<version>0.11.1</version>
 		</dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -64,7 +64,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<specVersion>2.1</specVersion>
+					<specVersion>2.2</specVersion>
 					<schemaDirectory>${basedir}/src/main/difi-begrepskatalog/xsd</schemaDirectory>
 					<enableIntrospection>true</enableIntrospection>
 					<bindingDirectory>src/main/jaxb</bindingDirectory>
@@ -93,7 +93,7 @@
 						<plugin>
 							<groupId>org.jvnet.jaxb2_commons</groupId>
 							<artifactId>jaxb2-basics</artifactId>
-							<version>0.9.4</version>
+							<version>0.11.1</version>
 						</plugin>
 						<plugin>
 							<groupId>com.sun.xml.bind</groupId>

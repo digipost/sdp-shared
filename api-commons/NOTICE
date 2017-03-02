@@ -17,6 +17,7 @@ This software includes third party software subject to the following licenses:
   Apache XML Security for Java under The Apache Software License, Version 2.0
   Bouncy Castle Provider under Bouncy Castle Licence
   Byte Buddy (without dependencies) under The Apache Software License, Version 2.0
+  Byte Buddy Java agent under The Apache Software License, Version 2.0
   Cryptacular Library under Apache 2 or GNU Lesser General Public License
   ehcache under The Apache Software License, Version 2.0
   EqualsVerifier under The Apache Software License, Version 2.0
@@ -29,10 +30,10 @@ This software includes third party software subject to the following licenses:
   JavaMail API under CDDL/GPLv2+CE
   JAXB2 Basics - Runtime under BSD-Style License
   jaxen under The BSD 3-Clause License
-  JCL 1.1.1 implemented over SLF4J under MIT License
+  JCL 1.2 implemented over SLF4J under MIT License
   Joda-Time under Apache 2
   JUnit under Eclipse Public License 1.0
-  Mockito under The MIT License
+  mockito-core under The MIT License
   Objenesis under Apache 2
   OpenSAML :: Core under The Apache Software License, Version 2.0
   OpenSAML :: Profile API under The Apache Software License, Version 2.0

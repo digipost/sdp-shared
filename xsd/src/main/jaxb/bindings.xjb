@@ -9,9 +9,9 @@
 
 	<globalBindings>
 		<xjc:simple/>
-		<xjc:javaType adapter="no.digipost.xsd.jaxb.XSDateTimeAdapter" name="org.joda.time.DateTime"
+		<xjc:javaType adapter="no.digipost.xsd.jaxb.XSDateTimeAdapter" name="java.time.ZonedDateTime"
 		              xmlType="xs:dateTime"/>
-		<xjc:javaType adapter="no.digipost.xsd.jaxb.XSDateAdapter" name="org.joda.time.LocalDate"
+		<xjc:javaType adapter="no.digipost.xsd.jaxb.XSDateAdapter" name="java.time.LocalDate"
 		              xmlType="xs:date"/>
 	</globalBindings>
 
@@ -24,6 +24,12 @@
 			</nameXmlTransform>
 		</schemaBindings>
 	</bindings>
+
+    <bindings schemaLocation="../difi-begrepskatalog/xsd/sdp-manifest.xsd">
+        <bindings node="//xs:complexType[@name='Manifest']">
+            <inheritance:implements>no.digipost.xsd.types.HarHoveddokumentOgVedlegg&lt;no.difi.begrep.sdp.schema_v10.SDPDokument&gt;</inheritance:implements>
+        </bindings>
+    </bindings>
 
 	<bindings schemaLocation="../difi-begrepskatalog/xsd/sdp-melding.xsd">
 		<bindings node="//xs:complexType[@name='DigitalPost']">
@@ -38,6 +44,9 @@
 		<bindings node="//xs:complexType[@name='SmsVarselTekst']">
 			<inheritance:implements>no.digipost.xsd.types.TekstMedSpraak</inheritance:implements>
 		</bindings>
+        <bindings node="//xs:complexType[@name='DigitalPostInfo']">
+            <inheritance:implements>no.digipost.xsd.types.HarVarsler</inheritance:implements>
+        </bindings>
 		<bindings node="//xs:complexType[@name='EpostVarsel']">
 			<inheritance:implements>no.digipost.xsd.types.Varsel</inheritance:implements>
 		</bindings>

@@ -3,10 +3,11 @@ package no.digipost.api.representations;
 import no.difi.begrep.sdp.schema_v10.SDPMelding;
 import no.digipost.api.PMode;
 import no.digipost.xsd.types.DigitalPostformidling;
-import org.joda.time.DateTime;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
 import java.io.InputStream;
+import java.time.Clock;
+import java.time.ZonedDateTime;
 
 public class EbmsForsendelse extends EbmsOutgoingMessage {
     public final String conversationId;
@@ -18,7 +19,8 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
     private final EbmsAktoer ebmsAvsender;
     private final Organisasjonsnummer sbdhMottaker;
 
-    private EbmsForsendelse(final String messageId, PMode.Action action, final EbmsAktoer ebmsMottaker, final EbmsAktoer ebmsAvsender, final String mpcId, final Organisasjonsnummer sbdhMottaker, final Prioritet prioritet, final String conversationId, final String instanceIdentifier, final StandardBusinessDocument doc, final Dokumentpakke dokumentpakke, final InputStream sbdStream) {
+    private EbmsForsendelse(String messageId, PMode.Action action, EbmsAktoer ebmsMottaker, EbmsAktoer ebmsAvsender, String mpcId, Organisasjonsnummer sbdhMottaker, Prioritet prioritet,
+                            String conversationId, String instanceIdentifier, StandardBusinessDocument doc, Dokumentpakke dokumentpakke, InputStream sbdStream) {
         super(ebmsMottaker, messageId, null, action, prioritet, mpcId);
         this.ebmsMottaker = ebmsMottaker;
         this.ebmsAvsender = ebmsAvsender;
@@ -30,8 +32,8 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
         this.sbdStream = sbdStream;
     }
 
-    public static <P extends SDPMelding & DigitalPostformidling> Builder create(final EbmsAktoer avsender, final EbmsAktoer mottaker, final Organisasjonsnummer sbdhMottaker,
-                                                                                final P digitalPostformidling, final Dokumentpakke dokumentpakke) {
+    public static <P extends SDPMelding & DigitalPostformidling> Builder create(EbmsAktoer avsender, EbmsAktoer mottaker, Organisasjonsnummer sbdhMottaker,
+                                                                                P digitalPostformidling, Dokumentpakke dokumentpakke) {
         Builder builder = new Builder();
         builder.avsender = avsender;
         builder.mottaker = mottaker;
@@ -41,7 +43,7 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
         return builder;
     }
 
-    public static Builder create(final EbmsAktoer avsender, final EbmsAktoer mottaker, final Organisasjonsnummer sbdhMottaker, final StandardBusinessDocument sbd, final Dokumentpakke dokumentpakke) {
+    public static Builder create(EbmsAktoer avsender, EbmsAktoer mottaker, Organisasjonsnummer sbdhMottaker, StandardBusinessDocument sbd, Dokumentpakke dokumentpakke) {
         SimpleStandardBusinessDocument sdoc = new SimpleStandardBusinessDocument(sbd);
         Builder builder = new Builder();
         builder.dokumentpakke = dokumentpakke;
@@ -55,11 +57,15 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
         return builder;
     }
 
-    public static EbmsForsendelse from(final EbmsAktoer avsender, final EbmsAktoer mottaker, final StandardBusinessDocument sbd, final Dokumentpakke dokumentpakke) {
+    public static EbmsForsendelse from(EbmsAktoer avsender, EbmsAktoer mottaker, StandardBusinessDocument sbd, Dokumentpakke dokumentpakke) {
         return create(avsender, mottaker, new SimpleStandardBusinessDocument(sbd).getReceiver(), sbd, dokumentpakke).build();
     }
 
-    public static Builder builderFrom(final EbmsAktoer avsender, final EbmsAktoer mottaker, final StandardBusinessDocument sbd, final Dokumentpakke dokumentpakke) {
+    public static EbmsForsendelse from(EbmsAktoer avsender, EbmsAktoer mottaker, StandardBusinessDocument sbd, Dokumentpakke dokumentpakke, Clock clock) {
+        return create(avsender, mottaker, new SimpleStandardBusinessDocument(sbd).getReceiver(), sbd, dokumentpakke).build(clock);
+    }
+
+    public static Builder builderFrom(EbmsAktoer avsender, EbmsAktoer mottaker, StandardBusinessDocument sbd, Dokumentpakke dokumentpakke) {
         return create(avsender, mottaker, new SimpleStandardBusinessDocument(sbd).getReceiver(), sbd, dokumentpakke);
     }
 
@@ -87,7 +93,6 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
         private EbmsAktoer avsender;
         private String conversationId = newId();
         private String instanceIdentifier = newId();
-        private DateTime creationTime = DateTime.now();
         private StandardBusinessDocument doc;
         private SDPMelding digitalPost;
         private String messageId = newId();
@@ -128,10 +133,21 @@ public class EbmsForsendelse extends EbmsOutgoingMessage {
             return this;
         }
 
+        /**
+         * Bygger en ny {@link EbmsForsendelse} med opprettelsestidspunkt satt til nå iflg. systemklokken og default tidssone.
+         * Dersom man ønsker å kontrollere tidspunkter (f.eks. ifm. tester) anbefales det å bruke {@link #build(Clock)},
+         * hvor man sender inn den klokkeinstansen man bruker for kjørende runtime.
+         */
         public EbmsForsendelse build() {
+            return build(Clock.systemDefaultZone());
+        }
+
+        /**
+         * Bygger en ny {@link EbmsForsendelse} med opprettelsestidspunkt satt til nå iflg. gitt {@link Clock}-instans.
+         */
+        public EbmsForsendelse build(Clock clock) {
             if (doc == null) {
-                doc = StandardBusinessDocumentFactory
-                        .create(avsender.orgnr, sbdhMottaker, instanceIdentifier, creationTime, conversationId, digitalPost);
+                doc = StandardBusinessDocumentFactory.create(avsender.orgnr, sbdhMottaker, instanceIdentifier, ZonedDateTime.now(clock), conversationId, digitalPost);
             }
             return new EbmsForsendelse(messageId, action, mottaker, avsender, mpcId, sbdhMottaker, prioritet, conversationId, instanceIdentifier, doc, dokumentpakke, sbdStream);
         }

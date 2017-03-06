@@ -5,7 +5,6 @@ import no.difi.begrep.sdp.schema_v10.SDPFeil;
 import no.difi.begrep.sdp.schema_v10.SDPFlyttetDigitalPost;
 import no.difi.begrep.sdp.schema_v10.SDPKvittering;
 import no.difi.begrep.sdp.schema_v10.SDPMelding;
-import org.joda.time.DateTime;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.BusinessScope;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.DocumentIdentification;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.Partner;
@@ -14,6 +13,8 @@ import org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocumentHeader;
 
+import java.time.ZonedDateTime;
+
 public class StandardBusinessDocumentFactory {
 
     public static final String STANDARD = "urn:no:difi:sdp:1.0";
@@ -21,7 +22,7 @@ public class StandardBusinessDocumentFactory {
     public static final String TYPE_VERSION = "1.0";
     public static final String CONVERSATIONID = "ConversationId";
 
-    public static StandardBusinessDocument create(final Organisasjonsnummer avsender, final Organisasjonsnummer mottaker, final String instanceIdentifier, DateTime creationTime, final String conversationId, final SDPMelding body) {
+    public static StandardBusinessDocument create(final Organisasjonsnummer avsender, final Organisasjonsnummer mottaker, final String instanceIdentifier, ZonedDateTime creationTime, final String conversationId, final SDPMelding body) {
         return new StandardBusinessDocument()
                 .withStandardBusinessDocumentHeader(
                         new StandardBusinessDocumentHeader()

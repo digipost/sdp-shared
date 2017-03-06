@@ -1,5 +1,7 @@
 package no.digipost.api.util;
 
+import java.util.function.Function;
+
 /**
  * Utility for resolving one of two mutual exclusive instances, typically from
  * a JAXB-representation of an xsd:choice element. If given two actual instances
@@ -7,14 +9,11 @@ package no.digipost.api.util;
  */
 public final class Choice<T> {
 
-    private Choice() {
-    }
-
     public static <T> T choice(T first, T second) {
-        return choice(first, second, Converters.<T>nop());
+        return choice(first, second, Function.identity());
     }
 
-    public static <T, S> T choice(T first, S second, Converter<? super S, ? extends T> secondChoiceConverter) {
+    public static <T, S> T choice(T first, S second, Function<? super S, ? extends T> secondChoiceConverter) {
         if (first != null && second != null) {
             throw new IllegalArgumentException("Can only specify one of the arguments, not both. Got first arg:" + first + ", second: " + second);
         } else if (first != null) {
@@ -26,4 +25,6 @@ public final class Choice<T> {
         }
     }
 
+
+    private Choice() { }
 }

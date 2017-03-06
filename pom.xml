@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>sdp-shared</artifactId>
-    <version>1.2.3-SNAPSHOT</version>
+    <version>2.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>SDP Shared</name>
     <description>Delt kode for Sikker Digital Post</description>
@@ -26,12 +26,12 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <config.profiler>inmemhsql</config.profiler>
-        <org.slf4j.version>1.7.21</org.slf4j.version>
-        <spring.version>4.3.0.RELEASE</spring.version>
+        <org.slf4j.version>1.7.24</org.slf4j.version>
+        <spring.version>4.3.7.RELEASE</spring.version>
         <spring.ws.version>2.3.0.RELEASE</spring.ws.version>
         <spring.security.version>4.1.0.RELEASE</spring.security.version>
 
-        <wss4j.version>2.1.6</wss4j.version>
+        <wss4j.version>2.1.8</wss4j.version>
 
     </properties>
 
@@ -74,12 +74,6 @@
             </dependency>
 
             <dependency>
-                <groupId>joda-time</groupId>
-                <artifactId>joda-time</artifactId>
-                <version>2.8.2</version>
-            </dependency>
-
-            <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.12</version>
@@ -100,13 +94,13 @@
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>2.0.76-beta</version>
+                <version>2.7.13</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>nl.jqno.equalsverifier</groupId>
                 <artifactId>equalsverifier</artifactId>
-                <version>2.1.2</version>
+                <version>2.2.1</version>
                 <scope>test</scope>
             </dependency>
 
@@ -237,7 +231,7 @@
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
-                <version>4.5.2</version>
+                <version>4.5.3</version>
                 <exclusions>
                     <exclusion>
                         <groupId>commons-logging</groupId>
@@ -248,7 +242,7 @@
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpcore</artifactId>
-                <version>4.4.5</version>
+                <version>4.4.6</version>
             </dependency>
 
             <dependency>
@@ -260,7 +254,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.4</version>
+                <version>3.5</version>
             </dependency>
             <dependency>
                 <groupId>commons-codec</groupId>
@@ -280,11 +274,11 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.0.1</version>
+                    <version>3.0.2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.5.1</version>
+                    <version>3.6.1</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -297,6 +291,14 @@
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>3.0.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
@@ -324,6 +326,35 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.siom79.japicmp</groupId>
+                    <artifactId>japicmp-maven-plugin</artifactId>
+                    <version>0.9.4</version>
+                    <configuration>
+                        <newVersion>
+                            <file><path>${project.build.directory}/${project.build.finalName}.${project.packaging}</path></file>
+                        </newVersion>
+                        <parameter>
+                            <onlyModified>true</onlyModified>
+                            <onlyBinaryIncompatible>true</onlyBinaryIncompatible>
+                            <includes>
+                                <include>no.digipost.api</include>
+                                <include>no.digipost.xsd</include>
+                                <include>no.difi.begrep.sdp</include>
+                            </includes>
+                        </parameter>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>2.3</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.mycila</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>3.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-enforcer-plugin</artifactId>
@@ -383,7 +414,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>2.10</version>
+                    <version>3.0.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -445,7 +476,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.4.0</version>
+                        <version>1.5.0</version>
                         <executions>
                             <execution>
                                 <inherited>false</inherited>

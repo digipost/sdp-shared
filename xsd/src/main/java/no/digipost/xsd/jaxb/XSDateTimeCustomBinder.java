@@ -1,18 +1,29 @@
 
 package no.digipost.xsd.jaxb;
 
-import org.joda.time.DateTime;
-
 import javax.xml.bind.DatatypeConverter;
 
-public class XSDateTimeCustomBinder {
+import java.time.ZonedDateTime;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
-	public static DateTime parseDateTime(final String s) {
-		return new DateTime(DatatypeConverter.parseDate(s).getTime());
+public final class XSDateTimeCustomBinder {
+
+	public static ZonedDateTime parseDateTime(String s) {
+	    if (s == null) {
+            return null;
+        }
+        Calendar parsed = DatatypeConverter.parseDate(s);
+        return ZonedDateTime.ofInstant(parsed.toInstant(), parsed.getTimeZone().toZoneId());
 	}
 
-	public static String printDateTime(final DateTime dt) {
-		return dt == null ? null : dt.toString();
+	public static String printDateTime(ZonedDateTime dateTime) {
+        if (dateTime == null) {
+            return null;
+        }
+        return DatatypeConverter.printDateTime(GregorianCalendar.from(dateTime));
 	}
+
+	private XSDateTimeCustomBinder() {}
 
 }

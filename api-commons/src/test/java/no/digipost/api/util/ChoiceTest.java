@@ -1,13 +1,14 @@
 package no.digipost.api.util;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import static no.digipost.api.util.Choice.choice;
-import static no.digipost.api.util.Converters.toDateTimeAtStartOfDay;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
@@ -20,7 +21,7 @@ public class ChoiceTest {
     @Test
     public void throwsExceptionIfBothAreNonNull() {
         expectedException.expect(IllegalArgumentException.class);
-        choice(DateTime.now(), LocalDate.now());
+        choice(ZonedDateTime.now(), LocalDate.now());
     }
 
 
@@ -44,6 +45,6 @@ public class ChoiceTest {
     @Test
     public void convertSecondInstance() {
         LocalDate today = LocalDate.now();
-        assertThat(choice((DateTime) null, today, toDateTimeAtStartOfDay), is(today.toDateTimeAtStartOfDay()));
+        assertThat(choice((ZonedDateTime) null, today, date -> date.atStartOfDay(ZoneId.systemDefault())), is(today.atTime(0, 0, 0).atZone(ZoneId.systemDefault())));
     }
 }

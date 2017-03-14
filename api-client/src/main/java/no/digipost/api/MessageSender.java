@@ -110,6 +110,7 @@ public interface MessageSender {
         private int socketTimeout = 30000;
         private int connectTimeout = 10000;
         private int connectionRequestTimeout = 10000;
+        private int validateAfterInactivity = 2000;
         private SoapLog.LogLevel logLevel = LogLevel.NONE;
         private ClientInterceptorWrapper clientInterceptorWrapper = interceptor -> interceptor;
 
@@ -164,6 +165,11 @@ public interface MessageSender {
 
         public Builder withMeldingInterceptorBefore(final Class<?> clazz, final ClientInterceptor interceptor) {
             interceptorBefore.add(new InsertInterceptor(clazz, interceptor));
+            return this;
+        }
+
+        public Builder withValidateAfterInactivity(final int validateAfterInactivity) {
+            this.validateAfterInactivity = validateAfterInactivity;
             return this;
         }
 
@@ -271,6 +277,7 @@ public interface MessageSender {
 
         private HttpComponentsMessageSender getHttpComponentsMessageSender() {
             PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+            connectionManager.setValidateAfterInactivity(validateAfterInactivity);
             connectionManager.setMaxTotal(maxTotal);
             connectionManager.setDefaultMaxPerRoute(defaultMaxPerRoute);
 

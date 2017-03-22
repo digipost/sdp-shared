@@ -47,6 +47,8 @@ import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPException;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -110,7 +112,7 @@ public interface MessageSender {
         private int socketTimeout = 30000;
         private int connectTimeout = 10000;
         private int connectionRequestTimeout = 10000;
-        private int validateAfterInactivity = 2000;
+        private Duration validateAfterInactivity = Duration.of(2, ChronoUnit.SECONDS);
         private SoapLog.LogLevel logLevel = LogLevel.NONE;
         private ClientInterceptorWrapper clientInterceptorWrapper = interceptor -> interceptor;
 
@@ -168,7 +170,7 @@ public interface MessageSender {
             return this;
         }
 
-        public Builder withValidateAfterInactivity(final int validateAfterInactivity) {
+        public Builder withValidateAfterInactivity(final Duration validateAfterInactivity) {
             this.validateAfterInactivity = validateAfterInactivity;
             return this;
         }
@@ -277,7 +279,7 @@ public interface MessageSender {
 
         private HttpComponentsMessageSender getHttpComponentsMessageSender() {
             PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
-            connectionManager.setValidateAfterInactivity(validateAfterInactivity);
+            connectionManager.setValidateAfterInactivity((int)validateAfterInactivity.toMillis());
             connectionManager.setMaxTotal(maxTotal);
             connectionManager.setDefaultMaxPerRoute(defaultMaxPerRoute);
 

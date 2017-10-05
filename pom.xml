@@ -401,6 +401,9 @@
                                     distribusjon. Husk også å oppdatere fila «NOTICE».
                                 </message>
                             </bannedDependencies>
+                            <requireMavenVersion>
+                                <version>3.0.0</version>
+                            </requireMavenVersion>
                         </rules>
                     </configuration>
                 </plugin>
@@ -495,9 +498,5 @@
             </build>
         </profile>
     </profiles>
-
-    <prerequisites>
-        <maven>3.3.0</maven>
-    </prerequisites>
 
 </project>

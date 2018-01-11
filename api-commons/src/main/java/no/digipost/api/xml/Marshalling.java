@@ -36,18 +36,15 @@ public class Marshalling {
     public static Jaxb2Marshaller createNewMarshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
         marshaller.setPackagesToScan(
-                new String[]{
-                        packageName(StandardBusinessDocument.class),
-                        packageName(Envelope.class),
-                        packageName(org.w3.soap.Envelope.class),
-                        packageName(org.w3.xmldsig.Reference.class),
-                        packageName(Messaging.class),
-                        packageName(NonRepudiationInformation.class),
-                        packageName(SDPKvittering.class),
-                        packageName(XAdESSignatures.class),
-                        packageName(QualifyingProperties.class)
-                }
-        );
+                packageName(StandardBusinessDocument.class),
+                packageName(Envelope.class),
+                packageName(org.w3.soap.Envelope.class),
+                packageName(org.w3.xmldsig.Reference.class),
+                packageName(Messaging.class),
+                packageName(NonRepudiationInformation.class),
+                packageName(SDPKvittering.class),
+                packageName(XAdESSignatures.class),
+                packageName(QualifyingProperties.class));
         marshaller.setSchemas(Schemas.allSchemaResources());
         return marshaller;
     }

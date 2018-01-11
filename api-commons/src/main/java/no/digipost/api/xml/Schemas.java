@@ -14,9 +14,11 @@ public class Schemas {
     public static final ClassPathResource XADES_SCHEMA = new ClassPathResource("etsi/XAdES.xsd");
     public static final ClassPathResource ASICE_SCHEMA = new ClassPathResource("asic-e/ts_102918v010201.xsd");
 
+    public static final ClassPathResource LENKE_SCHEMA = new ClassPathResource("utvidelser/lenke.xsd");
+
     public static Resource[] allSchemaResources() {
         return new Resource[]{
-                SDP_SCHEMA, SDP_MANIFEST_SCHEMA, SBDH_SCHEMA, EBMS_SCHEMA, XMLDSIG_SCHEMA, XADES_SCHEMA, ASICE_SCHEMA
+                SDP_SCHEMA, SDP_MANIFEST_SCHEMA, SBDH_SCHEMA, EBMS_SCHEMA, XMLDSIG_SCHEMA, XADES_SCHEMA, ASICE_SCHEMA, LENKE_SCHEMA
         };
     }
 

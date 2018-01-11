@@ -25,6 +25,16 @@
 		</schemaBindings>
 	</bindings>
 
+    <bindings schemaLocation="../difi-begrepskatalog/xsd/utvidelser/lenke.xsd" node="/xs:schema">
+        <schemaBindings>
+            <nameXmlTransform>
+                <typeName prefix="SDP" />
+                <anonymousTypeName prefix="SDP" />
+                <elementName prefix="SDP" />
+            </nameXmlTransform>
+        </schemaBindings>
+    </bindings>
+
     <bindings schemaLocation="../difi-begrepskatalog/xsd/sdp-manifest.xsd">
         <bindings node="//xs:complexType[@name='Manifest']">
             <inheritance:implements>no.digipost.xsd.types.HarHoveddokumentOgVedlegg&lt;no.difi.begrep.sdp.schema_v10.SDPDokument&gt;</inheritance:implements>

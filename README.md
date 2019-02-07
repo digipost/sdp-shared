@@ -15,24 +15,6 @@ og deretter
     git submodule update
 
 
-## Release
+## Releasing (kun for medlemmer av Digipost organisasjonen)
 
-Kjør
-
-    mvn release:prepare
-
-Og deretter
-
-    mvn release:perform
-
-
-For å tilgjengeliggjøre artefaktet i maven central
-
-- Logg inn på sonatype med Digipost-brukeren
-- Velg *Staging Repositories*
-- Finn frem til *nodigi-xxxx* nederst i listen
-- Velg *Content*, ekspander og verifiser at ting ser ut som forventet
-- Velg *Close* og *Confirm*
-- *Refresh* til status er *Closed*
-- Velg *Release* og *Confirm*
-
+Se docs/systemer/open-source-biblioteker.md

@@ -1,5 +1,6 @@
 # Sikker Digital Post Shared
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/no.digipost/sdp-shared/badge.svg)](https://maven-badges.herokuapp.com/maven-central/no.digipost/sdp-shared)
 [![Build Status](https://travis-ci.org/digipost/sdp-shared.svg?branch=master)](https://travis-ci.org/digipost/sdp-shared/)
 
 Inneholder felleskomponenter for bruk til sending av Sikker Digital Post fra det offentlige.

@@ -1,12 +1,10 @@
-Sikker Digital Post Shared
-==========================
+# Sikker Digital Post Shared
 
 [![Build Status](https://travis-ci.org/digipost/sdp-shared.svg?branch=master)](https://travis-ci.org/digipost/sdp-shared/)
 
 Inneholder felleskomponenter for bruk til sending av Sikker Digital Post fra det offentlige.
 
-Bygg
-----
+## Bygg
 
 Etter _git clone ..._, må du kjøre 
 
@@ -17,8 +15,7 @@ og deretter
     git submodule update
 
 
-Release
--------
+## Release
 
 Kjør
 

@@ -1,12 +1,11 @@
-Sikker Digital Post Shared
-==========================
+# Sikker Digital Post Shared
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/no.digipost/sdp-shared/badge.svg)](https://maven-badges.herokuapp.com/maven-central/no.digipost/sdp-shared)
 [![Build Status](https://travis-ci.org/digipost/sdp-shared.svg?branch=master)](https://travis-ci.org/digipost/sdp-shared/)
 
 Inneholder felleskomponenter for bruk til sending av Sikker Digital Post fra det offentlige.
 
-Bygg
-----
+## Bygg
 
 Etter _git clone ..._, må du kjøre 
 
@@ -17,25 +16,6 @@ og deretter
     git submodule update
 
 
-Release
--------
+## Releasing (kun for medlemmer av Digipost organisasjonen)
 
-Kjør
-
-    mvn release:prepare
-
-Og deretter
-
-    mvn release:perform
-
-
-For å tilgjengeliggjøre artefaktet i maven central
-
-- Logg inn på sonatype med Digipost-brukeren
-- Velg *Staging Repositories*
-- Finn frem til *nodigi-xxxx* nederst i listen
-- Velg *Content*, ekspander og verifiser at ting ser ut som forventet
-- Velg *Close* og *Confirm*
-- *Refresh* til status er *Closed*
-- Velg *Release* og *Confirm*
-
+Se docs/systemer/open-source-biblioteker.md

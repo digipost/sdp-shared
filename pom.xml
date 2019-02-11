@@ -399,6 +399,8 @@
                                     <include>org.springframework:*</include>
                                     <include>org.springframework.security:*</include>
                                     <include>org.springframework.ws:*</include>
+                                    <include>commons-io:commons-io</include>
+                                    <include>net.sf.ehcache:ehcache</include>
                                     <include>wsdl4j:wsdl4j</include>
                                 </includes>
                                 <searchTransitive>true</searchTransitive>

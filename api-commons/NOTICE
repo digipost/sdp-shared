@@ -8,7 +8,6 @@ Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0.html
 
 This software includes third party software subject to the following licenses:
 
-  AOP alliance under Public Domain
   Apache Commons Codec under Apache License, Version 2.0
   Apache Commons Lang under Apache License, Version 2.0
   Apache HttpCore under Apache License, Version 2.0

@@ -25,7 +25,6 @@ This software includes third party software subject to the following licenses:
   Hamcrest Library under BSD Licence 3
   JASYPT: Java Simplified Encryption under The Apache Software License, Version 2.0
   java-support under The Apache Software License, Version 2.0
-  JavaMail 1.4 under The Apache Software License, Version 2.0
   JavaMail API under CDDL/GPLv2+CE
   JAXB2 Basics - Runtime under BSD-Style License
   jaxen under The BSD 3-Clause License
@@ -65,6 +64,4 @@ This software includes third party software subject to the following licenses:
   spring-ws-core under Apache License, Version 2.0
   spring-ws-security under Apache License, Version 2.0
   spring-xml under Apache License, Version 2.0
-  Stax2 API under The BSD License
-  Woodstox under The Apache Software License, Version 2.0
 

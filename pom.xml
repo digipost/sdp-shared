@@ -29,7 +29,7 @@
         <org.slf4j.version>1.7.25</org.slf4j.version>
         <spring.version>5.1.4.RELEASE</spring.version>
         <spring.ws.version>3.0.6.RELEASE</spring.ws.version>
-        <spring.security.version>5.1.3.RELEASE</spring.security.version>
+        <spring.security.version>5.1.4.RELEASE</spring.security.version>
         <wss4j.version>2.1.8</wss4j.version>
         <hamcrest.version>2.1</hamcrest.version>
         <jaxb2-basics.version>0.12.0</jaxb2-basics.version>

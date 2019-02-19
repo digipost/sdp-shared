@@ -384,7 +384,6 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>1.4.1</version>
                     <configuration>
                         <rules>
                             <bannedDependencies>
@@ -428,7 +427,9 @@
                                 </message>
                             </bannedDependencies>
                             <requireMavenVersion>
-                                <version>3.0.0</version>
+                                <!-- Maven 3.3.1 is needed for .mvn/maven.config to work
+                                     https://maven.apache.org/docs/3.3.1/release-notes.html -->
+                                <version>3.3.1</version>
                             </requireMavenVersion>
                         </rules>
                     </configuration>
@@ -437,8 +438,7 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.5.3</version>
                     <configuration>
-                        <releaseProfiles>release-update-submodules</releaseProfiles>
-                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <releaseProfiles>release-update-submodules,build-sources-and-javadoc,sign-artifacts,git-push-reminder</releaseProfiles>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -448,18 +448,6 @@
             </plugins>
         </pluginManagement>
         <plugins>
-            <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
@@ -472,18 +460,6 @@
                             <ignoreNonCompile>true</ignoreNonCompile>
                             <failOnWarning>true</failOnWarning>
                         </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>test</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <phase>test</phase>
                     </execution>
                 </executions>
             </plugin>

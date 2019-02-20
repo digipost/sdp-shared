@@ -312,7 +312,6 @@ public class Wss4jInterceptor extends AbstractWsSecurityInterceptor {
             //algorithmSuite.addTransformAlgorithm("http://www.w3.org/2001/10/xml-exc-c14n#");
             //algorithmSuite.addTransformAlgorithm("http://docs.oasis-open.org/wss/2004/XX/oasis-2004XX-wss-swa-profile-1.0#Attachment-Complete-Transform");
             requestData.setAlgorithmSuite(algorithmSuite);
-            requestData.setEnableTimestampReplayCache(false);
 
 
             WSHandlerResult handlerResult = securityEngine.processSecurityHeader(envelopeAsDocument, requestData);

@@ -30,7 +30,7 @@
         <spring.version>5.1.5.RELEASE</spring.version>
         <spring.ws.version>3.0.6.RELEASE</spring.ws.version>
         <spring.security.version>5.1.4.RELEASE</spring.security.version>
-        <wss4j.version>2.1.8</wss4j.version>
+        <wss4j.version>2.2.2</wss4j.version>
         <hamcrest.version>2.1</hamcrest.version>
         <jaxb2-basics.version>0.12.0</jaxb2-basics.version>
     </properties>
@@ -232,6 +232,18 @@
                     <exclusion>
                         <groupId>javax.xml.stream</groupId>
                         <artifactId>stax-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>io.dropwizard.metrics</groupId>
+                        <artifactId>metrics-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.fasterxml.woodstox</groupId>
+                        <artifactId>woodstox-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.javamail</groupId>
+                        <artifactId>geronimo-javamail_1.4_mail</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>

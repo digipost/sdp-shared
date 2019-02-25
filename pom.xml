@@ -28,7 +28,7 @@
         <config.profiler>inmemhsql</config.profiler>
         <org.slf4j.version>1.7.26</org.slf4j.version>
         <spring.version>5.1.5.RELEASE</spring.version>
-        <spring.ws.version>3.0.6.RELEASE</spring.ws.version>
+        <spring.ws.version>3.0.7.RELEASE</spring.ws.version>
         <spring.security.version>5.1.4.RELEASE</spring.security.version>
         <wss4j.version>2.2.2</wss4j.version>
         <hamcrest.version>2.1</hamcrest.version>

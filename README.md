@@ -18,4 +18,4 @@ og deretter
 
 ## Releasing (kun for medlemmer av Digipost organisasjonen)
 
-Se docs/systemer/open-source-biblioteker.md
+Se docs/systemer/digipost/klientbiblioteker-java.md

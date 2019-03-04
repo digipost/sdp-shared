@@ -90,7 +90,7 @@
 						<exclude>ubl/*.xsd</exclude>
 						<exclude>oppslag/*.xsd</exclude>
 					</schemaExcludes>
-					<verbose>true</verbose>
+					<verbose>false</verbose>
 					<extension>true</extension>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<args>

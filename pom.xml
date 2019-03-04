@@ -341,9 +341,6 @@
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>3.0.1</version>
-                    <configuration>
-                        <additionalparam>-Xdoclint:-missing</additionalparam>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.jasig.maven</groupId>

@@ -36,6 +36,16 @@
 	</dependencies>
 
 	<build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <configuration>
+                        <doclint>all,-missing,-html</doclint>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>

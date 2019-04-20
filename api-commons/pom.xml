@@ -19,11 +19,6 @@
             <version>${project.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>jaxen</groupId>
-            <artifactId>jaxen</artifactId>
-        </dependency>
-
         <!-- Spring WS -->
         <dependency>
             <groupId>org.springframework.ws</groupId>
@@ -129,6 +124,11 @@
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>co.unruly</groupId>
+            <artifactId>java-8-matchers</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

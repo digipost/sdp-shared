@@ -26,7 +26,6 @@ This software includes third party software subject to the following licenses:
   JavaBeans Activation Framework API jar under EDL 1.0
   JavaMail API under CDDL/GPLv2+CE
   JAXB2 Basics - Runtime under BSD-Style License
-  jaxen under The BSD 3-Clause License
   JCL 1.2 implemented over SLF4J under MIT License
   Joda-Time under Apache 2
   JUL to SLF4J bridge under MIT License

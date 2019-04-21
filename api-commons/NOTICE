@@ -19,7 +19,6 @@ This software includes third party software subject to the following licenses:
   Guava: Google Core Libraries for Java under The Apache Software License, Version 2.0
   JASYPT: Java Simplified Encryption under The Apache Software License, Version 2.0
   java-support under The Apache Software License, Version 2.0
-  JavaMail API under CDDL/GPLv2+CE
   JAXB2 Basics - Runtime under BSD-Style License
   JCL 1.2 implemented over SLF4J under MIT License
   Joda-Time under Apache 2

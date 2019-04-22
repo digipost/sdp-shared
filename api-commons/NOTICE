@@ -15,26 +15,9 @@ This software includes third party software subject to the following licenses:
   Apache WSS4J WS-Security Common under The Apache Software License, Version 2.0
   Apache XML Security for Java under The Apache Software License, Version 2.0
   Bouncy Castle Provider under Bouncy Castle Licence
-  Cryptacular Library under Apache 2 or GNU Lesser General Public License
-  Guava: Google Core Libraries for Java under The Apache Software License, Version 2.0
   JASYPT: Java Simplified Encryption under The Apache Software License, Version 2.0
-  java-support under The Apache Software License, Version 2.0
   JAXB2 Basics - Runtime under BSD-Style License
   JCL 1.2 implemented over SLF4J under MIT License
-  Joda-Time under Apache 2
-  OpenSAML :: Core under The Apache Software License, Version 2.0
-  OpenSAML :: Profile API under The Apache Software License, Version 2.0
-  OpenSAML :: SAML Provider API under The Apache Software License, Version 2.0
-  OpenSAML :: SAML Provider Implementations under The Apache Software License, Version 2.0
-  OpenSAML :: SAML XACML Profile API under The Apache Software License, Version 2.0
-  OpenSAML :: SAML XACML Profile Implementation under The Apache Software License, Version 2.0
-  OpenSAML :: Security API under The Apache Software License, Version 2.0
-  OpenSAML :: Security Implementation under The Apache Software License, Version 2.0
-  OpenSAML :: SOAP Provider API under The Apache Software License, Version 2.0
-  OpenSAML :: XACML Provider API under The Apache Software License, Version 2.0
-  OpenSAML :: XACML Provider Implementations under The Apache Software License, Version 2.0
-  OpenSAML :: XML Security API under The Apache Software License, Version 2.0
-  OpenSAML :: XML Security Implementation under The Apache Software License, Version 2.0
   SDP Shared - XSD & JAXB under The Apache Software License, Version 2.0
   SLF4J API Module under MIT License
   Spring AOP under Apache License, Version 2.0

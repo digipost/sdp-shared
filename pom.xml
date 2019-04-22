@@ -181,10 +181,6 @@
                 <version>${wss4j.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                    <exclusion>
                         <groupId>net.sf.ehcache</groupId>
                         <artifactId>ehcache</artifactId>
                     </exclusion>
@@ -196,20 +192,8 @@
                 <version>${wss4j.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>javax.xml.stream</groupId>
-                        <artifactId>stax-api</artifactId>
-                    </exclusion>
-                    <exclusion>
                         <groupId>io.dropwizard.metrics</groupId>
                         <artifactId>metrics-core</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.fasterxml.woodstox</groupId>
-                        <artifactId>woodstox-core</artifactId>
                     </exclusion>
                     <exclusion>
                         <groupId>org.apache.geronimo.javamail</groupId>

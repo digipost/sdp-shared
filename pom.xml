@@ -27,9 +27,7 @@
 
         <config.profiler>inmemhsql</config.profiler>
         <org.slf4j.version>1.7.26</org.slf4j.version>
-        <spring.version>5.1.5.RELEASE</spring.version>
         <spring.ws.version>3.0.7.RELEASE</spring.ws.version>
-        <spring.security.version>5.1.4.RELEASE</spring.security.version>
         <wss4j.version>2.2.2</wss4j.version>
         <hamcrest.version>2.1</hamcrest.version>
         <jaxb2-basics.version>0.12.0</jaxb2-basics.version>
@@ -125,23 +123,18 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>${spring.version}</version>
+                <version>5.1.6.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
 
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-core</artifactId>
-                <version>${spring.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                </exclusions>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-bom</artifactId>
+                <version>5.1.5.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
-
 
             <!-- Spring WS -->
             <dependency>
@@ -149,14 +142,6 @@
                 <artifactId>spring-ws-core</artifactId>
                 <version>${spring.ws.version}</version>
                 <exclusions>
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>javax.xml.stream</groupId>
-                        <artifactId>stax-api</artifactId>
-                    </exclusion>
                     <exclusion>
                         <groupId>commons-io</groupId>
                         <artifactId>commons-io</artifactId>
@@ -169,18 +154,6 @@
                 <version>${spring.ws.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.sun.xml.wsit</groupId>
-                        <artifactId>xws-security</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.apache.ws.security</groupId>
-                        <artifactId>wss4j</artifactId>
-                    </exclusion>
-                    <exclusion>
                         <groupId>net.sf.ehcache</groupId>
                         <artifactId>ehcache</artifactId>
                     </exclusion>
@@ -191,19 +164,10 @@
                 </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-core</artifactId>
-                <version>${spring.security.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.springframework.ws</groupId>
                 <artifactId>spring-xml</artifactId>
                 <version>${spring.ws.version}</version>
                 <exclusions>
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
                     <exclusion>
                         <groupId>commons-io</groupId>
                         <artifactId>commons-io</artifactId>

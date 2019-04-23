@@ -1,49 +1,73 @@
 package no.digipost.api.xml;
 
-import org.jaxen.JaxenException;
-import org.jaxen.dom.DOMXPath;
-import org.springframework.xml.xpath.Jaxp13XPathTemplate;
-import org.springframework.xml.xpath.NodeMapper;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-import javax.xml.transform.Source;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
+
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
+
+import static java.util.Collections.unmodifiableMap;
+import static java.util.stream.Collectors.toList;
 
 public class XpathUtil {
 
-    private static final NodeMapper<Node> returnNode = new NodeMapper<Node>() {
-        @Override
-        public Node mapNode(final Node node, final int nodeNum) throws DOMException {
-            return node;
-        }
-    };
-
-    public static List<Node> evaluateXpath(final String expression, final Source source) {
-        Jaxp13XPathTemplate template = new Jaxp13XPathTemplate();
-        template.setNamespaces(getXpathNamespaces());
-        return template.evaluate(expression, source, returnNode);
-    }
-
-    @SuppressWarnings("unchecked")
     public static List<Node> getDOMXPath(final String expression, final Element element) {
         try {
-            DOMXPath xpath = new DOMXPath(expression);
-            Map<String, String> xpathNamespaces = getXpathNamespaces();
-            for (String s : xpathNamespaces.keySet()) {
-                xpath.addNamespace(s, xpathNamespaces.get(s));
-            }
-            return xpath.selectNodes(element);
-        } catch (JaxenException e) {
-            throw new RuntimeException(e);
+            XPathExpression xpathExpression = xpathFactory.newXPath().compile(expression);
+            NodeList nodes = (NodeList) xpathExpression.evaluate(element, XPathConstants.NODESET);
+            int nodesFound = nodes.getLength();
+            return IntStream.range(0, nodesFound).mapToObj(nodes::item).collect(toList());
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    "Unable to evaluate xpath '" + expression + "' on node " + element + ", " +
+                    "because " + e.getClass().getSimpleName() + ": '" + e.getMessage() + "'", e);
         }
-
     }
 
-    public static Map<String, String> getXpathNamespaces() {
+    private static final class XPathSynchronizedFactory {
+
+        private final XPathFactory xpathFactory = XPathFactory.newInstance();
+
+        synchronized XPath newXPath() {
+            XPath xpath = xpathFactory.newXPath();
+            xpath.setNamespaceContext(ebmsNamespaceContext);
+            return xpath;
+        }
+    }
+
+    private static final XPathSynchronizedFactory xpathFactory = new XPathSynchronizedFactory();
+
+
+    private static final NamespaceContext ebmsNamespaceContext = new NamespaceContext() {
+
+        @Override
+        public String getNamespaceURI(String prefix) {
+            return XPATH_NAMESPACES.get(prefix);
+        }
+
+        @Override
+        public Iterator<String> getPrefixes(String namespaceURI) {
+            throw new UnsupportedOperationException("getPrefixes() method is not supported");
+        }
+
+        @Override
+        public String getPrefix(String namespaceURI) {
+            throw new UnsupportedOperationException("getPrefix() method is not supported");
+        }
+
+    };
+
+    private static final Map<String, String> XPATH_NAMESPACES; static {
         Map<String, String> map = new HashMap<String, String>();
         map.put("env", Constants.SOAP_ENVELOPE12_NAMESPACE);
         map.put("eb", Constants.EBMS_NAMESPACE);
@@ -53,6 +77,10 @@ public class XpathUtil {
         map.put("wsu", Constants.WSSEC_UTILS_NAMESPACE);
         map.put("sbd", Constants.SBDH_NAMESPACE);
         map.put("sdp", Constants.SDP_NAMESPACE);
-        return map;
+        XPATH_NAMESPACES = unmodifiableMap(map);
+    }
+
+    public static Map<String, String> getXpathNamespaces() {
+        return XPATH_NAMESPACES;
     }
 }

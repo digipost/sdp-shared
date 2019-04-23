@@ -16,6 +16,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import javax.xml.transform.dom.DOMSource;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -42,14 +43,14 @@ public class EbmsReferenceExtractor {
         for (String href : hrefs) {
 
             List<Node> refs = XpathUtil.getDOMXPath("//ds:Reference[@URI='" + href + "']", element);
-            if (refs.size() == 0) {
+            if (refs.isEmpty()) {
                 List<Node> parts = XpathUtil.getDOMXPath("//*[@Id='" + href.substring(1) + "']", message.getDocument().getDocumentElement());
-                if (parts.size() > 0) {
+                if (!parts.isEmpty()) {
                     String refId = parts.get(0).getAttributes().getNamedItemNS(Constants.WSSEC_UTILS_NAMESPACE, "Id").getNodeValue();
                     refs = XpathUtil.getDOMXPath("//ds:Reference[@URI='#" + refId + "']", element);
                 }
             }
-            if (refs.size() > 0) {
+            if (!refs.isEmpty()) {
                 Reference ref = Marshalling.unmarshal(jaxb2Marshaller, refs.get(0), Reference.class);
                 String name = "attachment";
                 Element elm = doc.getElementById(href.replace("#", ""));
@@ -71,7 +72,7 @@ public class EbmsReferenceExtractor {
         }
         SoapHeaderElement incomingSoapHeaderElement = soapHeaderElementIterator.next();
         Messaging messaging = (Messaging) jaxb2Marshaller.unmarshal(incomingSoapHeaderElement.getSource());
-        if (messaging.getUserMessages().size() == 0) {
+        if (messaging.getUserMessages().isEmpty()) {
             return new ArrayList<String>();
         }
         UserMessage userMessage = messaging.getUserMessages().get(0);

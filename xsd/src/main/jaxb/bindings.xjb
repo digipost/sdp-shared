@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bindings version="2.1"
           xmlns="http://java.sun.com/xml/ns/jaxb"
+		  xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
           xmlns:xs="http://www.w3.org/2001/XMLSchema"
           xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
           xmlns:wildcard="http://jaxb2-commons.dev.java.net/basic/wildcard"
           xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
-          extensionBindingPrefixes="xjc">
+		  jaxb:extensionBindingPrefixes="xjc">
 
 	<globalBindings>
 		<xjc:simple/>
@@ -13,6 +14,7 @@
 		              xmlType="xs:dateTime"/>
 		<xjc:javaType adapter="no.digipost.xsd.jaxb.XSDateAdapter" name="java.time.LocalDate"
 		              xmlType="xs:date"/>
+		
 	</globalBindings>
 
 	<bindings schemaLocation="../difi-begrepskatalog/xsd/sdp.xsd" node="/xs:schema">

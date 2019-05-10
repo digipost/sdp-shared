@@ -15,6 +15,7 @@ public class Schemas {
     public static final ClassPathResource ASICE_SCHEMA = new ClassPathResource("asic-e/ts_102918v010201.xsd");
 
     public static final ClassPathResource LENKE_SCHEMA = new ClassPathResource("utvidelser/lenke.xsd");
+    public static final ClassPathResource INNKALLING_SCHEMA = new ClassPathResource("utvidelser/innkalling.xsd");
 
     public static Resource[] allSchemaResources() {
         return new Resource[]{

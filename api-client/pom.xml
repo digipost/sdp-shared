@@ -40,12 +40,10 @@
             <artifactId>jakarta.xml.soap-api</artifactId>
         </dependency>
 
-        <!-- SAAJ RI -->
-        <!-- Including this in order to prevent concurrency issue on JDK 7 -->
+        <!-- SAAJ RI https://javaee.github.io/metro-saaj/ -->
         <dependency>
             <groupId>com.sun.xml.messaging.saaj</groupId>
             <artifactId>saaj-impl</artifactId>
-            <scope>runtime</scope>
         </dependency>
 
         <dependency>

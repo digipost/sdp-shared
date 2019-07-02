@@ -6,13 +6,14 @@ import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.MessagePartNRInformation;
 import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.NonRepudiationInformation;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.security.crypto.codec.Base64;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
 import org.w3.xmldsig.Reference;
 import org.w3.xmldsig.Transform;
 
 import java.util.Arrays;
+import java.util.Base64;
+import java.util.Base64.Encoder;
 import java.util.Collection;
 
 public class ReferenceValidatorStep implements EbmsProcessingStep {
@@ -50,7 +51,8 @@ public class ReferenceValidatorStep implements EbmsProcessingStep {
             throw new RuntimeException("Unexpected digest method. Expected:" + expected.getDigestMethod().getAlgorithm() + " Actual:" + actual.getDigestMethod().getAlgorithm());
         }
         if (!Arrays.equals(expected.getDigestValue(), actual.getDigestValue())) {
-            throw new RuntimeException("Unexpected digest value. Expected:" + Base64.encode(expected.getDigestValue()) + " Actual:" + Base64.encode(actual.getDigestValue()));
+            Encoder base64Encoder = Base64.getEncoder();
+            throw new RuntimeException("Unexpected digest value. Expected:" + base64Encoder.encode(expected.getDigestValue()) + " Actual:" + base64Encoder.encode(actual.getDigestValue()));
         }
         validateTransforms(expected, actual);
     }

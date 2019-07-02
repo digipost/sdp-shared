@@ -45,12 +45,11 @@ import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
 import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 
 import javax.xml.soap.MessageFactory;
-import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPException;
+
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -95,6 +94,9 @@ public interface MessageSender {
     public static class Builder {
 
         public static final int DEFAULT_MAX_PER_ROUTE = 10;
+
+        private static final Logger LOG = LoggerFactory.getLogger(MessageSender.Builder.class);
+
         private static Jaxb2Marshaller defaultMarshaller;
         private final EbmsEndpointUriBuilder endpointUri;
         private final EbmsAktoer databehandler;
@@ -115,6 +117,7 @@ public interface MessageSender {
         private Duration validateAfterInactivity = Duration.of(2, ChronoUnit.SECONDS);
         private SoapLog.LogLevel logLevel = LogLevel.NONE;
         private ClientInterceptorWrapper clientInterceptorWrapper = interceptor -> interceptor;
+        private MessageFactorySupplier messageFactorySupplier = MessageFactorySupplier.METRO_SAAJ_RI;
 
 
         private Builder(EbmsEndpointUriBuilder uri, EbmsAktoer databehandler, EbmsAktoer tekniskMottaker,
@@ -143,15 +146,6 @@ public interface MessageSender {
                 }
             }
             throw new IllegalArgumentException("Could not find interceptor of class " + insertInterceptor.clazz);
-        }
-
-        private static HashMap<String, Object> getMessageProperties() {
-            HashMap<String, Object> messageProperties = new HashMap<String, Object>();
-            // Removed this in order to avoid issues occurring when not using
-            // internal saaj-impl
-            // messageProperties.put("saaj.lazy.soap.body", "true");
-
-            return messageProperties;
         }
 
         private static WebServiceTemplate createTemplate(SaajSoapMessageFactory factory, Jaxb2Marshaller marshaller, EbmsAktoer remoteParty,
@@ -235,6 +229,11 @@ public interface MessageSender {
             return this;
         }
 
+        public Builder withSoapMessageFactorySupplier(MessageFactorySupplier messageFactorySupplier) {
+            this.messageFactorySupplier = messageFactorySupplier;
+            return this;
+        }
+
         public MessageSender build() {
             if (marshaller == null) {
                 marshaller = getDefaultMarshaller();
@@ -258,24 +257,28 @@ public interface MessageSender {
 
             SaajSoapMessageFactory factory;
             try {
-                factory = new SaajSoapMessageFactory(MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL));
-                factory.setMessageProperties(getMessageProperties());
+                MessageFactory messageFactory = messageFactorySupplier.createMessageFactory();
+                LOG.info("Using instance of {} as {}", messageFactory.getClass().getName(), MessageFactory.class.getSimpleName());
+                factory = new SaajSoapMessageFactory(messageFactory);
                 factory.setSoapVersion(SoapVersion.SOAP_12);
                 factory.afterPropertiesSet();
             } catch (SOAPException e) {
-                throw new RuntimeException("Unable to initialize SoapMessageFactory", e);
+                throw new RuntimeException(
+                        "Unable to initialize SoapMessageFactory because " +
+                        e.getClass().getSimpleName() + ": '" + e.getMessage() + "'", e);
             }
 
             DefaultMessageSender sender = new DefaultMessageSender(endpointUri, marshaller);
 
             sender.databehandler = databehandler;
             sender.tekniskMottaker = tekniskMottaker;
-            sender.meldingTemplate = createTemplate(factory, marshaller, tekniskMottaker, getHttpComponentsMessageSender(),
-                    clientInterceptors);
+            sender.meldingTemplate = createTemplate(
+                    factory, marshaller, tekniskMottaker, getHttpComponentsMessageSender(), clientInterceptors);
             sender.signer = new SdpMeldingSigner(keystoreInfo, marshaller);
 
             return sender;
         }
+
 
         private HttpComponentsMessageSender getHttpComponentsMessageSender() {
             PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();

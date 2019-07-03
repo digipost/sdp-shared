@@ -117,7 +117,7 @@ public interface MessageSender {
         private Duration validateAfterInactivity = Duration.of(2, ChronoUnit.SECONDS);
         private SoapLog.LogLevel logLevel = LogLevel.NONE;
         private ClientInterceptorWrapper clientInterceptorWrapper = interceptor -> interceptor;
-        private MessageFactorySupplier messageFactorySupplier = MessageFactorySupplier.METRO_SAAJ_RI;
+        private MessageFactorySupplier messageFactorySupplier;
 
 
         private Builder(EbmsEndpointUriBuilder uri, EbmsAktoer databehandler, EbmsAktoer tekniskMottaker,
@@ -257,7 +257,7 @@ public interface MessageSender {
 
             SaajSoapMessageFactory factory;
             try {
-                MessageFactory messageFactory = messageFactorySupplier.createMessageFactory();
+                MessageFactory messageFactory = MessageFactorySupplier.defaultIfNull(messageFactorySupplier).createMessageFactory();
                 LOG.info("Using instance of {} as {}", messageFactory.getClass().getName(), MessageFactory.class.getSimpleName());
                 factory = new SaajSoapMessageFactory(messageFactory);
                 factory.setSoapVersion(SoapVersion.SOAP_12);

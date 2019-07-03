@@ -15,7 +15,9 @@ public interface MessageFactorySupplier {
      * This is the default SAAJ implementation used by this library, and is preferred because the implementation
      * bundled in the JDK has certain concurrency issues.
      */
-    MessageFactorySupplier METRO_SAAJ_RI = com.sun.xml.messaging.saaj.soap.ver1_2.SOAPMessageFactory1_2Impl::new;
+    static MessageFactorySupplier metroSaajRI() {
+        return com.sun.xml.messaging.saaj.soap.ver1_2.SOAPMessageFactory1_2Impl::new;
+    }
 
     /**
      * This resolves which MessageFactory implementation to use using standard JDK mechanism by
@@ -34,7 +36,21 @@ public interface MessageFactorySupplier {
      * by the {@code javax.xml.soap.MessageFactory} system property, or this is preconfigured
      * by your runtime environment, e.g. an application server.
      */
-    MessageFactorySupplier JDK_FACTORY = () -> MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
+    static MessageFactorySupplier jdkFactory() {
+        return () -> MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
+    }
+
+    /**
+     * Get the default {@code MessageFactorySupplier} (i.e. {@link #metroSaajRI()})
+     * if given {@code null} as argument.
+     *
+     * @param messageFactory the factory to check if it is {@code null}.
+     * @return the given {@code messageFactory} or if it is {@code null}, the result
+     *         from {@link #metroSaajRI()}.
+     */
+    static MessageFactorySupplier defaultIfNull(MessageFactorySupplier messageFactory) {
+        return messageFactory != null ? messageFactory : metroSaajRI();
+    }
 
 
 

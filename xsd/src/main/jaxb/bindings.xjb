@@ -17,7 +17,7 @@
 		
 	</globalBindings>
 
-	<bindings schemaLocation="../difi-begrepskatalog/xsd/sdp.xsd" node="/xs:schema">
+	<bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/sdp.xsd" node="/xs:schema">
 		<schemaBindings>
 			<nameXmlTransform>
 				<typeName prefix="SDP" />
@@ -27,7 +27,7 @@
 		</schemaBindings>
 	</bindings>
 
-    <bindings schemaLocation="../difi-begrepskatalog/xsd/utvidelser/lenke.xsd" node="/xs:schema">
+    <bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/utvidelser/lenke.xsd" node="/xs:schema">
         <schemaBindings>
             <nameXmlTransform>
                 <typeName prefix="SDP" />
@@ -37,7 +37,27 @@
         </schemaBindings>
     </bindings>
 
-    <bindings schemaLocation="../difi-begrepskatalog/xsd/sdp-manifest.xsd">
+    <bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/utvidelser/arrangement.xsd" node="/xs:schema">
+        <schemaBindings>
+            <nameXmlTransform>
+                <typeName prefix="SDP" />
+                <anonymousTypeName prefix="SDP" />
+                <elementName prefix="SDP" />
+            </nameXmlTransform>
+        </schemaBindings>
+    </bindings>
+
+   <bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/utvidelser/bevis.xsd" node="/xs:schema">
+        <schemaBindings>
+            <nameXmlTransform>
+                <typeName prefix="SDP" />
+                <anonymousTypeName prefix="SDP" />
+                <elementName prefix="SDP" />
+            </nameXmlTransform>
+        </schemaBindings>
+    </bindings>
+
+    <bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/sdp-manifest.xsd">
         <bindings node="//xs:complexType[@name='Manifest']">
             <inheritance:implements>no.digipost.xsd.types.HarHoveddokumentOgVedlegg&lt;no.difi.begrep.sdp.schema_v10.SDPDokument&gt;</inheritance:implements>
         </bindings>
@@ -49,7 +69,7 @@
         </bindings>
     </bindings>
 
-	<bindings schemaLocation="../difi-begrepskatalog/xsd/sdp-melding.xsd">
+	<bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/sdp-melding.xsd">
 		<bindings node="//xs:complexType[@name='DigitalPost']">
 			<inheritance:implements>no.digipost.xsd.types.DigitalPostformidling</inheritance:implements>
 		</bindings>
@@ -81,39 +101,39 @@
 		</bindings>
 	</bindings>
 
-	<bindings schemaLocation="../difi-begrepskatalog/xsd/sdp-felles.xsd">
+	<bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/sdp-felles.xsd">
 		<bindings node="//xs:complexType[@name='Tittel']">
 			<inheritance:implements>no.digipost.xsd.types.TekstMedSpraak</inheritance:implements>
 		</bindings>
 	</bindings>
 
-	<bindings schemaLocation="../difi-begrepskatalog/xsd/SBDH20040506-02/StandardBusinessDocumentHeader.xsd" node="/xs:schema">
+	<bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/SBDH20040506-02/StandardBusinessDocumentHeader.xsd" node="/xs:schema">
 		<wildcard:lax/>
 	</bindings>
 
-	<bindings schemaLocation="../difi-begrepskatalog/xsd/ebxml/ebms-header-3_0-200704.xsd" node="//xs:attribute[@ref='S12:mustUnderstand']">
+	<bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/ebxml/ebms-header-3_0-200704.xsd" node="//xs:attribute[@ref='S12:mustUnderstand']">
 		<property name="mustUnderstand12" />
 	</bindings>
 
-	<bindings schemaLocation="../difi-begrepskatalog/xsd/w3/xmldsig-core-schema.xsd">
+	<bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/w3/xmldsig-core-schema.xsd">
 		<schemaBindings>
 			<package name="org.w3.xmldsig"/>
 		</schemaBindings>
 	</bindings>
 
-	<bindings schemaLocation="../difi-begrepskatalog/xsd/w3/xlink.xsd">
+	<bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/w3/xlink.xsd">
 		<schemaBindings>
 			<package name="org.w3.xlink"/>
 		</schemaBindings>
 	</bindings>
 
-	<bindings schemaLocation="../difi-begrepskatalog/xsd/w3/xenc-schema.xsd">
+	<bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/w3/xenc-schema.xsd">
 		<schemaBindings>
 			<package name="org.w3.xenc"/>
 		</schemaBindings>
 	</bindings>
 
-	<bindings schemaLocation="../difi-begrepskatalog/xsd/w3/soap-envelope.xsd">
+	<bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/w3/soap-envelope.xsd">
 		<schemaBindings>
 			<package name="org.w3.soap"/>
 		</schemaBindings>

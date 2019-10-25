@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>no.digipost</groupId>
 		<artifactId>sdp-shared</artifactId>
-		<version>2.14-SNAPSHOT</version>
+		<version>2.15-SNAPSHOT</version>
 	</parent>
 
 
@@ -55,7 +55,7 @@
 						<configuration>
 							<resources>
 								<resource>
-									<directory>src/main/difi-begrepskatalog/xsd</directory>
+									<directory>src/main/difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd</directory>
 								</resource>
 							</resources>
 						</configuration>
@@ -75,7 +75,7 @@
 				</executions>
 				<configuration>
 					<specVersion>2.2</specVersion>
-					<schemaDirectory>${basedir}/src/main/difi-begrepskatalog/xsd</schemaDirectory>
+					<schemaDirectory>${basedir}/src/main/difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd</schemaDirectory>
 					<enableIntrospection>true</enableIntrospection>
 					<bindingDirectory>src/main/jaxb</bindingDirectory>
 					<schemaIncludes>

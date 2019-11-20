@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>sdp-shared</artifactId>
-    <version>2.17-SNAPSHOT</version>
+    <version>2.16.2</version>
     <packaging>pom</packaging>
     <name>SDP Shared</name>
     <description>Delt kode for Sikker Digital Post</description>
@@ -34,7 +34,7 @@
     <scm>
         <connection>scm:git:git@github.com:digipost/sdp-shared.git</connection>
         <developerConnection>scm:git:git@github.com:digipost/sdp-shared.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>2.16.2</tag>
     </scm>
 
     <dependencyManagement>

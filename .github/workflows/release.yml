@@ -7,10 +7,12 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    name: Release 
+    name: Release
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v1
+        with:
+          submodules: true
       - name: Set release version
         run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})
       - name: Release to Central Repository

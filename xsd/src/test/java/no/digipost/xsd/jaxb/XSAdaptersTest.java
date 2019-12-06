@@ -23,7 +23,7 @@ public class XSAdaptersTest {
     @Test
     public void unmarshall_yields_datetime_with_region_based_zoneId_replaced_with_GMT_offset() {
         ZoneId newYorkZone = ZoneId.of("America/New_York");
-        ZonedDateTime rightNowInAmerica = ZonedDateTime.now(newYorkZone).withNano(0);;
+        ZonedDateTime rightNowInAmerica = ZonedDateTime.now(newYorkZone).withNano(0);
         String xmlDateTimeString = dateTimeAdapter.marshal(rightNowInAmerica);
 
         boolean daylightSavings = newYorkZone.getRules().isDaylightSavings(rightNowInAmerica.toInstant());

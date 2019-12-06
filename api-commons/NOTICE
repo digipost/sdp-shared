@@ -15,9 +15,18 @@ This software includes third party software subject to the following licenses:
   Apache WSS4J WS-Security Common under Apache License, Version 2.0
   Apache XML Security for Java under The Apache Software License, Version 2.0
   Bouncy Castle Provider under Bouncy Castle Licence
+  Extended StAX API under Eclipse Distribution License - v 1.0
+  fastinfoset under Apache License, Version 2.0 or Eclipse Distribution License - v 1.0
+  istack common utility code runtime under Eclipse Distribution License - v 1.0
+  jakarta.xml.bind-api under Eclipse Distribution License - v 1.0
+  jakarta.xml.soap API under Eclipse Distribution License - v 1.0
   JASYPT: Java Simplified Encryption under The Apache Software License, Version 2.0
+  JavaBeans Activation Framework API jar under EDL 1.0
+  JAXB Runtime under Eclipse Distribution License - v 1.0
   JAXB2 Basics - Runtime under BSD-Style License
   JCL 1.2 implemented over SLF4J under MIT License
+  MIME streaming extension under Eclipse Distribution License - v 1.0
+  saaj-impl under Eclipse Distribution License - v 1.0
   SDP Shared - XSD & JAXB under The Apache Software License, Version 2.0
   SLF4J API Module under MIT License
   Spring AOP under Apache License, Version 2.0
@@ -34,4 +43,5 @@ This software includes third party software subject to the following licenses:
   spring-ws-core under Apache License, Version 2.0
   spring-ws-security under Apache License, Version 2.0
   spring-xml under Apache License, Version 2.0
+  TXW2 Runtime under Eclipse Distribution License - v 1.0
 

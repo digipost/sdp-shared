@@ -8,5 +8,12 @@ Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0.html
 
 This software includes third party software subject to the following licenses:
 
+  Extended StAX API under Eclipse Distribution License - v 1.0
+  fastinfoset under Apache License, Version 2.0 or Eclipse Distribution License - v 1.0
+  istack common utility code runtime under Eclipse Distribution License - v 1.0
+  jakarta.xml.bind-api under Eclipse Distribution License - v 1.0
+  JavaBeans Activation Framework API jar under EDL 1.0
+  JAXB Runtime under Eclipse Distribution License - v 1.0
   JAXB2 Basics - Runtime under BSD-Style License
+  TXW2 Runtime under Eclipse Distribution License - v 1.0
 

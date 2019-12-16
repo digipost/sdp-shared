@@ -11,8 +11,7 @@
     <parent>
         <groupId>no.digipost</groupId>
         <artifactId>digipost-open-super-pom</artifactId>
-        <version>3</version>
-        <relativePath />
+        <version>6</version>
     </parent>
 
     <modules>
@@ -182,6 +181,10 @@
                         <groupId>net.sf.ehcache</groupId>
                         <artifactId>ehcache</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>javax.xml.ws</groupId>
+                        <artifactId>jaxws-api</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -189,6 +192,10 @@
                 <artifactId>wss4j-ws-security-common</artifactId>
                 <version>${wss4j.version}</version>
                 <exclusions>
+                    <exclusion>
+                        <groupId>javax.xml.ws</groupId>
+                        <artifactId>jaxws-api</artifactId>
+                    </exclusion>
                     <exclusion>
                         <groupId>org.opensaml</groupId>
                         <artifactId>opensaml-saml-impl</artifactId>
@@ -221,9 +228,33 @@
             </dependency>
 
             <dependency>
+                <groupId>jakarta.xml.bind</groupId>
+                <artifactId>jakarta.xml.bind-api</artifactId>
+                <version>2.3.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.xml.ws</groupId>
+                <artifactId>jakarta.xml.ws-api</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.sun.xml.messaging.saaj</groupId>
                 <artifactId>saaj-impl</artifactId>
                 <version>1.5.1</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.xml.stream</groupId>
+                        <artifactId>stax-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>2.3.2</version>
+                <scope>runtime</scope>
             </dependency>
 
             <dependency>
@@ -315,6 +346,19 @@
                             </goals>
                         </execution>
                     </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>jakarta.xml.bind</groupId>
+                            <artifactId>jakarta.xml.bind-api</artifactId>
+                            <version>2.3.2</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.glassfish.jaxb</groupId>
+                            <artifactId>jaxb-runtime</artifactId>
+                            <version>2.3.2</version>
+                            <scope>runtime</scope>
+                        </dependency>
+                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>com.github.siom79.japicmp</groupId>
@@ -376,6 +420,9 @@
                                     <include>org.codehaus.woodstox:stax2-api</include>
                                     <include>org.codehaus.woodstox:woodstox-core-asl</include>
                                     <include>org.jasypt:jasypt</include>
+                                    <include>com.sun.xml.fastinfoset:FastInfoset</include>
+                                    <include>com.sun.istack:istack-commons-runtime</include>
+                                    <include>org.glassfish.jaxb:*</include>
                                     <include>org.jvnet.jaxb2_commons:jaxb2-basics-runtime</include>
                                     <include>org.opensaml:*</include>
                                     <include>org.cryptacular:cryptacular</include>
@@ -387,8 +434,13 @@
                                     <include>org.springframework.ws:*</include>
                                     <include>wsdl4j:wsdl4j</include>
                                     <include>jakarta.activation:jakarta.activation-api</include>
+                                    <include>javax.xml.ws:jaxws-api</include>
+                                    <include>javax.xml.bind:jaxb-api</include>
+                                    <include>javax.annotation:javax.annotation-api</include>
+                                    <include>javax.jws:jsr181-api</include>
                                     <include>jakarta.xml.bind:jakarta.xml.bind-api</include>
                                     <include>jakarta.xml.soap:jakarta.xml.soap-api</include>
+                                    <include>javax.xml.soap:javax.xml.soap-api</include>
                                     <include>com.sun.xml.messaging.saaj:saaj-impl</include>
                                     <include>org.jvnet.staxex:stax-ex</include>
                                     <include>org.jvnet.mimepull:mimepull</include>
@@ -429,6 +481,7 @@
                             <goal>analyze-only</goal>
                         </goals>
                         <configuration>
+                            <ignoredUnusedDeclaredDependencies>com.sun.xml.messaging.saaj:saaj-impl</ignoredUnusedDeclaredDependencies>
                             <ignoreNonCompile>true</ignoreNonCompile>
                             <failOnWarning>true</failOnWarning>
                         </configuration>

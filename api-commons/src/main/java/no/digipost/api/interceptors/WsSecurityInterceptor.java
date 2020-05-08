@@ -2,6 +2,7 @@ package no.digipost.api.interceptors;
 
 import no.digipost.api.xml.Constants;
 import org.apache.wss4j.common.crypto.Merlin;
+import org.apache.wss4j.common.ext.WSSecurityException;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.ws.client.WebServiceClientException;
@@ -12,6 +13,10 @@ import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.server.SoapEndpointInterceptor;
 
 import javax.xml.namespace.QName;
+import java.security.PrivateKey;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class WsSecurityInterceptor implements ClientInterceptor, SoapEndpointInterceptor, InitializingBean {
 
@@ -51,7 +56,20 @@ public class WsSecurityInterceptor implements ClientInterceptor, SoapEndpointInt
 
     @Override
     public void afterPropertiesSet() {
-        Merlin crypto = new Merlin();
+        Merlin crypto = new Merlin() {
+            private final Map<String, PrivateKey> instance = new HashMap<>();
+
+            @Override
+            public PrivateKey getPrivateKey(String identifier, String password) throws WSSecurityException {
+                final String key = UUID.nameUUIDFromBytes((identifier + password).getBytes()).toString();
+                synchronized (instance) {
+                    if (!instance.containsKey(key)) {
+                        instance.put(key, super.getPrivateKey(identifier, password));
+                    }
+                    return instance.get(key);
+                }
+            }
+        };
         crypto.setCryptoProvider(BouncyCastleProvider.PROVIDER_NAME);
 
         crypto.setKeyStore(keystoreInfo.keystore);

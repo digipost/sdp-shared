@@ -3,8 +3,8 @@ package no.digipost.api.xml;
 import no.digipost.api.EbmsReferenceExtractor;
 import org.junit.Test;
 import org.springframework.ws.soap.saaj.SaajSoapMessage;
-import org.w3.xmldsig.DigestMethod;
-import org.w3.xmldsig.Reference;
+import sdp.org.w3.xmldsig.DigestMethod;
+import sdp.org.w3.xmldsig.Reference;
 
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPMessage;

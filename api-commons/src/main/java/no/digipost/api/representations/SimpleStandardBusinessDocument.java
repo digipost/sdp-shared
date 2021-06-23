@@ -11,9 +11,9 @@ import no.difi.begrep.sdp.schema_v10.SDPMelding;
 import no.difi.begrep.sdp.schema_v10.SDPMottaker;
 import no.difi.begrep.sdp.schema_v10.SDPVarslingfeilet;
 import no.digipost.xsd.types.DigitalPostformidling;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
-import org.w3.xmldsig.Reference;
+import sdp.org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
+import sdp.org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
+import sdp.org.w3.xmldsig.Reference;
 
 import java.time.Duration;
 import java.time.ZoneId;

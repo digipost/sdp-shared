@@ -5,13 +5,13 @@ import no.difi.begrep.sdp.schema_v10.SDPFeil;
 import no.difi.begrep.sdp.schema_v10.SDPFlyttetDigitalPost;
 import no.difi.begrep.sdp.schema_v10.SDPKvittering;
 import no.difi.begrep.sdp.schema_v10.SDPMelding;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.BusinessScope;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.DocumentIdentification;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.Partner;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.PartnerIdentification;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocumentHeader;
+import sdp.org.unece.cefact.namespaces.standardbusinessdocumentheader.BusinessScope;
+import sdp.org.unece.cefact.namespaces.standardbusinessdocumentheader.DocumentIdentification;
+import sdp.org.unece.cefact.namespaces.standardbusinessdocumentheader.Partner;
+import sdp.org.unece.cefact.namespaces.standardbusinessdocumentheader.PartnerIdentification;
+import sdp.org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
+import sdp.org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
+import sdp.org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocumentHeader;
 
 import java.time.ZonedDateTime;
 

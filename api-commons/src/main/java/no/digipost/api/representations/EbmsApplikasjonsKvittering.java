@@ -2,8 +2,8 @@ package no.digipost.api.representations;
 
 import no.digipost.api.PMode;
 import org.springframework.util.StringUtils;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
-import org.w3.xmldsig.Reference;
+import sdp.org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
+import sdp.org.w3.xmldsig.Reference;
 
 import java.io.InputStream;
 import java.util.ArrayList;

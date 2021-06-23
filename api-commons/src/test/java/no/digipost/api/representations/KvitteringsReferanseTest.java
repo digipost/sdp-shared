@@ -1,7 +1,7 @@
 package no.digipost.api.representations;
 
 import org.junit.Test;
-import org.w3.xmldsig.Reference;
+import sdp.org.w3.xmldsig.Reference;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;

@@ -2,8 +2,8 @@
 package no.digipost.xsd.types;
 
 import no.difi.begrep.sdp.schema_v10.*;
-import org.w3.xmldsig.Reference;
-import org.w3.xmldsig.Signature;
+import sdp.org.w3.xmldsig.Reference;
+import sdp.org.w3.xmldsig.Signature;
 
 
 /**

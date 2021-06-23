@@ -9,7 +9,7 @@ import no.digipost.xsd.types.DigitalPostformidling;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
+import sdp.org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
 import java.time.LocalDate;
 import java.time.ZoneId;

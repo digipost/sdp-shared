@@ -47,7 +47,7 @@
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <configuration>
-                        <excludePackageNames>org.*,au.*</excludePackageNames>
+                        <excludePackageNames>sdp.org.*,sdp.au.*</excludePackageNames>
                         <doclint>all,-missing,-html</doclint>
                     </configuration>
                 </plugin>

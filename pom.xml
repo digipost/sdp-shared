@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>sdp-shared</artifactId>
-    <version>2.17-SNAPSHOT</version>
+    <version>LOCAL-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>SDP Shared</name>
     <description>Delt kode for Sikker Digital Post</description>
@@ -11,7 +11,7 @@
     <parent>
         <groupId>no.digipost</groupId>
         <artifactId>digipost-open-super-pom</artifactId>
-        <version>6</version>
+        <version>7</version>
     </parent>
 
     <modules>

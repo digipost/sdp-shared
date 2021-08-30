@@ -12,6 +12,12 @@
     </parent>
 
     <dependencies>
+
+        <dependency>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>no.digipost</groupId>
             <artifactId>sdp-xsd</artifactId>
@@ -27,11 +33,6 @@
         <dependency>
             <groupId>org.springframework.ws</groupId>
             <artifactId>spring-ws-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>jakarta.activation</groupId>
-            <artifactId>jakarta.activation-api</artifactId>
         </dependency>
 
         <!-- SAAJ API-->

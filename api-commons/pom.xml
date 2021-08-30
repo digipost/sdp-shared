@@ -14,12 +14,6 @@
     <dependencies>
 
         <dependency>
-            <groupId>no.digipost</groupId>
-            <artifactId>sdp-xsd</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.sun.xml.messaging.saaj</groupId>
             <artifactId>saaj-impl</artifactId>
         </dependency>
@@ -34,6 +28,12 @@
         <dependency>
             <groupId>jakarta.activation</groupId>
             <artifactId>jakarta.activation-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>no.digipost</groupId>
+            <artifactId>sdp-xsd</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- Spring WS -->

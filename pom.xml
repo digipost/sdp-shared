@@ -24,9 +24,9 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
-        <org.slf4j.version>1.7.28</org.slf4j.version>
-        <spring.ws.version>3.0.7.RELEASE</spring.ws.version>
-        <wss4j.version>2.2.4</wss4j.version>
+        <org.slf4j.version>1.7.32</org.slf4j.version>
+        <spring.ws.version>3.1.1</spring.ws.version>
+        <wss4j.version>2.3.2</wss4j.version>
         <jaxb2-basics.version>0.12.0</jaxb2-basics.version>
     </properties>
 
@@ -41,7 +41,7 @@
             <dependency>
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest</artifactId>
-                <version>2.1</version>
+                <version>2.2</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -89,7 +89,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.12</version>
+                <version>4.13.2</version>
                 <scope>test</scope>
                 <exclusions>
                     <exclusion>
@@ -101,26 +101,26 @@
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>3.1.0</version>
+                <version>3.12.4</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>nl.jqno.equalsverifier</groupId>
                 <artifactId>equalsverifier</artifactId>
-                <version>3.1.10</version>
+                <version>3.7.1</version>
                 <scope>test</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk15on</artifactId>
-                <version>1.64</version>
+                <version>1.69</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>5.2.1.RELEASE</version>
+                <version>5.3.9</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -128,7 +128,7 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-bom</artifactId>
-                <version>5.1.5.RELEASE</version>
+                <version>5.5.2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -178,7 +178,7 @@
                 <version>${wss4j.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>net.sf.ehcache</groupId>
+                        <groupId>org.ehcache</groupId>
                         <artifactId>ehcache</artifactId>
                     </exclusion>
                     <exclusion>
@@ -214,29 +214,34 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+            <dependency>
+                <groupId>org.apache.santuario</groupId>
+                <artifactId>xmlsec</artifactId>
+                <version>2.2.2</version>
+            </dependency>
 
             <dependency>
                 <groupId>jakarta.activation</groupId>
                 <artifactId>jakarta.activation-api</artifactId>
-                <version>1.2.1</version>
+                <version>1.2.2</version>
             </dependency>
 
             <dependency>
                 <groupId>jakarta.xml.soap</groupId>
                 <artifactId>jakarta.xml.soap-api</artifactId>
-                <version>1.4.1</version>
+                <version>1.4.2</version>
             </dependency>
 
             <dependency>
                 <groupId>jakarta.xml.bind</groupId>
                 <artifactId>jakarta.xml.bind-api</artifactId>
-                <version>2.3.2</version>
+                <version>2.3.3</version>
             </dependency>
 
             <dependency>
                 <groupId>jakarta.xml.ws</groupId>
                 <artifactId>jakarta.xml.ws-api</artifactId>
-                <version>${jaxb.version}</version>
+                <version>2.3.3</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.xml.messaging.saaj</groupId>
@@ -253,14 +258,14 @@
             <dependency>
                 <groupId>org.glassfish.jaxb</groupId>
                 <artifactId>jaxb-runtime</artifactId>
-                <version>2.3.2</version>
+                <version>2.3.5</version>
                 <scope>runtime</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
-                <version>4.5.10</version>
+                <version>4.5.13</version>
                 <exclusions>
                     <exclusion>
                         <groupId>commons-logging</groupId>
@@ -271,18 +276,18 @@
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpcore</artifactId>
-                <version>4.4.12</version>
+                <version>4.4.14</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.9</version>
+                <version>3.12.0</version>
             </dependency>
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
-                <version>1.13</version>
+                <version>1.15</version>
             </dependency>
 
         </dependencies>
@@ -350,12 +355,12 @@
                         <dependency>
                             <groupId>jakarta.xml.bind</groupId>
                             <artifactId>jakarta.xml.bind-api</artifactId>
-                            <version>2.3.2</version>
+                            <version>2.3.3</version>
                         </dependency>
                         <dependency>
                             <groupId>org.glassfish.jaxb</groupId>
                             <artifactId>jaxb-runtime</artifactId>
-                            <version>2.3.2</version>
+                            <version>2.3.3</version>
                             <scope>runtime</scope>
                         </dependency>
                     </dependencies>
@@ -418,7 +423,7 @@
                                     <include>org.apache.wss4j:wss4j-ws-security-dom</include>
                                     <include>org.bouncycastle:bcprov-jdk15on</include>
                                     <include>org.codehaus.woodstox:stax2-api</include>
-                                    <include>org.codehaus.woodstox:woodstox-core-asl</include>
+                                    <include>com.fasterxml.woodstox:woodstox-core</include>
                                     <include>org.jasypt:jasypt</include>
                                     <include>com.sun.xml.fastinfoset:FastInfoset</include>
                                     <include>com.sun.istack:istack-commons-runtime</include>
@@ -427,6 +432,7 @@
                                     <include>org.opensaml:*</include>
                                     <include>org.cryptacular:cryptacular</include>
                                     <include>com.google.guava:guava</include>
+                                    <include>com.google.guava:failureaccess</include>
                                     <include>net.shibboleth.utilities:java-support</include>
                                     <include>org.slf4j:*</include>
                                     <include>org.springframework:*</include>
@@ -434,6 +440,7 @@
                                     <include>org.springframework.ws:*</include>
                                     <include>wsdl4j:wsdl4j</include>
                                     <include>jakarta.activation:jakarta.activation-api</include>
+                                    <include>com.sun.activation:jakarta.activation:jakarta.activation</include>
                                     <include>javax.xml.ws:jaxws-api</include>
                                     <include>javax.xml.bind:jaxb-api</include>
                                     <include>javax.annotation:javax.annotation-api</include>

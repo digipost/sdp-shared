@@ -6,20 +6,21 @@ import no.difi.begrep.sdp.schema_v10.SDPFlyttetDigitalPost;
 import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling;
 import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.Type;
 import no.digipost.xsd.types.DigitalPostformidling;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 
+import static co.unruly.matchers.Java8Matchers.where;
 import static no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.defaultTidEtterMidnatt;
 import static org.apache.commons.lang3.StringUtils.join;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
@@ -32,8 +33,6 @@ public class SimpleStandardBusinessDocumentTest {
     private final SimpleDigitalPostformidling nyPost = new SimpleStandardBusinessDocument(new StandardBusinessDocument().withAny(sdpPost)).getDigitalPostformidling();
     private final SDPFlyttetDigitalPost sdpFlyttetPost = new SDPFlyttetDigitalPost().withMottaksdato(mottaksdato);
     private final SimpleDigitalPostformidling flyttetPost = new SimpleStandardBusinessDocument(new StandardBusinessDocument().withAny(sdpFlyttetPost)).getDigitalPostformidling();
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void girDigitalPostformidlingMedTypeNY_POST() {
@@ -80,20 +79,20 @@ public class SimpleStandardBusinessDocumentTest {
     @Test
     public void feilerDersomUkjentTypeDigitalPostMelding() {
         SimpleStandardBusinessDocument sbd = new SimpleStandardBusinessDocument(new StandardBusinessDocument().withAny(mock(DigitalPostformidling.class)));
-        expectedException.expectMessage("ikke gjenkjent");
-        expectedException.expectMessage(join(SimpleDigitalPostformidling.Type.values(), ", "));
-        sbd.getDigitalPostformidling();
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, sbd::getDigitalPostformidling);
+        assertThat(thrown, where(Exception::getMessage, containsString("ikke gjenkjent")));
+        assertThat(thrown, where(Exception::getMessage, containsString(join(SimpleDigitalPostformidling.Type.values(), ", "))));
     }
 
     @Test
     public void feilerDersomManHenterUtFlyttetDigitalPostFraDigitalPostformidlingTypeNY_POST() {
-        expectedException.expectMessage("ikke av forventet type " + Type.FLYTTET);
-        nyPost.getFlyttetDigitalPost();
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, nyPost::getFlyttetDigitalPost);
+        assertThat(thrown, where(Exception::getMessage, containsString("ikke av forventet type " + Type.FLYTTET)));
     }
 
     @Test
     public void feilerDersomManHenterUtDigitalPostFraDigitalPostformidlingTypeFLYTTET() {
-        expectedException.expectMessage("ikke av forventet type " + Type.NY_POST);
-        flyttetPost.getDigitalPost();
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, flyttetPost::getDigitalPost);
+        assertThat(thrown, where(Exception::getMessage, containsString("ikke av forventet type " + Type.NY_POST)));
     }
 }

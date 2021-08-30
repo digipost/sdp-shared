@@ -1,7 +1,6 @@
 package no.digipost.api.representations;
 
 import no.digipost.api.PMode;
-import org.springframework.util.StringUtils;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3.xmldsig.Reference;
 
@@ -9,6 +8,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static org.springframework.util.StringUtils.hasText;
 
 public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage implements KanBekreftesSomBehandletKvittering {
 
@@ -105,7 +106,7 @@ public class EbmsApplikasjonsKvittering extends EbmsOutgoingMessage implements K
 
 
         public EbmsApplikasjonsKvittering build() {
-            String id = StringUtils.isEmpty(messageId) ? newId() : messageId;
+            String id = hasText(messageId) ? messageId : newId();
             EbmsApplikasjonsKvittering kvittering = new EbmsApplikasjonsKvittering(avsender, mpcId, mottaker, prioritet, id, action, refToMessageId, sbd, sbdStream);
             kvittering.references.addAll(references);
             return kvittering;

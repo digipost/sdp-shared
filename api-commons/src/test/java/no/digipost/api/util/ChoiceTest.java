@@ -1,27 +1,22 @@
 package no.digipost.api.util;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import static no.digipost.api.util.Choice.choice;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertThrows;
 
 public class ChoiceTest {
 
-    @Rule
-    public final ExpectedException expectedException = ExpectedException.none();
-
     @Test
     public void throwsExceptionIfBothAreNonNull() {
-        expectedException.expect(IllegalArgumentException.class);
-        choice(ZonedDateTime.now(), LocalDate.now());
+        assertThrows(IllegalArgumentException.class, () -> choice(ZonedDateTime.now(), LocalDate.now()));
     }
 
 

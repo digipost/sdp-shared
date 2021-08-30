@@ -1,9 +1,9 @@
 package no.digipost.api.xml;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapHeaderElement;
@@ -15,6 +15,7 @@ import java.util.List;
 import static no.digipost.api.xml.Constants.MESSAGING_QNAME;
 import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class MessagingMarshallingTest {
 
     private final Jaxb2Marshaller jaxb2Marshaller = Marshalling.getMarshallerSingleton();
@@ -24,11 +25,6 @@ public class MessagingMarshallingTest {
 
     @Mock
     private SoapHeader soapHeader;
-
-    @Before
-    public void initMocks() {
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Test(expected = RuntimeException.class)
     public void manglende_soap_header_skal_kaste_runtime_exception() {

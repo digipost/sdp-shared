@@ -241,6 +241,11 @@
             </dependency>
 
             <dependency>
+                <groupId>jakarta.jws</groupId>
+                <artifactId>jakarta.jws-api</artifactId>
+                <version>2.1.0</version>
+            </dependency>
+            <dependency>
                 <groupId>jakarta.xml.ws</groupId>
                 <artifactId>jakarta.xml.ws-api</artifactId>
                 <version>2.3.3</version>
@@ -455,6 +460,8 @@
                                     <include>com.sun.xml.messaging.saaj:saaj-impl</include>
                                     <include>org.jvnet.staxex:stax-ex</include>
                                     <include>org.jvnet.mimepull:mimepull</include>
+                                    <include>jakarta.jws:jakarta.jws-api</include>
+                                    <include>jakarta.xml.ws:jakarta.xml.ws-api</include>
                                 </includes>
                                 <searchTransitive>true</searchTransitive>
                                 <message>Maven-avhengigheter har forandret seg. Sjekk at alle lisenser er OK før

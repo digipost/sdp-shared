@@ -23,6 +23,7 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <project.previousVersion>set_with_-Dproject.previousVersion=X.Y</project.previousVersion>
 
         <org.slf4j.version>1.7.32</org.slf4j.version>
         <spring.ws.version>3.1.1</spring.ws.version>
@@ -368,8 +369,15 @@
                 <plugin>
                     <groupId>com.github.siom79.japicmp</groupId>
                     <artifactId>japicmp-maven-plugin</artifactId>
-                    <version>0.14.1</version>
+                    <version>0.15.3</version>
                     <configuration>
+                        <oldVersion>
+                            <dependency>
+                                <groupId>${project.groupId}</groupId>
+                                <artifactId>${project.artifactId}</artifactId>
+                                <version>${project.previousVersion}</version>
+                            </dependency>
+                        </oldVersion>
                         <newVersion>
                             <file><path>${project.build.directory}/${project.build.finalName}.${project.packaging}</path></file>
                         </newVersion>

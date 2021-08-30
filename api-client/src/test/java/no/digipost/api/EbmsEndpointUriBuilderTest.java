@@ -2,17 +2,17 @@ package no.digipost.api;
 
 import no.digipost.api.representations.EbmsAktoer;
 import no.digipost.api.representations.Organisasjonsnummer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 
 public class EbmsEndpointUriBuilderTest {

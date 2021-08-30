@@ -8,16 +8,10 @@
     <parent>
         <groupId>no.digipost</groupId>
         <artifactId>sdp-shared</artifactId>
-        <version>2.17-SNAPSHOT</version>
+        <version>LOCAL-SNAPSHOT</version>
     </parent>
 
     <dependencies>
-
-        <dependency>
-            <groupId>no.digipost</groupId>
-            <artifactId>sdp-xsd</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>com.sun.xml.messaging.saaj</groupId>
@@ -34,6 +28,22 @@
         <dependency>
             <groupId>jakarta.activation</groupId>
             <artifactId>jakarta.activation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.jws</groupId>
+            <artifactId>jakarta.jws-api</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.ws</groupId>
+            <artifactId>jakarta.xml.ws-api</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>no.digipost</groupId>
+            <artifactId>sdp-xsd</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- Spring WS -->
@@ -111,15 +121,19 @@
             <scope>test</scope>
         </dependency>
 
-
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

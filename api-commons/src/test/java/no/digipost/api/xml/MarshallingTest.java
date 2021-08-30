@@ -1,7 +1,7 @@
 package no.digipost.api.xml;
 
 import no.difi.begrep.sdp.schema_v10.SDPFeil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.oxm.MarshallingFailureException;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.BusinessScope;
@@ -27,6 +27,7 @@ import java.io.StringWriter;
 import java.time.ZonedDateTime;
 
 import static no.difi.begrep.sdp.schema_v10.SDPFeiltype.KLIENT;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MarshallingTest {
 
@@ -72,12 +73,12 @@ public class MarshallingTest {
 
     }
 
-    @Test(expected = MarshallingFailureException.class)
+    @Test
     public void marshalling_av_ugyldig_SBD_skal_feile() {
         StringWriter outWriter = new StringWriter();
         StreamResult result = new StreamResult(outWriter);
         StandardBusinessDocument sbd = createInvalidStandardBusinessDocument();
-        jaxb2Marshaller.marshal(sbd, result);
+        assertThrows(MarshallingFailureException.class, () -> jaxb2Marshaller.marshal(sbd, result));
     }
 
 

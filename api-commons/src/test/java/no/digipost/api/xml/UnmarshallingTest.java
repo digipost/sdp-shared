@@ -1,12 +1,13 @@
 package no.digipost.api.xml;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.transform.stream.StreamSource;
+
 import java.io.InputStream;
 
-@Ignore
+@Disabled
 public class UnmarshallingTest {
 
     @Test

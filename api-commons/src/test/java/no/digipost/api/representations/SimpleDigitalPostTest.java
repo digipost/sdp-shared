@@ -6,42 +6,37 @@ import no.difi.begrep.sdp.schema_v10.SDPFlyttetDigitalPost;
 import no.difi.begrep.sdp.schema_v10.SDPFysiskPostInfo;
 import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling;
 import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.Type;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 
 import static no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.defaultTidEtterMidnatt;
 import static no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.Type.NY_POST;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class SimpleDigitalPostTest {
 
     private final SimpleDigitalPostformidling nyPost = new SimpleDigitalPostformidling(new SDPDigitalPost());
     private final SimpleDigitalPostformidling tilFlytting = new SimpleDigitalPostformidling(new SDPFlyttetDigitalPost());
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void kanIkkeHenteUtFlyttetDigitalPostNaarTypeErNY_POST() {
         assertThat(nyPost.type, is(Type.NY_POST));
-        expectedException.expect(IllegalArgumentException.class);
-        nyPost.getFlyttetDigitalPost();
+        assertThrows(IllegalArgumentException.class, nyPost::getFlyttetDigitalPost);
     }
 
     @Test
     public void kanIkkeHenteUtDigitalPostNaarTypeErFLYTTET() {
         assertThat(tilFlytting.type, is(Type.FLYTTET));
-        expectedException.expect(IllegalArgumentException.class);
-        tilFlytting.getDigitalPost();
+        assertThrows(IllegalArgumentException.class, tilFlytting::getDigitalPost);
     }
 
     @Test

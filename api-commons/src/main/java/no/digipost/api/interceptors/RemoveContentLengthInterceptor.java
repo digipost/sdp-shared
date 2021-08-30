@@ -10,8 +10,7 @@ import org.apache.http.protocol.HttpContext;
 import java.io.IOException;
 
 /**
- * See
- * <a href="https://jira.springsource.org/browse/SWS-563?focusedCommentId=67885&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-67885">SWS-563</a>
+ * @see <a href="https://jira.springsource.org/browse/SWS-563?focusedCommentId=67885&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-67885">SWS-563</a>
  */
 public class RemoveContentLengthInterceptor implements HttpRequestInterceptor {
 

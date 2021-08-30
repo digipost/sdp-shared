@@ -6,7 +6,7 @@ import no.difi.begrep.sdp.schema_v10.SDPFlyttetDigitalPost;
 import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling;
 import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.Type;
 import no.digipost.xsd.types.DigitalPostformidling;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
 import java.time.LocalDate;
@@ -19,9 +19,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 public class SimpleStandardBusinessDocumentTest {

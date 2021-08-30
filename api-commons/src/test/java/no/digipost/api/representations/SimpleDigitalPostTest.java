@@ -6,7 +6,7 @@ import no.difi.begrep.sdp.schema_v10.SDPFlyttetDigitalPost;
 import no.difi.begrep.sdp.schema_v10.SDPFysiskPostInfo;
 import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling;
 import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.Type;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -16,10 +16,10 @@ import static no.digipost.api.representations.SimpleStandardBusinessDocument.Sim
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class SimpleDigitalPostTest {

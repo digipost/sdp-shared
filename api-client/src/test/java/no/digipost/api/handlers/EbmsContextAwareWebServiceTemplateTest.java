@@ -2,19 +2,19 @@ package no.digipost.api.handlers;
 
 import no.digipost.api.exceptions.MessageSenderIOException;
 import org.apache.http.HttpResponse;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.transport.http.HttpComponentsConnection;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class EbmsContextAwareWebServiceTemplateTest {
 
     @Mock

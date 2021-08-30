@@ -2,7 +2,7 @@ package no.digipost.api;
 
 import no.digipost.api.representations.EbmsAktoer;
 import no.digipost.api.representations.Organisasjonsnummer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.util.List;

@@ -1,14 +1,15 @@
 package no.digipost.api.representations;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OrganisasjonsnummerTest {
 
@@ -20,14 +21,14 @@ public class OrganisasjonsnummerTest {
         assertThat(organisasjonsnummer.toString(), is(nummer));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void constructor_throws_exception_if_not_valid() {
-        Organisasjonsnummer.of("98466118522222");
+        assertThrows(IllegalArgumentException.class, () -> Organisasjonsnummer.of("98466118522222"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void invalid_prefix_with_length_4_throws_exception() {
-        Organisasjonsnummer.of("0000:984661185");
+        assertThrows(IllegalArgumentException.class, () -> Organisasjonsnummer.of("0000:984661185"));
     }
 
     @Test

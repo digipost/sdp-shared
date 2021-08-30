@@ -1,6 +1,6 @@
 package no.digipost.api.representations;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3.xmldsig.Reference;
 
 import static org.hamcrest.MatcherAssert.assertThat;

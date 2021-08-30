@@ -2,7 +2,7 @@ package no.digipost.api.security;
 
 import no.digipost.api.representations.Organisasjonsnummer;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.security.NoSuchProviderException;
@@ -11,7 +11,9 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 
 public class OrgnummerExtractorTest {
     private static final String PROD_VIRKSOMHETSSERTIFIKAT = "-----BEGIN CERTIFICATE-----" + "\n"
@@ -135,7 +137,7 @@ public class OrgnummerExtractorTest {
         X509Certificate certificate = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(prodVirksomhetssertifikat.getBytes()));
         OrgnummerExtractor extractor = new OrgnummerExtractor();
         Organisasjonsnummer orgNr = extractor.from(certificate);
-        assertEquals(orgnummer, orgNr.toString());
+        assertThat(orgNr.toString(), is(orgnummer));
     }
 
 }

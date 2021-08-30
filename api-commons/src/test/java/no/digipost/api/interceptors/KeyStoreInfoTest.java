@@ -1,6 +1,6 @@
 package no.digipost.api.interceptors;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
 import java.security.KeyStore;

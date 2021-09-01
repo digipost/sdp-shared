@@ -1,8 +1,8 @@
 package no.digipost.api.representations;
 
 import no.digipost.api.PMode;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
-import org.w3.xmldsig.Reference;
+import no.digipost.org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
+import no.digipost.org.w3.xmldsig.Reference;
 
 import java.io.InputStream;
 import java.util.ArrayList;

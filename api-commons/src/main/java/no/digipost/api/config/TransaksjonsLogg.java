@@ -1,7 +1,7 @@
 package no.digipost.api.config;
 
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.MessageInfo;
+import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
+import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.MessageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ws.soap.SoapFault;

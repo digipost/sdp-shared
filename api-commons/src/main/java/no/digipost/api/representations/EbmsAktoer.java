@@ -1,8 +1,8 @@
 package no.digipost.api.representations;
 
 import no.digipost.api.PMode;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.From;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.To;
+import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.From;
+import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.To;
 
 public class EbmsAktoer {
 

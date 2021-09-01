@@ -3,7 +3,7 @@ package no.digipost.api.representations;
 import org.hamcrest.CustomTypeSafeMatcher;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
-import org.w3.xmldsig.Reference;
+import no.digipost.org.w3.xmldsig.Reference;
 
 import java.util.ArrayList;
 import java.util.List;

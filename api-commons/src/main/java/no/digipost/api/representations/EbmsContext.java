@@ -1,13 +1,13 @@
 package no.digipost.api.representations;
 
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.SignalMessage;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.UserMessage;
+import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
+import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
+import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.SignalMessage;
+import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.UserMessage;
 import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
-import org.w3.xmldsig.Reference;
+import no.digipost.org.w3.xmldsig.Reference;
 import org.w3c.dom.Document;
 
 import java.util.ArrayList;

@@ -12,9 +12,9 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.soap.SoapMessage;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
-import org.w3.xmldsig.DigestMethod;
-import org.w3.xmldsig.Reference;
+import no.digipost.org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
+import no.digipost.org.w3.xmldsig.DigestMethod;
+import no.digipost.org.w3.xmldsig.Reference;
 import org.w3c.dom.Document;
 
 import javax.activation.DataHandler;

@@ -1,6 +1,6 @@
 package no.digipost.api.xml;
 
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
+import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.soap.SoapHeader;

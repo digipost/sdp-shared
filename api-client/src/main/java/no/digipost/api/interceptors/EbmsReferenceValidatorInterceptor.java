@@ -8,7 +8,7 @@ import org.springframework.ws.client.WebServiceClientException;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.soap.SoapMessage;
-import org.w3.xmldsig.Reference;
+import no.digipost.org.w3.xmldsig.Reference;
 
 import java.util.Map;
 

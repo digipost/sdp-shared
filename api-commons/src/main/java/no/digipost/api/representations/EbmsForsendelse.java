@@ -3,7 +3,7 @@ package no.digipost.api.representations;
 import no.difi.begrep.sdp.schema_v10.SDPMelding;
 import no.digipost.api.PMode;
 import no.digipost.xsd.types.DigitalPostformidling;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
+import no.digipost.org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
 import java.io.InputStream;
 import java.time.Clock;

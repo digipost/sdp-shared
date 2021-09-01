@@ -7,7 +7,7 @@ import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigi
 import no.digipost.api.representations.SimpleStandardBusinessDocument.SimpleDigitalPostformidling.Type;
 import no.digipost.xsd.types.DigitalPostformidling;
 import org.junit.jupiter.api.Test;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
+import no.digipost.org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
 import java.time.LocalDate;
 import java.time.ZoneId;

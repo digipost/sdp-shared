@@ -3,7 +3,7 @@ package no.digipost.api.representations;
 import no.digipost.api.xml.Marshalling;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.xml.transform.StringResult;
-import org.w3.xmldsig.Reference;
+import no.digipost.org.w3.xmldsig.Reference;
 
 import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;

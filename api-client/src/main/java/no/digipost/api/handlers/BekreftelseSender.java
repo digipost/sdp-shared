@@ -5,7 +5,7 @@ import no.digipost.api.representations.KanBekreftesSomBehandletKvittering;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
-import org.w3.xmldsig.Reference;
+import no.digipost.org.w3.xmldsig.Reference;
 
 import javax.xml.transform.TransformerException;
 import java.io.IOException;

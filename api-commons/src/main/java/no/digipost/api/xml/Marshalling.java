@@ -3,12 +3,12 @@ package no.digipost.api.xml;
 import no.difi.begrep.sdp.schema_v10.SDPKvittering;
 import org.etsi.uri._01903.v1_3.QualifyingProperties;
 import org.etsi.uri._2918.v1_2.XAdESSignatures;
-import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.NonRepudiationInformation;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
+import no.digipost.org.oasis_open.docs.ebxml_bp.ebbp_signals_2.NonRepudiationInformation;
+import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.soap.SoapBody;
 import org.springframework.ws.soap.SoapHeaderElement;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
+import no.digipost.org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -38,8 +38,8 @@ public class Marshalling {
         marshaller.setPackagesToScan(
                 packageName(StandardBusinessDocument.class),
                 packageName(Envelope.class),
-                packageName(org.w3.soap.Envelope.class),
-                packageName(org.w3.xmldsig.Reference.class),
+                packageName(no.digipost.org.w3.soap.Envelope.class),
+                packageName(no.digipost.org.w3.xmldsig.Reference.class),
                 packageName(Messaging.class),
                 packageName(NonRepudiationInformation.class),
                 packageName(SDPKvittering.class),

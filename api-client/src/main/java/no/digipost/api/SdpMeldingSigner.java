@@ -4,7 +4,7 @@ import no.digipost.api.interceptors.KeyStoreInfo;
 import no.digipost.api.xml.Constants;
 import no.digipost.api.xml.Marshalling;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
+import no.digipost.org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 

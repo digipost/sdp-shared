@@ -14,7 +14,7 @@
 		              xmlType="xs:dateTime"/>
 		<xjc:javaType adapter="no.digipost.xsd.jaxb.XSDateAdapter" name="java.time.LocalDate"
 		              xmlType="xs:date"/>
-		
+
 	</globalBindings>
 
 	<bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/sdp.xsd" node="/xs:schema">
@@ -107,36 +107,51 @@
 		</bindings>
 	</bindings>
 
-	<bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/SBDH20040506-02/StandardBusinessDocumentHeader.xsd" node="/xs:schema">
-		<wildcard:lax/>
-	</bindings>
+    <bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/SBDH20040506-02/StandardBusinessDocumentHeader.xsd" node="/xs:schema">
+        <wildcard:lax/>
+        <schemaBindings>
+            <package name="no.digipost.org.unece.cefact.namespaces.standardbusinessdocumentheader"/>
+        </schemaBindings>
+    </bindings>
 
-	<bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/ebxml/ebms-header-3_0-200704.xsd" node="//xs:attribute[@ref='S12:mustUnderstand']">
-		<property name="mustUnderstand12" />
-	</bindings>
+    <bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/ebxml/ebms-header-3_0-200704.xsd">
+        <schemaBindings>
+            <package name="no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704"/>
+        </schemaBindings>
+    </bindings>
 
-	<bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/w3/xmldsig-core-schema.xsd">
-		<schemaBindings>
-			<package name="org.w3.xmldsig"/>
-		</schemaBindings>
-	</bindings>
+    <bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/ebxml/ebms-header-3_0-200704.xsd" node="//xs:attribute[@ref='S12:mustUnderstand']">
+        <property name="mustUnderstand12"/>
+    </bindings>
 
-	<bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/w3/xlink.xsd">
-		<schemaBindings>
-			<package name="org.w3.xlink"/>
-		</schemaBindings>
-	</bindings>
+    <bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/ebxml/ebbp-signals-2.0.xsd">
+        <schemaBindings>
+            <package name="no.digipost.org.oasis_open.docs.ebxml_bp.ebbp_signals_2"/>
+        </schemaBindings>
+    </bindings>
 
-	<bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/w3/xenc-schema.xsd">
-		<schemaBindings>
-			<package name="org.w3.xenc"/>
-		</schemaBindings>
-	</bindings>
+    <bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/w3/xmldsig-core-schema.xsd">
+        <schemaBindings>
+            <package name="no.digipost.org.w3.xmldsig"/>
+        </schemaBindings>
+    </bindings>
 
-	<bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/w3/soap-envelope.xsd">
-		<schemaBindings>
-			<package name="org.w3.soap"/>
-		</schemaBindings>
-	</bindings>
+    <bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/w3/xlink.xsd">
+        <schemaBindings>
+            <package name="no.digipost.org.w3.xlink"/>
+        </schemaBindings>
+    </bindings>
+
+    <bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/w3/xenc-schema.xsd">
+        <schemaBindings>
+            <package name="no.digipost.org.w3.xenc"/>
+        </schemaBindings>
+    </bindings>
+
+    <bindings schemaLocation="../difi-begrepskatalog/resources/begrep/sikkerDigitalPost/xsd/w3/soap-envelope.xsd">
+        <schemaBindings>
+            <package name="no.digipost.org.w3.soap"/>
+        </schemaBindings>
+    </bindings>
 
 </bindings>

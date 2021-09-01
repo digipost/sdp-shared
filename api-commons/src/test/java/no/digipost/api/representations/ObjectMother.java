@@ -1,8 +1,8 @@
 package no.digipost.api.representations;
 
-import org.w3.xmldsig.DigestMethod;
-import org.w3.xmldsig.Reference;
-import org.w3.xmldsig.Transform;
+import no.digipost.org.w3.xmldsig.DigestMethod;
+import no.digipost.org.w3.xmldsig.Reference;
+import no.digipost.org.w3.xmldsig.Transform;
 
 import java.util.ArrayList;
 import java.util.List;

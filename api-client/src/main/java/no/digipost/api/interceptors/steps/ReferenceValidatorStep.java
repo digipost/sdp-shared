@@ -2,14 +2,14 @@ package no.digipost.api.interceptors.steps;
 
 import no.digipost.api.representations.EbmsContext;
 import no.digipost.api.representations.EbmsProcessingStep;
-import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.MessagePartNRInformation;
-import org.oasis_open.docs.ebxml_bp.ebbp_signals_2.NonRepudiationInformation;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
+import no.digipost.org.oasis_open.docs.ebxml_bp.ebbp_signals_2.MessagePartNRInformation;
+import no.digipost.org.oasis_open.docs.ebxml_bp.ebbp_signals_2.NonRepudiationInformation;
+import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
-import org.w3.xmldsig.Reference;
-import org.w3.xmldsig.Transform;
+import no.digipost.org.w3.xmldsig.Reference;
+import no.digipost.org.w3.xmldsig.Transform;
 
 import java.util.Arrays;
 import java.util.Base64;

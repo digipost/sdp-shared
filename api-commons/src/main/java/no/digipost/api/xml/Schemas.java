@@ -13,6 +13,7 @@ public class Schemas {
     public static final ClassPathResource XMLDSIG_SCHEMA = new ClassPathResource("w3/xmldsig-core-schema.xsd");
     public static final ClassPathResource XADES_SCHEMA = new ClassPathResource("etsi/XAdES.xsd");
     public static final ClassPathResource ASICE_SCHEMA = new ClassPathResource("asic-e/ts_102918v010201.xsd");
+    public static final ClassPathResource ASICE_SCHEMA2 = new ClassPathResource("asic-e/ts_102918v010201_2.xsd");
 
     public static final ClassPathResource LENKE_SCHEMA = new ClassPathResource("utvidelser/lenke.xsd");
     public static final ClassPathResource BEVIS_SCHEMA = new ClassPathResource("utvidelser/bevis.xsd");
@@ -20,7 +21,7 @@ public class Schemas {
 
     public static Resource[] allSchemaResources() {
         return new Resource[]{
-                SDP_SCHEMA, SDP_MANIFEST_SCHEMA, SBDH_SCHEMA, EBMS_SCHEMA, XMLDSIG_SCHEMA, XADES_SCHEMA, ASICE_SCHEMA, LENKE_SCHEMA, ARRANGEMENT_SCHEMA
+                SDP_SCHEMA, SDP_MANIFEST_SCHEMA, SBDH_SCHEMA, EBMS_SCHEMA, XMLDSIG_SCHEMA, XADES_SCHEMA, ASICE_SCHEMA, ASICE_SCHEMA2, LENKE_SCHEMA, ARRANGEMENT_SCHEMA
         };
     }
 

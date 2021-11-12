@@ -44,6 +44,7 @@ public class Marshalling {
                 packageName(NonRepudiationInformation.class),
                 packageName(SDPKvittering.class),
                 packageName(XAdESSignatures.class),
+                packageName(org.etsi.uri._02918.v1_2.XAdESSignatures.class),
                 packageName(QualifyingProperties.class));
         marshaller.setSchemas(Schemas.allSchemaResources());
         return marshaller;

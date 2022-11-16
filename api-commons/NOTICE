@@ -50,7 +50,5 @@ This software includes third party software subject to the following licenses:
   spring-ws-core under Apache License, Version 2.0
   spring-ws-security under Apache License, Version 2.0
   spring-xml under Apache License, Version 2.0
-  Stax2 API under The BSD License
   TXW2 Runtime under Eclipse Distribution License - v 1.0
-  Woodstox under The Apache License, Version 2.0
 

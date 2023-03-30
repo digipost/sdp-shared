@@ -14,10 +14,9 @@
     <dependencies>
 
         <dependency>
-            <groupId>jakarta.activation</groupId>
-            <artifactId>jakarta.activation-api</artifactId>
+            <groupId>javax.activation</groupId>
+            <artifactId>javax.activation-api</artifactId>
         </dependency>
-
         <dependency>
             <groupId>no.digipost</groupId>
             <artifactId>sdp-xsd</artifactId>

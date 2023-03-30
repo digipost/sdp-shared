@@ -19,18 +19,18 @@
 			<version>${jaxb2-basics.version}</version>
 		</dependency>
         <dependency>
-            <groupId>jakarta.xml.bind</groupId>
-            <artifactId>jakarta.xml.bind-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jaxb</groupId>
-            <artifactId>jaxb-runtime</artifactId>
-            <scope>runtime</scope>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>no.digipost</groupId>
+            <artifactId>jaxb-resolver-com.sun.xml.bind</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>

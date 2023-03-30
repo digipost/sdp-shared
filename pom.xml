@@ -115,8 +115,8 @@
 
             <dependency>
                 <groupId>org.bouncycastle</groupId>
-                <artifactId>bcprov-jdk15on</artifactId>
-                <version>1.70</version>
+                <artifactId>bcprov-jdk18on</artifactId>
+                <version>1.73</version>
             </dependency>
 
             <dependency>
@@ -213,6 +213,10 @@
                     <exclusion>
                         <groupId>org.apache.geronimo.javamail</groupId>
                         <artifactId>geronimo-javamail_1.4_mail</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.bouncycastle</groupId>
+                        <artifactId>bcprov-jdk15on</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -430,7 +434,7 @@
                                     <include>org.apache.santuario:xmlsec</include>
                                     <include>org.apache.wss4j:wss4j-ws-security-common</include>
                                     <include>org.apache.wss4j:wss4j-ws-security-dom</include>
-                                    <include>org.bouncycastle:bcprov-jdk15on</include>
+                                    <include>org.bouncycastle:bcprov-jdk18on</include>
                                     <include>org.codehaus.woodstox:stax2-api</include>
                                     <include>com.fasterxml.woodstox:woodstox-core</include>
                                     <include>org.jasypt:jasypt</include>

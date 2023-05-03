@@ -36,8 +36,8 @@
 
         <!-- SAAJ API-->
         <dependency>
-            <groupId>jakarta.xml.soap</groupId>
-            <artifactId>jakarta.xml.soap-api</artifactId>
+            <groupId>javax.xml.soap</groupId>
+            <artifactId>javax.xml.soap-api</artifactId>
         </dependency>
 
         <!-- SAAJ RI https://javaee.github.io/metro-saaj/ -->

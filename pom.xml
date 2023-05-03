@@ -26,8 +26,8 @@
         <project.previousVersion>set_with_-Dproject.previousVersion=X.Y</project.previousVersion>
 
         <org.slf4j.version>1.7.36</org.slf4j.version>
-        <spring.ws.version>3.1.5</spring.ws.version>
-        <wss4j.version>2.3.2</wss4j.version>
+        <spring.ws.version>3.1.6</spring.ws.version>
+        <wss4j.version>2.4.1</wss4j.version>
         <jaxb2-basics.version>0.12.0</jaxb2-basics.version>
     </properties>
 
@@ -184,12 +184,12 @@
                         <artifactId>ehcache</artifactId>
                     </exclusion>
                     <exclusion>
-                        <groupId>javax.xml.ws</groupId>
-                        <artifactId>jaxws-api</artifactId>
-                    </exclusion>
-                    <exclusion>
                         <groupId>jakarta.xml.bind</groupId>
                         <artifactId>jakarta.xml.bind-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>jakarta.xml.ws</groupId>
+                        <artifactId>jakarta.xml.ws-api</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -198,10 +198,6 @@
                 <artifactId>wss4j-ws-security-common</artifactId>
                 <version>${wss4j.version}</version>
                 <exclusions>
-                    <exclusion>
-                        <groupId>javax.xml.ws</groupId>
-                        <artifactId>jaxws-api</artifactId>
-                    </exclusion>
                     <exclusion>
                         <groupId>org.opensaml</groupId>
                         <artifactId>opensaml-saml-impl</artifactId>
@@ -226,6 +222,10 @@
                         <groupId>jakarta.xml.bind</groupId>
                         <artifactId>jakarta.xml.bind-api</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>jakarta.xml.ws</groupId>
+                        <artifactId>jakarta.xml.ws-api</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -235,38 +235,25 @@
             </dependency>
 
             <dependency>
-                <groupId>jakarta.xml.soap</groupId>
-                <artifactId>jakarta.xml.soap-api</artifactId>
-                <version>1.4.2</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>jakarta.activation</groupId>
-                        <artifactId>jakarta.activation-api</artifactId>
-                    </exclusion>
-                </exclusions>
+                <groupId>javax.xml.soap</groupId>
+                <artifactId>javax.xml.soap-api</artifactId>
+                <version>1.4.0</version>
             </dependency>
 
             <dependency>
-                <groupId>jakarta.jws</groupId>
-                <artifactId>jakarta.jws-api</artifactId>
-                <version>2.1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.xml.ws</groupId>
-                <artifactId>jakarta.xml.ws-api</artifactId>
-                <version>2.3.3</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>jakarta.xml.bind</groupId>
-                        <artifactId>jakarta.xml.bind-api</artifactId>
-                    </exclusion>
-                </exclusions>
+                <groupId>javax.jws</groupId>
+                <artifactId>javax.jws-api</artifactId>
+                <version>1.1</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.xml.messaging.saaj</groupId>
                 <artifactId>saaj-impl</artifactId>
                 <version>1.5.1</version>
                 <exclusions>
+                    <exclusion>
+                        <groupId>jakarta.xml.soap</groupId>
+                        <artifactId>jakarta.xml.soap-api</artifactId>
+                    </exclusion>
                     <exclusion>
                         <groupId>javax.xml.stream</groupId>
                         <artifactId>stax-api</artifactId>
@@ -479,13 +466,12 @@
                                     <include>javax.xml.bind:jaxb-api</include>
                                     <include>javax.annotation:javax.annotation-api</include>
                                     <include>javax.jws:jsr181-api</include>
-                                    <include>jakarta.xml.soap:jakarta.xml.soap-api</include>
                                     <include>javax.xml.soap:javax.xml.soap-api</include>
                                     <include>com.sun.xml.messaging.saaj:saaj-impl</include>
                                     <include>org.jvnet.staxex:stax-ex</include>
                                     <include>org.jvnet.mimepull:mimepull</include>
-                                    <include>jakarta.jws:jakarta.jws-api</include>
-                                    <include>jakarta.xml.ws:jakarta.xml.ws-api</include>
+                                    <include>javax.jws:jakarta.jws-api</include>
+                                    <include>javax.xml.ws:javax.xml.ws-api</include>
                                 </includes>
                                 <searchTransitive>true</searchTransitive>
                                 <message>Maven-avhengigheter har forandret seg. Sjekk at alle lisenser er OK før
@@ -521,9 +507,6 @@
                         <configuration>
                             <ignoreNonCompile>true</ignoreNonCompile>
                             <failOnWarning>true</failOnWarning>
-                            <ignoredNonTestScopedDependencies>
-                                <ignored>jakarta.xml.soap:jakarta.xml.soap-api</ignored>
-                            </ignoredNonTestScopedDependencies>
                         </configuration>
                     </execution>
                 </executions>

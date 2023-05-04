@@ -25,7 +25,7 @@ public interface MessageFactorySupplier {
      * argument. This may be apropriate if you use an application server runtime environment, and you want
      * to use the SAAJ implementation supplied by it.
      *
-     * <h2>Note</h2>
+     * <p><strong>Note:</strong>
      * The SAAJ implementation bundled with the JDK has certain performance and concurrency issues:
      * <ul>
      *  <li><a href="https://github.com/eclipse-ee4j/metro-saaj/issues/73">Issue #73: Make EnvelopeFactory ParserPool capacity configurable</a></li>

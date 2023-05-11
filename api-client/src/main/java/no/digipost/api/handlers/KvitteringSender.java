@@ -6,9 +6,9 @@ import no.digipost.api.representations.EbmsAktoer;
 import no.digipost.api.representations.EbmsApplikasjonsKvittering;
 import no.digipost.api.representations.Mpc;
 import no.digipost.api.representations.SimpleStandardBusinessDocument;
+import no.digipost.api.xml.JaxbMarshaller;
 import no.digipost.api.xml.Marshalling;
 import no.digipost.api.xml.TransformerUtil;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.soap.SoapMessage;
@@ -16,17 +16,18 @@ import org.w3c.dom.Document;
 
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamSource;
+
 import java.io.IOException;
 
 public class KvitteringSender extends EbmsContextAware implements WebServiceMessageCallback {
 
     private final EbmsApplikasjonsKvittering appKvittering;
-    private final Jaxb2Marshaller marshaller;
+    private final JaxbMarshaller marshaller;
     private final EbmsAktoer databehandler;
     private final EbmsAktoer tekniskMottaker;
     private final SdpMeldingSigner signer;
 
-    public KvitteringSender(final SdpMeldingSigner signer, final EbmsAktoer databehandler, final EbmsAktoer tekniskMottaker, final EbmsApplikasjonsKvittering appKvittering, final Jaxb2Marshaller marshaller) {
+    public KvitteringSender(SdpMeldingSigner signer, EbmsAktoer databehandler, EbmsAktoer tekniskMottaker, EbmsApplikasjonsKvittering appKvittering, JaxbMarshaller marshaller) {
         this.signer = signer;
         this.databehandler = databehandler;
         this.tekniskMottaker = tekniskMottaker;
@@ -35,7 +36,7 @@ public class KvitteringSender extends EbmsContextAware implements WebServiceMess
     }
 
     @Override
-    public void doWithMessage(final WebServiceMessage message) throws IOException, TransformerException {
+    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
         SoapMessage soapMessage = (SoapMessage) message;
         SimpleStandardBusinessDocument simple = new SimpleStandardBusinessDocument(appKvittering.sbd);
         if (appKvittering.sbdStream != null) {
@@ -48,8 +49,8 @@ public class KvitteringSender extends EbmsContextAware implements WebServiceMess
         }
 
         Mpc mpc = new Mpc(appKvittering.prioritet, appKvittering.mpcId);
-        ebmsContext.addRequestStep(new AddUserMessageStep(mpc, appKvittering.messageId, appKvittering.action, null, appKvittering.sbd, databehandler, tekniskMottaker
-                , marshaller));
+        ebmsContext.addRequestStep(new AddUserMessageStep(
+                mpc, appKvittering.messageId, appKvittering.action, null, appKvittering.sbd, databehandler, tekniskMottaker, marshaller));
     }
 
 }

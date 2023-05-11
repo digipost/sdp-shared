@@ -25,6 +25,7 @@ import no.digipost.api.representations.EbmsForsendelse;
 import no.digipost.api.representations.EbmsPullRequest;
 import no.digipost.api.representations.KanBekreftesSomBehandletKvittering;
 import no.digipost.api.representations.TransportKvittering;
+import no.digipost.api.xml.JaxbMarshaller;
 import no.digipost.api.xml.Marshalling;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequestInterceptor;
@@ -37,7 +38,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.oxm.Marshaller;
+import org.springframework.oxm.Unmarshaller;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.soap.SoapVersion;
@@ -46,6 +48,8 @@ import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPException;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -84,7 +88,7 @@ public interface MessageSender {
 
     WebServiceTemplate getMeldingTemplate();
 
-    Jaxb2Marshaller getMarshaller();
+    JaxbMarshaller getMarshaller();
 
     @FunctionalInterface
     public static interface ClientInterceptorWrapper {
@@ -97,7 +101,7 @@ public interface MessageSender {
 
         private static final Logger LOG = LoggerFactory.getLogger(MessageSender.Builder.class);
 
-        private static Jaxb2Marshaller defaultMarshaller;
+        private static JaxbMarshaller defaultMarshaller;
         private final EbmsEndpointUriBuilder endpointUri;
         private final EbmsAktoer databehandler;
         private final EbmsAktoer tekniskMottaker;
@@ -106,7 +110,7 @@ public interface MessageSender {
         private final List<InsertInterceptor> interceptorBefore = new ArrayList<InsertInterceptor>();
         private final List<HttpRequestInterceptor> httpRequestInterceptors = new ArrayList<HttpRequestInterceptor>();
         private final List<HttpResponseInterceptor> httpResponseInterceptors = new ArrayList<HttpResponseInterceptor>();
-        private Jaxb2Marshaller marshaller;
+        private JaxbMarshaller marshaller;
         // Network config
         private int maxTotal = DEFAULT_MAX_PER_ROUTE;
         private int defaultMaxPerRoute = DEFAULT_MAX_PER_ROUTE;
@@ -130,7 +134,7 @@ public interface MessageSender {
         }
 
 
-        protected static synchronized Jaxb2Marshaller getDefaultMarshaller() {
+        protected static synchronized JaxbMarshaller getDefaultMarshaller() {
             if (defaultMarshaller == null) {
                 defaultMarshaller = Marshalling.getMarshallerSingleton();
             }
@@ -148,11 +152,30 @@ public interface MessageSender {
             throw new IllegalArgumentException("Could not find interceptor of class " + insertInterceptor.clazz);
         }
 
-        private static WebServiceTemplate createTemplate(SaajSoapMessageFactory factory, Jaxb2Marshaller marshaller, EbmsAktoer remoteParty,
+        private static WebServiceTemplate createTemplate(SaajSoapMessageFactory factory, JaxbMarshaller marshaller, EbmsAktoer remoteParty,
                                                          HttpComponentsMessageSender httpSender, ClientInterceptor[] interceptors) {
+
+            final class SpringOxmMarshaller implements Marshaller, Unmarshaller {
+                @Override
+                public boolean supports(Class<?> clazz) {
+                    return true;
+                }
+
+                @Override
+                public Object unmarshal(Source source) {
+                    return marshaller.unmarshal(source, Object.class);
+                }
+
+                @Override
+                public void marshal(Object graph, Result result) {
+                    marshaller.marshal(graph, result);
+                }
+            }
+            SpringOxmMarshaller oxmMarshaller = new SpringOxmMarshaller();
+
             EbmsContextAwareWebServiceTemplate template = new EbmsContextAwareWebServiceTemplate(factory, remoteParty);
-            template.setMarshaller(marshaller);
-            template.setUnmarshaller(marshaller);
+            template.setMarshaller(oxmMarshaller);
+            template.setUnmarshaller(oxmMarshaller);
             template.setFaultMessageResolver(new MessageSenderFaultMessageResolver(marshaller));
             template.setMessageSender(httpSender);
             template.setInterceptors(interceptors);
@@ -169,7 +192,7 @@ public interface MessageSender {
             return this;
         }
 
-        public Builder withMarshaller(final Jaxb2Marshaller marshaller) {
+        public Builder withMarshaller(JaxbMarshaller marshaller) {
             this.marshaller = marshaller;
             return this;
         }
@@ -330,7 +353,7 @@ public interface MessageSender {
     static class DefaultMessageSender implements MessageSender {
 
         private static final Logger LOG = LoggerFactory.getLogger(DefaultMessageSender.class);
-        private final Jaxb2Marshaller marshaller;
+        private final JaxbMarshaller marshaller;
         private final EbmsEndpointUriBuilder uri;
         private WebServiceTemplate meldingTemplate;
         private EbmsAktoer databehandler;
@@ -338,7 +361,7 @@ public interface MessageSender {
         private SdpMeldingSigner signer;
 
 
-        protected DefaultMessageSender(final EbmsEndpointUriBuilder uri, final Jaxb2Marshaller marshaller) {
+        protected DefaultMessageSender(EbmsEndpointUriBuilder uri, JaxbMarshaller marshaller) {
             if (marshaller == null) {
                 throw new AssertionError("marshaller kan ikke være null");
             }
@@ -377,7 +400,7 @@ public interface MessageSender {
         }
 
         @Override
-        public Jaxb2Marshaller getMarshaller() {
+        public JaxbMarshaller getMarshaller() {
             return marshaller;
         }
 

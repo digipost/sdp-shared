@@ -1,23 +1,21 @@
 package no.digipost.api.representations;
 
 import no.digipost.api.xml.Marshalling;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.xml.transform.StringResult;
 import no.digipost.org.w3.xmldsig.Reference;
+import org.springframework.xml.transform.StringResult;
 
 import javax.xml.transform.stream.StreamSource;
+
 import java.io.StringReader;
 
 public class KvitteringsReferanse {
 
     private final String marshalled;
-    private final Jaxb2Marshaller marshallerSingleton = Marshalling.getMarshallerSingleton();
 
     private KvitteringsReferanse(Reference reference) {
         StringResult marshalledReference = new StringResult();
 
-        Jaxb2Marshaller marshallerSingleton = Marshalling.getMarshallerSingleton();
-        Marshalling.marshal(marshallerSingleton, reference, marshalledReference);
+        Marshalling.marshal(Marshalling.getMarshallerSingleton(), reference, marshalledReference);
 
         this.marshalled = marshalledReference.toString();
     }
@@ -39,7 +37,7 @@ public class KvitteringsReferanse {
     }
 
     public Reference getUnmarshalled() {
-        return (Reference) marshallerSingleton.unmarshal(new StreamSource(new StringReader(marshalled)));
+        return Marshalling.getMarshallerSingleton().unmarshal(new StreamSource(new StringReader(marshalled)), Reference.class);
     }
 
     public static class Builder {

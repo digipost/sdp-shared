@@ -1,7 +1,6 @@
 package no.digipost.api.xml;
 
 import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapHeaderElement;
@@ -16,7 +15,7 @@ public class MessagingMarshalling {
     /**
      * Enten returnerer denne et Messaging objekt, eller så kaster den en RuntimeException
      */
-    public static Messaging getMessaging(final Jaxb2Marshaller jaxb2Marshaller, final WebServiceMessage message) {
+    public static Messaging getMessaging(JaxbMarshaller jaxb2Marshaller, WebServiceMessage message) {
 
         SoapHeader soapHeader = ((SoapMessage) message).getSoapHeader();
         if (soapHeader == null) {
@@ -30,9 +29,9 @@ public class MessagingMarshalling {
 
         SoapHeaderElement incomingSoapHeaderElement = soapHeaderElementIterator.next();
         try {
-            return (Messaging) jaxb2Marshaller.unmarshal(incomingSoapHeaderElement.getSource());
+            return jaxb2Marshaller.unmarshal(incomingSoapHeaderElement.getSource(), Messaging.class);
         } catch (Exception e) {
-            throw new RuntimeException("The ebMs header failed to unmarshall");
+            throw new RuntimeException("The ebMs header failed to unmarshall", e);
         }
 
     }

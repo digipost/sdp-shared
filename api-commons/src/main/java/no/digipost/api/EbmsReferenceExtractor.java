@@ -1,16 +1,16 @@
 package no.digipost.api;
 
 import no.digipost.api.xml.Constants;
+import no.digipost.api.xml.JaxbMarshaller;
 import no.digipost.api.xml.Marshalling;
 import no.digipost.api.xml.XpathUtil;
-import org.apache.commons.lang3.StringUtils;
 import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
 import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PartInfo;
 import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.UserMessage;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import no.digipost.org.w3.xmldsig.Reference;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
-import no.digipost.org.w3.xmldsig.Reference;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -25,10 +25,10 @@ import java.util.Map;
 
 public class EbmsReferenceExtractor {
 
-    private final Jaxb2Marshaller jaxb2Marshaller;
+    private final JaxbMarshaller jaxbMarshaller;
 
-    public EbmsReferenceExtractor(final Jaxb2Marshaller jaxb2Marshaller) {
-        this.jaxb2Marshaller = jaxb2Marshaller;
+    public EbmsReferenceExtractor(JaxbMarshaller jaxb2Marshaller) {
+        this.jaxbMarshaller = jaxb2Marshaller;
     }
 
     public Map<String, Reference> getReferences(final SoapMessage message) {
@@ -36,7 +36,7 @@ public class EbmsReferenceExtractor {
         Map<String, Reference> references = new HashMap<String, Reference>();
 
         SoapHeaderElement wssec = message.getSoapHeader().examineHeaderElements(Constants.WSSEC_HEADER_QNAME).next();
-        Element element = (Element) Marshalling.unmarshal(jaxb2Marshaller, wssec, Object.class);
+        Element element = (Element) Marshalling.unmarshal(jaxbMarshaller, wssec, Object.class);
 
         Document doc = ((DOMSource) (message.getEnvelope().getSource())).getNode().getOwnerDocument();
 
@@ -51,7 +51,7 @@ public class EbmsReferenceExtractor {
                 }
             }
             if (!refs.isEmpty()) {
-                Reference ref = Marshalling.unmarshal(jaxb2Marshaller, refs.get(0), Reference.class);
+                Reference ref = Marshalling.unmarshal(jaxbMarshaller, refs.get(0), Reference.class);
                 String name = "attachment";
                 Element elm = doc.getElementById(href.replace("#", ""));
                 if (elm != null) {
@@ -71,7 +71,7 @@ public class EbmsReferenceExtractor {
             throw new SecurityException("Missing ebMS Messaging header");
         }
         SoapHeaderElement incomingSoapHeaderElement = soapHeaderElementIterator.next();
-        Messaging messaging = (Messaging) jaxb2Marshaller.unmarshal(incomingSoapHeaderElement.getSource());
+        Messaging messaging = jaxbMarshaller.unmarshal(incomingSoapHeaderElement.getSource(), Messaging.class);
         if (messaging.getUserMessages().isEmpty()) {
             return new ArrayList<String>();
         }

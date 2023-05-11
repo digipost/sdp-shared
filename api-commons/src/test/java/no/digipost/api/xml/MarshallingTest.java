@@ -1,9 +1,6 @@
 package no.digipost.api.xml;
 
 import no.difi.begrep.sdp.schema_v10.SDPFeil;
-import org.junit.jupiter.api.Test;
-import org.springframework.oxm.MarshallingFailureException;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import no.digipost.org.unece.cefact.namespaces.standardbusinessdocumentheader.BusinessScope;
 import no.digipost.org.unece.cefact.namespaces.standardbusinessdocumentheader.DocumentIdentification;
 import no.digipost.org.unece.cefact.namespaces.standardbusinessdocumentheader.Partner;
@@ -20,6 +17,7 @@ import no.digipost.org.w3.xmldsig.SignatureValue;
 import no.digipost.org.w3.xmldsig.SignedInfo;
 import no.digipost.org.w3.xmldsig.Transform;
 import no.digipost.org.w3.xmldsig.Transforms;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.transform.stream.StreamResult;
 
@@ -31,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MarshallingTest {
 
-    private final Jaxb2Marshaller jaxb2Marshaller = Marshalling.getMarshallerSingleton();
+    private final JaxbMarshaller marshaller = Marshalling.getMarshallerSingleton();
 
     @Test
     public void marshalling_av_gyldig_SBD_skal_ikke_feile() {
@@ -69,7 +67,7 @@ public class MarshallingTest {
                 .withFeiltype(KLIENT)
                 .withTidspunkt(ZonedDateTime.now());
 
-        jaxb2Marshaller.marshal(createValidStandardBusinessDocument(sdpFeil), result);
+        marshaller.marshal(createValidStandardBusinessDocument(sdpFeil), result);
 
     }
 
@@ -78,7 +76,7 @@ public class MarshallingTest {
         StringWriter outWriter = new StringWriter();
         StreamResult result = new StreamResult(outWriter);
         StandardBusinessDocument sbd = createInvalidStandardBusinessDocument();
-        assertThrows(MarshallingFailureException.class, () -> jaxb2Marshaller.marshal(sbd, result));
+        assertThrows(MarshallingException.class, () -> marshaller.marshal(sbd, result));
     }
 
 

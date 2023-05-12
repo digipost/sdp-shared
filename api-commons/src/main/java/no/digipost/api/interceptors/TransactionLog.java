@@ -9,6 +9,7 @@ import no.digipost.api.representations.Organisasjonsnummer;
 import no.digipost.api.representations.SimpleStandardBusinessDocument;
 import no.digipost.api.representations.SimpleUserMessage;
 import no.digipost.api.xml.Constants;
+import no.digipost.api.xml.JaxbMarshaller;
 import no.digipost.api.xml.Marshalling;
 import no.digipost.api.xml.MessagingMarshalling;
 import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
@@ -16,11 +17,10 @@ import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messa
 import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
 import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.SignalMessage;
 import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.UserMessage;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import no.digipost.org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import org.springframework.ws.soap.SoapBody;
 import org.springframework.ws.soap.SoapFault;
 import org.springframework.ws.soap.SoapMessage;
-import no.digipost.org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 
 import static no.digipost.api.config.TransaksjonsLogg.EMPTY_MESSAGE_PARTITION_CHANNEL_EBMS_ERROR_CODE;
 import static no.digipost.api.config.TransaksjonsLogg.Type.APPLIKASJONSKVITTERING;
@@ -33,11 +33,11 @@ import static no.digipost.api.config.TransaksjonsLogg.Type.USERMESSAGE_SDP;
 
 public class TransactionLog {
 
-    private final Jaxb2Marshaller jaxb2Marshaller;
+    private final JaxbMarshaller jaxb2Marshaller;
     private TransaksjonsLogg logg = new TransaksjonsLogg();
 
 
-    public TransactionLog(final Jaxb2Marshaller jaxb2Marshaller) {
+    public TransactionLog(final JaxbMarshaller jaxb2Marshaller) {
         this.jaxb2Marshaller = jaxb2Marshaller;
     }
 

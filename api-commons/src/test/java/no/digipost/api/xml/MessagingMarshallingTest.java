@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapMessage;
@@ -19,7 +18,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class MessagingMarshallingTest {
 
-    private final Jaxb2Marshaller jaxb2Marshaller = Marshalling.getMarshallerSingleton();
+    private final JaxbMarshaller jaxb2Marshaller = Marshalling.getMarshallerSingleton();
 
     @Mock
     private SoapMessage soapMessage;

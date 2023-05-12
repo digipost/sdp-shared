@@ -6,6 +6,7 @@ import no.digipost.api.representations.EbmsContext;
 import no.digipost.api.representations.Organisasjonsnummer;
 import no.digipost.api.security.OrgnummerExtractor;
 import no.digipost.api.xml.Constants;
+import no.digipost.api.xml.JaxbMarshaller;
 import no.digipost.api.xml.Marshalling;
 import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Error;
 import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
@@ -13,7 +14,6 @@ import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Signa
 import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.UserMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.WebServiceClientException;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.context.MessageContext;
@@ -23,6 +23,7 @@ import org.springframework.ws.soap.SoapMessage;
 import org.w3c.dom.Element;
 
 import javax.xml.transform.dom.DOMSource;
+
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,19 +34,19 @@ import static no.digipost.api.xml.Constants.MESSAGING_QNAME;
 
 public class EbmsClientInterceptor implements ClientInterceptor {
 
-    private final Jaxb2Marshaller jaxb2Marshaller;
+    private final JaxbMarshaller marshaller;
     private final EbmsAktoer tekniskMottaker;
     private final OrgnummerExtractor extractor = new OrgnummerExtractor();
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public EbmsClientInterceptor(final Jaxb2Marshaller jaxb2Marshaller, final EbmsAktoer tekniskMottaker) {
-        this.jaxb2Marshaller = jaxb2Marshaller;
+    public EbmsClientInterceptor(JaxbMarshaller marshaller, EbmsAktoer tekniskMottaker) {
+        this.marshaller = marshaller;
         this.tekniskMottaker = tekniskMottaker;
     }
 
     @Override
-    public boolean handleRequest(final MessageContext messageContext) throws WebServiceClientException {
+    public boolean handleRequest(MessageContext messageContext) throws WebServiceClientException {
         SoapMessage requestMessage = (SoapMessage) messageContext.getRequest();
         Element bodyElement = (Element) ((DOMSource) requestMessage.getSoapBody().getSource()).getNode();
         bodyElement.setAttributeNS(Constants.WSSEC_UTILS_NAMESPACE, "wsu:Id", "soapBody");
@@ -60,14 +61,14 @@ public class EbmsClientInterceptor implements ClientInterceptor {
     }
 
     @Override
-    public boolean handleResponse(final MessageContext messageContext) throws WebServiceClientException {
+    public boolean handleResponse(MessageContext messageContext) throws WebServiceClientException {
         SoapMessage saajSoapMessage = (SoapMessage) messageContext.getResponse();
         Iterator<SoapHeaderElement> soapHeaderElementIterator = saajSoapMessage.getSoapHeader().examineHeaderElements(MESSAGING_QNAME);
         if (!soapHeaderElementIterator.hasNext()) {
             throw new MessageSenderValidationException("Missing required ebMS SOAP header");
         }
         SoapHeaderElement ebmsMessaging = soapHeaderElementIterator.next();
-        Messaging messaging = Marshalling.unmarshal(jaxb2Marshaller, ebmsMessaging, Messaging.class);
+        Messaging messaging = Marshalling.unmarshal(marshaller, ebmsMessaging, Messaging.class);
         EbmsContext context = EbmsContext.from(messageContext);
         List<Error> warnings = new ArrayList<Error>();
         for (SignalMessage message : messaging.getSignalMessages()) {

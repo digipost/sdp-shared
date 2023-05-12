@@ -2,14 +2,14 @@ package no.digipost.api.interceptors.steps;
 
 import no.digipost.api.representations.EbmsContext;
 import no.digipost.api.representations.EbmsProcessingStep;
+import no.digipost.api.xml.JaxbMarshaller;
 import no.digipost.org.oasis_open.docs.ebxml_bp.ebbp_signals_2.MessagePartNRInformation;
 import no.digipost.org.oasis_open.docs.ebxml_bp.ebbp_signals_2.NonRepudiationInformation;
 import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.ws.soap.SoapHeaderElement;
-import org.springframework.ws.soap.SoapMessage;
 import no.digipost.org.w3.xmldsig.Reference;
 import no.digipost.org.w3.xmldsig.Transform;
+import org.springframework.ws.soap.SoapHeaderElement;
+import org.springframework.ws.soap.SoapMessage;
 
 import java.util.Arrays;
 import java.util.Base64;
@@ -19,16 +19,16 @@ import java.util.Collection;
 public class ReferenceValidatorStep implements EbmsProcessingStep {
 
     private final Collection<Reference> references;
-    private final Jaxb2Marshaller jaxb2Marshaller;
+    private final JaxbMarshaller jaxbMarshaller;
 
-    public ReferenceValidatorStep(final Jaxb2Marshaller jaxb2Marshaller, final Collection<Reference> references) {
-        this.jaxb2Marshaller = jaxb2Marshaller;
+    public ReferenceValidatorStep(JaxbMarshaller jaxbMarshaller, Collection<Reference> references) {
+        this.jaxbMarshaller = jaxbMarshaller;
         this.references = references;
     }
 
     @Override
-    public void apply(final EbmsContext ebmsContext, final SoapHeaderElement ebmsMessaging, final SoapMessage soapMessage) {
-        Messaging messaging = (Messaging) jaxb2Marshaller.unmarshal(ebmsMessaging.getSource());
+    public void apply(EbmsContext ebmsContext, SoapHeaderElement ebmsMessaging, SoapMessage soapMessage) {
+        Messaging messaging = jaxbMarshaller.unmarshal(ebmsMessaging.getSource(), Messaging.class);
         NonRepudiationInformation nonrep = (NonRepudiationInformation) messaging.getSignalMessages().get(0).getReceipt().getAnies().get(0);
         for (Reference reference : references) {
             boolean found = false;
@@ -46,7 +46,7 @@ public class ReferenceValidatorStep implements EbmsProcessingStep {
         }
     }
 
-    private void validate(final Reference expected, final Reference actual) {
+    private void validate(Reference expected, Reference actual) {
         if (!expected.getDigestMethod().getAlgorithm().equals(actual.getDigestMethod().getAlgorithm())) {
             throw new RuntimeException("Unexpected digest method. Expected:" + expected.getDigestMethod().getAlgorithm() + " Actual:" + actual.getDigestMethod().getAlgorithm());
         }
@@ -57,7 +57,7 @@ public class ReferenceValidatorStep implements EbmsProcessingStep {
         validateTransforms(expected, actual);
     }
 
-    private void validateTransforms(final Reference expected, final Reference actual) {
+    private void validateTransforms(Reference expected, Reference actual) {
         boolean expHasTransforms = expected.getTransforms() != null;
         boolean actHasTransforms = actual.getTransforms() != null;
         if (expHasTransforms != actHasTransforms) {

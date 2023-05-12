@@ -2,9 +2,9 @@ package no.digipost.api.interceptors;
 
 import no.digipost.api.config.TransaksjonsLogg;
 import no.digipost.api.representations.EbmsContext;
+import no.digipost.api.xml.JaxbMarshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.WebServiceClientException;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.context.MessageContext;
@@ -18,8 +18,8 @@ public class TransactionLogClientInterceptor implements ClientInterceptor {
 
     private TransactionLog transactionLog;
 
-    public TransactionLogClientInterceptor(final Jaxb2Marshaller jaxb2Marshaller) {
-        this.transactionLog = new TransactionLog(jaxb2Marshaller);
+    public TransactionLogClientInterceptor(JaxbMarshaller jaxbMarshaller) {
+        this.transactionLog = new TransactionLog(jaxbMarshaller);
     }
 
     @Override

@@ -1,6 +1,6 @@
 Digipost API Client
 
-Copyright 2014 Posten Norge AS. All Rights Reserved.
+Copyright 2023 Posten Norge AS. All Rights Reserved.
 
 This product includes software developed by Posten Norge AS. - https://www.posten.no/
 Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0.html
@@ -30,6 +30,8 @@ This software includes third party software subject to the following licenses:
   Joda-Time under Apache License, Version 2.0
   JUL to SLF4J bridge under MIT License
   Log4j Implemented Over SLF4J under Apache Software Licenses
+  micrometer-commons under The Apache Software License, Version 2.0
+  micrometer-observation under The Apache Software License, Version 2.0
   MIME streaming extension under Eclipse Distribution License - v 1.0
   Old JAXB Core under CDDL+GPL License
   Old JAXB Runtime under Eclipse Distribution License - v 1.0

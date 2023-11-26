@@ -1,6 +1,8 @@
 package no.digipost.api;
 
 
+import jakarta.xml.soap.MessageFactory;
+import jakarta.xml.soap.SOAPException;
 import no.digipost.api.exceptions.MessageSenderFaultMessageResolver;
 import no.digipost.api.handlers.ApplikasjonsKvitteringReceiver;
 import no.digipost.api.handlers.BekreftelseSender;
@@ -46,8 +48,6 @@ import org.springframework.ws.soap.SoapVersion;
 import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
 import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 
-import javax.xml.soap.MessageFactory;
-import javax.xml.soap.SOAPException;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 

@@ -1,5 +1,6 @@
 package no.digipost.api.handlers;
 
+import jakarta.activation.DataHandler;
 import no.digipost.api.SdpMeldingSigner;
 import no.digipost.api.interceptors.steps.AddUserMessageStep;
 import no.digipost.api.representations.EbmsAktoer;
@@ -17,7 +18,6 @@ import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.soap.SoapMessage;
 import org.w3c.dom.Document;
 
-import javax.activation.DataHandler;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamSource;
 

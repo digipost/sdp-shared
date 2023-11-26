@@ -14,8 +14,8 @@
     <dependencies>
 
         <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>javax.activation-api</artifactId>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
         </dependency>
         <dependency>
             <groupId>no.digipost</groupId>
@@ -36,8 +36,8 @@
 
         <!-- SAAJ API-->
         <dependency>
-            <groupId>javax.xml.soap</groupId>
-            <artifactId>javax.xml.soap-api</artifactId>
+            <groupId>jakarta.xml.soap</groupId>
+            <artifactId>jakarta.xml.soap-api</artifactId>
         </dependency>
 
         <!-- SAAJ RI https://javaee.github.io/metro-saaj/ -->

@@ -98,7 +98,7 @@ public class EbmsClientInterceptor implements ClientInterceptor {
             X509Certificate cert = (X509Certificate) messageContext.getProperty(Wss4jInterceptor.INCOMING_CERTIFICATE);
             Organisasjonsnummer responder = extractor.from(cert);
             if (!tekniskMottaker.orgnr.equals(responder)) {
-                throw new MessageSenderValidationException(format("Unexpected signer in incoming message. Expected: [%s] Extracted: [%s] from %s", tekniskMottaker.orgnr, responder, cert.getSubjectDN().getName()));
+                throw new MessageSenderValidationException(format("Unexpected signer in incoming message. Expected: [%s] Extracted: [%s] from %s", tekniskMottaker.orgnr, responder, cert.getSubjectX500Principal().getName()));
             }
         }
         return true;

@@ -142,24 +142,4 @@
 
     </dependencies>
 
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <configuration>
-                        <ignoredNonTestScopedDependencies>
-                            <ignored>javax.xml.soap:javax.xml.soap-api</ignored>
-                        </ignoredNonTestScopedDependencies>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.jasig.maven</groupId>
-                <artifactId>maven-notice-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

@@ -117,27 +117,4 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>check-dependency-declarations-vs-usage</id>
-                        <goals>
-                            <goal>analyze-only</goal>
-                        </goals>
-                        <configuration>
-                            <ignoreNonCompile>true</ignoreNonCompile>
-                            <failOnWarning>true</failOnWarning>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.jasig.maven</groupId>
-                <artifactId>maven-notice-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

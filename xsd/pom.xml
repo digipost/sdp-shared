@@ -74,7 +74,7 @@
 			<plugin>
 				<groupId>org.jvnet.jaxb2.maven2</groupId>
 				<artifactId>maven-jaxb2-plugin</artifactId>
-				<version>0.15.2</version>
+				<version>0.15.3</version>
 				<executions>
 					<execution>
 						<goals>
@@ -137,10 +137,6 @@
 					</plugins>
 				</configuration>
 			</plugin>
-            <plugin>
-                <groupId>org.jasig.maven</groupId>
-                <artifactId>maven-notice-plugin</artifactId>
-            </plugin>
 		</plugins>
 	</build>
 

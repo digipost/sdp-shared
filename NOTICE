@@ -1,0 +1,65 @@
+Digipost XSD
+
+Copyright 2014 Posten Norge AS. All Rights Reserved.
+
+This product includes software developed by Posten Norge AS. - https://www.posten.no/
+Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0.html
+
+
+This software includes third party software subject to the following licenses:
+
+  Angus Activation Registries under EDL 1.0
+  Apache Commons Codec under Apache License, Version 2.0
+  Apache Commons Lang under Apache-2.0
+  Apache HttpClient under Apache License, Version 2.0
+  Apache HttpCore under Apache License, Version 2.0
+  Apache WSS4J DOM WS-Security under Apache-2.0
+  Apache WSS4J WS-Security Common under Apache-2.0
+  Apache XML Security for Java under Apache-2.0
+  Bouncy Castle Provider under Bouncy Castle Licence
+  Cryptacular Library under Apache 2 or GNU Lesser General Public License
+  Digipost JAXB Resolver - com.sun.xml.bind under The Apache Software License, Version 2.0
+  Extended StAX API under Eclipse Distribution License - v 1.0
+  Guava InternalFutureFailureAccess and InternalFutures under The Apache Software License, Version 2.0
+  Guava: Google Core Libraries for Java under Apache License, Version 2.0
+  istack common utility code runtime under Eclipse Distribution License - v 1.0
+  Jakarta Activation API under EDL 1.0
+  Jakarta Mail API under EPL 2.0 or GPL2 w/ CPE or EDL 1.0
+  Jakarta SOAP Implementation under Eclipse Distribution License - v 1.0
+  Jakarta SOAP with Attachments API under Eclipse Distribution License - v 1.0
+  Jakarta XML Binding API under Eclipse Distribution License - v 1.0
+  JASYPT: Java Simplified Encryption under The Apache Software License, Version 2.0
+  JavaBeans Activation Framework API jar under CDDL/GPLv2+CE
+  JAXB Core under Eclipse Distribution License - v 1.0
+  JAXB Runtime under Eclipse Distribution License - v 1.0
+  jaxb-api under CDDL 1.1 or GPL2 w/ CPE
+  JAXB2 Basics - Runtime under BSD-Style License
+  JCL 1.2 implemented over SLF4J under Apache License, Version 2.0
+  JUL to SLF4J bridge under MIT License
+  Log4j Implemented Over SLF4J under Apache Software Licenses
+  micrometer-commons under The Apache Software License, Version 2.0
+  micrometer-observation under The Apache Software License, Version 2.0
+  Old JAXB Core under CDDL+GPL License
+  Old JAXB Runtime under Eclipse Distribution License - v 1.0
+  SDP Shared under The Apache Software License, Version 2.0
+  SDP Shared - API Client under The Apache Software License, Version 2.0
+  SDP Shared - API Commons under The Apache Software License, Version 2.0
+  SDP Shared - XSD & JAXB under The Apache Software License, Version 2.0
+  SLF4J API Module under MIT License
+  Spring AOP under Apache License, Version 2.0
+  Spring Beans under Apache License, Version 2.0
+  Spring Commons Logging Bridge under Apache License, Version 2.0
+  Spring Context under Apache License, Version 2.0
+  Spring Core under Apache License, Version 2.0
+  Spring Expression Language (SpEL) under Apache License, Version 2.0
+  Spring Object/XML Marshalling under Apache License, Version 2.0
+  Spring Transaction under Apache License, Version 2.0
+  Spring Web under Apache License, Version 2.0
+  Spring Web MVC under Apache License, Version 2.0
+  spring-security-core under Apache License, Version 2.0
+  spring-security-crypto under Apache License, Version 2.0
+  spring-ws-core under Apache License, Version 2.0
+  spring-ws-security under Apache License, Version 2.0
+  spring-xml under Apache License, Version 2.0
+  TXW2 Runtime under Eclipse Distribution License - v 1.0
+

@@ -36,7 +36,6 @@ This software includes third party software subject to the following licenses:
   JAXB2 Basics - Runtime under BSD-Style License
   JCL 1.2 implemented over SLF4J under Apache License, Version 2.0
   JUL to SLF4J bridge under MIT License
-  Log4j Implemented Over SLF4J under Apache Software Licenses
   micrometer-commons under The Apache Software License, Version 2.0
   micrometer-observation under The Apache Software License, Version 2.0
   Old JAXB Core under CDDL+GPL License

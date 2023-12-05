@@ -123,7 +123,7 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-bom</artifactId>
-                <version>5.8.2</version>
+                <version>6.2.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -326,13 +326,10 @@
                                     <include>no.digipost:sdp-api-commons</include>
                                     <include>no.digipost:sdp-xsd</include>
                                     <include>aopalliance:aopalliance</include>
-                                    <include>com.sun.xml.wsit:wsit-rt</include>
                                     <include>commons-codec:commons-codec</include>
-                                    <include>jaxen:jaxen</include>
                                     <include>joda-time:joda-time</include>
                                     <include>no.digipost:sdp-xsd</include>
                                     <include>org.apache.commons:commons-lang3</include>
-                                    <!--include>org.apache.geronimo.specs:geronimo-javamail_1.4_spec</include-->
                                     <include>jakarta.mail:jakarta.mail-api</include>
                                     <include>org.apache.httpcomponents:*</include>
                                     <include>org.apache.santuario:xmlsec</include>

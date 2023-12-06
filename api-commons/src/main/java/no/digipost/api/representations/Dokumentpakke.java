@@ -1,9 +1,9 @@
 package no.digipost.api.representations;
 
 
+import jakarta.activation.DataSource;
 import org.bouncycastle.jcajce.provider.digest.SHA256;
 
-import javax.activation.DataSource;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

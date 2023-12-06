@@ -1,13 +1,12 @@
 package no.digipost.api.xml;
 
+import jakarta.xml.soap.MessageFactory;
+import jakarta.xml.soap.SOAPMessage;
 import no.digipost.api.EbmsReferenceExtractor;
-import org.junit.jupiter.api.Test;
-import org.springframework.ws.soap.saaj.SaajSoapMessage;
 import no.digipost.org.w3.xmldsig.DigestMethod;
 import no.digipost.org.w3.xmldsig.Reference;
-
-import javax.xml.soap.MessageFactory;
-import javax.xml.soap.SOAPMessage;
+import org.junit.jupiter.api.Test;
+import org.springframework.ws.soap.saaj.SaajSoapMessage;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -17,8 +16,8 @@ import java.nio.file.Paths;
 import java.util.Map;
 
 import static co.unruly.matchers.Java8Matchers.where;
+import static jakarta.xml.soap.SOAPConstants.SOAP_1_2_PROTOCOL;
 import static javax.xml.crypto.dsig.DigestMethod.SHA256;
-import static javax.xml.soap.SOAPConstants.SOAP_1_2_PROTOCOL;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.containsString;

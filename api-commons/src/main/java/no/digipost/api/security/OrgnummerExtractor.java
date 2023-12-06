@@ -39,8 +39,8 @@ public class OrgnummerExtractor {
 
     public Organisasjonsnummer from(X509Certificate cert) {
         return tryParse(cert).orElseThrow(() -> new IllegalArgumentException(
-                "Fant ikke organisasjonsnummer i [" + cert.getSubjectDN().getName() + "], " +
-                        "issuer=[" + cert.getIssuerDN().getName() + "]"));
+                "Fant ikke organisasjonsnummer i [" + cert.getSubjectX500Principal().getName() + "], " +
+                        "issuer=[" + cert.getIssuerX500Principal().getName() + "]"));
     }
 
     private static final Optional<String> tryFindOrgnr(CharSequence text, Pattern extractPattern) {

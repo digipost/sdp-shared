@@ -11,7 +11,7 @@
     <parent>
         <groupId>no.digipost</groupId>
         <artifactId>digipost-open-super-pom</artifactId>
-        <version>7</version>
+        <version>13</version>
     </parent>
 
     <modules>
@@ -21,14 +21,12 @@
     </modules>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.previousVersion>set_with_-Dproject.previousVersion=X.Y</project.previousVersion>
+        <maven.compiler.release>17</maven.compiler.release>
 
-        <org.slf4j.version>1.7.36</org.slf4j.version>
-        <spring.ws.version>3.1.6</spring.ws.version>
-        <wss4j.version>2.4.1</wss4j.version>
-        <jaxb2-basics.version>0.12.0</jaxb2-basics.version>
+        <org.slf4j.version>2.0.9</org.slf4j.version>
+        <spring.ws.version>4.0.8</spring.ws.version>
+        <wss4j.version>3.0.2</wss4j.version>
+        <jaxb2-basics.version>0.13.1</jaxb2-basics.version>
     </properties>
 
     <scm>
@@ -70,12 +68,6 @@
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
-                <artifactId>log4j-over-slf4j</artifactId>
-                <version>${org.slf4j.version}</version>
-                <scope>runtime</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
                 <artifactId>jul-to-slf4j</artifactId>
                 <version>${org.slf4j.version}</version>
                 <scope>runtime</scope>
@@ -86,43 +78,43 @@
                 <version>${org.slf4j.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>no.digipost</groupId>
+                <artifactId>jul-to-slf4j-junit-extension</artifactId>
+                <version>1.0</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
-                <version>5.8.0-RC1</version>
+                <version>5.10.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>3.12.4</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-junit-jupiter</artifactId>
-                <version>3.12.4</version>
-                <scope>test</scope>
+                <artifactId>mockito-bom</artifactId>
+                <version>5.8.0</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>nl.jqno.equalsverifier</groupId>
                 <artifactId>equalsverifier</artifactId>
-                <version>3.7.1</version>
+                <version>3.15.4</version>
                 <scope>test</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk18on</artifactId>
-                <version>1.73</version>
+                <version>1.77</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>5.3.26</version>
+                <version>6.1.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -130,48 +122,19 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-bom</artifactId>
-                <version>5.8.2</version>
+                <version>6.2.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
 
             <!-- Spring WS -->
+
             <dependency>
                 <groupId>org.springframework.ws</groupId>
-                <artifactId>spring-ws-core</artifactId>
+                <artifactId>spring-ws-bom</artifactId>
                 <version>${spring.ws.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-io</groupId>
-                        <artifactId>commons-io</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.ws</groupId>
-                <artifactId>spring-ws-security</artifactId>
-                <version>${spring.ws.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>net.sf.ehcache</groupId>
-                        <artifactId>ehcache</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>commons-io</groupId>
-                        <artifactId>commons-io</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.ws</groupId>
-                <artifactId>spring-xml</artifactId>
-                <version>${spring.ws.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-io</groupId>
-                        <artifactId>commons-io</artifactId>
-                    </exclusion>
-                </exclusions>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
             <dependency>
@@ -182,14 +145,6 @@
                     <exclusion>
                         <groupId>org.ehcache</groupId>
                         <artifactId>ehcache</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jakarta.xml.bind</groupId>
-                        <artifactId>jakarta.xml.bind-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jakarta.xml.ws</groupId>
-                        <artifactId>jakarta.xml.ws-api</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -218,14 +173,6 @@
                         <groupId>org.bouncycastle</groupId>
                         <artifactId>bcprov-jdk15on</artifactId>
                     </exclusion>
-                    <exclusion>
-                        <groupId>jakarta.xml.bind</groupId>
-                        <artifactId>jakarta.xml.bind-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jakarta.xml.ws</groupId>
-                        <artifactId>jakarta.xml.ws-api</artifactId>
-                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -236,42 +183,24 @@
             <dependency>
                 <groupId>org.apache.santuario</groupId>
                 <artifactId>xmlsec</artifactId>
+                <version>3.0.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.xml.soap</groupId>
+                <artifactId>jakarta.xml.soap-api</artifactId>
                 <version>3.0.1</version>
             </dependency>
 
             <dependency>
-                <groupId>javax.xml.soap</groupId>
-                <artifactId>javax.xml.soap-api</artifactId>
-                <version>1.4.0</version>
-            </dependency>
-
-            <dependency>
-                <groupId>javax.jws</groupId>
-                <artifactId>javax.jws-api</artifactId>
-                <version>1.1</version>
+                <groupId>jakarta.jws</groupId>
+                <artifactId>jakarta.jws-api</artifactId>
+                <version>3.0.0</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.xml.messaging.saaj</groupId>
                 <artifactId>saaj-impl</artifactId>
-                <version>1.5.1</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>jakarta.xml.soap</groupId>
-                        <artifactId>jakarta.xml.soap-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>javax.xml.stream</groupId>
-                        <artifactId>stax-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jakarta.xml.bind</groupId>
-                        <artifactId>jakarta.xml.bind-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jakarta.activation</groupId>
-                        <artifactId>jakarta.activation-api</artifactId>
-                    </exclusion>
-                </exclusions>
+                <version>3.0.3</version>
             </dependency>
 
             <dependency>
@@ -282,15 +211,15 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>javax.activation</groupId>
-                <artifactId>javax.activation-api</artifactId>
-                <version>1.2.0</version>
+                <groupId>jakarta.activation</groupId>
+                <artifactId>jakarta.activation-api</artifactId>
+                <version>2.1.2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
-                <version>4.5.13</version>
+                <version>4.5.14</version>
                 <exclusions>
                     <exclusion>
                         <groupId>commons-logging</groupId>
@@ -301,13 +230,13 @@
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpcore</artifactId>
-                <version>4.4.14</version>
+                <version>4.4.16</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.12.0</version>
+                <version>3.14.0</version>
             </dependency>
             <dependency>
                 <groupId>commons-codec</groupId>
@@ -323,7 +252,7 @@
             <plugins>
                 <plugin>
                     <artifactId>maven-clean-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.3.2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
@@ -335,7 +264,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.2.2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
@@ -351,63 +280,22 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.5.0</version>
+                    <version>3.6.3</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jasig.maven</groupId>
-                    <artifactId>maven-notice-plugin</artifactId>
-                    <version>1.1.0</version>
+                    <artifactId>notice-maven-plugin</artifactId>
+                    <version>2.0.0</version>
                     <configuration>
-                        <includeScopes>
-                            <scope>compile</scope>
-                            <scope>runtime</scope>
-                        </includeScopes>
-                        <noticeTemplate>${project.basedir}/src/main/notice/NOTICE.template</noticeTemplate>
-                        <licenseMapping>
-                            <param>${project.basedir}/src/main/notice/license-mappings.xml</param>
-                        </licenseMapping>
+                        <generateChildNotices>false</generateChildNotices>
                     </configuration>
-                    <executions>
-                        <execution>
-                            <id>check-NOTICE-file</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <dependencies>
-                        <dependency>
-                            <groupId>jakarta.xml.bind</groupId>
-                            <artifactId>jakarta.xml.bind-api</artifactId>
-                            <version>2.3.3</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.glassfish.jaxb</groupId>
-                            <artifactId>jaxb-runtime</artifactId>
-                            <version>2.3.3</version>
-                            <scope>runtime</scope>
-                        </dependency>
-                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>com.github.siom79.japicmp</groupId>
                     <artifactId>japicmp-maven-plugin</artifactId>
-                    <version>0.15.3</version>
+                    <version>0.18.3</version>
                     <configuration>
-                        <oldVersion>
-                            <dependency>
-                                <groupId>${project.groupId}</groupId>
-                                <artifactId>${project.artifactId}</artifactId>
-                                <version>${project.previousVersion}</version>
-                            </dependency>
-                        </oldVersion>
-                        <newVersion>
-                            <file><path>${project.build.directory}/${project.build.finalName}.${project.packaging}</path></file>
-                        </newVersion>
                         <parameter>
-                            <onlyModified>true</onlyModified>
-                            <onlyBinaryIncompatible>true</onlyBinaryIncompatible>
                             <includes>
                                 <include>no.digipost.api</include>
                                 <include>no.digipost.xsd</include>
@@ -419,11 +307,11 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
-                    <version>2.15.0</version>
+                    <version>2.16.2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>3.4.1</version>
                     <configuration>
                         <rules>
                             <bannedDependencies>
@@ -437,13 +325,11 @@
                                     <include>no.digipost:sdp-api-commons</include>
                                     <include>no.digipost:sdp-xsd</include>
                                     <include>aopalliance:aopalliance</include>
-                                    <include>com.sun.xml.wsit:wsit-rt</include>
                                     <include>commons-codec:commons-codec</include>
-                                    <include>jaxen:jaxen</include>
                                     <include>joda-time:joda-time</include>
                                     <include>no.digipost:sdp-xsd</include>
                                     <include>org.apache.commons:commons-lang3</include>
-                                    <include>org.apache.geronimo.specs:geronimo-javamail_1.4_spec</include>
+                                    <include>jakarta.mail:jakarta.mail-api</include>
                                     <include>org.apache.httpcomponents:*</include>
                                     <include>org.apache.santuario:xmlsec</include>
                                     <include>org.apache.wss4j:wss4j-ws-security-common</include>
@@ -464,19 +350,24 @@
                                     <include>org.springframework:*</include>
                                     <include>org.springframework.security:*</include>
                                     <include>org.springframework.ws:*</include>
+                                    <include>io.micrometer</include>
                                     <include>wsdl4j:wsdl4j</include>
                                     <include>javax.activation:javax.activation-api</include>
                                     <include>com.sun.activation:jakarta.activation:jakarta.activation</include>
-                                    <include>javax.xml.ws:jaxws-api</include>
+                                    <include>jakarta.activation:jakarta.activation-api</include>
+                                    <include>org.eclipse.angus:angus-activation</include>
+                                    <include>jakarta.xml.ws:jaxws-api</include>
                                     <include>javax.xml.bind:jaxb-api</include>
-                                    <include>javax.annotation:javax.annotation-api</include>
-                                    <include>javax.jws:jsr181-api</include>
-                                    <include>javax.xml.soap:javax.xml.soap-api</include>
+                                    <include>jakarta.xml.bind:jakarta.xml.bind-api</include>
+                                    <include>org.glassfish.jaxb</include>
+                                    <include>com.sun.istack</include>
+                                    <include>jakarta.annotation:jakarta.annotation-api</include>
+                                    <include>jakarta.xml.soap:jakarta.xml.soap-api</include>
                                     <include>com.sun.xml.messaging.saaj:saaj-impl</include>
                                     <include>org.jvnet.staxex:stax-ex</include>
                                     <include>org.jvnet.mimepull:mimepull</include>
-                                    <include>javax.jws:jakarta.jws-api</include>
-                                    <include>javax.xml.ws:javax.xml.ws-api</include>
+                                    <include>jakarta.jws:jakarta.jws-api</include>
+                                    <include>jakarta.xml.ws:jakarta.xml.ws-api</include>
                                 </includes>
                                 <searchTransitive>true</searchTransitive>
                                 <message>Maven-avhengigheter har forandret seg. Sjekk at alle lisenser er OK før
@@ -491,12 +382,12 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.5.0</version>
+                    <version>3.6.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>3.5.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.sonatype.plugins</groupId>
@@ -505,23 +396,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-        <plugins>
-            <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>check-dependency-declarations-vs-usage</id>
-                        <goals>
-                            <goal>analyze-only</goal>
-                        </goals>
-                        <configuration>
-                            <ignoreNonCompile>true</ignoreNonCompile>
-                            <failOnWarning>true</failOnWarning>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
     </build>
 
 </project>

@@ -1,4 +1,4 @@
-Digipost API Commons
+Digipost XSD
 
 Copyright 2014 Posten Norge AS. All Rights Reserved.
 
@@ -11,6 +11,7 @@ This software includes third party software subject to the following licenses:
   Angus Activation Registries under EDL 1.0
   Apache Commons Codec under Apache License, Version 2.0
   Apache Commons Lang under Apache-2.0
+  Apache HttpClient under Apache License, Version 2.0
   Apache HttpCore under Apache License, Version 2.0
   Apache WSS4J DOM WS-Security under Apache-2.0
   Apache WSS4J WS-Security Common under Apache-2.0
@@ -25,6 +26,7 @@ This software includes third party software subject to the following licenses:
   Jakarta Activation API under EDL 1.0
   Jakarta Mail API under EPL 2.0 or GPL2 w/ CPE or EDL 1.0
   Jakarta SOAP Implementation under Eclipse Distribution License - v 1.0
+  Jakarta SOAP with Attachments API under Eclipse Distribution License - v 1.0
   Jakarta XML Binding API under Eclipse Distribution License - v 1.0
   JASYPT: Java Simplified Encryption under The Apache Software License, Version 2.0
   JavaBeans Activation Framework API jar under CDDL/GPLv2+CE
@@ -33,10 +35,14 @@ This software includes third party software subject to the following licenses:
   jaxb-api under CDDL 1.1 or GPL2 w/ CPE
   JAXB2 Basics - Runtime under BSD-Style License
   JCL 1.2 implemented over SLF4J under Apache License, Version 2.0
+  JUL to SLF4J bridge under MIT License
   micrometer-commons under The Apache Software License, Version 2.0
   micrometer-observation under The Apache Software License, Version 2.0
   Old JAXB Core under CDDL+GPL License
   Old JAXB Runtime under Eclipse Distribution License - v 1.0
+  SDP Shared under The Apache Software License, Version 2.0
+  SDP Shared - API Client under The Apache Software License, Version 2.0
+  SDP Shared - API Commons under The Apache Software License, Version 2.0
   SDP Shared - XSD & JAXB under The Apache Software License, Version 2.0
   SLF4J API Module under MIT License
   Spring AOP under Apache License, Version 2.0

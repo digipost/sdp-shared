@@ -108,6 +108,12 @@ public class OrganisasjonsnummerTest {
     }
 
     @Test
+    public void without_authority_part_is_Same_as_with_authority_part() {
+        Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("0192:984661185");
+        assertTrue(organisasjonsnummer.er(organisasjonsnummer.getOrganisasjonsnummer()));
+    }
+
+    @Test
     public void evaluates_other_strings_as_not_same() {
         Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
         assertFalse(organisasjonsnummer.er("xyz"));

@@ -20,14 +20,13 @@ public final class Organisasjonsnummer {
     static final String COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_NEW = "0192";
     private static final Pattern ORGANIZATION_NUMBER_PATTERN = Pattern.compile("^((" + COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_OLD + "|" + COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_NEW + "):)?([0-9]{9})$");
     private final String organisasjonsnummer;
-    private final String landkode;
+    private final Optional<String> landkode;
 
 
     private Organisasjonsnummer(MatchResult matchedOrganisasjonsnummer) {
         int groupOfOrganizationNumber = matchedOrganisasjonsnummer.groupCount();
         this.organisasjonsnummer = matchedOrganisasjonsnummer.group(groupOfOrganizationNumber);
-        this.landkode = Optional.ofNullable(matchedOrganisasjonsnummer.group(groupOfOrganizationNumber - 1))
-            .orElse(COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_OLD);
+        this.landkode = Optional.ofNullable(matchedOrganisasjonsnummer.group(groupOfOrganizationNumber - 1));
     }
 
     public static boolean erGyldig(String organisasjonsnummer) {
@@ -58,11 +57,13 @@ public final class Organisasjonsnummer {
     }
 
     public String getOrganisasjonsnummerMedLandkode() {
-        return landkode + ":" + organisasjonsnummer;
+        return landkode.orElse(COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_OLD) + ":" + organisasjonsnummer;
     }
 
     public boolean er(String organisasjonsnummerString) {
-        return hvisGyldig(organisasjonsnummerString).filter(this::equals).isPresent();
+        return hvisGyldig(organisasjonsnummerString)
+            .filter(orgnr -> orgnr.landkode.isPresent() && this.landkode.isPresent() ? this.equals(orgnr) : this.organisasjonsnummer.equals(orgnr.organisasjonsnummer))
+            .isPresent();
     }
 
     public boolean erEnAv(Organisasjonsnummer... kandidater) {

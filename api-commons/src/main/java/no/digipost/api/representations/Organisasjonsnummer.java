@@ -66,6 +66,10 @@ public final class Organisasjonsnummer {
             .isPresent();
     }
 
+    public boolean erSammeOrganisasjonsnummerUavhengigAvLandkode(Organisasjonsnummer organisasjonsnummer) {
+        return this.organisasjonsnummer.equals(organisasjonsnummer.organisasjonsnummer);
+    }
+
     public boolean erEnAv(Organisasjonsnummer... kandidater) {
         return erEnAv(asList(kandidater));
     }

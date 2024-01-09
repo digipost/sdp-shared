@@ -121,6 +121,23 @@ public class OrganisasjonsnummerTest {
     }
 
     @Test
+    public void evaluates_other_organisasjonsnummer_as_same() {
+        Organisasjonsnummer withoutCountryCode = Organisasjonsnummer.of("984661185");
+        Organisasjonsnummer withNewCountryCode = Organisasjonsnummer.of(COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_NEW + ":984661185");
+        Organisasjonsnummer withOldCountryCode = Organisasjonsnummer.of(COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_OLD + ":984661185");
+        Organisasjonsnummer notEqual = Organisasjonsnummer.of("123456789");
+        assertTrue(withoutCountryCode.erSammeOrganisasjonsnummerUavhengigAvLandkode(withNewCountryCode));
+        assertTrue(withoutCountryCode.erSammeOrganisasjonsnummerUavhengigAvLandkode(withOldCountryCode));
+        assertTrue(withNewCountryCode.erSammeOrganisasjonsnummerUavhengigAvLandkode(withoutCountryCode));
+        assertTrue(withNewCountryCode.erSammeOrganisasjonsnummerUavhengigAvLandkode(withOldCountryCode));
+        assertTrue(withOldCountryCode.erSammeOrganisasjonsnummerUavhengigAvLandkode(withoutCountryCode));
+        assertTrue(withOldCountryCode.erSammeOrganisasjonsnummerUavhengigAvLandkode(withNewCountryCode));
+        assertFalse(notEqual.erSammeOrganisasjonsnummerUavhengigAvLandkode(withoutCountryCode));
+        assertFalse(notEqual.erSammeOrganisasjonsnummerUavhengigAvLandkode(withNewCountryCode));
+        assertFalse(notEqual.erSammeOrganisasjonsnummerUavhengigAvLandkode(withOldCountryCode));
+    }
+
+    @Test
     public void correct_equals_and_hashcode() {
         EqualsVerifier.forClass(Organisasjonsnummer.class).verify();
     }

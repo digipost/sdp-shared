@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
+import static no.digipost.api.representations.Organisasjonsnummer.COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_NEW;
+import static no.digipost.api.representations.Organisasjonsnummer.COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_OLD;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -14,11 +16,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class OrganisasjonsnummerTest {
 
     @Test
-    public void initializes_organisasjonsnummer() {
+    public void initializes_organisasjonsnummer_without_prefix() {
         String nummer = "984661185";
         Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(nummer);
 
         assertThat(organisasjonsnummer.toString(), is(nummer));
+    }
+
+    @Test
+    public void initializes_organisasjonsnummer_with_new_prefix() {
+        String nummer = COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_NEW + ":984661185";
+        Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(nummer);
+
+        assertThat(organisasjonsnummer.getOrganisasjonsnummerMedLandkode(), is(nummer));
+    }
+
+    @Test
+    public void initializes_organisasjonsnummer_with_old_prefix() {
+        String nummer = COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_OLD + ":984661185";
+        Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(nummer);
+
+        assertThat(organisasjonsnummer.getOrganisasjonsnummerMedLandkode(), is(nummer));
     }
 
     @Test
@@ -32,8 +50,8 @@ public class OrganisasjonsnummerTest {
     }
 
     @Test
-    public void with_landkode_returns_return_organisasjosnummer_with_9908_prefix() {
-        String expected = "9908:984661185";
+    public void with_old_landkode_returns_return_organisasjosnummer_with_9908_prefix() {
+        String expected = COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_OLD + ":984661185";
         Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
 
         String actual = organisasjonsnummer.getOrganisasjonsnummerMedLandkode();
@@ -42,8 +60,8 @@ public class OrganisasjonsnummerTest {
     }
 
     @Test
-    public void with_landkode_returns_organisasjosnummer_without_9908_prefix() {
-        String source = "9908:984661185";
+    public void with_new_landkode_returns_organisasjosnummer_without_9908_prefix() {
+        String source = COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_NEW + ":984661185";
         String expected = "984661185";
 
         Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(source);
@@ -54,7 +72,7 @@ public class OrganisasjonsnummerTest {
     @Test
     public void without_landkode_returns_organisasjosnummer_with_9908_prefix() {
         String source = "984661185";
-        String expected = "9908:984661185";
+        String expected = COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_OLD + ":984661185";
 
         Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of(source);
 
@@ -90,10 +108,33 @@ public class OrganisasjonsnummerTest {
     }
 
     @Test
+    public void without_authority_part_is_Same_as_with_authority_part() {
+        Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("0192:984661185");
+        assertTrue(organisasjonsnummer.er(organisasjonsnummer.getOrganisasjonsnummer()));
+    }
+
+    @Test
     public void evaluates_other_strings_as_not_same() {
         Organisasjonsnummer organisasjonsnummer = Organisasjonsnummer.of("984661185");
         assertFalse(organisasjonsnummer.er("xyz"));
         assertFalse(organisasjonsnummer.er("991825827"));
+    }
+
+    @Test
+    public void evaluates_other_organisasjonsnummer_as_same() {
+        Organisasjonsnummer withoutCountryCode = Organisasjonsnummer.of("984661185");
+        Organisasjonsnummer withNewCountryCode = Organisasjonsnummer.of(COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_NEW + ":984661185");
+        Organisasjonsnummer withOldCountryCode = Organisasjonsnummer.of(COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_OLD + ":984661185");
+        Organisasjonsnummer notEqual = Organisasjonsnummer.of("123456789");
+        assertTrue(withoutCountryCode.erSammeOrganisasjonsnummerUavhengigAvLandkode(withNewCountryCode));
+        assertTrue(withoutCountryCode.erSammeOrganisasjonsnummerUavhengigAvLandkode(withOldCountryCode));
+        assertTrue(withNewCountryCode.erSammeOrganisasjonsnummerUavhengigAvLandkode(withoutCountryCode));
+        assertTrue(withNewCountryCode.erSammeOrganisasjonsnummerUavhengigAvLandkode(withOldCountryCode));
+        assertTrue(withOldCountryCode.erSammeOrganisasjonsnummerUavhengigAvLandkode(withoutCountryCode));
+        assertTrue(withOldCountryCode.erSammeOrganisasjonsnummerUavhengigAvLandkode(withNewCountryCode));
+        assertFalse(notEqual.erSammeOrganisasjonsnummerUavhengigAvLandkode(withoutCountryCode));
+        assertFalse(notEqual.erSammeOrganisasjonsnummerUavhengigAvLandkode(withNewCountryCode));
+        assertFalse(notEqual.erSammeOrganisasjonsnummerUavhengigAvLandkode(withOldCountryCode));
     }
 
     @Test

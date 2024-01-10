@@ -16,14 +16,17 @@ public final class Organisasjonsnummer {
 
     public static final String ISO6523_ACTORID = PMode.PARTY_ID_TYPE;
     public static final String ISO6523_ACTORID_OLD = "iso6523-actorid-upis";
-    private static final String COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY = "9908";
-    private static final Pattern ORGANIZATION_NUMBER_PATTERN = Pattern.compile("^(" + COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY + ":)?([0-9]{9})$");
+    static final String COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_OLD = "9908";
+    static final String COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_NEW = "0192";
+    private static final Pattern ORGANIZATION_NUMBER_PATTERN = Pattern.compile("^((" + COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_OLD + "|" + COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_NEW + "):)?([0-9]{9})$");
     private final String organisasjonsnummer;
+    private final Optional<String> landkode;
 
 
     private Organisasjonsnummer(MatchResult matchedOrganisasjonsnummer) {
         int groupOfOrganizationNumber = matchedOrganisasjonsnummer.groupCount();
         this.organisasjonsnummer = matchedOrganisasjonsnummer.group(groupOfOrganizationNumber);
+        this.landkode = Optional.ofNullable(matchedOrganisasjonsnummer.group(groupOfOrganizationNumber - 1));
     }
 
     public static boolean erGyldig(String organisasjonsnummer) {
@@ -44,7 +47,8 @@ public final class Organisasjonsnummer {
             throw new IllegalArgumentException(
                     "Ugyldig organisasjonsnummer. Forventet format er ISO 6523, men fikk følgende nummer: '" +
                             organisasjonsnummer + "'. Organisasjonsnummeret skal være 9 siffer og kan prefikses med " +
-                            "landkode 9908. Eksempler på dette er '9908:984661185' og '984661185'.");
+                            "enten landkode 9908 eller 0192. Eksempler på dette er '9908:984661185', '0192:984661185' " +
+                            "og '984661185'.");
         }
     }
 
@@ -53,11 +57,17 @@ public final class Organisasjonsnummer {
     }
 
     public String getOrganisasjonsnummerMedLandkode() {
-        return COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY + ":" + organisasjonsnummer;
+        return landkode.orElse(COUNTRY_CODE_ORGANIZATION_NUMBER_NORWAY_OLD) + ":" + organisasjonsnummer;
     }
 
     public boolean er(String organisasjonsnummerString) {
-        return hvisGyldig(organisasjonsnummerString).filter(this::equals).isPresent();
+        return hvisGyldig(organisasjonsnummerString)
+            .filter(orgnr -> orgnr.landkode.isPresent() && this.landkode.isPresent() ? this.equals(orgnr) : this.organisasjonsnummer.equals(orgnr.organisasjonsnummer))
+            .isPresent();
+    }
+
+    public boolean erSammeOrganisasjonsnummerUavhengigAvLandkode(Organisasjonsnummer organisasjonsnummer) {
+        return this.organisasjonsnummer.equals(organisasjonsnummer.organisasjonsnummer);
     }
 
     public boolean erEnAv(Organisasjonsnummer... kandidater) {
@@ -77,14 +87,14 @@ public final class Organisasjonsnummer {
     public boolean equals(Object obj) {
         if (obj instanceof Organisasjonsnummer) {
             Organisasjonsnummer that = (Organisasjonsnummer) obj;
-            return Objects.equals(this.organisasjonsnummer, that.organisasjonsnummer);
+            return Objects.equals(this.organisasjonsnummer, that.organisasjonsnummer) && Objects.equals(this.landkode, that.landkode);
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(organisasjonsnummer);
+        return Objects.hash(organisasjonsnummer, landkode);
     }
 
 }

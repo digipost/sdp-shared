@@ -9,7 +9,6 @@ import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class SchemaResources {
     public static final SchemaResource ARRANGEMENT_SCHEMA = SchemaResource.fromClasspath("/utvidelser/arrangement.xsd");
 
     public static List<SchemaResource> all() {
-        return asList(SDP_SCHEMA, SDP_MANIFEST_SCHEMA, SBDH_SCHEMA, EBMS_SCHEMA, XMLDSIG_SCHEMA, XADES_SCHEMA, ASICE_SCHEMA, ASICE_SCHEMA2, LENKE_SCHEMA, ARRANGEMENT_SCHEMA);
+        return asList(SDP_SCHEMA, SDP_MANIFEST_SCHEMA, SBDH_SCHEMA, EBMS_SCHEMA, XMLDSIG_SCHEMA, XADES_SCHEMA, ASICE_SCHEMA, ASICE_SCHEMA2, BEVIS_SCHEMA, LENKE_SCHEMA, ARRANGEMENT_SCHEMA);
     }
 
     public static List<SchemaResource> sbdOnly() {

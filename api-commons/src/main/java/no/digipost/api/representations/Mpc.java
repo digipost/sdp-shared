@@ -1,6 +1,6 @@
 package no.digipost.api.representations;
 
-import static org.springframework.util.StringUtils.hasText;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class Mpc {
 
@@ -20,7 +20,7 @@ public class Mpc {
     @Override
     public String toString() {
         String result = "urn:" + prioritet.name().toLowerCase();
-        if (hasText(avsenderId)) {
+        if (isNotBlank(avsenderId)) {
             result += ":" + avsenderId;
         }
         return result;

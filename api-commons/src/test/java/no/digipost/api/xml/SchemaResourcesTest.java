@@ -1,7 +1,6 @@
 package no.digipost.api.xml;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.core.io.Resource;
 
 import java.lang.reflect.Field;
 
@@ -15,7 +14,7 @@ class SchemaResourcesTest {
     @Test
     void allSchemasExist() throws Exception {
         for (Field field : SchemaResources.class.getFields()) {
-            if (isStatic(field.getModifiers()) && Resource.class.isAssignableFrom(field.getType())) {
+            if (isStatic(field.getModifiers()) && SchemaResource.class.isAssignableFrom(field.getType())) {
                 SchemaResource resource = (SchemaResource) field.get(SchemaResources.class);
                 assertThat(resource + " must exist! (declared in " + SchemaResources.class.getName() + "." + field.getName() + ")",
                         resource, where(SchemaResource::sizeInBytes, greaterThan(42)));

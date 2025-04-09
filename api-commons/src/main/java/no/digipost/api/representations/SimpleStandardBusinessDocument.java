@@ -5,15 +5,14 @@ import no.difi.begrep.sdp.schema_v10.SDPDigitalPost;
 import no.difi.begrep.sdp.schema_v10.SDPDigitalPostInfo;
 import no.difi.begrep.sdp.schema_v10.SDPFeil;
 import no.difi.begrep.sdp.schema_v10.SDPFlyttetDigitalPost;
-import no.difi.begrep.sdp.schema_v10.SDPFysiskPostInfo;
 import no.difi.begrep.sdp.schema_v10.SDPKvittering;
 import no.difi.begrep.sdp.schema_v10.SDPMelding;
 import no.difi.begrep.sdp.schema_v10.SDPMottaker;
 import no.difi.begrep.sdp.schema_v10.SDPVarslingfeilet;
-import no.digipost.xsd.types.DigitalPostformidling;
 import no.digipost.org.unece.cefact.namespaces.standardbusinessdocumentheader.Scope;
 import no.digipost.org.unece.cefact.namespaces.standardbusinessdocumentheader.StandardBusinessDocument;
 import no.digipost.org.w3.xmldsig.Reference;
+import no.digipost.xsd.types.DigitalPostformidling;
 
 import java.time.Duration;
 import java.time.ZoneId;
@@ -122,10 +121,6 @@ public class SimpleStandardBusinessDocument {
         }
     }
 
-    public StandardBusinessDocument getUnderlyingDoc() {
-        return doc;
-    }
-
     public SDPFeil getFeil() {
         return (SDPFeil) doc.getAny();
     }
@@ -184,10 +179,6 @@ public class SimpleStandardBusinessDocument {
 
         public boolean erDigitalPostTilFysiskLevering() {
             return digitalPostformidling instanceof SDPDigitalPost && ((SDPDigitalPost) digitalPostformidling).getFysiskPostInfo() != null;
-        }
-
-        public SDPFysiskPostInfo getFysiskPostInfo() {
-            return ((SDPDigitalPost) digitalPostformidling).getFysiskPostInfo();
         }
 
         public ZonedDateTime getLeveringstidspunkt() {

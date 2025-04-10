@@ -1,5 +1,7 @@
 package no.digipost.api.xml;
 
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
 import no.difi.begrep.sdp.schema_v10.SDPKvittering;
 import no.digipost.org.oasis_open.docs.ebxml_bp.ebbp_signals_2.NonRepudiationInformation;
 import no.digipost.org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.Messaging;
@@ -9,8 +11,6 @@ import org.etsi.uri._2918.v1_2.XAdESSignatures;
 import org.w3c.dom.Node;
 import org.xmlsoap.schemas.soap.envelope.Envelope;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 import javax.xml.transform.stream.StreamSource;
 import java.io.InputStream;
 

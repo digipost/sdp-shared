@@ -1,7 +1,8 @@
 
 package no.digipost.xsd.jaxb;
 
-import javax.xml.bind.DatatypeConverter;
+
+import jakarta.xml.bind.DatatypeConverter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

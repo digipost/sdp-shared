@@ -24,3 +24,5 @@ gradlew
 # ... except these
 !.idea/codeStyleSettings.xml
 !.settings/org.eclipse.jdt.ui.prefs
+.vscode/settings.json
+.flattened-pom.xml
